@@ -10,7 +10,7 @@
     }
   },
   // Kasm 이미지는 기본 사용자가 'kasm_user'인 경우가 많으므로 권한 설정
-  "remoteUser": "vscode",
+  "remoteUser": "root",
   "containerEnv": {
     "DISPLAY": ":1"
   },
