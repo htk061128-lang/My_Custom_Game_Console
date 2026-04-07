@@ -1,27 +1,25 @@
 {
-  "name": "KasmVNC Game Dev",
-  // Kasm 공식 이미지 사용 (VNC, Audio, Desktop 환경이 다 들어있음)
-  "image": "kasmweb/core-ubuntu-focal:1.15.0",
-  "forwardPorts": [6901],
-  "portsAttributes": {
-    "6901": {
-      "label": "KasmVNC Interface",
-      "onAutoForward": "openBrowser"
+  "name": "Hybrid Console Dev (VNC + FFmpeg Audio)",
+  "image": "mcr.microsoft.com/devcontainers/cpp:1-ubuntu-22.04",
+  "forwardPorts": [6080, 8081],
+  "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
+      "password": "vncpassword"
     }
   },
-  // Kasm 이미지는 기본 사용자가 'kasm_user'인 경우가 많으므로 권한 설정
-  "remoteUser": "root",
   "containerEnv": {
     "DISPLAY": ":1"
   },
-  // 필요한 개발 도구만 설치
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y build-essential verilator libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev",
+  // FFmpeg와 시뮬레이션에 필요한 라이브러리를 한 번에 설치
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y verilator libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev ffmpeg build-essential",
   "customizations": {
     "vscode": {
       "extensions": [
         "mshr-h.VerilogHDL",
-        "ms-vscode.cpptools"
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack"
       ]
     }
-  }
+  },
+  "remoteUser": "vscode"
 }
