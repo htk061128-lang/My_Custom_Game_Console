@@ -1,16 +1,27 @@
 {
-  "name": "High Performance Audio/Video Dev",
-  "image": "mcr.microsoft.com/devcontainers/cpp:1-ubuntu-22.04",
-  "features": {
-    // 커뮤니티에서 관리되는 kasmvnc feature
-    "ghcr.io/devcontainers-contrib/features/kasmvnc:1": {
-      "user": "vscode"
+  "name": "KasmVNC Game Dev",
+  // Kasm 공식 이미지 사용 (VNC, Audio, Desktop 환경이 다 들어있음)
+  "image": "kasmweb/core-ubuntu-focal:1.15.0",
+  "forwardPorts": [6901],
+  "portsAttributes": {
+    "6901": {
+      "label": "KasmVNC Interface",
+      "onAutoForward": "openBrowser"
     }
   },
-  "forwardPorts": [6901], // KasmVNC 기본 포트
+  // Kasm 이미지는 기본 사용자가 'kasm_user'인 경우가 많으므로 권한 설정
+  "remoteUser": "kasm_user",
   "containerEnv": {
-    "DISPLAY": ":1",
-    "LIBGL_ALWAYS_SOFTWARE": "1" // GPU가 없는 환경에서 GUI 가속을 위함
+    "DISPLAY": ":1"
   },
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y verilator libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev"
+  // 필요한 개발 도구만 설치
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y build-essential verilator libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "mshr-h.VerilogHDL",
+        "ms-vscode.cpptools"
+      ]
+    }
+  }
 }
