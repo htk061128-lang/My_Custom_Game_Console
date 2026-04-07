@@ -1,0 +1,16 @@
+{
+  "name": "High Performance Audio/Video Dev",
+  "image": "mcr.microsoft.com/devcontainers/cpp:1-ubuntu-22.04",
+  "features": {
+    // 커뮤니티에서 관리되는 kasmvnc feature
+    "ghcr.io/devcontainers-contrib/features/kasmvnc:1": {
+      "user": "vscode"
+    }
+  },
+  "forwardPorts": [6901], // KasmVNC 기본 포트
+  "containerEnv": {
+    "DISPLAY": ":1",
+    "LIBGL_ALWAYS_SOFTWARE": "1" // GPU가 없는 환경에서 GUI 가속을 위함
+  },
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y verilator libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev"
+}
