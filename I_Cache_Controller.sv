@@ -65,7 +65,7 @@ module I_Cache_Controller (
     // Read Port (Port B)
     output        BRAM3_ren,   // Read Enable
     output [8:0]  BRAM3_raddr,
-    input  [71:0] BRAM3_dout,
+    input  [71:0] BRAM3_dout
 );
 
 reg [3:0] main_state;
@@ -91,6 +91,9 @@ reg word_buffer_wen_3;
 
 
 always @(*) begin
+    CPU_ready = 0;
+    CPU_rdata[31:0] = 0;
+    
     EMEM_valid = 0;
     EMEM_addr[31:0] = 0;
     EMEM_wstrb[3:0] = 4'b1111;
@@ -183,22 +186,22 @@ always @(*) begin
                 case(CPU_addr[3:2])
                     2'b00: begin //Cache line의 0번 word
                         main_next = IDLE;
-                        CPU_valid = 1;
+                        CPU_ready = 1;
                         CPU_rdata[31:0] = BRAM0_dout[39:8];
                     end
                     2'b01: begin //Cache line의 1번 word
                         main_next = IDLE;
-                        CPU_valid = 1;
+                        CPU_ready = 1;
                         CPU_rdata[31:0] = BRAM0_dout[71:40];
                     end
                     2'b10: begin //Cache line의 2번 word
                         main_next = IDLE;
-                        CPU_valid = 1;
+                        CPU_ready = 1;
                         CPU_rdata[31:0] = BRAM1_dout[39:8];
                     end
                     2'b11: begin //Cache line의 3번 word
                         main_next = IDLE;
-                        CPU_valid = 1;
+                        CPU_ready = 1;
                         CPU_rdata[31:0] = BRAM1_dout[71:40];
                     end
                 endcase
@@ -207,22 +210,22 @@ always @(*) begin
                 case(CPU_addr[3:2])
                     2'b00: begin //Cache line의 0번 word
                         main_next = IDLE;
-                        CPU_valid = 1;
+                        CPU_ready = 1;
                         CPU_rdata[31:0] = BRAM2_dout[39:8];
                     end
                     2'b01: begin //Cache line의 1번 word
                         main_next = IDLE;
-                        CPU_valid = 1;
+                        CPU_ready = 1;
                         CPU_rdata[31:0] = BRAM2_dout[71:40];
                     end
                     2'b10: begin //Cache line의 2번 word
                         main_next = IDLE;
-                        CPU_valid = 1;
+                        CPU_ready = 1;
                         CPU_rdata[31:0] = BRAM3_dout[39:8];
                     end
                     2'b11: begin //Cache line의 3번 word
                         main_next = IDLE;
-                        CPU_valid = 1;
+                        CPU_ready = 1;
                         CPU_rdata[31:0] = BRAM3_dout[71:40];
                     end
                 endcase
