@@ -89,6 +89,8 @@ reg word_buffer_wen_1;
 reg word_buffer_wen_2;
 reg word_buffer_wen_3;
 
+reg ramdom_bit; //1비트짜리 레지스터로 매 클럭마다 0과 1을 반복함. 
+
 
 always @(*) begin
     CPU_ready = 0;
@@ -321,7 +323,11 @@ always @(*) begin
                 end
             endcase
         end
-        CACHE_WRITE: begin
+        CACHE_WRITE: begin //CACHE_WRITE로 main_state가 변경되면서 word_buffer에 4개의 word가 저장이 완료된 상황임.
+            BRAM0_wen = 1;
+            BRAM0_wstrb[7:0] = 8'hFF; //싹다 1로 설정.
+            BRAM0_waddr[8:0] = ;
+            BRAN0_din[71:0] = ;
         end
     endcase
 end
@@ -335,9 +341,11 @@ always @(posedge clk or negedge resetn) begin
         word_buffer[1][31:0] <= 0;
         word_buffer[2][31:0] <= 0;
         word_buffer[3][31:0] <= 0;
+        ramdom_bit <= 0;
     end
     else begin
         main_state <= main_next;
+        ramdom_bit <= ~ramdom_bit; //매 클럭마다 0 - 1 - 0 - 1로 값이 바뀜. 이 값을 참고함으로써 랜덤으로 2-way 캐시라인중 어느 하나를 선택할 수 있음.
         if(cpu_tag_save) begin
             cpu_I_tag[14:0] <= CPU_addr[27:13];
         end
