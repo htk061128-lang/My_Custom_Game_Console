@@ -1,17 +1,80 @@
 #include <iostream>
 #include <memory>
+#include <random>
+#include <cstdint>
 #include <verilated.h>       // Verilator 코어 라이브러리
 #include <verilated_vcd_c.h> // 파형 덤프(VCD)를 위한 라이브러리
 
 // Verilator가 생성한 모듈 헤더 파일 (V + 모듈이름.h)
-#include "VI_Cache_Controller.h" 
+#include "VI_Cache_Controller.h"
+
+// verilator -Wall --trace -cc I_Cache_Controller.sv --exe I_Cache_Controller_tb.cpp --build && ./obj_dir/VI_Cache_Controller
 
 vluint64_t main_time = 0; // 전체 시뮬레이션 타임스텝 기록용
 
 // Verilator 내부에서 현재 시뮬레이션 시간을 알 수 있도록 함수 오버라이딩 (파형 덤프에 필수)
 double sc_time_stamp() { return main_time; }
 
-int main(int argc, char** argv) {
+class RandomGenerator
+{
+private:
+    std::mt19937 engine; // 메르센 트위스터 엔진
+
+public:
+    RandomGenerator(uint32_t seed = 42) : engine(seed) {} // 시드를 고정하면 매번 똑같은 값이 나와서 재현이 쉽다고 함. 생성자는 class 이름과 똑같은 이름의 함수로 객체가 생성될때 처음 한번 실행됨.
+
+    // 특정 범위 [min, max] 사이의 32비트 정수 생성 (주소, 데이터용)
+    uint32_t get_uint32(uint32_t min, uint32_t max)
+    {
+        std::uniform_int_distribution<uint32_t> dist(min, max);
+        return dist(engine);
+    }
+
+    // 특정 확률(probability)로 true를 반환 (Valid 신호, 에러 주입용)
+    // 예: get_bool(0.1) -> 10% 확률로 true
+    bool get_bool(double probability = 0.5)
+    {
+        std::bernoulli_distribution dist(probability);
+        return dist(engine);
+    }
+
+    // 8비트 min ~ max 범위의 랜덤 uin8_t 값 생성.
+    uint8_t get_byte(uint8_t min, uint8_t max)
+    {
+        std::uniform_int_distribution<uint8_t> dist(min, max);
+        return dist(engine);
+    }
+};
+
+void cpu_read(VI_Cache_Controller *top, uint32_t addr, bool is_instr)
+{
+    top->CPU_valid = 1;
+    top->CPU_addr = addr;
+    top->CPU_instr = is_instr;
+    top->CPU_wstrb = 0; // Read
+}
+
+void cpu_write(VI_Cache_Controller *top, uint32_t addr, uint32_t data)
+{
+    top->CPU_valid = 1;
+    top->CPU_addr = addr;
+    top->CPU_wdata = data;
+    top->CPU_wstrb = 0xF; // 4-byte Write
+    top->CPU_instr = 0;   // Data Write
+}
+
+struct CacheEntry
+{
+    uint32_t word0;
+    uint32_t word1;
+    uint32_t word2;
+    uint32_t word3;
+    uint16_t tag;
+    bool valid_bit;
+};
+
+int main(int argc, char **argv)
+{
     // Verilator 내부 변수 초기화
     Verilated::commandArgs(argc, argv);
     Verilated::traceEverOn(true); // VCD 트레이싱 활성화
@@ -24,46 +87,84 @@ int main(int argc, char** argv) {
     top->trace(trace.get(), 99); // 트레이스 깊이 설정
     trace->open("waveform.vcd"); // 출력될 파형 파일 이름
 
+    RandomGenerator gen(10); // 시드값 고정. 객체 gen 생성.
+    // 512개의 CacheEntry를 가진 vector 생성. 모든 값은 기본값(0)으로 초기화됨.
+    std::vector<CacheEntry> way0(512);
+    std::vector<CacheEntry> way1(512);
+
+    int bram_latency = 0; // BRAM의 1클럭 지연을 구현하기 위해서 읽기 신호가 오면 1이되고 다음 클럭에지때 bram_read가 true가되고 그 때의 하강에지때 값을 input으로 넣어주는 구조임.
+    bool bram_read = false;
+
+    std::cout << "Simulation start!" << std::endl;
+
     // 1. 초기 신호 셋업
     top->clk = 0;
     top->resetn = 0; // Active Low 리셋이므로 0으로 시작
 
     // 2. 시뮬레이션 메인 루프 (원하는 타임스텝만큼 실행)
-    while (!Verilated::gotFinish() && main_time < 1000) {
-        
-        // 클럭 생성: 5 타임스텝마다 클럭 반전 (1주기 = 10 타임스텝)
-        if ((main_time % 5) == 0) {
-            top->clk = !top->clk;
-        }
+    while (!Verilated::gotFinish() && main_time < 1000)
+    {
 
         // 리셋 해제: 타임스텝 20 이후에 resetn을 1로 올려 정상 동작 시작
-        if (main_time > 20) {
+        if (main_time > 5)
+        {
             top->resetn = 1;
         }
 
-        // -----------------------------------------------------------
-        // 여기에 테스트 시나리오 작성 (예시)
-        // 주의: 클럭의 하강 에지(negedge) 타이밍에 입력을 바꿔주는 것이 
-        //       실제 하드웨어 동작과 가장 비슷하고 안전합니다.
-        // -----------------------------------------------------------
-        /*
-        if (main_time == 35) { // 클럭 하강 에지 부근
-            top->CPU_valid = 1;
-            top->CPU_addr = 0x12345678;
-            top->CPU_wstrb = 4'b0000; // 읽기 요청
-            top->CPU_instr = 1;
+        // 여기에 입력신호 작성.
+        top->clk = 0;
+        if (top->BRAM0_ren && top->BRAM1_ren && top->BRAM2_ren && top->BRAM3_ren && (bram_read == true))
+        {
+            bram_read = false;
+            top->BRAM0_dout[0] = ((way0[top->BRAM0_raddr].word0 & 0xFFFFFF) << 8) | (way0[top->BRAM0_raddr].tag & 0xFF);
+            top->BRAM0_dout[1] = ((way0[top->BRAM0_raddr].word1 & 0xFFFFFF) << 8) | (way0[top->BRAM0_raddr].word0 >> 24);
+            top->BRAM0_dout[2] = (way0[top->BRAM0_raddr].word1 >> 24);
+            top->BRAM1_dout[0] = ((way0[top->BRAM0_raddr].word2 & 0xFFFFFF) << 8) | ((way0[top->BRAM0_raddr].tag & 0x7F00) >> 8) | (way0[top->BRAM0_raddr].valid_bit << 7);
+            top->BRAM1_dout[1] = ((way0[top->BRAM0_raddr].word3 & 0xFFFFFF) << 8) | (way0[top->BRAM0_raddr].word2 >> 24);
+            top->BRAM1_dout[2] = (way0[top->BRAM0_raddr].word3 >> 24);
+            top->BRAM2_dout[0] = ((way1[top->BRAM0_raddr].word0 & 0xFFFFFF) << 8) | (way1[top->BRAM0_raddr].tag & 0xFF);
+            top->BRAM2_dout[1] = ((way1[top->BRAM0_raddr].word1 & 0xFFFFFF) << 8) | (way1[top->BRAM0_raddr].word0 >> 24);
+            top->BRAM2_dout[2] = (way1[top->BRAM0_raddr].word1 >> 24);
+            top->BRAM3_dout[0] = ((way1[top->BRAM0_raddr].word2 & 0xFFFFFF) << 8) | ((way1[top->BRAM0_raddr].tag & 0x7F00) >> 8) | (way1[top->BRAM0_raddr].valid_bit << 7);
+            top->BRAM3_dout[1] = ((way1[top->BRAM0_raddr].word3 & 0xFFFFFF) << 8) | (way1[top->BRAM0_raddr].word2 >> 24);
+            top->BRAM3_dout[2] = (way1[top->BRAM0_raddr].word3 >> 24);
         }
-        if (main_time == 45) {
-            top->CPU_valid = 0; // 요청 내리기
-        }
-        */
-
-        // 3. 모델 평가 (설정한 입력값을 바탕으로 Verilog 로직 업데이트)
         top->eval();
+        trace->dump(main_time); // 4. 현재 타임스텝의 상태를 VCD 파형 파일에 기록
 
-        // 4. 현재 타임스텝의 상태를 VCD 파형 파일에 기록
+        // 여기서 출력이 나옴.
+        top->clk = 1;
+        if (bram_latency == 1)
+        {
+            bram_read = true;
+        }
+        if (top->BRAM0_ren && top->BRAM1_ren && top->BRAM2_ren && top->BRAM3_ren)
+        {
+            bram_latency = 1;
+        }
+        if (top->BRAM0_wen && top->BRAM1_wen)
+        {
+            way0[top->BRAM0_waddr].word0 = (top->BRAM0_din[0] >> 8) | (top->BRAM0_din[1] << 24); // BRAM0: word1상위 8비트/ word1하위 24비트, word0상위 8비트/ word0하위 24비트, tag하위8비트
+            way0[top->BRAM0_waddr].word1 = (top->BRAM0_din[1] >> 8) | (top->BRAM0_din[2] << 24); // BRAM1: word3상위 8비트/ word3하위 24비트, word2상위 8비트/ word2하위 24비트, valid_bit, tag상위7비트
+            way0[top->BRAM1_waddr].word2 = (top->BRAM1_din[0] >> 8) | (top->BRAM1_din[1] << 24);
+            way0[top->BRAM1_waddr].word3 = (top->BRAM1_din[1] >> 8) | (top->BRAM1_din[2] << 24);
+            way0[top->BRAM1_waddr].tag = ((top->BRAM1_din[0] & 0x7F) << 8) | (top->BRAM0_din[0] & 0xFF);
+            way0[top->BRAM1_waddr].valid_bit = (top->BRAM1_din[0] >> 7) & 0x1;
+        }
+        if (top->BRAM2_wen & top->BRAM3_wen)
+        {
+            way1[top->BRAM2_waddr].word0 = (top->BRAM2_din[0] >> 8) | (top->BRAM2_din[1] << 24);
+            way1[top->BRAM2_waddr].word1 = (top->BRAM2_din[1] >> 8) | (top->BRAM2_din[2] << 24);
+            way1[top->BRAM3_waddr].word2 = (top->BRAM3_din[0] >> 8) | (top->BRAM3_din[1] << 24);
+            way1[top->BRAM3_waddr].word3 = (top->BRAM3_din[1] >> 8) | (top->BRAM3_din[2] << 24);
+            way1[top->BRAM3_waddr].tag = ((top->BRAM3_din[0] & 0x7F) << 8) | (top->BRAM2_din[0] & 0xFF);
+            way1[top->BRAM3_waddr].valid_bit = (top->BRAM3_din[0] >> 7) & 0x1;
+        }
+        if (top->EMEM_valid) // 외부 메모리 접근할때, 랜덤한 지연을 주어서 테스트.
+        {
+        }
+        top->eval();
         trace->dump(main_time);
-
         main_time++;
     }
 

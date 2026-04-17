@@ -4,74 +4,74 @@ module I_Cache_Controller (
     //cpu와 상호작용하는 신호들.
     input CPU_valid,
     input CPU_instr,
-    output CPU_ready,
+    output reg CPU_ready,
 
     input [31:0] CPU_addr, //32비트 4GB의 메모리중 256MiB만 사용할 예정이라 상위 4비트는 0으로 고정되어야 함.
     input [31:0] CPU_wdata,
     input [3:0] CPU_wstrb, ////이게 4'b0000이면 읽기이고 4'b1111이면 4바이트 전체 쓰기임. 
-    output [31:0] CPU_rdata,
+    output reg [31:0] CPU_rdata,
 
     //EXternal Memory Interface. axi4로 변환한 뒤 DDR3 IP와 연결해야 함.
-    output EMEM_valid,
+    output reg EMEM_valid,
     input EMEM_ready,
 
-    output [31:0] EMEM_addr,
-    output [31:0] EMEM_wdata,
-    output [3:0] EMEM_wstrb,
+    output reg [31:0] EMEM_addr,
+    output reg [31:0] EMEM_wdata,
+    output reg [3:0] EMEM_wstrb,
     input [31:0] EMEM_rdata,
 
-    output [7:0] EMEM_burst_len, //이 값이 0이면 1개읽기, 1이면 2개읽기임, 최대 256개의 word를 연속으로 읽을 수 있음.
-    output EMEM_burst_en, //이 값이 1이면 burst읽기 임.
+    output reg [7:0] EMEM_burst_len, //이 값이 0이면 1개읽기, 1이면 2개읽기임, 최대 256개의 word를 연속으로 읽을 수 있음.
+    output reg EMEM_burst_en, //이 값이 1이면 burst읽기 임.
 
     // BRAM 0 (Way 0 Low) - Simple Dual Port
     // Write Port (Port A)
-    output        BRAM0_wen,   // Write Enable (Master)
-    output [7:0]  BRAM0_wstrb, // Byte-wide Write Enable (72비트 모드에선 8비트가 표준)
-    output [8:0]  BRAM0_waddr, //width는 72비트, height는 512라서 주소가 9비트임.
-    output [71:0] BRAM0_din,
+    output reg       BRAM0_wen,   // Write Enable (Master)
+    output reg [7:0]  BRAM0_wstrb, // Byte-wide Write Enable (72비트 모드에선 8비트가 표준)
+    output reg [8:0]  BRAM0_waddr, //width는 72비트, height는 512라서 주소가 9비트임.
+    output reg [71:0] BRAM0_din,
     // Read Port (Port B)
-    output        BRAM0_ren,   // Read Enable
-    output [8:0]  BRAM0_raddr, //width는 72비트, height는 512라서 주소가 9비트임.
+    output reg       BRAM0_ren,   // Read Enable
+    output reg [8:0]  BRAM0_raddr, //width는 72비트, height는 512라서 주소가 9비트임.
     input  [71:0] BRAM0_dout,
 
     //BRAM 1 (Way 0 High) - Simple Dual Port
     // Write Port (Port A)
-    output        BRAM1_wen,   // Write Enable (Master)
-    output [7:0]  BRAM1_wstrb, // Byte-wide Write Enable (72비트 모드에선 8비트가 표준)
-    output [8:0]  BRAM1_waddr,
-    output [71:0] BRAM1_din,
+    output reg       BRAM1_wen,   // Write Enable (Master)
+    output reg [7:0]  BRAM1_wstrb, // Byte-wide Write Enable (72비트 모드에선 8비트가 표준)
+    output reg [8:0]  BRAM1_waddr,
+    output reg [71:0] BRAM1_din,
     // Read Port (Port B)
-    output        BRAM1_ren,   // Read Enable
-    output [8:0]  BRAM1_raddr,
+    output reg       BRAM1_ren,   // Read Enable
+    output reg [8:0]  BRAM1_raddr,
     input  [71:0] BRAM1_dout,
 
     //BRAM 2 (Way 1 Low) - Simple Dual Port
     // Write Port (Port A)
-    output        BRAM2_wen,   // Write Enable (Master)
-    output [7:0]  BRAM2_wstrb, // Byte-wide Write Enable (72비트 모드에선 8비트가 표준)
-    output [8:0]  BRAM2_waddr,
-    output [71:0] BRAM2_din,
+    output reg      BRAM2_wen,   // Write Enable (Master)
+    output reg [7:0]  BRAM2_wstrb, // Byte-wide Write Enable (72비트 모드에선 8비트가 표준)
+    output reg [8:0]  BRAM2_waddr,
+    output reg [71:0] BRAM2_din,
     // Read Port (Port B)
-    output        BRAM2_ren,   // Read Enable
-    output [8:0]  BRAM2_raddr,
+    output reg       BRAM2_ren,   // Read Enable
+    output reg [8:0]  BRAM2_raddr,
     input  [71:0] BRAM2_dout,
 
     //BRAM 3 (Way 1 High) - Simple Dual Port
     // Write Port (Port A)
-    output        BRAM3_wen,   // Write Enable (Master)
-    output [7:0]  BRAM3_wstrb, // Byte-wide Write Enable (72비트 모드에선 8비트가 표준)
-    output [8:0]  BRAM3_waddr,
-    output [71:0] BRAM3_din,
+    output reg       BRAM3_wen,   // Write Enable (Master)
+    output reg [7:0]  BRAM3_wstrb, // Byte-wide Write Enable (72비트 모드에선 8비트가 표준)
+    output reg [8:0]  BRAM3_waddr,
+    output reg [71:0] BRAM3_din,
     // Read Port (Port B)
-    output        BRAM3_ren,   // Read Enable
-    output [8:0]  BRAM3_raddr,
+    output reg       BRAM3_ren,   // Read Enable
+    output reg [8:0]  BRAM3_raddr,
     input  [71:0] BRAM3_dout
 );
 
 reg [3:0] main_state;
 reg [3:0] main_next;
-reg [3:0] sub_state;
-reg [3:0] sub_next;
+//reg [3:0] sub_state;
+//reg [3:0] sub_next;
 
 parameter IDLE = 0, CACHE_SEARCH = 1, DATA_REQ = 2, EMEM_READ = 3, EMEM_WRITE = 4, CACHE_MISS = 5, CACHE_WRITE = 6;
 
@@ -175,7 +175,7 @@ always @(*) begin
                 if(EMEM_ready) begin //만약 바로 EMEM_ready가 온다면 CPU에 전달하고 바로 IDLE로 넘어감. 
                     main_next = IDLE;
                     CPU_ready = 1;
-                    CPU_r_data[31:0] = EMEM_rdata[31:0]
+                    CPU_rdata[31:0] = EMEM_rdata[31:0];
                 end
             end
             else if(CPU_valid) begin //데이터 쓰기 요청시.
@@ -341,7 +341,7 @@ always @(*) begin
                 BRAM0_wen = 1;
                 BRAM0_wstrb[7:0] = 8'hFF; //싹다 1로 설정.
                 BRAM0_waddr[8:0] = CPU_addr[12:4];
-                BRAN0_din[71:0] = {word_buffer[1][31:0], word_buffer[0][31:0], cpu_I_tag[7:0]};
+                BRAM0_din[71:0] = {word_buffer[1][31:0], word_buffer[0][31:0], cpu_I_tag[7:0]};
 
                 BRAM1_wen = 1;
                 BRAM1_wstrb[7:0] = 8'hFF; //싹다 1로 설정.
@@ -352,7 +352,7 @@ always @(*) begin
                 BRAM2_wen = 1;
                 BRAM2_wstrb[7:0] = 8'hFF; //싹다 1로 설정.
                 BRAM2_waddr[8:0] = CPU_addr[12:4];
-                BRAN2_din[71:0] = {word_buffer[1][31:0], word_buffer[0][31:0], cpu_I_tag[7:0]};
+                BRAM2_din[71:0] = {word_buffer[1][31:0], word_buffer[0][31:0], cpu_I_tag[7:0]};
 
                 BRAM3_wen = 1;
                 BRAM3_wstrb[7:0] = 8'hFF; //싹다 1로 설정.
@@ -370,7 +370,7 @@ always @(*) begin
             if(EMEM_ready) begin //만약 바로 EMEM_ready가 온다면 CPU에 전달하고 바로 IDLE로 넘어감. 
                 main_next = IDLE;
                 CPU_ready = 1;
-                CPU_rdata[31:0] = EMEM_rdata[31:0]
+                CPU_rdata[31:0] = EMEM_rdata[31:0];
             end
             else begin
                 main_next = EMEM_READ;
