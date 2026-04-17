@@ -89,7 +89,7 @@ reg word_buffer_wen_1;
 reg word_buffer_wen_2;
 reg word_buffer_wen_3;
 
-reg ramdom_bit; //1비트짜리 레지스터로 매 클럭마다 0과 1을 반복함. 
+reg random_bit; //1비트짜리 레지스터로 매 클럭마다 0과 1을 반복함. 
 
 
 always @(*) begin
@@ -135,6 +135,8 @@ always @(*) begin
     BRAM3_ren = 0;
     BRAM3_raddr[8:0] = 0; //주소는 9비트임. width = 72bit, height = 512.
 
+    main_next = main_next;
+
     cpu_tag_save = 0; //이 값이 1이면 cpu_I_tag에 CPU_addr[27:13]이 저장됨.
 
     burst_counter_reset = 0;
@@ -170,6 +172,11 @@ always @(*) begin
                 EMEM_wdata[31:0] = CPU_wdata[31:0];
                 EMEM_wstrb[3:0] = CPU_wstrb[3:0];
                 EMEM_burst_en = 0;
+                if(EMEM_ready) begin //만약 바로 EMEM_ready가 온다면 CPU에 전달하고 바로 IDLE로 넘어감. 
+                    main_next = IDLE;
+                    CPU_ready = 1;
+                    CPU_r_data[31:0] = EMEM_rdata[31:0]
+                end
             end
             else if(CPU_valid) begin //데이터 쓰기 요청시.
                 main_next = EMEM_WRITE;
@@ -178,6 +185,10 @@ always @(*) begin
                 EMEM_wdata[31:0] = CPU_wdata[31:0];
                 EMEM_wstrb[3:0] = CPU_wstrb[3:0];
                 EMEM_burst_en = 0;
+                if(EMEM_ready) begin //만약 바로 EMEM_ready가 온다면 CPU에 전달하고 바로 IDLE로 넘어감. 
+                    main_next = IDLE;
+                    CPU_ready = 1;
+                end
             end
             else begin //그냥 아무런 메모리 요청이 없을 때.
                 main_next = IDLE;
@@ -324,10 +335,63 @@ always @(*) begin
             endcase
         end
         CACHE_WRITE: begin //CACHE_WRITE로 main_state가 변경되면서 word_buffer에 4개의 word가 저장이 완료된 상황임.
-            BRAM0_wen = 1;
-            BRAM0_wstrb[7:0] = 8'hFF; //싹다 1로 설정.
-            BRAM0_waddr[8:0] = ;
-            BRAN0_din[71:0] = ;
+            main_next = IDLE; //이제 IDLE로 이동해서 다시 캐시에 접근하면 cache hit가 발생함!!!
+            case(random_bit)
+            1'b0: begin //0번 way에 값을 씀.
+                BRAM0_wen = 1;
+                BRAM0_wstrb[7:0] = 8'hFF; //싹다 1로 설정.
+                BRAM0_waddr[8:0] = CPU_addr[12:4];
+                BRAN0_din[71:0] = {word_buffer[1][31:0], word_buffer[0][31:0], cpu_I_tag[7:0]};
+
+                BRAM1_wen = 1;
+                BRAM1_wstrb[7:0] = 8'hFF; //싹다 1로 설정.
+                BRAM1_waddr[8:0] = CPU_addr[12:4];
+                BRAM1_din[71:0] = {word_buffer[3][31:0], word_buffer[2][31:0], 1'b1, cpu_I_tag[14:8]}; //valid_bit는 1로 설정!!
+            end
+            1'b1: begin //1번 way에 값을 씀.
+                BRAM2_wen = 1;
+                BRAM2_wstrb[7:0] = 8'hFF; //싹다 1로 설정.
+                BRAM2_waddr[8:0] = CPU_addr[12:4];
+                BRAN2_din[71:0] = {word_buffer[1][31:0], word_buffer[0][31:0], cpu_I_tag[7:0]};
+
+                BRAM3_wen = 1;
+                BRAM3_wstrb[7:0] = 8'hFF; //싹다 1로 설정.
+                BRAM3_waddr[8:0] = CPU_addr[12:4];
+                BRAM3_din[71:0] = {word_buffer[3][31:0], word_buffer[2][31:0], 1'b1, cpu_I_tag[14:8]}; //valid_bit는 1로 설정!!
+            end
+            endcase
+        end
+        EMEM_READ: begin
+            EMEM_valid = 1; //외부 메모리로 신호를 그대로 흘려보냄.
+            EMEM_addr[31:0] = CPU_addr[31:0];
+            EMEM_wdata[31:0] = CPU_wdata[31:0];
+            EMEM_wstrb[3:0] = CPU_wstrb[3:0];
+            EMEM_burst_en = 0;
+            if(EMEM_ready) begin //만약 바로 EMEM_ready가 온다면 CPU에 전달하고 바로 IDLE로 넘어감. 
+                main_next = IDLE;
+                CPU_ready = 1;
+                CPU_rdata[31:0] = EMEM_rdata[31:0]
+            end
+            else begin
+                main_next = EMEM_READ;
+                CPU_ready = 0;
+                CPU_rdata[31:0] = 0;
+            end
+        end
+        EMEM_WRITE: begin
+            EMEM_valid = 1; //외부 메모리로 신호를 그대로 흘려보냄.
+            EMEM_addr[31:0] = CPU_addr[31:0];
+            EMEM_wdata[31:0] = CPU_wdata[31:0];
+            EMEM_wstrb[3:0] = CPU_wstrb[3:0];
+            EMEM_burst_en = 0;
+            if(EMEM_ready) begin //만약 바로 EMEM_ready가 온다면 CPU에 전달하고 바로 IDLE로 넘어감. 
+                main_next = IDLE;
+                CPU_ready = 1;
+            end
+            else begin
+                main_next = EMEM_WRITE;
+                CPU_ready = 0;
+            end
         end
     endcase
 end
@@ -341,11 +405,11 @@ always @(posedge clk or negedge resetn) begin
         word_buffer[1][31:0] <= 0;
         word_buffer[2][31:0] <= 0;
         word_buffer[3][31:0] <= 0;
-        ramdom_bit <= 0;
+        random_bit <= 0;
     end
     else begin
         main_state <= main_next;
-        ramdom_bit <= ~ramdom_bit; //매 클럭마다 0 - 1 - 0 - 1로 값이 바뀜. 이 값을 참고함으로써 랜덤으로 2-way 캐시라인중 어느 하나를 선택할 수 있음.
+        random_bit <= ~random_bit; //매 클럭마다 0 - 1 - 0 - 1로 값이 바뀜. 이 값을 참고함으로써 랜덤으로 2-way 캐시라인중 어느 하나를 선택할 수 있음.
         if(cpu_tag_save) begin
             cpu_I_tag[14:0] <= CPU_addr[27:13];
         end

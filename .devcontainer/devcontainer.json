@@ -7,7 +7,7 @@
       "password": "vncpassword"
     }
   },
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y verilator libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev build-essential",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y verilator gtkwave libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev build-essential",
   "customizations": {
     "vscode": {
       "extensions": [
