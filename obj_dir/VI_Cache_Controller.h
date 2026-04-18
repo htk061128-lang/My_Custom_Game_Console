@@ -47,6 +47,7 @@ VL_MODULE(VI_Cache_Controller) {
     VL_OUT8(BRAM3_wen,0,0);
     VL_OUT8(BRAM3_wstrb,7,0);
     VL_OUT8(BRAM3_ren,0,0);
+    VL_OUT8(cache_hit,0,0);
     VL_OUT16(BRAM0_waddr,8,0);
     VL_OUT16(BRAM0_raddr,8,0);
     VL_OUT16(BRAM1_waddr,8,0);

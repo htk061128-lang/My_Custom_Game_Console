@@ -91,6 +91,7 @@ void VI_Cache_Controller::traceChgSub0(void* userp, VerilatedVcd* tracep) {
         tracep->chgBit(oldp+76,(vlTOPp->BRAM3_ren));
         tracep->chgSData(oldp+77,(vlTOPp->BRAM3_raddr),9);
         tracep->chgWData(oldp+78,(vlTOPp->BRAM3_dout),72);
+        tracep->chgBit(oldp+81,(vlTOPp->cache_hit));
     }
 }
 

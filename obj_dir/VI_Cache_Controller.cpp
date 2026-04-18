@@ -263,6 +263,65 @@ VL_INLINE_OPT void VI_Cache_Controller::_sequent__TOP__1(VI_Cache_Controller__Sy
             }
         }
     }
+    vlTOPp->BRAM1_din[0U] = 0U;
+    vlTOPp->BRAM1_din[1U] = 0U;
+    vlTOPp->BRAM1_din[2U] = 0U;
+    if ((0U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+        if ((1U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+            if ((5U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                if ((6U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                    if ((1U & (~ (IData)(vlTOPp->I_Cache_Controller__DOT__random_bit)))) {
+                        vlTOPp->BRAM1_din[0U] = (0x80U 
+                                                 | ((0xffffff00U 
+                                                     & ((IData)(
+                                                                (((QData)((IData)(
+                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
+                                                                                [3U])) 
+                                                                  << 0x20U) 
+                                                                 | (QData)((IData)(
+                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
+                                                                                [2U])))) 
+                                                        << 8U)) 
+                                                    | (0x7fU 
+                                                       & ((IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag) 
+                                                          >> 8U))));
+                        vlTOPp->BRAM1_din[1U] = ((0xffU 
+                                                  & ((IData)(
+                                                             (((QData)((IData)(
+                                                                               vlTOPp->I_Cache_Controller__DOT__word_buffer
+                                                                               [3U])) 
+                                                               << 0x20U) 
+                                                              | (QData)((IData)(
+                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
+                                                                                [2U])))) 
+                                                     >> 0x18U)) 
+                                                 | (0xffffff00U 
+                                                    & ((IData)(
+                                                               ((((QData)((IData)(
+                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
+                                                                                [3U])) 
+                                                                  << 0x20U) 
+                                                                 | (QData)((IData)(
+                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
+                                                                                [2U]))) 
+                                                                >> 0x20U)) 
+                                                       << 8U)));
+                        vlTOPp->BRAM1_din[2U] = (0xffU 
+                                                 & ((IData)(
+                                                            ((((QData)((IData)(
+                                                                               vlTOPp->I_Cache_Controller__DOT__word_buffer
+                                                                               [3U])) 
+                                                               << 0x20U) 
+                                                              | (QData)((IData)(
+                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
+                                                                                [2U]))) 
+                                                             >> 0x20U)) 
+                                                    >> 0x18U));
+                    }
+                }
+            }
+        }
+    }
     vlTOPp->BRAM0_din[0U] = 0U;
     vlTOPp->BRAM0_din[1U] = 0U;
     vlTOPp->BRAM0_din[2U] = 0U;
@@ -380,65 +439,6 @@ VL_INLINE_OPT void VI_Cache_Controller::_sequent__TOP__1(VI_Cache_Controller__Sy
             }
         }
     }
-    vlTOPp->BRAM1_din[0U] = 0U;
-    vlTOPp->BRAM1_din[1U] = 0U;
-    vlTOPp->BRAM1_din[2U] = 0U;
-    if ((0U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-        if ((1U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-            if ((5U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                if ((6U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                    if ((1U & (~ (IData)(vlTOPp->I_Cache_Controller__DOT__random_bit)))) {
-                        vlTOPp->BRAM1_din[0U] = (0x80U 
-                                                 | ((0xffffff00U 
-                                                     & ((IData)(
-                                                                (((QData)((IData)(
-                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
-                                                                                [3U])) 
-                                                                  << 0x20U) 
-                                                                 | (QData)((IData)(
-                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
-                                                                                [2U])))) 
-                                                        << 8U)) 
-                                                    | (0x7fU 
-                                                       & ((IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag) 
-                                                          >> 8U))));
-                        vlTOPp->BRAM1_din[1U] = ((0xffU 
-                                                  & ((IData)(
-                                                             (((QData)((IData)(
-                                                                               vlTOPp->I_Cache_Controller__DOT__word_buffer
-                                                                               [3U])) 
-                                                               << 0x20U) 
-                                                              | (QData)((IData)(
-                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
-                                                                                [2U])))) 
-                                                     >> 0x18U)) 
-                                                 | (0xffffff00U 
-                                                    & ((IData)(
-                                                               ((((QData)((IData)(
-                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
-                                                                                [3U])) 
-                                                                  << 0x20U) 
-                                                                 | (QData)((IData)(
-                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
-                                                                                [2U]))) 
-                                                                >> 0x20U)) 
-                                                       << 8U)));
-                        vlTOPp->BRAM1_din[2U] = (0xffU 
-                                                 & ((IData)(
-                                                            ((((QData)((IData)(
-                                                                               vlTOPp->I_Cache_Controller__DOT__word_buffer
-                                                                               [3U])) 
-                                                               << 0x20U) 
-                                                              | (QData)((IData)(
-                                                                                vlTOPp->I_Cache_Controller__DOT__word_buffer
-                                                                                [2U]))) 
-                                                             >> 0x20U)) 
-                                                    >> 0x18U));
-                    }
-                }
-            }
-        }
-    }
     vlTOPp->BRAM2_din[0U] = 0U;
     vlTOPp->BRAM2_din[1U] = 0U;
     vlTOPp->BRAM2_din[2U] = 0U;
@@ -502,20 +502,6 @@ VL_INLINE_OPT void VI_Cache_Controller::_combo__TOP__3(VI_Cache_Controller__Syms
     VL_DEBUG_IF(VL_DBG_MSGF("+    VI_Cache_Controller::_combo__TOP__3\n"); );
     VI_Cache_Controller* const __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
     // Body
-    vlTOPp->BRAM1_waddr = 0U;
-    if ((0U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-        if ((1U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-            if ((5U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                if ((6U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                    if ((1U & (~ (IData)(vlTOPp->I_Cache_Controller__DOT__random_bit)))) {
-                        vlTOPp->BRAM1_waddr = (0x1ffU 
-                                               & (vlTOPp->CPU_addr 
-                                                  >> 4U));
-                    }
-                }
-            }
-        }
-    }
     vlTOPp->I_Cache_Controller__DOT__word_buffer_wen_3 = 0U;
     if ((0U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
         if ((1U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
@@ -578,22 +564,6 @@ VL_INLINE_OPT void VI_Cache_Controller::_combo__TOP__3(VI_Cache_Controller__Syms
             }
         }
     }
-    vlTOPp->BRAM2_waddr = 0U;
-    if ((0U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-        if ((1U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-            if ((5U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                if ((6U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                    if (vlTOPp->I_Cache_Controller__DOT__random_bit) {
-                        if (vlTOPp->I_Cache_Controller__DOT__random_bit) {
-                            vlTOPp->BRAM2_waddr = (0x1ffU 
-                                                   & (vlTOPp->CPU_addr 
-                                                      >> 4U));
-                        }
-                    }
-                }
-            }
-        }
-    }
     vlTOPp->BRAM3_waddr = 0U;
     if ((0U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
         if ((1U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
@@ -602,6 +572,36 @@ VL_INLINE_OPT void VI_Cache_Controller::_combo__TOP__3(VI_Cache_Controller__Syms
                     if (vlTOPp->I_Cache_Controller__DOT__random_bit) {
                         if (vlTOPp->I_Cache_Controller__DOT__random_bit) {
                             vlTOPp->BRAM3_waddr = (0x1ffU 
+                                                   & (vlTOPp->CPU_addr 
+                                                      >> 4U));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    vlTOPp->BRAM1_waddr = 0U;
+    if ((0U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+        if ((1U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+            if ((5U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                if ((6U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                    if ((1U & (~ (IData)(vlTOPp->I_Cache_Controller__DOT__random_bit)))) {
+                        vlTOPp->BRAM1_waddr = (0x1ffU 
+                                               & (vlTOPp->CPU_addr 
+                                                  >> 4U));
+                    }
+                }
+            }
+        }
+    }
+    vlTOPp->BRAM2_waddr = 0U;
+    if ((0U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+        if ((1U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+            if ((5U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                if ((6U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                    if (vlTOPp->I_Cache_Controller__DOT__random_bit) {
+                        if (vlTOPp->I_Cache_Controller__DOT__random_bit) {
+                            vlTOPp->BRAM2_waddr = (0x1ffU 
                                                    & (vlTOPp->CPU_addr 
                                                       >> 4U));
                         }
@@ -645,11 +645,27 @@ VL_INLINE_OPT void VI_Cache_Controller::_combo__TOP__3(VI_Cache_Controller__Syms
             vlTOPp->BRAM2_ren = 1U;
         }
     }
+    vlTOPp->BRAM0_raddr = 0U;
+    if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+        if ((((IData)(vlTOPp->CPU_valid) & (0U == (IData)(vlTOPp->CPU_wstrb))) 
+             & (IData)(vlTOPp->CPU_instr))) {
+            vlTOPp->BRAM0_raddr = (0x1ffU & (vlTOPp->CPU_addr 
+                                             >> 4U));
+        }
+    }
     vlTOPp->BRAM3_raddr = 0U;
     if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
         if ((((IData)(vlTOPp->CPU_valid) & (0U == (IData)(vlTOPp->CPU_wstrb))) 
              & (IData)(vlTOPp->CPU_instr))) {
             vlTOPp->BRAM3_raddr = (0x1ffU & (vlTOPp->CPU_addr 
+                                             >> 4U));
+        }
+    }
+    vlTOPp->BRAM1_raddr = 0U;
+    if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+        if ((((IData)(vlTOPp->CPU_valid) & (0U == (IData)(vlTOPp->CPU_wstrb))) 
+             & (IData)(vlTOPp->CPU_instr))) {
+            vlTOPp->BRAM1_raddr = (0x1ffU & (vlTOPp->CPU_addr 
                                              >> 4U));
         }
     }
@@ -661,20 +677,26 @@ VL_INLINE_OPT void VI_Cache_Controller::_combo__TOP__3(VI_Cache_Controller__Syms
                                              >> 4U));
         }
     }
-    vlTOPp->BRAM0_raddr = 0U;
-    if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-        if ((((IData)(vlTOPp->CPU_valid) & (0U == (IData)(vlTOPp->CPU_wstrb))) 
-             & (IData)(vlTOPp->CPU_instr))) {
-            vlTOPp->BRAM0_raddr = (0x1ffU & (vlTOPp->CPU_addr 
-                                             >> 4U));
-        }
-    }
-    vlTOPp->BRAM1_raddr = 0U;
-    if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-        if ((((IData)(vlTOPp->CPU_valid) & (0U == (IData)(vlTOPp->CPU_wstrb))) 
-             & (IData)(vlTOPp->CPU_instr))) {
-            vlTOPp->BRAM1_raddr = (0x1ffU & (vlTOPp->CPU_addr 
-                                             >> 4U));
+    vlTOPp->cache_hit = 0U;
+    if ((0U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+        if ((1U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+            if (((vlTOPp->BRAM1_dout[0U] >> 7U) & (
+                                                   ((0x7f00U 
+                                                     & (vlTOPp->BRAM1_dout[0U] 
+                                                        << 8U)) 
+                                                    | (0xffU 
+                                                       & vlTOPp->BRAM0_dout[0U])) 
+                                                   == (IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag)))) {
+                vlTOPp->cache_hit = 1U;
+            } else {
+                if (((vlTOPp->BRAM3_dout[0U] >> 7U) 
+                     & (((0x7f00U & (vlTOPp->BRAM3_dout[0U] 
+                                     << 8U)) | (0xffU 
+                                                & vlTOPp->BRAM2_dout[0U])) 
+                        == (IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag)))) {
+                    vlTOPp->cache_hit = 1U;
+                }
+            }
         }
     }
     vlTOPp->EMEM_burst_len = 0U;
@@ -879,6 +901,130 @@ VL_INLINE_OPT void VI_Cache_Controller::_combo__TOP__3(VI_Cache_Controller__Syms
             }
         }
     }
+    vlTOPp->EMEM_wstrb = 0xfU;
+    if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+        if ((1U & (~ (((IData)(vlTOPp->CPU_valid) & 
+                       (0U == (IData)(vlTOPp->CPU_wstrb))) 
+                      & (IData)(vlTOPp->CPU_instr))))) {
+            if ((((IData)(vlTOPp->CPU_valid) & (0U 
+                                                == (IData)(vlTOPp->CPU_wstrb))) 
+                 & (~ (IData)(vlTOPp->CPU_instr)))) {
+                vlTOPp->EMEM_wstrb = vlTOPp->CPU_wstrb;
+            } else {
+                if (vlTOPp->CPU_valid) {
+                    vlTOPp->EMEM_wstrb = vlTOPp->CPU_wstrb;
+                }
+            }
+        }
+    } else {
+        if ((1U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+            if ((1U & (~ ((vlTOPp->BRAM1_dout[0U] >> 7U) 
+                          & (((0x7f00U & (vlTOPp->BRAM1_dout[0U] 
+                                          << 8U)) | 
+                              (0xffU & vlTOPp->BRAM0_dout[0U])) 
+                             == (IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag)))))) {
+                if ((1U & (~ ((vlTOPp->BRAM3_dout[0U] 
+                               >> 7U) & (((0x7f00U 
+                                           & (vlTOPp->BRAM3_dout[0U] 
+                                              << 8U)) 
+                                          | (0xffU 
+                                             & vlTOPp->BRAM2_dout[0U])) 
+                                         == (IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag)))))) {
+                    vlTOPp->EMEM_wstrb = 0U;
+                }
+            }
+        } else {
+            if ((5U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
+                    vlTOPp->EMEM_wstrb = 0U;
+                } else {
+                    if ((1U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
+                        vlTOPp->EMEM_wstrb = 0U;
+                    } else {
+                        if ((2U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
+                            vlTOPp->EMEM_wstrb = 0U;
+                        } else {
+                            if ((3U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
+                                vlTOPp->EMEM_wstrb = 0U;
+                            }
+                        }
+                    }
+                }
+            } else {
+                if ((6U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                    if ((3U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                        vlTOPp->EMEM_wstrb = vlTOPp->CPU_wstrb;
+                    } else {
+                        if ((4U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                            vlTOPp->EMEM_wstrb = vlTOPp->CPU_wstrb;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    vlTOPp->EMEM_burst_en = 0U;
+    if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+        if ((1U & (~ (((IData)(vlTOPp->CPU_valid) & 
+                       (0U == (IData)(vlTOPp->CPU_wstrb))) 
+                      & (IData)(vlTOPp->CPU_instr))))) {
+            if ((((IData)(vlTOPp->CPU_valid) & (0U 
+                                                == (IData)(vlTOPp->CPU_wstrb))) 
+                 & (~ (IData)(vlTOPp->CPU_instr)))) {
+                vlTOPp->EMEM_burst_en = 0U;
+            } else {
+                if (vlTOPp->CPU_valid) {
+                    vlTOPp->EMEM_burst_en = 0U;
+                }
+            }
+        }
+    } else {
+        if ((1U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+            if ((1U & (~ ((vlTOPp->BRAM1_dout[0U] >> 7U) 
+                          & (((0x7f00U & (vlTOPp->BRAM1_dout[0U] 
+                                          << 8U)) | 
+                              (0xffU & vlTOPp->BRAM0_dout[0U])) 
+                             == (IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag)))))) {
+                if ((1U & (~ ((vlTOPp->BRAM3_dout[0U] 
+                               >> 7U) & (((0x7f00U 
+                                           & (vlTOPp->BRAM3_dout[0U] 
+                                              << 8U)) 
+                                          | (0xffU 
+                                             & vlTOPp->BRAM2_dout[0U])) 
+                                         == (IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag)))))) {
+                    vlTOPp->EMEM_burst_en = 1U;
+                }
+            }
+        } else {
+            if ((5U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
+                    vlTOPp->EMEM_burst_en = 1U;
+                } else {
+                    if ((1U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
+                        vlTOPp->EMEM_burst_en = 1U;
+                    } else {
+                        if ((2U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
+                            vlTOPp->EMEM_burst_en = 1U;
+                        } else {
+                            if ((3U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
+                                vlTOPp->EMEM_burst_en = 1U;
+                            }
+                        }
+                    }
+                }
+            } else {
+                if ((6U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                    if ((3U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                        vlTOPp->EMEM_burst_en = 0U;
+                    } else {
+                        if ((4U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
+                            vlTOPp->EMEM_burst_en = 0U;
+                        }
+                    }
+                }
+            }
+        }
+    }
     vlTOPp->EMEM_valid = 0U;
     if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
         if ((1U & (~ (((IData)(vlTOPp->CPU_valid) & 
@@ -987,130 +1133,6 @@ VL_INLINE_OPT void VI_Cache_Controller::_combo__TOP__3(VI_Cache_Controller__Syms
                     } else {
                         if ((4U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
                             vlTOPp->CPU_ready = vlTOPp->EMEM_ready;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    vlTOPp->EMEM_burst_en = 0U;
-    if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-        if ((1U & (~ (((IData)(vlTOPp->CPU_valid) & 
-                       (0U == (IData)(vlTOPp->CPU_wstrb))) 
-                      & (IData)(vlTOPp->CPU_instr))))) {
-            if ((((IData)(vlTOPp->CPU_valid) & (0U 
-                                                == (IData)(vlTOPp->CPU_wstrb))) 
-                 & (~ (IData)(vlTOPp->CPU_instr)))) {
-                vlTOPp->EMEM_burst_en = 0U;
-            } else {
-                if (vlTOPp->CPU_valid) {
-                    vlTOPp->EMEM_burst_en = 0U;
-                }
-            }
-        }
-    } else {
-        if ((1U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-            if ((1U & (~ ((vlTOPp->BRAM1_dout[0U] >> 7U) 
-                          & (((0x7f00U & (vlTOPp->BRAM1_dout[0U] 
-                                          << 8U)) | 
-                              (0xffU & vlTOPp->BRAM0_dout[0U])) 
-                             == (IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag)))))) {
-                if ((1U & (~ ((vlTOPp->BRAM3_dout[0U] 
-                               >> 7U) & (((0x7f00U 
-                                           & (vlTOPp->BRAM3_dout[0U] 
-                                              << 8U)) 
-                                          | (0xffU 
-                                             & vlTOPp->BRAM2_dout[0U])) 
-                                         == (IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag)))))) {
-                    vlTOPp->EMEM_burst_en = 1U;
-                }
-            }
-        } else {
-            if ((5U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
-                    vlTOPp->EMEM_burst_en = 1U;
-                } else {
-                    if ((1U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
-                        vlTOPp->EMEM_burst_en = 1U;
-                    } else {
-                        if ((2U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
-                            vlTOPp->EMEM_burst_en = 1U;
-                        } else {
-                            if ((3U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
-                                vlTOPp->EMEM_burst_en = 1U;
-                            }
-                        }
-                    }
-                }
-            } else {
-                if ((6U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                    if ((3U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                        vlTOPp->EMEM_burst_en = 0U;
-                    } else {
-                        if ((4U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                            vlTOPp->EMEM_burst_en = 0U;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    vlTOPp->EMEM_wstrb = 0xfU;
-    if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-        if ((1U & (~ (((IData)(vlTOPp->CPU_valid) & 
-                       (0U == (IData)(vlTOPp->CPU_wstrb))) 
-                      & (IData)(vlTOPp->CPU_instr))))) {
-            if ((((IData)(vlTOPp->CPU_valid) & (0U 
-                                                == (IData)(vlTOPp->CPU_wstrb))) 
-                 & (~ (IData)(vlTOPp->CPU_instr)))) {
-                vlTOPp->EMEM_wstrb = vlTOPp->CPU_wstrb;
-            } else {
-                if (vlTOPp->CPU_valid) {
-                    vlTOPp->EMEM_wstrb = vlTOPp->CPU_wstrb;
-                }
-            }
-        }
-    } else {
-        if ((1U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-            if ((1U & (~ ((vlTOPp->BRAM1_dout[0U] >> 7U) 
-                          & (((0x7f00U & (vlTOPp->BRAM1_dout[0U] 
-                                          << 8U)) | 
-                              (0xffU & vlTOPp->BRAM0_dout[0U])) 
-                             == (IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag)))))) {
-                if ((1U & (~ ((vlTOPp->BRAM3_dout[0U] 
-                               >> 7U) & (((0x7f00U 
-                                           & (vlTOPp->BRAM3_dout[0U] 
-                                              << 8U)) 
-                                          | (0xffU 
-                                             & vlTOPp->BRAM2_dout[0U])) 
-                                         == (IData)(vlTOPp->I_Cache_Controller__DOT__cpu_I_tag)))))) {
-                    vlTOPp->EMEM_wstrb = 0U;
-                }
-            }
-        } else {
-            if ((5U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                if ((0U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
-                    vlTOPp->EMEM_wstrb = 0U;
-                } else {
-                    if ((1U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
-                        vlTOPp->EMEM_wstrb = 0U;
-                    } else {
-                        if ((2U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
-                            vlTOPp->EMEM_wstrb = 0U;
-                        } else {
-                            if ((3U == (IData)(vlTOPp->I_Cache_Controller__DOT__burst_counter))) {
-                                vlTOPp->EMEM_wstrb = 0U;
-                            }
-                        }
-                    }
-                }
-            } else {
-                if ((6U != (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                    if ((3U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                        vlTOPp->EMEM_wstrb = vlTOPp->CPU_wstrb;
-                    } else {
-                        if ((4U == (IData)(vlTOPp->I_Cache_Controller__DOT__main_state))) {
-                            vlTOPp->EMEM_wstrb = vlTOPp->CPU_wstrb;
                         }
                     }
                 }

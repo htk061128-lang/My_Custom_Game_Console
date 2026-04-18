@@ -89,6 +89,7 @@ void VI_Cache_Controller::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+77,"BRAM3_ren", false,-1);
         tracep->declBus(c+78,"BRAM3_raddr", false,-1, 8,0);
         tracep->declArray(c+79,"BRAM3_dout", false,-1, 71,0);
+        tracep->declBit(c+82,"cache_hit", false,-1);
         tracep->declBit(c+21,"I_Cache_Controller clk", false,-1);
         tracep->declBit(c+22,"I_Cache_Controller resetn", false,-1);
         tracep->declBit(c+23,"I_Cache_Controller CPU_valid", false,-1);
@@ -134,15 +135,16 @@ void VI_Cache_Controller::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+77,"I_Cache_Controller BRAM3_ren", false,-1);
         tracep->declBus(c+78,"I_Cache_Controller BRAM3_raddr", false,-1, 8,0);
         tracep->declArray(c+79,"I_Cache_Controller BRAM3_dout", false,-1, 71,0);
+        tracep->declBit(c+82,"I_Cache_Controller cache_hit", false,-1);
         tracep->declBus(c+1,"I_Cache_Controller main_state", false,-1, 3,0);
         tracep->declBus(c+9,"I_Cache_Controller main_next", false,-1, 3,0);
-        tracep->declBus(c+82,"I_Cache_Controller IDLE", false,-1, 31,0);
-        tracep->declBus(c+83,"I_Cache_Controller CACHE_SEARCH", false,-1, 31,0);
-        tracep->declBus(c+84,"I_Cache_Controller DATA_REQ", false,-1, 31,0);
-        tracep->declBus(c+85,"I_Cache_Controller EMEM_READ", false,-1, 31,0);
-        tracep->declBus(c+86,"I_Cache_Controller EMEM_WRITE", false,-1, 31,0);
-        tracep->declBus(c+87,"I_Cache_Controller CACHE_MISS", false,-1, 31,0);
-        tracep->declBus(c+88,"I_Cache_Controller CACHE_WRITE", false,-1, 31,0);
+        tracep->declBus(c+83,"I_Cache_Controller IDLE", false,-1, 31,0);
+        tracep->declBus(c+84,"I_Cache_Controller CACHE_SEARCH", false,-1, 31,0);
+        tracep->declBus(c+85,"I_Cache_Controller DATA_REQ", false,-1, 31,0);
+        tracep->declBus(c+86,"I_Cache_Controller EMEM_READ", false,-1, 31,0);
+        tracep->declBus(c+87,"I_Cache_Controller EMEM_WRITE", false,-1, 31,0);
+        tracep->declBus(c+88,"I_Cache_Controller CACHE_MISS", false,-1, 31,0);
+        tracep->declBus(c+89,"I_Cache_Controller CACHE_WRITE", false,-1, 31,0);
         tracep->declBit(c+10,"I_Cache_Controller cpu_tag_save", false,-1);
         tracep->declBus(c+2,"I_Cache_Controller cpu_I_tag", false,-1, 14,0);
         tracep->declBus(c+3,"I_Cache_Controller burst_counter", false,-1, 3,0);
@@ -250,12 +252,13 @@ void VI_Cache_Controller::traceFullSub0(void* userp, VerilatedVcd* tracep) {
         tracep->fullBit(oldp+77,(vlTOPp->BRAM3_ren));
         tracep->fullSData(oldp+78,(vlTOPp->BRAM3_raddr),9);
         tracep->fullWData(oldp+79,(vlTOPp->BRAM3_dout),72);
-        tracep->fullIData(oldp+82,(0U),32);
-        tracep->fullIData(oldp+83,(1U),32);
-        tracep->fullIData(oldp+84,(2U),32);
-        tracep->fullIData(oldp+85,(3U),32);
-        tracep->fullIData(oldp+86,(4U),32);
-        tracep->fullIData(oldp+87,(5U),32);
-        tracep->fullIData(oldp+88,(6U),32);
+        tracep->fullBit(oldp+82,(vlTOPp->cache_hit));
+        tracep->fullIData(oldp+83,(0U),32);
+        tracep->fullIData(oldp+84,(1U),32);
+        tracep->fullIData(oldp+85,(2U),32);
+        tracep->fullIData(oldp+86,(3U),32);
+        tracep->fullIData(oldp+87,(4U),32);
+        tracep->fullIData(oldp+88,(5U),32);
+        tracep->fullIData(oldp+89,(6U),32);
     }
 }

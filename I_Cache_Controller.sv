@@ -65,7 +65,9 @@ module I_Cache_Controller (
     // Read Port (Port B)
     output reg       BRAM3_ren,   // Read Enable
     output reg [8:0]  BRAM3_raddr,
-    input  [71:0] BRAM3_dout
+    input  [71:0] BRAM3_dout,
+
+    output cache_hit
 );
 
 reg [3:0] main_state;
@@ -151,6 +153,8 @@ always @(*) begin
     word_buffer_wdata[2][31:0] = 0;
     word_buffer_wdata[3][31:0] = 0;
 
+    cache_hit = 0;
+
     case(main_state)
         IDLE: begin
             if(CPU_valid & (CPU_wstrb[3:0] == 4'b0000) & (CPU_instr == 1)) begin //명령어 읽기 요청시
@@ -196,6 +200,7 @@ always @(*) begin
         end
         CACHE_SEARCH: begin //클럭에지때 CACHE_SEARCH로 main_state가 바뀌면서 BRAM_dout[71:0]이 나옴.
             if((BRAM1_dout[7] == 1) && ({BRAM1_dout[6:0], BRAM0_dout[7:0]} == cpu_I_tag[14:0])) begin //Way 0 hit 상황.
+                cache_hit = 1;
                 case(CPU_addr[3:2])
                     2'b00: begin //Cache line의 0번 word
                         main_next = IDLE;
@@ -220,6 +225,7 @@ always @(*) begin
                 endcase
             end
             else if((BRAM3_dout[7] == 1) && ({BRAM3_dout[6:0], BRAM2_dout[7:0]} == cpu_I_tag[14:0])) begin //Way 1 hit 상황.
+                cache_hit = 1;
                 case(CPU_addr[3:2])
                     2'b00: begin //Cache line의 0번 word
                         main_next = IDLE;
