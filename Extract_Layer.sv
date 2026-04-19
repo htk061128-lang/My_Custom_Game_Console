@@ -2,6 +2,34 @@ module Extract_Layer( //외부 메모리에서 라운드 로빈 방식으로 bur
     input clk, //50MHz
     input resetn, //negedge reset
 
+    input PPU_start, //이 신호가 들어오면 비로소 작동을 시작함.
+
+    input Universal_Layer1_ena, //이 신호가 0이면 해당 레이어를 사용하지 않는것임. 따라서 메모리에서 읽을 필요가 없음.
+    input Universal_Layer2_ena, //이 신호가 0이면 해당 레이어를 사용하지 않는것임. 따라서 메모리에서 읽을 필요가 없음.
+    input Script_Layer_ena, //이 신호가 0이면 해당 레이어를 사용하지 않는것임. 따라서 메모리에서 읽을 필요가 없음.
+    input Status_Layer_ena,
+    input Character_Layer1_ena,
+    input Character_Layer2_ena,
+    input Character_Layer3_ena,
+    input Character_Layer4_ena,
+    input Background_Layer1_ena,
+    input Background_Layer2_ena,
+
+    //외부 메모리에서 읽어와야 할 압축된 레이어 데이터 위치. 상위 4비트는 0임.
+    input [31:0] Universal_Layer1_Address,
+    input [31:0] Universal_Layer2_Address,
+    input [31:0] Script_Layer_Address,
+    input [31:0] Status_Layer_Address,
+
+    input [31:0] Character_Layer1_Address,
+    input [31:0] Character_Layer2_Address,
+    input [31:0] Character_Layer3_Address,
+    input [31:0] Character_Layer4_Address,
+
+    input [31:0] Background_Layer1_Address,
+    input [31:0] Background_Layer2_Address,
+
+
     //외부 메모리 인터페이스. Arbiter를 거쳐서 DDR3 인터페이스에 도달함. 한번에 256bit씩 burst로 읽어올 생각임.
     output reg EMEM_valid,
     input EMEM_ready,
@@ -61,15 +89,326 @@ module Extract_Layer( //외부 메모리에서 라운드 로빈 방식으로 bur
 //BRAM8: addr 0-127: character layer1, 128-255: character layer2, 256-383: character layer3, 384-511: character layer4
 //BRAM9: addr 0-255: background layer1, 256-511: background layer2
 
-//FIFO 제어신호 정리.
-reg uni1_fifo_urgent; //universal layer1의 FIFO가 32줄 이하(총 128줄이므로 25%이하)로 채워져있을때 발생하는 신호.
-reg uni1_fifo_front; //0-127사이의 값을 가지며 
-reg uni1_fifo_rear; //0-127사이의 값을 가지며 
+//compressed layer FIFO 제어신호 정리.
+wire uni1_fifo_urgent = (uni1_fifo_count[7:0] <= 8'd32 && Universal_Layer1_ena); //universal layer1의 FIFO가 32줄 이하(총 128줄이므로 25%이하)로 채워져있을때 발생하는 신호.
+reg [7:0] uni1_fifo_count; //현재 FIFO에 채워진 데이터의 개수를 나타냄. 0-128의 범위이므로 그냥 8비트로 선언했음.
+reg [7:0] uni1_fifo_front; //하위 7비트가 실질적인 주소 인덱스(0-127)를 나타내고, 상위 1비트는 상태판별(full or empty)에 사용됨.
+reg [7:0] uni1_fifo_rear; //하위 7비트가 실질적인 주소 인덱스(0-127)를 나타내고, 상위 1비트는 상태판별(full or empty)에 사용됨.
+wire uni1_fifo_full = (uni1_fifo_front[6:0] == uni1_fifo_rear[6:0]) && (uni1_fifo_front[7] != uni1_fifo_rear[7]); //하위 7비트는 같지만 MSB가 다르면 full임.
+wire uni1_fifo_empty = (uni1_fifo_front[7:0] == uni1_fifo_rear[7:0]); //8비트 모두 완전히 같아야 empty임. 
+
+wire uni2_fifo_urgent = (uni2_fifo_count[7:0] <= 8'd32 && Universal_Layer2_ena); //universal layer2의 FIFO가 32줄 이하(총 128줄이므로 25%이하)로 채워져있을때 발생하는 신호.
+reg [7:0] uni2_fifo_count; //현재 FIFO에 채워진 데이터의 개수를 나타냄. 0-128의 범위이므로 그냥 8비트로 선언했음.
+reg [7:0] uni2_fifo_front; //하위 7비트가 실질적인 주소 인덱스(0-127)를 나타내고, 상위 1비트는 상태판별(full or empty)에 사용됨.
+reg [7:0] uni2_fifo_rear; //하위 7비트가 실질적인 주소 인덱스(0-127)를 나타내고, 상위 1비트는 상태판별(full or empty)에 사용됨.
+wire uni2_fifo_full = (uni2_fifo_front[6:0] == uni2_fifo_rear[6:0]) && (uni2_fifo_front[7] != uni2_fifo_rear[7]);
+wire uni2_fifo_empty = (uni2_fifo_front[7:0] == uni2_fifo_rear[7:0]);
+
+wire script_fifo_urgent = (script_fifo_count[7:0] <= 8'd32 && Script_Layer_ena); 
+reg [7:0] script_fifo_count; //현재 FIFO에 채워진 데이터의 개수를 나타냄. 0-128의 범위이므로 그냥 8비트로 선언했음.
+reg [7:0] script_fifo_front; 
+reg [7:0] script_fifo_rear; 
+wire script_fifo_full = (script_fifo_front[6:0] == script_fifo_rear[6:0]) && (script_fifo_front[7] != script_fifo_rear[7]);
+wire script_fifo_empty = (script_fifo_front[7:0] == script_fifo_rear[7:0]);
+
+wire status_fifo_urgent = (status_fifo_count[7:0] <= 8'd32 && Status_Layer_ena);
+reg [7:0] status_fifo_count; //현재 FIFO에 채워진 데이터의 개수를 나타냄. 0-128의 범위이므로 그냥 8비트로 선언했음.
+reg [7:0] status_fifo_front; 
+reg [7:0] status_fifo_rear; 
+wire status_fifo_full = (status_fifo_front[6:0] == status_fifo_rear[6:0]) && (status_fifo_front[7] != status_fifo_rear[7]);
+wire status_fifo_empty = (status_fifo_front[7:0] == status_fifo_rear[7:0]);
+
+wire char1_fifo_urgent = (char1_fifo_count[7:0] <= 8'd32 && Character_Layer1_ena);
+reg [7:0] char1_fifo_count; //현재 FIFO에 채워진 데이터의 개수를 나타냄. 0-128의 범위이므로 그냥 8비트로 선언했음.
+reg [7:0] char1_fifo_front; 
+reg [7:0] char1_fifo_rear; 
+wire char1_fifo_full = (char1_fifo_front[6:0] == char1_fifo_rear[6:0]) && (char1_fifo_front[7] != char1_fifo_rear[7]);
+wire char1_fifo_empty = (char1_fifo_front[7:0] == char1_fifo_rear[7:0]);
+
+wire char2_fifo_urgent = (char2_fifo_count[7:0] <= 8'd32 && Character_Layer2_ena);
+reg [7:0] char2_fifo_count; //현재 FIFO에 채워진 데이터의 개수를 나타냄. 0-128의 범위이므로 그냥 8비트로 선언했음.
+reg [7:0] char2_fifo_front; 
+reg [7:0] char2_fifo_rear; 
+wire char2_fifo_full = (char2_fifo_front[6:0] == char2_fifo_rear[6:0]) && (char2_fifo_front[7] != char2_fifo_rear[7]);
+wire char2_fifo_empty = (char2_fifo_front[7:0] == char2_fifo_rear[7:0]);
+
+wire char3_fifo_urgent = (char3_fifo_count[7:0] <= 8'd32 && Character_Layer3_ena);
+reg [7:0] char3_fifo_count; //현재 FIFO에 채워진 데이터의 개수를 나타냄. 0-128의 범위이므로 그냥 8비트로 선언했음.
+reg [7:0] char3_fifo_front; 
+reg [7:0] char3_fifo_rear; 
+wire char3_fifo_full = (char3_fifo_front[6:0] == char3_fifo_rear[6:0]) && (char3_fifo_front[7] != char3_fifo_rear[7]);
+wire char3_fifo_empty = (char3_fifo_front[7:0] == char3_fifo_rear[7:0]);
+
+wire char4_fifo_urgent = (char4_fifo_count[7:0] <= 8'd32 && Character_Layer4_ena);
+reg [7:0] char4_fifo_count; //현재 FIFO에 채워진 데이터의 개수를 나타냄. 0-128의 범위이므로 그냥 8비트로 선언했음.
+reg [7:0] char4_fifo_front; 
+reg [7:0] char4_fifo_rear; 
+wire char4_fifo_full = (char4_fifo_front[6:0] == char4_fifo_rear[6:0]) && (char4_fifo_front[7] != char4_fifo_rear[7]);
+wire char4_fifo_empty = (char4_fifo_front[7:0] == char4_fifo_rear[7:0]);
+
+wire back1_fifo_urgent = (back1_fifo_count[8:0] <= 9'd64 && Background_Layer1_ena); //background layer1은 FIFO 크기가 256줄 이므로 front, rear가 1비트씩 큼. 
+reg [8:0] back1_fifo_count; //현재 FIFO에 채워진 데이터의 개수를 나타냄. 0-256의 범위이므로 그냥 9비트로 선언했음.
+reg [8:0] back1_fifo_front; //하위 8비트는 실질적인 주소인덱스(0-255)를 나타내고 상위 1비트는 상태판별(full or empty)에 사용됨 
+reg [8:0] back1_fifo_rear; //하위 8비트는 실질적인 주소인덱스(0-255)를 나타내고 상위 1비트는 상태판별(full or empty)에 사용됨 
+wire back1_fifo_full = (back1_fifo_front[7:0] == back1_fifo_rear[7:0]) && (back1_fifo_front[8] != back1_fifo_rear[8]);
+wire back1_fifo_empty = (back1_fifo_front[8:0] == back1_fifo_rear[8:0]);
+
+wire back2_fifo_urgent = (back2_fifo_count[8:0] <= 9'd64 && Background_Layer2_ena); //background layer2은 FIFO 크기가 256줄 이므로 front, rear가 1비트씩 큼. 
+reg [8:0] back2_fifo_count; //현재 FIFO에 채워진 데이터의 개수를 나타냄. 0-256의 범위이므로 그냥 9비트로 선언했음.
+reg [8:0] back2_fifo_front; //하위 8비트는 실질적인 주소인덱스(0-255)를 나타내고 상위 1비트는 상태판별(full or empty)에 사용됨 
+reg [8:0] back2_fifo_rear; //하위 8비트는 실질적인 주소인덱스(0-255)를 나타내고 상위 1비트는 상태판별(full or empty)에 사용됨 
+wire back2_fifo_full = (back2_fifo_front[7:0] == back2_fifo_rear[7:0]) && (back2_fifo_front[8] != back2_fifo_rear[8]);
+wire back2_fifo_empty = (back2_fifo_front[8:0] == back2_fifo_rear[8:0]);
+
+//FIFO를 쓰는것은 라운드로빈 방식으로 하나의 FIFO에 50MHz로 쓰기가 일어나고, FIFO를 읽는것은 시분할로 12.5MHz로 각각의 FIFO가 독립적으로 읽는것이 가능함.
+reg [1:0] clk_counter; // 50MHz에 맞춰서 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3 - 0 를 반복함.
+
+wire uni1_fifo_r_master = (clk_counter == 0); //이 신호가 1이어야지 BRAM에서 해당 FIFO를 읽기가 가능함.
+wire uni2_fifo_r_master = (clk_counter == 1);
+wire script_fifo_r_master = (clk_counter == 2);
+wire status_fifo_r_master = (clk_counter == 3);
+
+wire char1_fifo_r_master = (clk_counter == 0);
+wire char2_fifo_r_master = (clk_counter == 1);
+wire char3_fifo_r_master = (clk_counter == 2);
+wire char4_fifo_r_master = (clk_counter == 3);
+
+wire back1_fifo_r_master = (clk_counter == 0) | (clk_counter == 1); //BRAM9에는 background layer1, 2 총 2개의 FIFO만 들어가 있으므로 각각의 레이어가 시분할로 25MHz로 읽을 수 있음.
+wire back2_fifo_r_master = (clk_counter == 2) | (clk_counter == 3);
+
+reg [3:0] uni1_state;
+reg [3:0] uni2_state;
+reg [3:0] script_state;
+reg [3:0] status_state;
+
+reg [3:0] char1_state;
+reg [3:0] char2_state;
+reg [3:0] char3_state;
+reg [3:0] char4_state;
+
+reg [3:0] back1_state;
+reg [3:0] back2_state;
+
+reg [3:0] main_state; //여기서 BRAM7-9 쓰기, 외부 메모리 읽기를 담당함.
+parameter IDLE = 0, START = 1;
+
+reg [31:0] uni1_next_ad; //외부 메모리에서 데이터를 읽어올때 어디까지 읽었는지 알려주는 역할을 함.
+reg [31:0] uni2_next_ad;
+reg [31:0] script_next_ad;
+reg [31:0] status_next_ad;
+reg [31:0] char1_next_ad;
+reg [31:0] char2_next_ad;
+reg [31:0] char3_next_ad;
+reg [31:0] char4_next_ad;
+reg [31:0] back1_next_ad;
+reg [31:0] back2_next_ad; 
+
+//라운드 로빈 관련 신호들.
+//bit 0: back1, bit 1: back2, bit 2: char1, bit 3: char2, bit 4: char3, bit 5: char4, bit 6: script, bit 7: status, bit 8: uni1, bit 9: uni2
+reg [9:0] next_should_read_layer; //다음에 외부 메모리에서 읽어야 할 레이어를 나타냄.
+reg [9:0] last_read_basic; //basic req로 인해서 특정 레이어의 외부 메모리 읽기가 일어났으면 1로 설정됨. 1바퀴가 다 돌면 싹 다 0으로 초기화 됨.
+reg [9:0] last_read_urgent; //urgent req로 인해서 특정 레이어의 외부 메모리 읽기가 일어났으면 1로 설정.
+reg [9:0] valid_req; 
+reg [9:0] urgent_req; //각각의 레이어들이 urgent 신호를 발생시키면 해당하는 비트가 1이됨.
+reg [9:0] basic_req; //input으로 들어오는 ena신호, fifo_count 신호들에 의해서 현재 각각의 레이어들이 외부 메모리 요청이 필요한지를 나타냄. 예를 들어 모든 레이어가 가득차면 10'b0000000000임.
+reg [9:0] masked_req;
+reg round_end;
+reg is_urgent_mode; //urgent_req로 인해서 next_should_read_layer가 결정되면 1이 됨. 이때 외부메모리에서 값을 읽을때 last_read_urgent의 비트를 1로 설정해줘야 함. 만약 is_urgent_mode가 0이라면 last_read_basic의 비트를 1로 설정해야 함.
+
+always @(*) begin
+    next_should_read_layer[9:0] = 10'b0; //기본적으로 싹 0으로 설정. 이후 코드에서 비트 하나만 바꿔줄거임.
+    urgent_req[9:0] = {back1_fifo_urgent, back2_fifo_urgent, char1_fifo_urgent, char2_fifo_urgent, char3_fifo_urgent, char4_fifo_urgent, script_fifo_urgent, status_fifo_urgent, uni1_fifo_urgent, uni2_fifo_urgent};
+
+    basic_req[0] = Background_Layer1_ena && (back1_fifo_count[8:0] <= 252); //한번에 4줄(64*4=256bit)씩 읽어오기때문에 252줄을 초과하면 읽어온 데이터를 모두 FIFO에 넣을수 없음.
+    basic_req[1] = Background_Layer2_ena && (back2_fifo_count[8:0] <= 252);
+    basic_req[2] = Character_Layer1_ena && (char1_fifo_count[7:0] <= 124); //한번에 4줄(64*4=256bit)씩 읽어오기때문에 124줄을 초과하면 읽어온 데이터를 모두 FIFO에 넣을수 없음.
+    basic_req[3] = Character_Layer2_ena && (char2_fifo_count[7:0] <= 124);
+    basic_req[4] = Character_Layer3_ena && (char3_fifo_count[7:0] <= 124);
+    basic_req[5] = Character_Layer4_ena && (char4_fifo_count[7:0] <= 124);
+    basic_req[6] = Script_Layer_ena && (script_fifo_count[7:0] <= 124);
+    basic_req[7] = Status_Layer_ena && (status_fifo_count[7:0] <= 124);
+    basic_req[8] = Universal_Layer1_ena && (uni1_fifo_count[7:0] <= 124);
+    basic_req[9] = Universal_Layer2_ena && (uni2_fifo_count[7:0] <= 124);
+
+    valid_req[10:0] = (urgent_req[9:0] == 10'b0) ? basic_req[9:0] : urgent_req[9:0]; //urgent 신호가 하나라도 있으면 urgent_req 중에서 라운드로빈이 일어남. urgent 신호가 없으면 basic_req 중에서 라운드 로빈.
+
+    masked_req[0] = (~is_urgent_mode) ? valid_req[0] & ~last_read_basic[0] : valid_req[0] & ~last_read_urgent[0]; 
+    masked_req[1] = (~is_urgent_mode) ? valid_req[1] & ~last_read_basic[1] : valid_req[1] & ~last_read_urgent[1];
+    masked_req[2] = (~is_urgent_mode) ? valid_req[2] & ~last_read_basic[2] : valid_req[2] & ~last_read_urgent[2];
+    masked_req[3] = (~is_urgent_mode) ? valid_req[3] & ~last_read_basic[3] : valid_req[3] & ~last_read_urgent[3];
+    masked_req[4] = (~is_urgent_mode) ? valid_req[4] & ~last_read_basic[4] : valid_req[4] & ~last_read_urgent[4];
+    masked_req[5] = (~is_urgent_mode) ? valid_req[5] & ~last_read_basic[5] : valid_req[5] & ~last_read_urgent[5];
+    masked_req[6] = (~is_urgent_mode) ? valid_req[6] & ~last_read_basic[6] : valid_req[6] & ~last_read_urgent[6];
+    masked_req[7] = (~is_urgent_mode) ? valid_req[7] & ~last_read_basic[7] : valid_req[7] & ~last_read_urgent[7];
+    masked_req[8] = (~is_urgent_mode) ? valid_req[8] & ~last_read_basic[8] : valid_req[8] & ~last_read_urgent[8];
+    masked_req[9] = (~is_urgent_mode) ? valid_req[9] & ~last_read_basic[9] : valid_req[9] & ~last_read_urgent[9];
+
+    case(1'b1)
+        (masked_req[0] == 1'b1): next_should_read_layer[0] = 1'b1;
+        (masked_req[1:0] == 2'b10): next_should_read_layer[1] = 1'b1;
+        (masked_req[2:0] == 3'b100): next_should_read_layer[2] = 1'b1;
+        (masked_req[3:0] == 4'b1000): next_should_read_layer[3] = 1'b1;
+        (masked_req[4:0] == 5'b10000): next_should_read_layer[4] = 1'b1;
+        (masked_req[5:0] == 6'b100000): next_should_read_layer[5] = 1'b1;
+        (masked_req[6:0] == 7'b1000000): next_should_read_layer[6] = 1'b1;
+        (masked_req[7:0] == 8'b10000000): next_should_read_layer[7] = 1'b1;
+        (masked_req[8:0] == 9'b100000000): next_should_read_layer[8] = 1'b1;
+        (masked_req[9:0] == 9'b1000000000): next_should_read_layer[9] = 1'b1;
+    endcase
+
+    round_end = (valid_req[9:0] != 10'b0 ) && (masked_req[9:0] == 10'b0); //이 신호가 1이고 is_urgent_mode가 1이면 last_read_urgent를 초기화해야 함.
+    is_urgent_mode = (urgent_req[9:0] != 10'b0); //round_end가 1이고 is_urgent_mode가 0이면 last_read_basic을 초기화해야 함.
+
+end
 
 always @(posedge clk negedge reset) begin
     if(!reset) begin
+        clk_counter[1:0] <= 0;
+        main_state <= IDLE;
+        uni1_next_ad <= 0;
+        uni2_next_ad <= 0;
+        status_next_ad <= 0;
+        script_next_ad <= 0;
+        char1_next_ad <= 0;
+        char2_next_ad <= 0;
+        char3_next_ad <= 0;
+        char4_next_ad <= 0;
+        back1_next_ad <= 0;
+        back2_next_ad <= 0;
+
+        EMEM_valid <= 0;
+        EMEM_addr[31:0] <= 0;
+        EMEM_wdata[31:0] <= 0;
+        EMEM_wstrb[3:0] <= 4'b1111;
+        EMEM_burst_en <= 0;
+        EMEM_burst_len[7:0] <= 0;
+
+        BRAM7_en_a <= 0;
+        BRAM7_we_a <= 0;
+        BRAM7_din_a[63:0] <= 0;
+        BRAM7_addr_a[8:0] <= 0;
+        BRAM7_en_b <= 0;
+        BRAM7_addr_b[8:0] <= 0;
+
+        BRAM8_en_a <= 0;
+        BRAM8_we_a <= 0;
+        BRAM8_din_a[63:0] <= 0;
+        BRAM8_addr_a[8:0] <= 0;
+        BRAM8_en_b <= 0;
+        BRAM8_addr_b[8:0] <= 0;
+
+        BRAM9_en_a <= 0;
+        BRAM9_we_a <= 0;
+        BRAM9_din_a[63:0] <= 0;
+        BRAM9_addr_a[8:0] <= 0;
+        BRAM9_en_b <= 0;
+        BRAM9_addr_b[8:0] <= 0;
+
+        uni1_fifo_front[7:0] <= 0;
+        uni1_fifo_rear[7:0] <= 0;
+        uni1_fifo_count[7:0] <= 0;
+
+        uni2_fifo_front[7:0] <= 0;
+        uni2_fifo_rear[7:0] <= 0;
+        uni2_fifo_count[7:0] <= 0;
+
+        script_fifo_front[7:0] <= 0;
+        script_fifo_rear[7:0] <= 0;
+        script_fifo_count[7:0] <= 0;
+
+        status_fifo_front[7:0] <= 0;
+        status_fifo_rear[7:0] <= 0;
+        status_fifo_count[7:0] <= 0;
+
+        char1_fifo_front[7:0] <= 0;
+        char1_fifo_rear[7:0] <= 0;
+        char1_fifo_count[7:0] <= 0;
+
+        char2_fifo_front[7:0] <= 0;
+        char2_fifo_rear[7:0] <= 0;
+        char2_fifo_count[7:0] <= 0;
+
+        char3_fifo_front[7:0] <= 0;
+        char3_fifo_rear[7:0] <= 0;
+        char3_fifo_count[7:0] <= 0;
+
+        char4_fifo_front[7:0] <= 0;
+        char4_fifo_rear[7:0] <= 0;
+        char4_fifo_count[7:0] <= 0;
+
+        back1_fifo_front[8:0] <= 0;
+        back1_fifo_rear[8:0] <= 0;
+        back1_fifo_count[8:0] <= 0;
+
+        back2_fifo_front[8:0] <= 0;
+        back2_fifo_rear[8:0] <= 0;
+        back2_fifo_count[8:0] <= 0;
+
+        last_read_basic[9:0] <= 0;
+        last_read_urgent[9:0] <= 0;
     end
     else begin
+        clk_counter[1:0] <= clk_counter[1:0] + 1; // 50MHz에 맞춰서 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3 - 0 를 반복
+
+        if(is_urgent_mode && round_end) last_read_urgent[9:0] <= 10'b0; //round가 끝났을때 초기화해줌.
+        if(~is_urgent_mode && round_end) last_read_basic[9:0] <= 10'b0;
+
+        case(main_state)
+            IDLE: begin
+                if(PPU_start) begin //input으로 PPU_start가 들어오면 작동을 시작함.
+                    main_start <= START;
+                    uni1_next_ad[31:0] <= Universal_Layer1_Address[31:0]; //uni_next_ad를 초기화 해줌.
+                    uni2_next_ad[31:0] <= Universal_Layer2_Address[31:0];
+                    status_next_ad[31:0] <= Status_Layer_Address[31:0];
+                    script_next_ad[31:0] <= Script_Layer_Address[31:0];
+                    char1_next_ad[31:0] <= Character_Layer1_Address[31:0];
+                    char2_next_ad[31:0] <= Character_Layer2_Address[31:0];
+                    char3_next_ad[31:0] <= Character_Layer3_Address[31:0];
+                    char4_next_ad[31:0] <= Character_Layer4_Address[31:0];
+                    back1_next_ad[31:0] <= Background_Layer1_Address[31:0];
+                    back2_next_ad[31:0] <= Background_Layer2_Address[31:0];
+                    uni1_fifo_front[7:0] <= 0; //FIFO 관련 레지스터들 싹 초기화 해줌.
+                    uni1_fifo_rear[7:0] <= 0;
+                    uni1_fifo_count[7:0] <= 0;
+                    uni2_fifo_front[7:0] <= 0;
+                    uni2_fifo_rear[7:0] <= 0;
+                    uni2_fifo_count[7:0] <= 0;
+                    script_fifo_front[7:0] <= 0;
+                    script_fifo_rear[7:0] <= 0;
+                    script_fifo_count[7:0] <= 0;
+                    status_fifo_front[7:0] <= 0;
+                    status_fifo_rear[7:0] <= 0;
+                    status_fifo_count[7:0] <= 0;
+                    char1_fifo_front[7:0] <= 0;
+                    char1_fifo_rear[7:0] <= 0;
+                    char1_fifo_count[7:0] <= 0;
+                    char2_fifo_front[7:0] <= 0;
+                    char2_fifo_rear[7:0] <= 0;
+                    char2_fifo_count[7:0] <= 0;
+                    char3_fifo_front[7:0] <= 0;
+                    char3_fifo_rear[7:0] <= 0;
+                    char3_fifo_count[7:0] <= 0;
+                    char4_fifo_front[7:0] <= 0;
+                    char4_fifo_rear[7:0] <= 0;
+                    char4_fifo_count[7:0] <= 0;
+                    back1_fifo_front[8:0] <= 0;
+                    back1_fifo_rear[8:0] <= 0;
+                    back1_fifo_count[8:0] <= 0;
+                    back2_fifo_front[8:0] <= 0;
+                    back2_fifo_rear[8:0] <= 0;
+                    back2_fifo_count[8:0] <= 0;
+
+                    last_read_basic[9:0] <= 0;
+                    last_read_urgent[9:0] <= 0;
+                end
+                else begin
+                    main_state <= IDLE;
+                end
+            end
+            START: begin
+                
+            end
+        endcase
     end
 end
 endmodule
