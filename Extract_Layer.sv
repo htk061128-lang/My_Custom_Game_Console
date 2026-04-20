@@ -190,7 +190,7 @@ reg [3:0] back1_state;
 reg [3:0] back2_state;
 
 reg [3:0] main_state; //여기서 BRAM7-9 쓰기, 외부 메모리 읽기를 담당함.
-parameter IDLE = 0, START = 1;
+parameter IDLE = 0, START = 1, EMEM_READ = 2;
 
 reg [31:0] uni1_next_ad; //외부 메모리에서 데이터를 읽어올때 어디까지 읽었는지 알려주는 역할을 함.
 reg [31:0] uni2_next_ad;
@@ -215,20 +215,25 @@ reg [9:0] masked_req;
 reg round_end;
 reg is_urgent_mode; //urgent_req로 인해서 next_should_read_layer가 결정되면 1이 됨. 이때 외부메모리에서 값을 읽을때 last_read_urgent의 비트를 1로 설정해줘야 함. 만약 is_urgent_mode가 0이라면 last_read_basic의 비트를 1로 설정해야 함.
 
+reg [9:0] should_read_layer; //본격적으로 읽기를 시작할때 last_read를 1로 설정하면 next_should_read_layer가 바뀌므로 직전값을 저장할 용도로 선언했음.
+
+reg [7:0] emem_r_counter; //외부 메모리에서 burst로 32번(128byte)읽을 때 개수를 새어줄 레지스터임.
+reg [31:0] tem_32_reg; //외부 메모리에서 32비트를 읽어오고, BRAM에서는 64비트로 저장해야하기 때문에 임시로 값을 저장해줄 레지스터임.
+
 always @(*) begin
     next_should_read_layer[9:0] = 10'b0; //기본적으로 싹 0으로 설정. 이후 코드에서 비트 하나만 바꿔줄거임.
     urgent_req[9:0] = {back1_fifo_urgent, back2_fifo_urgent, char1_fifo_urgent, char2_fifo_urgent, char3_fifo_urgent, char4_fifo_urgent, script_fifo_urgent, status_fifo_urgent, uni1_fifo_urgent, uni2_fifo_urgent};
 
-    basic_req[0] = Background_Layer1_ena && (back1_fifo_count[8:0] <= 252); //한번에 4줄(64*4=256bit)씩 읽어오기때문에 252줄을 초과하면 읽어온 데이터를 모두 FIFO에 넣을수 없음.
-    basic_req[1] = Background_Layer2_ena && (back2_fifo_count[8:0] <= 252);
-    basic_req[2] = Character_Layer1_ena && (char1_fifo_count[7:0] <= 124); //한번에 4줄(64*4=256bit)씩 읽어오기때문에 124줄을 초과하면 읽어온 데이터를 모두 FIFO에 넣을수 없음.
-    basic_req[3] = Character_Layer2_ena && (char2_fifo_count[7:0] <= 124);
-    basic_req[4] = Character_Layer3_ena && (char3_fifo_count[7:0] <= 124);
-    basic_req[5] = Character_Layer4_ena && (char4_fifo_count[7:0] <= 124);
-    basic_req[6] = Script_Layer_ena && (script_fifo_count[7:0] <= 124);
-    basic_req[7] = Status_Layer_ena && (status_fifo_count[7:0] <= 124);
-    basic_req[8] = Universal_Layer1_ena && (uni1_fifo_count[7:0] <= 124);
-    basic_req[9] = Universal_Layer2_ena && (uni2_fifo_count[7:0] <= 124);
+    basic_req[0] = Background_Layer1_ena && (back1_fifo_count[8:0] <= 240); //한번에 16줄(64*16=1024bit=128byte)씩 읽어오기때문에 240줄을 초과하면 읽어온 데이터를 모두 FIFO에 넣을수 없음.
+    basic_req[1] = Background_Layer2_ena && (back2_fifo_count[8:0] <= 240);
+    basic_req[2] = Character_Layer1_ena && (char1_fifo_count[7:0] <= 112); //한번에 16줄(64*16=1024bit=128byte)씩 읽어오기때문에 112줄을 초과하면 읽어온 데이터를 모두 FIFO에 넣을수 없음.
+    basic_req[3] = Character_Layer2_ena && (char2_fifo_count[7:0] <= 112);
+    basic_req[4] = Character_Layer3_ena && (char3_fifo_count[7:0] <= 112);
+    basic_req[5] = Character_Layer4_ena && (char4_fifo_count[7:0] <= 112);
+    basic_req[6] = Script_Layer_ena && (script_fifo_count[7:0] <= 112);
+    basic_req[7] = Status_Layer_ena && (status_fifo_count[7:0] <= 112);
+    basic_req[8] = Universal_Layer1_ena && (uni1_fifo_count[7:0] <= 112);
+    basic_req[9] = Universal_Layer2_ena && (uni2_fifo_count[7:0] <= 112);
 
     valid_req[10:0] = (urgent_req[9:0] == 10'b0) ? basic_req[9:0] : urgent_req[9:0]; //urgent 신호가 하나라도 있으면 urgent_req 중에서 라운드로빈이 일어남. urgent 신호가 없으면 basic_req 중에서 라운드 로빈.
 
@@ -346,8 +351,31 @@ always @(posedge clk negedge reset) begin
 
         last_read_basic[9:0] <= 0;
         last_read_urgent[9:0] <= 0;
+        should_read_layer[9:0] <= 0;
+
+        emem_r_counter[7:0] <= 0;
+        tem_32_reg[31:0] <= 0;
     end
     else begin
+        BRAM7_en_a <= 0; //초기값 설정. ready 올때까지 기다려야 하는 EMEM과 달리 BRAM은 한클럭만 신호 보내면 되서 안전을 위해 이렇게 함.
+        BRAM7_we_a <= 0;
+        BRAM7_addr_a[8:0] <= 0;
+        BRAM7_din_a[63:0] <= 0;
+        BRAM7_en_b <= 0;
+        BRAM7_addr_b[8:0] <= 0;
+        BRAM8_en_a <= 0;
+        BRAM8_we_a <= 0;
+        BRAM8_addr_a[8:0] <= 0;
+        BRAM8_din_a[63:0] <= 0;
+        BRAM8_en_b <= 0;
+        BRAM8_addr_b[8:0] <= 0;
+        BRAM9_en_a <= 0;
+        BRAM9_we_a <= 0;
+        BRAM9_addr_a[8:0] <= 0;
+        BRAM9_din_a[63:0] <= 0;
+        BRAM9_en_b <= 0;
+        BRAM9_addr_b[8:0] <= 0;
+
         clk_counter[1:0] <= clk_counter[1:0] + 1; // 50MHz에 맞춰서 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3 - 0 를 반복
 
         if(is_urgent_mode && round_end) last_read_urgent[9:0] <= 10'b0; //round가 끝났을때 초기화해줌.
@@ -400,13 +428,285 @@ always @(posedge clk negedge reset) begin
 
                     last_read_basic[9:0] <= 0;
                     last_read_urgent[9:0] <= 0;
+                    should_read_layer[9:0] <= 0;
+
+                    emem_r_counter[9:0] <= 0;
+                    tem_32_reg[31:0] <= 0;
                 end
                 else begin
                     main_state <= IDLE;
                 end
             end
             START: begin
-                
+                if(next_should_read_layer[9:0] != 10'b0) begin
+                    case(is_urgent_mode)
+                    1'b0: begin //basic 
+                        main_state <= EMEM_READ;
+                        should_read_layer[9:0] <= next_should_read_layer[9:0]; //next_should_read_layer를 외부메모리 읽기 직전에 저장해줌. 
+                        emem_r_counter[7:0] <= 0; //카운터를 초기화 해줌.
+                        tem_32_reg[31:0] <= 0;
+                        case(1'b1) //next_should_read_layer는 10개의 비트중 한개만 1로 설정될 수 있음. 따라서 동시에 여러개의 last_read_urgent가 1로 설정되는것은 불가능함.
+                            next_should_read_layer[0]: begin //background 1
+                                last_read_basic[0] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= back1_next_ad[31:0]; //IDLE -> START로 가는 과정에서 back1_next_ad는 input으로 들어온 Background_Layer_Address로 초기화되어 있음.
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[1]: begin //background 1
+                                last_read_basic[1] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= back2_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[2]: begin //character 1
+                                last_read_basic[2] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= char1_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[3]: begin //character 2
+                                last_read_basic[3] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= char2_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[4]: begin //character 3
+                                last_read_basic[4] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= char3_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[5]: begin //character 4
+                                last_read_basic[5] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= char4_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[6]: begin //script 
+                                last_read_basic[6] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= script_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[7]: begin //status
+                                last_read_basic[7] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= status_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[8]: begin //universal 1
+                                last_read_basic[8] <= 1'b1; 
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= uni1_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[9]: begin //universal 2
+                                last_read_basic[9] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= uni2_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                        endcase
+                    end
+                    1'b1: begin //urgent
+                        main_state <= EMEM_READ;
+                        should_read_layer[9:0] <= next_should_read_layer[9:0]; //next_should_read_layer를 외부메모리 읽기 직전에 저장해줌. 
+                        emem_r_counter[7:0] <= 0; //카운터를 초기화 해줌.
+                        tem_32_reg[31:0] <= 0;
+                        case(1'b1) //next_should_read_layer는 10개의 비트중 한개만 1로 설정될 수 있음. 따라서 동시에 여러개의 last_read_urgent가 1로 설정되는것은 불가능함.
+                            next_should_read_layer[0]: begin //background 1
+                                last_read_urgent[0] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= back1_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[1]: begin //background 2
+                                last_read_urgent[1] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= back2_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[2]: begin //character 1
+                                last_read_urgent[2] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= char1_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[3]: begin //character 2
+                                last_read_urgent[3] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= char2_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[4]: begin //character 3
+                                last_read_urgent[4] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= char3_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[5]: begin //character 4
+                                last_read_urgent[5] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= char4_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[6]: begin //script 
+                                last_read_urgent[6] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= script_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[7]: begin //status
+                                last_read_urgent[7] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= status_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[8]: begin //universal 1
+                                last_read_urgent[8] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= uni1_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                            next_should_read_layer[9]: begin //universal 2
+                                last_read_urgent[9] <= 1'b1;
+                                EMEM_valid <= 1;
+                                EMEM_addr[31:0] <= uni2_next_ad[31:0];
+                                EMEM_wstrb[3:0] <= 4'b0000; //읽기는 4'b0000임.
+                                EMEM_wdata[31:0] <= 0; //읽기니까 그냥 0으로 설정.
+                                EMEM_burst_en <= 1;
+                                EMEM_burst_len[7:0] <= 31; //32bit(4byte)씩 32번 연속으로 읽음.(총 128byte. 전체 128줄(64*128) 중에 16줄을 한번에 읽어옴.)
+                            end
+                        endcase
+                    end
+                    endcase
+                end
+                else if(next_should_read_layer[9:0] == 10'b0) begin 
+                    main_state <= START; //모든 FIFO가 다 채워졌으면 START 상태를 계속 유지함.
+                end
+            end
+            EMEM_READ: begin //main_state가 EMEM_READ로 가면서 EMEM_valid는 1로 설정된 상황임. 또한 should_read_layer안에 현재 읽기 시도중인 레이어가 표시되어 있음. emem_r_counter, tem_32_reg 초기화되어 있음.
+                if(EMEM_ready) begin
+                    if(emem_r_counter[7:0] == 31) begin //32번째 데이터가 왔을때.
+                        main_state <= START; //다시 start로 가서 다음 메모리 읽기를 시작함.
+                        emem_r_counter[7:0] <= 0;
+                        EMEM_valid <= 0; //전송이 완료되었으므로 valid신호를 꺼줌. 
+                        EMEM_addr[31:0] <= 0;
+                        EMEM_wstrb[3:0] <= 4'b0000;
+                        EMEM_wdata[31:0] <= 0;
+                        EMEM_burst_en <= 0;
+                        EMEM_burst_len[7:0] <= 0;
+                    end
+                    else begin
+                        main_state <= EMEM_READ;
+                        emem_r_counter[7:0] <= emem_r_counter[7:0] + 1;
+                    end
+                    
+                    if((emem_r_counter[0] == 1'b0)) begin //emem_r_counter가 0, 2, 4, 6, 8같은 짝수번째에서 tem_32_reg에 저장해두고, 1, 3, 5, 7, 9같은 홀수번째에서 BRAM에 64비트로 저장함.
+                        tem_32_reg[31:0] <= EMEM_rdata[31:0];
+                    end
+                    else if(emem_r_counter[0] == 1'b1) begin //홀수번째.
+                        case(1'b1) //여기서 그냥 next_ad[31:0]들도 같이 증가시켜 주자!!!!!!!!! 홀수번째에만 증가시키므로 8씩 증가시켜야 함!!!!!!!! 마지막인 emem_r_counter가 31일때도 마찬가지로 증가하므로 문제없음.
+                            should_read_layer[0]: begin //backgound 1. a port(write port) 이용해서 64비트씩 write 해야함.
+                                //BRAM7: addr 0-127: universal layer1, 128-255: universal layer2, 256-383: script layer, 384-511: status layer
+                                //BRAM8: addr 0-127: character layer1, 128-255: character layer2, 256-383: character layer3, 384-511: character layer4
+                                //BRAM9: addr 0-255: background layer1, 256-511: background layer2
+                                BRAM9_en_a <= 1;
+                                BRAM9_we_a <= 1;
+                                BRAM9_din_a[63:0] <= {EMEM_rdata[31:0], tem_32_reg[31:0]}; //RISC-V는 Little Endian방식이고 하위 바이트의 주소가 낮음. 
+                                BRAM9_addr_a[8:0] <= ; //0-255사이의 값이어야 하는데 나중에 front, rear 등의 레지스터랑 같이 생각하고 작성해놔야 함.
+                                back1_next_ad[31:0] <= back1_next_ad[31:0] + 8;
+                            end
+                            should_read_layer[1]: begin //background 2
+                                back2_next_ad[31:0] <= back2_next_ad[31:0] + 8;
+                            end
+                            should_read_layer[2]: begin //character 1
+                                char1_next_ad[31:0] <= char1_next_ad[31:0] + 8;
+                            end
+                            should_read_layer[3]: begin //character 2
+                                char2_next_ad[31:0] <= char2_next_ad[31:0] + 8;
+                            end
+                            should_read_layer[4]: begin //character 3
+                                char3_next_ad[31:0] <= char3_next_ad[31:0] + 8;
+                            end
+                            should_read_layer[5]: begin //character 4
+                                char4_next_ad[31:0] <= char4_next_ad[31:0] + 8;
+                            end
+                            should_read_layer[6]: begin //script 
+                                script_next_ad[31:0] <= script_next_ad[31:0] + 8;
+                            end
+                            should_read_layer[7]: begin //status
+                                status_next_ad[31:0] <= status_next_ad[31:0] + 8;
+                            end
+                            should_read_layer[8]: begin //universal 1
+                                uni1_next_ad[31:0] <= uni1_next_ad[31:0] + 8;
+                            end
+                            should_read_layer[9]: begin //universal 2
+                                uni2_next_ad[31:0] <= uni2_next_ad[31:0] + 8;
+                            end
+                        endcase
+                    end
+                end
+                else begin
+                    main_state <= EMEM_READ;
+                end
             end
         endcase
     end
