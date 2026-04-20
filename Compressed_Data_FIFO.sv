@@ -370,6 +370,17 @@ always @(*) begin
     BRAM8_read_state_next = 0;
     BRAM9_read_state_next = 0;
 
+    Background_Layer1_data[63:0] = 0;
+    Background_Layer2_data[63:0] = 0;
+    Character_Layer1_data[63:0] = 0;
+    Character_Layer2_data[63:0] = 0;
+    Character_Layer3_data[63:0] = 0;
+    Character_Layer4_data[63:0] = 0;
+    Script_Layer_data[63:0] = 0;
+    Status_Layer_data[63:0] = 0;
+    Universal_Layer1_data[63:0] = 0;
+    Universal_Layer2_data[63:0] = 0;
+
     next_should_read_layer[9:0] = 10'b0; //기본적으로 싹 0으로 설정. 이후 코드에서 비트 하나만 바꿔줄거임.
     urgent_req[9:0] = {back1_fifo_urgent, back2_fifo_urgent, char1_fifo_urgent, char2_fifo_urgent, char3_fifo_urgent, char4_fifo_urgent, script_fifo_urgent, status_fifo_urgent, uni1_fifo_urgent, uni2_fifo_urgent};
 
@@ -643,7 +654,7 @@ always @(*) begin
     endcase
 end
 
-always @(posedge clk negedge reset) begin
+always @(posedge clk negedge resetn) begin
     if(!reset) begin
         clk_counter[1:0] <= 0;
         main_state <= IDLE;
