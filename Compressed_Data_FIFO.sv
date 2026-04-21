@@ -1,6 +1,6 @@
 module Compressed_Data_FIFO( //외부 메모리에서 라운드 로빈 방식으로 burst로 데이터를 읽어와서 BRAM에 저장함. 
     input clk, //50MHz
-    input resetn, //negedge reset
+    input resetn, //negedge resetn
 
     input PPU_start, //이 신호가 들어오면 비로소 작동을 시작함. 프레임 생성 시작할때 1로 켜주면 됨. 그러면 main_state가 IDLE -> START로 변경됨. 
 
