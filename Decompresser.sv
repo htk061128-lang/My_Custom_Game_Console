@@ -92,10 +92,25 @@ wire back1_fifo_empty = (back1_fifo_front[8:0] == back1_fifo_rear[8:0]);
 
 //FSM 관련 신호 정리
 reg [3:0] back1_fifo_r_state;
+reg [3:0] back1_fifo_r_state_next;
 reg [3:0] back1_fifo_w_state;
+reg [3:0] back1_fifo_w_state_next;
 reg [3:0] back1_fifo_decompress_state;
+reg [3:0] back1_fifo_decompress_state_next;
+parameter IDLE = 0, START = 1, COMPLETE = 2;
 
 always @(*) begin
+    back1_fifo_r_state_next = back1_fifo_r_state;
+    back1_fifo_w_state_next = back1_fifo_w_state_next;
+    back1_fifo_decompress_state_next = back1_fifo_decompress_state; 
+    case(back1_fifo_r_state)
+        IDLE: begin
+        end
+        START: begin
+        end
+        COMPLETE: begin
+        end
+    endcase
 end
 
 always @(posedge clk or negedge resetn) begin
