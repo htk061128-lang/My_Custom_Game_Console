@@ -242,6 +242,12 @@ always @(*) begin
                 else begin //2 이상인 경우
                     back1_decompress_state_next = SAME_PIXEL;
                     //back1_r_8을 저장해둬야 함!!! 제어신호 하나 추가로 만들어야 함. w_ena신호로 
+                    //back1_r_8을 저장해둬야 함!!! 제어신호 하나 추가로 만들어야 함. w_ena신호로 
+                    //back1_r_8을 저장해둬야 함!!! 제어신호 하나 추가로 만들어야 함. w_ena신호로 
+                    back1_decompressed_FIFO_w_req = 1; //w_state에게 Decompressed FIFO에 쓰기요청을 부탁함. 
+                    back1_repeat_counter_dec_ena = 1;
+                    back1_w_8 = back1_r_8[7:0];
+                    back1_w_8_valid = 1;
                 end
             end
             else begin
