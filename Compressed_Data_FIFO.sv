@@ -2,6 +2,8 @@ module Compressed_Data_FIFO( //외부 메모리에서 라운드 로빈 방식으
     input clk, //50MHz
     input resetn, //negedge resetn
 
+    output [1:0] Clk_Counter, //Decompresser 모듈에 전달해줄 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3을 반복하는 카운터.
+
     input PPU_start, //이 신호가 들어오면 비로소 작동을 시작함. 프레임 생성 시작할때 1로 켜주면 됨. 그러면 main_state가 IDLE -> START로 변경됨. 
 
     //외부 메모리에서 읽어와야 할 압축된 레이어 데이터 위치. 상위 4비트는 0임.
@@ -144,6 +146,9 @@ module Compressed_Data_FIFO( //외부 메모리에서 라운드 로빈 방식으
     output reg [63:0] Universal_Layer2_data,
     output [7:0] Universal_Layer2_count
 );
+
+assign Clk_Counter[1:0] = clk_counter[1:0];
+
 assign Background_Layer1_r_master = back1_fifo_r_master;
 assign Background_Layer2_r_master = back2_fifo_r_master;
 assign Character_Layer1_r_master = char1_fifo_r_master;
@@ -409,18 +414,16 @@ always @(*) begin
     masked_req[8] = (~is_urgent_mode) ? valid_req[8] & ~last_read_basic[8] : valid_req[8] & ~last_read_urgent[8];
     masked_req[9] = (~is_urgent_mode) ? valid_req[9] & ~last_read_basic[9] : valid_req[9] & ~last_read_urgent[9];
 
-    case(1'b1)
-        (masked_req[0] == 1'b1): next_should_read_layer[0] = 1'b1;
-        (masked_req[1:0] == 2'b10): next_should_read_layer[1] = 1'b1;
-        (masked_req[2:0] == 3'b100): next_should_read_layer[2] = 1'b1;
-        (masked_req[3:0] == 4'b1000): next_should_read_layer[3] = 1'b1;
-        (masked_req[4:0] == 5'b10000): next_should_read_layer[4] = 1'b1;
-        (masked_req[5:0] == 6'b100000): next_should_read_layer[5] = 1'b1;
-        (masked_req[6:0] == 7'b1000000): next_should_read_layer[6] = 1'b1;
-        (masked_req[7:0] == 8'b10000000): next_should_read_layer[7] = 1'b1;
-        (masked_req[8:0] == 9'b100000000): next_should_read_layer[8] = 1'b1;
-        (masked_req[9:0] == 10'b1000000000): next_should_read_layer[9] = 1'b1;
-    endcase
+    if(masked_req[0] == 1'b1): next_should_read_layer[0] = 1'b1;
+    else if(masked_req[1] == 1'b1): next_should_read_layer[1] = 1'b1;
+    else if(masked_req[2] == 1'b1): next_should_read_layer[2] = 1'b1;
+    else if(masked_req[3] == 1'b1): next_should_read_layer[3] = 1'b1;
+    else if(masked_req[4] == 1'b1): next_should_read_layer[4] = 1'b1;
+    else if(masked_req[5] == 1'b1): next_should_read_layer[5] = 1'b1;
+    else if(masked_req[6] == 1'b1): next_should_read_layer[6] = 1'b1;
+    else if(masked_req[7] == 1'b1): next_should_read_layer[7] = 1'b1;
+    else if(masked_req[8] == 1'b1): next_should_read_layer[8] = 1'b1;
+    else if(masked_req[9] == 1'b1): next_should_read_layer[9] = 1'b1;
 
     round_end = (valid_req[9:0] != 10'b0 ) && (masked_req[9:0] == 10'b0); //이 신호가 1이고 is_urgent_mode가 1이면 last_read_urgent를 초기화해야 함.
 
