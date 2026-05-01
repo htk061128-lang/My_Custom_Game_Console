@@ -608,14 +608,6 @@ VL_INLINE_OPT void Vpixel_fifo_top_Decompresser::_sequent__TOP__pixel_fifo_top__
     this->__PVT__fifo_front_128 = this->__Vdly__fifo_front_128;
     this->__PVT__fifo_rear_128 = this->__Vdly__fifo_rear_128;
     this->__PVT__compressed_FIFO_reg_counter = this->__Vdly__compressed_FIFO_reg_counter;
-    this->__PVT__fifo_full_256 = (((0xffU & (IData)(this->__PVT__fifo_front_256)) 
-                                   == (0xffU & (IData)(this->__PVT__fifo_rear_256))) 
-                                  & ((1U & ((IData)(this->__PVT__fifo_front_256) 
-                                            >> 8U)) 
-                                     != (1U & ((IData)(this->__PVT__fifo_rear_256) 
-                                               >> 8U))));
-    this->__PVT__fifo_empty_256 = ((IData)(this->__PVT__fifo_front_256) 
-                                   == (IData)(this->__PVT__fifo_rear_256));
     this->__PVT__fifo_empty_128 = ((IData)(this->__PVT__fifo_front_128) 
                                    == (IData)(this->__PVT__fifo_rear_128));
     this->__PVT__fifo_full_128 = (((0x7fU & (IData)(this->__PVT__fifo_front_128)) 
@@ -7932,14 +7924,6 @@ VL_INLINE_OPT void Vpixel_fifo_top_Decompresser::_sequent__TOP__pixel_fifo_top__
     this->__PVT__fifo_front_256 = this->__Vdly__fifo_front_256;
     this->__PVT__fifo_rear_256 = this->__Vdly__fifo_rear_256;
     this->__PVT__compressed_FIFO_reg_counter = this->__Vdly__compressed_FIFO_reg_counter;
-    this->__PVT__fifo_full_128 = (((0x7fU & (IData)(this->__PVT__fifo_front_128)) 
-                                   == (0x7fU & (IData)(this->__PVT__fifo_rear_128))) 
-                                  & ((1U & ((IData)(this->__PVT__fifo_front_128) 
-                                            >> 7U)) 
-                                     != (1U & ((IData)(this->__PVT__fifo_rear_128) 
-                                               >> 7U))));
-    this->__PVT__fifo_empty_128 = ((IData)(this->__PVT__fifo_front_128) 
-                                   == (IData)(this->__PVT__fifo_rear_128));
     this->__PVT__fifo_empty_256 = ((IData)(this->__PVT__fifo_front_256) 
                                    == (IData)(this->__PVT__fifo_rear_256));
     this->__PVT__fifo_full_256 = (((0xffU & (IData)(this->__PVT__fifo_front_256)) 

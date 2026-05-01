@@ -94,20 +94,20 @@ reg [1:0] decompressed_fifo_r_state; //이거는 input으로 외부 모듈로부
 reg [1:0] decompressed_fifo_r_state_next;
 //
 
-//decompressed layer FIFO 신호 정리
+//decompressed layer FIFO 신호 정리. full, empty 신호는 BRAM_size에 따라 사용하지 않는 신호는 1로 고정!!!
 reg [8:0] fifo_front_256; //하위 8비트는 실질적인 주소인덱스(0-255)를 나타내고 상위 1비트는 상태판별(full or empty)에 사용됨 
 reg fifo_front_256_inc_ena;
 reg [8:0] fifo_rear_256; //하위 8비트는 실질적인 주소인덱스(0-255)를 나타내고 상위 1비트는 상태판별(full or empty)에 사용됨 
 reg fifo_rear_256_inc_ena;
-wire fifo_full_256 = (fifo_front_256[7:0] == fifo_rear_256[7:0]) && (fifo_front_256[8] != fifo_rear_256[8]);
-wire fifo_empty_256 = (fifo_front_256[8:0] == fifo_rear_256[8:0]);
+wire fifo_full_256 = (BRAM_size == 1) ? (fifo_front_256[7:0] == fifo_rear_256[7:0]) && (fifo_front_256[8] != fifo_rear_256[8]) : 1;
+wire fifo_empty_256 = (BRAM_size == 1) ? (fifo_front_256[8:0] == fifo_rear_256[8:0]) : 1;
 
 reg [7:0] fifo_front_128; //하위 7비트는 실질적인 주소인덱스(0-127)를 나타내고 상위 1비트는 상태판별(full or empty)에 사용됨 
 reg fifo_front_128_inc_ena;
 reg [7:0] fifo_rear_128; //하위 7비트는 실질적인 주소인덱스(0-127)를 나타내고 상위 1비트는 상태판별(full or empty)에 사용됨 
 reg fifo_rear_128_inc_ena;
-wire fifo_full_128 = (fifo_front_128[6:0] == fifo_rear_128[6:0]) && (fifo_front_128[7] != fifo_rear_128[7]);
-wire fifo_empty_128 = (fifo_front_128[7:0] == fifo_rear_128[7:0]);
+wire fifo_full_128 = (BRAM_size == 0) ? (fifo_front_128[6:0] == fifo_rear_128[6:0]) && (fifo_front_128[7] != fifo_rear_128[7]) : 1;
+wire fifo_empty_128 = (BRAM_size == 0) ? (fifo_front_128[7:0] == fifo_rear_128[7:0]) : 1;
 //
 
 //FSM 관련 신호 정리

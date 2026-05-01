@@ -121,6 +121,7 @@ int main(int argc, char **argv)
         dut->clk = 1;
         dut->eval();
         trace->dump(main_time++);
+        if(dut->BRAM12_en_a) printf("BRAM9 write\n");
 
         // ----------------------------------------------------
         // [2단계] 클럭 하강 에지 (입력 신호 주입)
