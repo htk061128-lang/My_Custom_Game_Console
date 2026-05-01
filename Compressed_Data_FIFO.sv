@@ -414,16 +414,16 @@ always @(*) begin
     masked_req[8] = (~is_urgent_mode) ? valid_req[8] & ~last_read_basic[8] : valid_req[8] & ~last_read_urgent[8];
     masked_req[9] = (~is_urgent_mode) ? valid_req[9] & ~last_read_basic[9] : valid_req[9] & ~last_read_urgent[9];
 
-    if(masked_req[0] == 1'b1): next_should_read_layer[0] = 1'b1;
-    else if(masked_req[1] == 1'b1): next_should_read_layer[1] = 1'b1;
-    else if(masked_req[2] == 1'b1): next_should_read_layer[2] = 1'b1;
-    else if(masked_req[3] == 1'b1): next_should_read_layer[3] = 1'b1;
-    else if(masked_req[4] == 1'b1): next_should_read_layer[4] = 1'b1;
-    else if(masked_req[5] == 1'b1): next_should_read_layer[5] = 1'b1;
-    else if(masked_req[6] == 1'b1): next_should_read_layer[6] = 1'b1;
-    else if(masked_req[7] == 1'b1): next_should_read_layer[7] = 1'b1;
-    else if(masked_req[8] == 1'b1): next_should_read_layer[8] = 1'b1;
-    else if(masked_req[9] == 1'b1): next_should_read_layer[9] = 1'b1;
+    if(masked_req[0] == 1'b1) next_should_read_layer[0] = 1'b1;
+    else if(masked_req[1] == 1'b1) next_should_read_layer[1] = 1'b1;
+    else if(masked_req[2] == 1'b1) next_should_read_layer[2] = 1'b1;
+    else if(masked_req[3] == 1'b1) next_should_read_layer[3] = 1'b1;
+    else if(masked_req[4] == 1'b1) next_should_read_layer[4] = 1'b1;
+    else if(masked_req[5] == 1'b1) next_should_read_layer[5] = 1'b1;
+    else if(masked_req[6] == 1'b1) next_should_read_layer[6] = 1'b1;
+    else if(masked_req[7] == 1'b1) next_should_read_layer[7] = 1'b1;
+    else if(masked_req[8] == 1'b1) next_should_read_layer[8] = 1'b1;
+    else if(masked_req[9] == 1'b1) next_should_read_layer[9] = 1'b1;
 
     round_end = (valid_req[9:0] != 10'b0 ) && (masked_req[9:0] == 10'b0); //이 신호가 1이고 is_urgent_mode가 1이면 last_read_urgent를 초기화해야 함.
 
