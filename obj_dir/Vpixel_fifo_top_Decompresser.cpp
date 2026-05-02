@@ -1152,18 +1152,18 @@ VL_INLINE_OPT void Vpixel_fifo_top_Decompresser::_sequent__TOP__pixel_fifo_top__
             this->__PVT__fifo_rear_128_inc_ena = 1U;
         }
     }
-    this->BRAM10_we_a = 0U;
-    if ((0U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_128)))) {
-            this->BRAM10_we_a = 1U;
-        }
-    }
     this->BRAM10_en_a = 0U;
     if ((0U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
         if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
              & (~ (IData)(this->__PVT__fifo_full_128)))) {
             this->BRAM10_en_a = 1U;
+        }
+    }
+    this->BRAM10_we_a = 0U;
+    if ((0U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_128)))) {
+            this->BRAM10_we_a = 1U;
         }
     }
     this->BRAM10_addr_a = 0U;
@@ -2027,18 +2027,18 @@ VL_INLINE_OPT void Vpixel_fifo_top_Decompresser::_sequent__TOP__pixel_fifo_top__
             this->__PVT__fifo_rear_128_inc_ena = 1U;
         }
     }
-    this->BRAM10_we_a = 0U;
-    if ((1U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_128)))) {
-            this->BRAM10_we_a = 1U;
-        }
-    }
     this->BRAM10_en_a = 0U;
     if ((1U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
         if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
              & (~ (IData)(this->__PVT__fifo_full_128)))) {
             this->BRAM10_en_a = 1U;
+        }
+    }
+    this->BRAM10_we_a = 0U;
+    if ((1U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_128)))) {
+            this->BRAM10_we_a = 1U;
         }
     }
     this->BRAM10_addr_a = 0U;
@@ -2906,18 +2906,18 @@ VL_INLINE_OPT void Vpixel_fifo_top_Decompresser::_sequent__TOP__pixel_fifo_top__
             this->__PVT__fifo_rear_128_inc_ena = 1U;
         }
     }
-    this->BRAM10_we_a = 0U;
-    if ((2U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_128)))) {
-            this->BRAM10_we_a = 1U;
-        }
-    }
     this->BRAM10_en_a = 0U;
     if ((2U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
         if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
              & (~ (IData)(this->__PVT__fifo_full_128)))) {
             this->BRAM10_en_a = 1U;
+        }
+    }
+    this->BRAM10_we_a = 0U;
+    if ((2U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_128)))) {
+            this->BRAM10_we_a = 1U;
         }
     }
     this->BRAM10_addr_a = 0U;
@@ -3781,18 +3781,18 @@ VL_INLINE_OPT void Vpixel_fifo_top_Decompresser::_sequent__TOP__pixel_fifo_top__
             this->__PVT__fifo_rear_128_inc_ena = 1U;
         }
     }
-    this->BRAM10_we_a = 0U;
-    if ((3U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_128)))) {
-            this->BRAM10_we_a = 1U;
-        }
-    }
     this->BRAM10_en_a = 0U;
     if ((3U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
         if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
              & (~ (IData)(this->__PVT__fifo_full_128)))) {
             this->BRAM10_en_a = 1U;
+        }
+    }
+    this->BRAM10_we_a = 0U;
+    if ((3U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter))) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_128)))) {
+            this->BRAM10_we_a = 1U;
         }
     }
     this->BRAM10_addr_a = 0U;

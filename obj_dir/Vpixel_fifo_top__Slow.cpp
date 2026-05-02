@@ -1171,14 +1171,14 @@ void Vpixel_fifo_top::_settle__TOP__1(Vpixel_fifo_top__Syms* __restrict vlSymsp)
                                           + (0x7fU 
                                              & (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__uni2_fifo_front))));
     }
-    vlTOPp->BRAM10_we_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_we_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_we_a)) 
-                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_we_a)) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_we_a));
     vlTOPp->BRAM10_en_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_en_a) 
                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_en_a)) 
                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_en_a)) 
                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_en_a));
+    vlTOPp->BRAM10_we_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_we_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_we_a)) 
+                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_we_a)) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_we_a));
     vlTOPp->BRAM10_addr_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_addr_a) 
                                | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_addr_a)) 
                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_addr_a)) 

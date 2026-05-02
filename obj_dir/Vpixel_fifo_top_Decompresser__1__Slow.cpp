@@ -533,18 +533,18 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
     VL_DEBUG_IF(VL_DBG_MSGF("+        Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_bg2__10\n"); );
     Vpixel_fifo_top* const __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
     // Body
+    this->BRAM11_addr_b = 0U;
     this->BRAM11_en_b = 0U;
+    this->BRAM10_addr_b = 0U;
+    this->BRAM10_en_b = 0U;
     this->BRAM11_addr_a = 0U;
     this->BRAM11_din_a = 0ULL;
     this->BRAM11_en_a = 0U;
-    this->BRAM11_addr_b = 0U;
-    this->BRAM10_en_b = 0U;
-    this->BRAM10_we_a = 0U;
-    this->BRAM10_en_a = 0U;
-    this->BRAM10_din_a = 0ULL;
-    this->BRAM10_addr_a = 0U;
-    this->BRAM10_addr_b = 0U;
     this->BRAM11_we_a = 0U;
+    this->BRAM10_addr_a = 0U;
+    this->BRAM10_din_a = 0ULL;
+    this->BRAM10_en_a = 0U;
+    this->BRAM10_we_a = 0U;
     this->__PVT__fifo_rear_128_inc_ena = 0U;
     this->__PVT__fifo_front_128_inc_ena = 0U;
     this->Decompressed_FIFO_r_master = 0U;

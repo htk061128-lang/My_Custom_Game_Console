@@ -79,7 +79,8 @@ int main(int argc, char **argv)
     // 32비트 단위로 저장되므로, 레이어 1의 시작 주소를 0이라고 가정하고 데이터를 넣습니다.
     ddr3_memory[0] = 0x00000000; //주소 32'h00000000에서는 데이터를 0으로 설정해서 특수 제어바이트 이므로 바로 읽기가 중단됨.
     ddr3_memory[1] = 0xAA8AFF8A; //FF 10번 반복 후 AA 10번 반복.
-    ddr3_memory[2] = 0x00000000;
+    ddr3_memory[2] = 0xAA8AFF8A; //FF 10번 반복 후 AA 10번 반복.
+    ddr3_memory[3] = 0x00000000;
 
     // 외부 메모리 상태 제어 변수
     int emem_state = 0; // 0: IDLE, 1: BURST_READING
@@ -93,7 +94,7 @@ int main(int argc, char **argv)
 
     // 외부 메모리 주소 초기 세팅 (테스트용)
     dut->Background_Layer1_Address = 0x00000004; //이것만 테스트할 예정.
-    dut->Background_Layer2_Address = 0x00000000;
+    dut->Background_Layer2_Address = 0x00000008;
     dut->Character_Layer1_Address = 0x00000000;
     dut->Character_Layer2_Address = 0x00000000;
     dut->Character_Layer3_Address = 0x00000000;
@@ -180,7 +181,12 @@ int main(int argc, char **argv)
         if (dut->BRAM11_en_b) dut->BRAM11_dout_b = bram11[dut->BRAM11_addr_b];
         if (dut->BRAM12_en_b) dut->BRAM12_dout_b = bram12[dut->BRAM12_addr_b];
 
-
+        if(dut->BRAM9_en_b) {
+            std::cout << "[SUCCESS] BRAM9 READ REQUEST!"<< std::endl;
+        }
+        if(dut->BRAM12_en_a && dut->BRAM12_we_a) {
+            std::cout << "[SUCCESS] BRAM12 WRITE REQUEST!"<< std::endl;
+        }
         if(bram12[0] > 0) {
             std::cout << "[SUCCESS] BRAM12 ADDR 0 WRITTEN! DATA: 0x" << std::hex << std::uppercase << bram12[0] << std::endl;
         }
