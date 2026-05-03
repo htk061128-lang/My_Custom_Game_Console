@@ -62,7 +62,6 @@ VL_MODULE(Vpixel_fifo_top_Decompresser) {
     // LOCAL SIGNALS
     CData/*0:0*/ __PVT__tdm_match;
     CData/*0:0*/ __PVT__decompressed_fifo_w_end;
-    CData/*0:0*/ __PVT__compressed_fifo_r_ena;
     CData/*0:0*/ __PVT__compressed_fifo_r_state;
     CData/*0:0*/ __PVT__compressed_fifo_r_state_next;
     CData/*0:0*/ __PVT__decompressed_fifo_w_ena;
@@ -93,7 +92,6 @@ VL_MODULE(Vpixel_fifo_top_Decompresser) {
     CData/*7:0*/ __PVT__decompressed_FIFO_reg_wstrb;
     CData/*0:0*/ __PVT__decompressed_FIFO_reg_counter_reset;
     CData/*7:0*/ __PVT__r_8;
-    CData/*0:0*/ __PVT__r_8_valid;
     CData/*7:0*/ __PVT__r_8_reg;
     CData/*0:0*/ __PVT__r_8_reg_w_ena;
     CData/*6:0*/ __PVT__repeat_counter;
@@ -105,11 +103,9 @@ VL_MODULE(Vpixel_fifo_top_Decompresser) {
     CData/*7:0*/ __PVT__pixel_reg;
     CData/*0:0*/ __PVT__pixel_reg_w_ena;
     CData/*0:0*/ __PVT__compressed_FIFO_r_req;
-    CData/*0:0*/ __PVT__r_end_req;
     CData/*7:0*/ __PVT__w_8;
     CData/*0:0*/ __PVT__w_8_valid;
     CData/*0:0*/ __PVT__w_8_ready;
-    CData/*0:0*/ __PVT__w_end_req;
     SData/*8:0*/ __PVT__fifo_front_256;
     SData/*8:0*/ __PVT__fifo_rear_256;
     QData/*63:0*/ __PVT__compressed_fifo_r_data;
@@ -169,25 +165,25 @@ VL_MODULE(Vpixel_fifo_top_Decompresser) {
     void _sequent__TOP__pixel_fifo_top__DOT__u_decomp_uni1__21(Vpixel_fifo_top__Syms* __restrict vlSymsp);
     void _sequent__TOP__pixel_fifo_top__DOT__u_decomp_uni1__31(Vpixel_fifo_top__Syms* __restrict vlSymsp);
     void _sequent__TOP__pixel_fifo_top__DOT__u_decomp_uni2__32(Vpixel_fifo_top__Syms* __restrict vlSymsp);
-    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_bg1__11(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
+    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_bg1__20(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     void _settle__TOP__pixel_fifo_top__DOT__u_decomp_bg1__9(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     void _settle__TOP__pixel_fifo_top__DOT__u_decomp_bg2__10(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_bg2__12(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch1__20(Vpixel_fifo_top__Syms* __restrict vlSymsp);
+    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_bg2__19(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
+    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch1__18(Vpixel_fifo_top__Syms* __restrict vlSymsp);
     void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch1__5(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch2__19(Vpixel_fifo_top__Syms* __restrict vlSymsp);
+    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch2__17(Vpixel_fifo_top__Syms* __restrict vlSymsp);
     void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch2__6(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch3__18(Vpixel_fifo_top__Syms* __restrict vlSymsp);
+    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch3__16(Vpixel_fifo_top__Syms* __restrict vlSymsp);
     void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch3__7(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch4__17(Vpixel_fifo_top__Syms* __restrict vlSymsp);
+    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch4__15(Vpixel_fifo_top__Syms* __restrict vlSymsp);
     void _settle__TOP__pixel_fifo_top__DOT__u_decomp_ch4__8(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_script__16(Vpixel_fifo_top__Syms* __restrict vlSymsp);
+    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_script__14(Vpixel_fifo_top__Syms* __restrict vlSymsp);
     void _settle__TOP__pixel_fifo_top__DOT__u_decomp_script__3(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_status__15(Vpixel_fifo_top__Syms* __restrict vlSymsp);
+    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_status__13(Vpixel_fifo_top__Syms* __restrict vlSymsp);
     void _settle__TOP__pixel_fifo_top__DOT__u_decomp_status__4(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
     void _settle__TOP__pixel_fifo_top__DOT__u_decomp_uni1__1(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
-    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_uni1__14(Vpixel_fifo_top__Syms* __restrict vlSymsp);
-    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_uni2__13(Vpixel_fifo_top__Syms* __restrict vlSymsp);
+    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_uni1__12(Vpixel_fifo_top__Syms* __restrict vlSymsp);
+    void _settle__TOP__pixel_fifo_top__DOT__u_decomp_uni2__11(Vpixel_fifo_top__Syms* __restrict vlSymsp);
     void _settle__TOP__pixel_fifo_top__DOT__u_decomp_uni2__2(Vpixel_fifo_top__Syms* __restrict vlSymsp) VL_ATTR_COLD;
   private:
     static void traceInit(void* userp, VerilatedVcd* tracep, uint32_t code) VL_ATTR_COLD;

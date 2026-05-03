@@ -2,6 +2,7 @@
 #include <memory>
 #include <random>
 #include <cstdint>
+#include <map>
 #include <verilated.h>       // Verilator 코어 라이브러리
 #include <verilated_vcd_c.h> // 파형 덤프(VCD)를 위한 라이브러리
 
@@ -9,6 +10,7 @@
 #include "Vpixel_fifo_top.h"
 
 // verilator -Wall --trace -cc pixel_fifo_top.sv --exe Compressed_Data_FIFO_tb.cpp --build && ./obj_dir/Vpixel_fifo_top
+// 오류 2종류만 무시: verilator -Wall -Wno-PINCONNECTEMPTY -Wno-UNUSED --trace -cc pixel_fifo_top.sv --exe Compressed_Data_FIFO_tb.cpp --build && ./obj_dir/Vpixel_fifo_top
 // 오류무시: verilator -Wall -Wno-fatal --trace -cc pixel_fifo_top.sv --exe Compressed_Data_FIFO_tb.cpp --build && ./obj_dir/Vpixel_fifo_top
 vluint64_t main_time = 0; // 전체 시뮬레이션 타임스텝 기록용
 
@@ -59,7 +61,7 @@ int main(int argc, char **argv)
 
     auto trace = std::make_unique<VerilatedVcdC>();
     dut->trace(trace.get(), 99); // top -> dut로 수정
-    trace->open("waveform.vcd"); 
+    trace->open("waveform1.vcd"); 
 
     // 1. 내부 BRAM 배열 선언
     uint64_t bram7[512] = {0};
@@ -94,7 +96,7 @@ int main(int argc, char **argv)
 
     // 외부 메모리 주소 초기 세팅 (테스트용)
     dut->Background_Layer1_Address = 0x00000004; //이것만 테스트할 예정.
-    dut->Background_Layer2_Address = 0x00000008;
+    dut->Background_Layer2_Address = 0x00000000;
     dut->Character_Layer1_Address = 0x00000000;
     dut->Character_Layer2_Address = 0x00000000;
     dut->Character_Layer3_Address = 0x00000000;
@@ -104,8 +106,11 @@ int main(int argc, char **argv)
     dut->Universal_Layer1_Address = 0x00000000;
     dut->Universal_Layer2_Address = 0x00000000;
 
+    dut->eval();
+    trace->dump(main_time++);
+
     // 테스트가 충분히 진행되도록 시간 증가 (500 -> 5000)
-    while (!Verilated::gotFinish() && main_time < 10000)
+    while (!Verilated::gotFinish() && main_time < 1000)
     {
         // 리셋 해제
         if (main_time > 10) {
@@ -113,8 +118,8 @@ int main(int argc, char **argv)
         }
 
         // 테스트를 위해 특정 시간에 PPU_start 신호 인가
-        if (main_time == 20) dut->PPU_start = 1;
-        if (main_time == 22) dut->PPU_start = 0; // 1클럭 펄스
+        if (main_time == 21) dut->PPU_start = 1;
+        if (main_time == 23) dut->PPU_start = 0; // 1클럭 펄스
 
         // ----------------------------------------------------
         // [1단계] 클럭 상승 에지 (로직 평가)
@@ -164,7 +169,7 @@ int main(int argc, char **argv)
             }
         }
         // ========================================================
-        dut->eval();
+        dut->eval(); //여기서 eval()을 호출해서 조합회로로 인해서 BRAM 신호가 즉시 output으로 나오도록 해야 함.
         // --- BRAM 쓰기 동작 ---
         if (dut->BRAM7_en_a && dut->BRAM7_we_a) bram7[dut->BRAM7_addr_a] = dut->BRAM7_din_a;
         if (dut->BRAM8_en_a && dut->BRAM8_we_a) bram8[dut->BRAM8_addr_a] = dut->BRAM8_din_a;
@@ -193,6 +198,7 @@ int main(int argc, char **argv)
         if(bram9[0] > 0) {
             //std::cout << "[SUCCESS] BRAM9 ADDR 0 WRITTEN! DATA: 0x" << std::hex << std::uppercase << bram9[0] << std::endl;
         }
+        dut->eval();
         trace->dump(main_time++); // 반 클럭 진행 완료 기록
     }
 

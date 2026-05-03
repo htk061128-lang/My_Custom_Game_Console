@@ -83,12 +83,12 @@ wire compressed_fifo_r_end = tdm_match && (compressed_fifo_r_ena && (Compressed_
 wire decompressed_fifo_w_end = tdm_match && (decompressed_fifo_w_ena && ((~BRAM_size & ~fifo_full_128) || (BRAM_size & ~fifo_full_256))); //이 값이 1이면 클럭에지떄 해당 BRAM에 쓰기가 일어남.
 
 //r_state, w_state가 사용할 인터페이스. 여기있는 신호만 FSM에서 바꿔줘야 함. 나머지는 알아서 처리되게 만들었음.front, rear 이런거 건들일 필요없음.
-reg compressed_fifo_r_ena; //이 값은 r_end가 올때까지 1로 유지해야 함. 둘다 1인 클럭에지때 r_ena를 내려주면 됨.
+wire compressed_fifo_r_ena; //이 값은 r_end가 올때까지 1로 유지해야 함. 둘다 1인 클럭에지때 r_ena를 내려주면 됨.
 reg [63:0] compressed_fifo_r_data;
 reg compressed_fifo_r_state;
 reg compressed_fifo_r_state_next;
 
-reg decompressed_fifo_w_ena;
+wire decompressed_fifo_w_ena;
 reg [63:0] decompressed_fifo_w_data;
 reg [1:0] decompressed_fifo_r_state; //이거는 input으로 외부 모듈로부터 Decompressed FIFO 읽기요청이 있을때 해당하는 BRAM 출력에 연결하기 위해 사용하는 FSM임. 
 reg [1:0] decompressed_fifo_r_state_next;
@@ -132,7 +132,7 @@ reg [7:0] decompressed_FIFO_reg_wstrb; //8개 비트중에서 1로 설정된 위
 reg decompressed_FIFO_reg_counter_reset;
 
 reg [7:0] r_8; //r_64를 4바이트로 나눠서 1바이트만 decompress_state로 보낼 예정.
-reg r_8_valid; //이 값이 1일때의 r_8은 유효한 값임. 클럭에지때 0으로 다시 내려야 함!!!! 아니면 연속된 값이 전달된걸로 취급함.
+wire r_8_valid; //이 값이 1일때의 r_8은 유효한 값임. 클럭에지때 0으로 다시 내려야 함!!!! 아니면 연속된 값이 전달된걸로 취급함.
 reg [7:0] r_8_reg; //r_8을 임시로 저장할 레지스터
 reg r_8_reg_w_ena;
 
@@ -147,14 +147,25 @@ reg unrepeat_counter_dec_ena; //이 신호가 1이면 클럭에지때 unrepeat_c
 reg [7:0] pixel_reg; //픽셀바이트를 일시적으로 저장할 레지스터.
 reg pixel_reg_w_ena; //이 신호가 1이면 클럭에지때 r_8(픽셀값)[7:0]을 저장함. counter_w_ena는 하위 7비트만 저장하지만 이 신호는 8비트 전부 저장함.
 
-reg compressed_FIFO_r_req; //decompress_state가 r_state에게 보낼 신호. r_state는 이 신호를 받으면 FIFO에서 데이터를 읽어올 예정.
-reg decompressed_FIFO_w_req; //decompress_state가 w_state에게 보낼 신호.w_state는 이 신호를 받아서 FIFO에 데이터를 저장할 예정.
-reg r_end_req; //decompress_state가 데이터의 끝을 알리는 특수제어바이트를 읽으면 이 신호를 보내고, r_state가 Compressed_FIFO_ena를 0으로 내려주고 COMPLETE로 이동해야 함.
+wire compressed_FIFO_r_req; //decompress_state가 r_state에게 보낼 신호. r_state는 이 신호를 받으면 FIFO에서 데이터를 읽어올 예정.
+wire r_end_req; //decompress_state가 데이터의 끝을 알리는 특수제어바이트를 읽으면 이 신호를 보내고, r_state가 Compressed_FIFO_ena를 0으로 내려주고 COMPLETE로 이동해야 함.
 reg [7:0] w_8; //decompress_state가 w_state에게 보낼 신호. w_state가 이 신호를 받아서 64비트로 모아서 Decompressed FIFO에 넣어야 함.
-reg w_8_valid; //클럭에지때 0으로 다시 내려야 함!!!! 아니면 연속된 값이 전달된걸로 취급함. 따라서 이 신호는 1사이클만 유지되며 w_state가 바로 포착해야 함.
-reg w_8_ready; //w_8_valid와 w_8을 주고 w_8_ready가 올때까지 decompress_state는 대기해야 함.
-reg w_end_req; //decompress_state가 모든 데이터를 다 썼다면 이 신호를 1로 올려서 w_state를 COMPLETE 상태로 올려줘야 함.
+wire w_8_valid; //클럭에지때 0으로 다시 내려야 함!!!! 아니면 연속된 값이 전달된걸로 취급함. 따라서 이 신호는 1사이클만 유지되며 w_state가 바로 포착해야 함.
+wire w_8_ready; //w_8_valid와 w_8을 주고 w_8_ready가 올때까지 decompress_state는 대기해야 함.
+wire w_end_req; //decompress_state가 모든 데이터를 다 썼다면 이 신호를 1로 올려서 w_state를 COMPLETE 상태로 올려줘야 함.
 //
+
+//FSM 간의 handshake 신호들을 전부 독립된 assign문으로 분리했음. always@(*)안에 넣으니까 작동을 안함....
+assign r_end_req = (decompress_state == COMPLETE);
+assign w_end_req = (decompress_state == COMPLETE);
+assign w_8_valid = (decompress_state == SAME_PIXEL) | (decompress_state == REPEAT_DELAY) | (decompress_state == UNREPEAT_DELAY) | ((decompress_state == PIXEL_UNREPEAT | decompress_state == PIXEL_REPEAT) && (r_8_valid));
+assign compressed_FIFO_r_req = (decompress_state == START) | (decompress_state == PIXEL_UNREPEAT) | (decompress_state == PIXEL_REPEAT);
+
+assign r_8_valid = compressed_FIFO_r_req && (r_state == READ);
+assign compressed_fifo_r_ena = (r_state == START);
+
+assign w_8_ready = ((w_state == START) && (w_8_valid) && ((decompressed_FIFO_reg_counter[2:0] < 7) || (decompressed_FIFO_reg_counter[2:0] == 7 && decompressed_fifo_w_end))) || (w_state == DELAY && decompressed_fifo_w_end);
+assign decompressed_fifo_w_ena = ((w_state == START) && (decompressed_FIFO_reg_counter[2:0] == 7) && (w_8_valid)) || (w_state == DELAY) || (w_state == LAST_WRITE);
 
 always @(*) begin
     decompress_state_next = decompress_state; 
@@ -166,14 +177,13 @@ always @(*) begin
 
     pixel_reg_w_ena = 0;
 
-    compressed_FIFO_r_req = 0;
-    decompressed_FIFO_w_req = 0;
+    //compressed_FIFO_r_req = 0;
 
     r_8_reg_w_ena = 0;
-    r_end_req = 0;
+    //r_end_req = 0;
     w_8 = 0;
-    w_8_valid = 0;
-    w_end_req = 0;
+    //w_8_valid = 0;
+    //w_end_req = 0;
 
 
     case(decompress_state)
@@ -186,7 +196,7 @@ always @(*) begin
             end
         end
         START: begin
-            compressed_FIFO_r_req = 1;
+            //compressed_FIFO_r_req = 1;
             if(r_8_valid && r_8[6:0] == 7'b0) begin //8'b10000000, 8'b000000000를 읽었다면, 즉 특수제어바이트일때.
                 decompress_state_next = COMPLETE;
             end
@@ -207,10 +217,10 @@ always @(*) begin
             end
         end
         PIXEL_UNREPEAT: begin
-            compressed_FIFO_r_req = 1;
+            //compressed_FIFO_r_req = 1;
             if(r_8_valid) begin
                 w_8 = r_8[7:0]; //w_state에 쓰기요청.
-                w_8_valid = 1;
+                //w_8_valid = 1;
                 r_8_reg_w_ena = 1; //r_8을 r_8_reg에 저장함. 
                 if(w_8_ready == 1) begin //바로 ready가 오면 
                     decompress_state_next = (unrepeat_counter[6:0] == 1) ? START : PIXEL_UNREPEAT;
@@ -226,7 +236,7 @@ always @(*) begin
         end
         UNREPEAT_DELAY: begin
             w_8 = r_8_reg[7:0];
-            w_8_valid = 1;
+            //w_8_valid = 1;
             if(w_8_ready) begin
                 if(unrepeat_counter[6:0] == 1) begin
                     unrepeat_counter_dec_ena = 1; //state가 START로 가면서 unrepeat_counter는 0으로 설정됨(초기화)
@@ -242,10 +252,10 @@ always @(*) begin
             end
         end
         PIXEL_REPEAT: begin
-            compressed_FIFO_r_req = 1;
+            //compressed_FIFO_r_req = 1;
             if(r_8_valid) begin
                 w_8 = r_8[7:0]; //w_state에 쓰기요청. 
-                w_8_valid = 1;
+                //w_8_valid = 1;
                 r_8_reg_w_ena = 1; //r_8을 레지스터에 저장함.
                 pixel_reg_w_ena = 1; //r_8을 pixel_reg[7:0]에 저장함.
                 if(w_8_ready) begin //바로 w_8_ready가 온다면.
@@ -268,7 +278,7 @@ always @(*) begin
         end
         REPEAT_DELAY: begin
             w_8 = r_8_reg[7:0]; //w_state에 쓰기요청. 
-            w_8_valid = 1;
+            //w_8_valid = 1;
             if(w_8_ready) begin
                 if(repeat_counter[6:0] == 1) begin
                     repeat_counter_dec_ena = 1;
@@ -285,7 +295,7 @@ always @(*) begin
         end
         SAME_PIXEL: begin
             w_8[7:0] = pixel_reg[7:0];
-            w_8_valid = 1;
+            //w_8_valid = 1;
             if(w_8_ready) begin
                 if(repeat_counter[6:0] == 1) begin
                     repeat_counter_dec_ena = 1;
@@ -301,8 +311,8 @@ always @(*) begin
             end
         end
         COMPLETE: begin
-            r_end_req = 1; //이 신호를 1로 유지시켜주면 r_state가 compressed FIFO에게 ena 신호를 0으로 바꿔주면서 자신도 COMPLETE로 이동해야 함.
-            w_end_req = 1;
+            //r_end_req = 1; //이 신호를 1로 유지시켜주면 r_state가 compressed FIFO에게 ena 신호를 0으로 바꿔주면서 자신도 COMPLETE로 이동해야 함.
+            //w_end_req = 1;
             if(PPU_start == 0) begin
                 decompress_state_next = IDLE; //PPU_start가 0이면 IDLE로 이동해서 다시 PPU_start가 1이 될때까지 대기함.
             end
@@ -389,6 +399,8 @@ always @(*) begin
                     BRAM12_din_a[63:0] = decompressed_fifo_w_data[63:0];
                     BRAM12_addr_a[8:0] = (BRAM_size == 1) ? BRAM_base[8:0] + {1'b0, fifo_rear_256[7:0]}: BRAM_base[8:0] + {2'b00, fifo_rear_128[6:0]};
                 end
+                default: begin
+                end
             endcase
         end
         if(Decompressed_FIFO_dequeue && ((~BRAM_size & ~fifo_empty_128) || (BRAM_size & ~fifo_empty_256))) begin
@@ -415,6 +427,8 @@ always @(*) begin
                     BRAM12_en_b = 1;
                     BRAM12_addr_b[8:0] = (BRAM_size == 1) ? BRAM_base[8:0] + {1'b0, fifo_front_256[7:0]} : BRAM_base[8:0] + {2'b0, fifo_front_128[6:0]};
                     decompressed_fifo_r_state_next = 3;
+                end
+                default: begin
                 end
             endcase
         end
@@ -444,13 +458,13 @@ end
 always @(*) begin
     r_state_next = r_state;
     r_8[7:0] = 0;
-    r_8_valid = 0;
+    //r_8_valid = 0;
 
     compressed_FIFO_reg_counter_reset = 0;
     compressed_FIFO_reg_counter_inc_ena = 0;
     compressed_FIFO_reg_64_w_ena = 0;
 
-    compressed_fifo_r_ena = 0;
+    //compressed_fifo_r_ena = 0;
 
     Compressed_FIFO_ena = 1; //기본값을 1로 설정해서 Compressed_Data_FIFO가 외부 메모리에서 값을 읽어오는것을 활성화 함. COMPLETE 상태에서 0으로 꺼줌.
 
@@ -458,14 +472,14 @@ always @(*) begin
         IDLE: begin
             if(PPU_start) begin 
                 r_state_next = START; //PPU_start가 오면 START로 이동함. 
-                compressed_FIFO_reg_counter_reset = 1;
+                compressed_FIFO_reg_counter_reset = 1; //counter 리셋 필수임!! 중간에 바로 COMPLETE로 갈 수도 있기 때문.
             end
             else begin
                 r_state_next = IDLE;
             end
         end
         START: begin
-            compressed_fifo_r_ena = 1; //일단 바로 Compressed FIFO를 읽기를 시도함.
+            //compressed_fifo_r_ena = 1; //일단 바로 Compressed FIFO를 읽기를 시도함.
             if(r_end_req) begin
                 r_state_next = COMPLETE;
             end
@@ -479,14 +493,14 @@ always @(*) begin
         WAIT_DATA: begin //r_state가 클럭에지때 WAIT_DATA로 가는 동시에 compressed_fifo_r_data[63:0]가 나옴.
             r_state_next = READ;
             compressed_FIFO_reg_64_w_ena = 1;
-            if(compressed_FIFO_r_req) begin
-                r_8[7:0] = compressed_fifo_r_data[7:0];
-                r_8_valid = 1;
-                compressed_FIFO_reg_counter_inc_ena = 1; //클럭에지떄 counter는 1이 됨.
-            end
             if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
                 r_state_next = COMPLETE;
             end
+            /*else if(compressed_FIFO_r_req) begin
+                r_8[7:0] = compressed_fifo_r_data[7:0];
+                //r_8_valid = 1;
+                compressed_FIFO_reg_counter_inc_ena = 1; //클럭에지떄 counter는 1이 됨.
+            end*/
         end
         READ: begin //r_state가 클럭에지때 READ로 가는 동시에 compressed_fifo_r_data[63:0]가 나옴.
             case(compressed_FIFO_reg_counter[2:0])
@@ -494,91 +508,73 @@ always @(*) begin
                     r_state_next = READ;
                     if(compressed_FIFO_r_req) begin
                         r_8[7:0] = compressed_FIFO_reg_64[7:0];
-                        r_8_valid = 1;
+                        //r_8_valid = 1;
                         compressed_FIFO_reg_counter_inc_ena = 1; //클럭에지떄 counter는 1이 됨.
-                    end
-                    if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
-                        r_state_next = COMPLETE;
                     end
                 end
                 1: begin
                     r_state_next = READ;
                     if(compressed_FIFO_r_req) begin
                         r_8[7:0] = compressed_FIFO_reg_64[15:8];
-                        r_8_valid = 1;
+                        //r_8_valid = 1;
                         compressed_FIFO_reg_counter_inc_ena = 1; //클럭에지떄 counter는 2이 됨.
-                    end
-                    if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
-                        r_state_next = COMPLETE;
                     end
                 end
                 2: begin
                     r_state_next = READ;
                     if(compressed_FIFO_r_req) begin
                         r_8[7:0] = compressed_FIFO_reg_64[23:16];
-                        r_8_valid = 1;
+                        //r_8_valid = 1;
                         compressed_FIFO_reg_counter_inc_ena = 1; //클럭에지떄 counter는 3이 됨.
-                    end
-                    if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
-                        r_state_next = COMPLETE;
                     end
                 end
                 3: begin
                     r_state_next = READ;
                     if(compressed_FIFO_r_req) begin
                         r_8[7:0] = compressed_FIFO_reg_64[31:24];
-                        r_8_valid = 1;
+                        //r_8_valid = 1;
                         compressed_FIFO_reg_counter_inc_ena = 1; //클럭에지떄 counter는 4이 됨.
-                    end
-                    if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
-                        r_state_next = COMPLETE;
                     end
                 end
                 4: begin
                     r_state_next = READ;
                     if(compressed_FIFO_r_req) begin
                         r_8[7:0] = compressed_FIFO_reg_64[39:32];
-                        r_8_valid = 1;
+                        //r_8_valid = 1;
                         compressed_FIFO_reg_counter_inc_ena = 1; //클럭에지떄 counter는 5이 됨.
-                    end
-                    if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
-                        r_state_next = COMPLETE;
                     end
                 end
                 5: begin
                     r_state_next = READ;
                     if(compressed_FIFO_r_req) begin
                         r_8[7:0] = compressed_FIFO_reg_64[47:40];
-                        r_8_valid = 1;
+                        //r_8_valid = 1;
                         compressed_FIFO_reg_counter_inc_ena = 1; //클럭에지떄 counter는 6이 됨.
-                    end
-                    if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
-                        r_state_next = COMPLETE;
                     end
                 end
                 6: begin
                     r_state_next = READ;
                     if(compressed_FIFO_r_req) begin
                         r_8[7:0] = compressed_FIFO_reg_64[55:48];
-                        r_8_valid = 1;
+                        //r_8_valid = 1;
                         compressed_FIFO_reg_counter_inc_ena = 1; //클럭에지떄 counter는 7이 됨.
-                    end
-                    if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
-                        r_state_next = COMPLETE;
                     end
                 end
                 7: begin
-                    r_state_next = START; //START로 다시 가서 Compressed_Data_FIFO에서 값을 읽어와야 함.
                     if(compressed_FIFO_r_req) begin
                         r_8[7:0] = compressed_FIFO_reg_64[63:56];
-                        r_8_valid = 1;
+                        //r_8_valid = 1;
                         compressed_FIFO_reg_counter_inc_ena = 1; //클럭에지떄 오버플로때문에 counter는 0이 됨.
+                        r_state_next = START; //START로 다시 가서 Compressed_Data_FIFO에서 값을 읽어와야 함.
                     end
-                    if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
-                        r_state_next = COMPLETE;
+                    else begin
+                        r_state_next = READ;
                     end
                 end
             endcase
+            if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
+                r_state_next = COMPLETE;
+            end
         end
         COMPLETE: begin
             Compressed_FIFO_ena = 0; //0으로 쭉 내려줘서, Compressed_Data_FIFO 모듈에서 외부 메모리에서 데이터읽기요청을 중단시킴.
@@ -597,9 +593,9 @@ always @(*) begin
     decompressed_FIFO_reg_counter_reset = 0;
     decompressed_FIFO_reg_counter_inc_ena = 0;
     decompressed_FIFO_reg_wstrb[7:0] = 8'b00000000;
-    w_8_ready = 0;
+    //w_8_ready = 0;
 
-    decompressed_fifo_w_ena = 0;
+    //decompressed_fifo_w_ena = 0;
     decompressed_fifo_w_data[63:0] = 0;
 
     case(w_state)
@@ -619,7 +615,7 @@ always @(*) begin
                     if(w_8_valid) begin
                         decompressed_FIFO_reg_counter_inc_ena = 1; //클럭에지때 counter가 1이 됨.
                         decompressed_FIFO_reg_wstrb[7:0] = 8'b00000001;
-                        w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
+                        //w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
                     end
                 end
                 1: begin
@@ -627,7 +623,7 @@ always @(*) begin
                     if(w_8_valid) begin
                         decompressed_FIFO_reg_counter_inc_ena = 1; //클럭에지때 counter가 2가 됨.
                         decompressed_FIFO_reg_wstrb[7:0] = 8'b00000010;
-                        w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
+                        //w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
                     end
                 end
                 2: begin
@@ -635,7 +631,7 @@ always @(*) begin
                     if(w_8_valid) begin
                         decompressed_FIFO_reg_counter_inc_ena = 1; //클럭에지때 counter가 3가 됨.
                         decompressed_FIFO_reg_wstrb[7:0] = 8'b00000100;
-                        w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
+                        //w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
                     end
                 end
                 3: begin
@@ -643,7 +639,7 @@ always @(*) begin
                     if(w_8_valid) begin
                         decompressed_FIFO_reg_counter_inc_ena = 1; //클럭에지때 counter가 4가 됨.
                         decompressed_FIFO_reg_wstrb[7:0] = 8'b00001000;
-                        w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
+                        //w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
                     end
                 end
                 4: begin
@@ -651,7 +647,7 @@ always @(*) begin
                     if(w_8_valid) begin
                         decompressed_FIFO_reg_counter_inc_ena = 1; //클럭에지때 counter가 5가 됨.
                         decompressed_FIFO_reg_wstrb[7:0] = 8'b00010000;
-                        w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
+                        //w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
                     end
                 end
                 5: begin
@@ -659,7 +655,7 @@ always @(*) begin
                     if(w_8_valid) begin
                         decompressed_FIFO_reg_counter_inc_ena = 1; //클럭에지때 counter가 6가 됨.
                         decompressed_FIFO_reg_wstrb[7:0] = 8'b00100000;
-                        w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
+                        //w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
                     end
                 end
                 6: begin
@@ -667,18 +663,18 @@ always @(*) begin
                     if(w_8_valid) begin
                         decompressed_FIFO_reg_counter_inc_ena = 1; //클럭에지때 counter가 7가 됨.
                         decompressed_FIFO_reg_wstrb[7:0] = 8'b01000000;
-                        w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
+                        //w_8_ready = 1; //decompress_state에게 완료되었다고 알려줌.
                     end
                 end
                 7: begin
                     if(w_8_valid) begin //8번쨰 w_8[7:0]이 오고 즉각적으로 Decompressed FIFO에 쓰기요청을 보냄. 
                         decompressed_FIFO_reg_counter_inc_ena = 1; //클럭에지때 counter가 0가 됨.
                         decompressed_FIFO_reg_wstrb[7:0] = 8'b10000000; //
-                        decompressed_fifo_w_ena = 1;
+                        //decompressed_fifo_w_ena = 1;
                         decompressed_fifo_w_data[63:0] = {w_8[7:0], decompressed_FIFO_reg_64[55:0]};
                         if(decompressed_fifo_w_end) begin
                             w_state_next = START;
-                            w_8_ready = 1;
+                            //w_8_ready = 1;
                         end
                         else begin
                             w_state_next = DELAY;
@@ -694,12 +690,12 @@ always @(*) begin
             end
         end
         DELAY: begin
-            decompressed_fifo_w_ena = 1; //end가 올때까지 신호 계속 유지해 줘야 함. 
+            //decompressed_fifo_w_ena = 1; //end가 올때까지 신호 계속 유지해 줘야 함. 
             decompressed_fifo_w_data[63:0] = decompressed_FIFO_reg_64[63:0]; //이제는 decompressed_FIFO_reg_64에 다 저장되었으므로 이렇게 유지함. 현재 counter는 오버플로로 인해 0으로 초기화 된 상황.
             if(decompressed_fifo_w_end) begin
                 w_state_next = START;
                 decompressed_FIFO_reg_counter_reset = 1; //혹시 모르니 다시 초기화 해줌.
-                w_8_ready = 1; //이제야 w_8_ready를 decompress_state에게 줌.
+                //w_8_ready = 1; //이제야 w_8_ready를 decompress_state에게 줌.
                 if(w_end_req) begin //Decompressed FIFO에 써지는것이 확정된 시점에 COMPLETE로 이동해야 함. 따라서 w_end_req는 r_state가 계속 유지해야 하는 신호임. 
                     w_state_next = COMPLETE;
                 end
@@ -714,35 +710,35 @@ always @(*) begin
         LAST_WRITE: begin 
             case(decompressed_FIFO_reg_counter)
                 0: begin
-                    decompressed_fifo_w_ena = 1;
+                    //decompressed_fifo_w_ena = 1;
                     decompressed_fifo_w_data[63:0] = 64'b0;
                 end
                 1: begin
-                    decompressed_fifo_w_ena = 1;
+                    //decompressed_fifo_w_ena = 1;
                     decompressed_fifo_w_data[63:0] = {56'b0, decompressed_FIFO_reg_64[7:0]};
                 end
                 2: begin
-                    decompressed_fifo_w_ena = 1;
+                    //decompressed_fifo_w_ena = 1;
                     decompressed_fifo_w_data[63:0] = {48'b0, decompressed_FIFO_reg_64[15:0]};
                 end
                 3: begin
-                    decompressed_fifo_w_ena = 1;
+                    //decompressed_fifo_w_ena = 1;
                     decompressed_fifo_w_data[63:0] = {40'b0, decompressed_FIFO_reg_64[23:0]};
                 end
                 4: begin
-                    decompressed_fifo_w_ena = 1;
+                    //decompressed_fifo_w_ena = 1;
                     decompressed_fifo_w_data[63:0] = {32'b0, decompressed_FIFO_reg_64[31:0]};
                 end
                 5: begin
-                    decompressed_fifo_w_ena = 1;
+                    //decompressed_fifo_w_ena = 1;
                     decompressed_fifo_w_data[63:0] = {24'b0, decompressed_FIFO_reg_64[39:0]};
                 end
                 6: begin
-                    decompressed_fifo_w_ena = 1;
+                    //decompressed_fifo_w_ena = 1;
                     decompressed_fifo_w_data[63:0] = {16'b0, decompressed_FIFO_reg_64[47:0]};
                 end
                 7: begin
-                    decompressed_fifo_w_ena = 1;
+                    //decompressed_fifo_w_ena = 1;
                     decompressed_fifo_w_data[63:0] = {8'b0, decompressed_FIFO_reg_64[55:0]};
                 end
             endcase

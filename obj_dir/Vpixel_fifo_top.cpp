@@ -174,9 +174,18 @@ VL_INLINE_OPT void Vpixel_fifo_top::_sequent__TOP__3(Vpixel_fifo_top__Syms* __re
         = vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__char3_fifo_count;
     __Vdly__pixel_fifo_top__DOT__u_compressed_fifo__DOT__char1_fifo_count 
         = vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__char1_fifo_count;
-    vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM9_read_state 
-        = ((IData)(vlTOPp->resetn) ? (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM9_read_state_next)
-            : 0U);
+    if (vlTOPp->resetn) {
+        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM9_read_state 
+            = vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM9_read_state_next;
+        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state 
+            = vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state_next;
+        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state 
+            = vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state_next;
+    } else {
+        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM9_read_state = 0U;
+        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state = 0U;
+        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state = 0U;
+    }
     if (vlTOPp->resetn) {
         if (((IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__is_urgent_mode) 
              & (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__round_end))) {
@@ -996,18 +1005,10 @@ VL_INLINE_OPT void Vpixel_fifo_top::_sequent__TOP__3(Vpixel_fifo_top__Syms* __re
         __Vdly__pixel_fifo_top__DOT__u_compressed_fifo__DOT__emem_r_counter = 0U;
         vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__tem_32_reg = 0U;
     }
-    if (vlTOPp->resetn) {
-        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state 
-            = vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state_next;
-        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state 
-            = vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state_next;
-        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter 
-            = (3U & ((IData)(1U) + (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter)));
-    } else {
-        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state = 0U;
-        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state = 0U;
-        vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter = 0U;
-    }
+    vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter 
+        = ((IData)(vlTOPp->resetn) ? (3U & ((IData)(1U) 
+                                            + (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__clk_counter)))
+            : 0U);
     vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__uni1_next_ad 
         = __Vdly__pixel_fifo_top__DOT__u_compressed_fifo__DOT__uni1_next_ad;
     vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__uni2_next_ad 
@@ -1423,18 +1424,6 @@ VL_INLINE_OPT void Vpixel_fifo_top::_sequent__TOP__4(Vpixel_fifo_top__Syms* __re
                                           + (0x7fU 
                                              & (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__uni2_fifo_front))));
     }
-    vlTOPp->BRAM10_en_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_en_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_en_a)) 
-                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_en_a)) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_en_a));
-    vlTOPp->BRAM10_we_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_we_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_we_a)) 
-                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_we_a)) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_we_a));
-    vlTOPp->BRAM10_addr_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_addr_a) 
-                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_addr_a)) 
-                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_addr_a)) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_addr_a));
     vlTOPp->ch1_decomp_r_master = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.Decompressed_FIFO_r_master;
     vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__char1_fifo_dec_want = 0U;
     if ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.Compressed_FIFO_dequeue) 
@@ -1532,18 +1521,6 @@ VL_INLINE_OPT void Vpixel_fifo_top::_sequent__TOP__4(Vpixel_fifo_top__Syms* __re
                                           + (0x7fU 
                                              & (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__char4_fifo_front))));
     }
-    vlTOPp->BRAM11_en_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_en_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_en_a)) 
-                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_en_a)) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_en_a));
-    vlTOPp->BRAM11_we_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_we_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_we_a)) 
-                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_we_a)) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_we_a));
-    vlTOPp->BRAM11_addr_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_addr_a) 
-                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_addr_a)) 
-                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_addr_a)) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_addr_a));
     vlTOPp->bg1_decomp_r_master = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.Decompressed_FIFO_r_master;
     vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__back1_fifo_dec_want = 0U;
     if ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.Compressed_FIFO_dequeue) 
@@ -1593,12 +1570,6 @@ VL_INLINE_OPT void Vpixel_fifo_top::_sequent__TOP__4(Vpixel_fifo_top__Syms* __re
                                           + (0xffU 
                                              & (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__back2_fifo_front))));
     }
-    vlTOPp->BRAM12_en_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_en_a) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_en_a));
-    vlTOPp->BRAM12_we_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_we_a) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_we_a));
-    vlTOPp->BRAM12_addr_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_addr_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_addr_a));
 }
 
 VL_INLINE_OPT void Vpixel_fifo_top::_combo__TOP__5(Vpixel_fifo_top__Syms* __restrict vlSymsp) {
@@ -1619,6 +1590,86 @@ VL_INLINE_OPT void Vpixel_fifo_top::_combo__TOP__5(Vpixel_fifo_top__Syms* __rest
         if ((1U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM9_read_state))) {
             vlTOPp->pixel_fifo_top__DOT__bg1_comp_data 
                 = vlTOPp->BRAM9_dout_b;
+        }
+    }
+    vlTOPp->pixel_fifo_top__DOT__uni2_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+            if ((2U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                vlTOPp->pixel_fifo_top__DOT__uni2_comp_data 
+                    = vlTOPp->BRAM7_dout_b;
+            }
+        }
+    }
+    vlTOPp->pixel_fifo_top__DOT__uni1_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+        if ((1U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+            vlTOPp->pixel_fifo_top__DOT__uni1_comp_data 
+                = vlTOPp->BRAM7_dout_b;
+        }
+    }
+    vlTOPp->pixel_fifo_top__DOT__st_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+            if ((2U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                if ((3U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                    if ((4U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                        vlTOPp->pixel_fifo_top__DOT__st_comp_data 
+                            = vlTOPp->BRAM7_dout_b;
+                    }
+                }
+            }
+        }
+    }
+    vlTOPp->pixel_fifo_top__DOT__sc_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+            if ((2U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                if ((3U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                    vlTOPp->pixel_fifo_top__DOT__sc_comp_data 
+                        = vlTOPp->BRAM7_dout_b;
+                }
+            }
+        }
+    }
+    vlTOPp->pixel_fifo_top__DOT__ch4_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+            if ((2U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+                if ((3U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+                    if ((4U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+                        vlTOPp->pixel_fifo_top__DOT__ch4_comp_data 
+                            = vlTOPp->BRAM8_dout_b;
+                    }
+                }
+            }
+        }
+    }
+    vlTOPp->pixel_fifo_top__DOT__ch3_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+            if ((2U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+                if ((3U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+                    vlTOPp->pixel_fifo_top__DOT__ch3_comp_data 
+                        = vlTOPp->BRAM8_dout_b;
+                }
+            }
+        }
+    }
+    vlTOPp->pixel_fifo_top__DOT__ch2_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+            if ((2U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+                vlTOPp->pixel_fifo_top__DOT__ch2_comp_data 
+                    = vlTOPp->BRAM8_dout_b;
+            }
+        }
+    }
+    vlTOPp->pixel_fifo_top__DOT__ch1_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+        if ((1U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
+            vlTOPp->pixel_fifo_top__DOT__ch1_comp_data 
+                = vlTOPp->BRAM8_dout_b;
         }
     }
     vlTOPp->BRAM9_we_a = 0U;
@@ -2535,86 +2586,6 @@ VL_INLINE_OPT void Vpixel_fifo_top::_combo__TOP__5(Vpixel_fifo_top__Syms* __rest
             }
         }
     }
-    vlTOPp->pixel_fifo_top__DOT__uni2_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-            if ((2U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                vlTOPp->pixel_fifo_top__DOT__uni2_comp_data 
-                    = vlTOPp->BRAM7_dout_b;
-            }
-        }
-    }
-    vlTOPp->pixel_fifo_top__DOT__uni1_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-        if ((1U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-            vlTOPp->pixel_fifo_top__DOT__uni1_comp_data 
-                = vlTOPp->BRAM7_dout_b;
-        }
-    }
-    vlTOPp->pixel_fifo_top__DOT__st_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-            if ((2U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                if ((3U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                    if ((4U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                        vlTOPp->pixel_fifo_top__DOT__st_comp_data 
-                            = vlTOPp->BRAM7_dout_b;
-                    }
-                }
-            }
-        }
-    }
-    vlTOPp->pixel_fifo_top__DOT__sc_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-            if ((2U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                if ((3U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                    vlTOPp->pixel_fifo_top__DOT__sc_comp_data 
-                        = vlTOPp->BRAM7_dout_b;
-                }
-            }
-        }
-    }
-    vlTOPp->pixel_fifo_top__DOT__ch4_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-            if ((2U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-                if ((3U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-                    if ((4U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-                        vlTOPp->pixel_fifo_top__DOT__ch4_comp_data 
-                            = vlTOPp->BRAM8_dout_b;
-                    }
-                }
-            }
-        }
-    }
-    vlTOPp->pixel_fifo_top__DOT__ch3_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-            if ((2U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-                if ((3U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-                    vlTOPp->pixel_fifo_top__DOT__ch3_comp_data 
-                        = vlTOPp->BRAM8_dout_b;
-                }
-            }
-        }
-    }
-    vlTOPp->pixel_fifo_top__DOT__ch2_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-        if ((1U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-            if ((2U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-                vlTOPp->pixel_fifo_top__DOT__ch2_comp_data 
-                    = vlTOPp->BRAM8_dout_b;
-            }
-        }
-    }
-    vlTOPp->pixel_fifo_top__DOT__ch1_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-        if ((1U == (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
-            vlTOPp->pixel_fifo_top__DOT__ch1_comp_data 
-                = vlTOPp->BRAM8_dout_b;
-        }
-    }
     vlTOPp->uni1_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.Decompressed_FIFO_data;
     vlTOPp->uni2_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.Decompressed_FIFO_data;
     vlTOPp->sc_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.Decompressed_FIFO_data;
@@ -2627,6 +2598,22 @@ VL_INLINE_OPT void Vpixel_fifo_top::_combo__TOP__5(Vpixel_fifo_top__Syms* __rest
                                | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_addr_b)) 
                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_addr_b)) 
                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_addr_b));
+    vlTOPp->BRAM10_en_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_en_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_en_a)) 
+                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_en_a)) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_en_a));
+    vlTOPp->BRAM10_we_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_we_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_we_a)) 
+                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_we_a)) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_we_a));
+    vlTOPp->BRAM10_addr_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_addr_a) 
+                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_addr_a)) 
+                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_addr_a)) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_addr_a));
+    vlTOPp->BRAM10_din_a = (((vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_din_a 
+                              | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_din_a) 
+                             | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_din_a) 
+                            | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_din_a);
     vlTOPp->ch1_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.Decompressed_FIFO_data;
     vlTOPp->ch2_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.Decompressed_FIFO_data;
     vlTOPp->ch3_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.Decompressed_FIFO_data;
@@ -2639,28 +2626,36 @@ VL_INLINE_OPT void Vpixel_fifo_top::_combo__TOP__5(Vpixel_fifo_top__Syms* __rest
                                | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_addr_b)) 
                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_addr_b)) 
                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_addr_b));
+    vlTOPp->BRAM11_en_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_en_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_en_a)) 
+                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_en_a)) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_en_a));
+    vlTOPp->BRAM11_we_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_we_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_we_a)) 
+                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_we_a)) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_we_a));
+    vlTOPp->BRAM11_addr_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_addr_a) 
+                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_addr_a)) 
+                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_addr_a)) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_addr_a));
+    vlTOPp->BRAM11_din_a = (((vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_din_a 
+                              | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_din_a) 
+                             | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_din_a) 
+                            | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_din_a);
     vlTOPp->bg1_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.Decompressed_FIFO_data;
     vlTOPp->bg2_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.Decompressed_FIFO_data;
     vlTOPp->BRAM12_en_b = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_en_b) 
                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_en_b));
     vlTOPp->BRAM12_addr_b = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_addr_b) 
                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_addr_b));
-}
-
-VL_INLINE_OPT void Vpixel_fifo_top::_combo__TOP__6(Vpixel_fifo_top__Syms* __restrict vlSymsp) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpixel_fifo_top::_combo__TOP__6\n"); );
-    Vpixel_fifo_top* const __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
-    // Body
+    vlTOPp->BRAM12_en_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_en_a) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_en_a));
+    vlTOPp->BRAM12_we_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_we_a) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_we_a));
+    vlTOPp->BRAM12_addr_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_addr_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_addr_a));
     vlTOPp->BRAM12_din_a = (vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_din_a 
                             | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_din_a);
-    vlTOPp->BRAM10_din_a = (((vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_din_a 
-                              | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_din_a) 
-                             | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_din_a) 
-                            | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_din_a);
-    vlTOPp->BRAM11_din_a = (((vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_din_a 
-                              | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_din_a) 
-                             | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_din_a) 
-                            | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_din_a);
 }
 
 void Vpixel_fifo_top::_eval(Vpixel_fifo_top__Syms* __restrict vlSymsp) {
@@ -2707,15 +2702,14 @@ void Vpixel_fifo_top::_eval(Vpixel_fifo_top__Syms* __restrict vlSymsp) {
     vlTOPp->_combo__TOP__5(vlSymsp);
     vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2._combo__TOP__pixel_fifo_top__DOT__u_decomp_bg2__51(vlSymsp);
     vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1._combo__TOP__pixel_fifo_top__DOT__u_decomp_bg1__52(vlSymsp);
-    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2._settle__TOP__pixel_fifo_top__DOT__u_decomp_uni2__13(vlSymsp);
-    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1._settle__TOP__pixel_fifo_top__DOT__u_decomp_uni1__14(vlSymsp);
-    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status._settle__TOP__pixel_fifo_top__DOT__u_decomp_status__15(vlSymsp);
-    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script._settle__TOP__pixel_fifo_top__DOT__u_decomp_script__16(vlSymsp);
-    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4._settle__TOP__pixel_fifo_top__DOT__u_decomp_ch4__17(vlSymsp);
-    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3._settle__TOP__pixel_fifo_top__DOT__u_decomp_ch3__18(vlSymsp);
-    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2._settle__TOP__pixel_fifo_top__DOT__u_decomp_ch2__19(vlSymsp);
-    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1._settle__TOP__pixel_fifo_top__DOT__u_decomp_ch1__20(vlSymsp);
-    vlTOPp->_combo__TOP__6(vlSymsp);
+    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2._settle__TOP__pixel_fifo_top__DOT__u_decomp_uni2__11(vlSymsp);
+    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1._settle__TOP__pixel_fifo_top__DOT__u_decomp_uni1__12(vlSymsp);
+    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status._settle__TOP__pixel_fifo_top__DOT__u_decomp_status__13(vlSymsp);
+    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script._settle__TOP__pixel_fifo_top__DOT__u_decomp_script__14(vlSymsp);
+    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4._settle__TOP__pixel_fifo_top__DOT__u_decomp_ch4__15(vlSymsp);
+    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3._settle__TOP__pixel_fifo_top__DOT__u_decomp_ch3__16(vlSymsp);
+    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2._settle__TOP__pixel_fifo_top__DOT__u_decomp_ch2__17(vlSymsp);
+    vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1._settle__TOP__pixel_fifo_top__DOT__u_decomp_ch1__18(vlSymsp);
     // Final
     vlTOPp->__Vclklast__TOP__clk = vlTOPp->clk;
     vlTOPp->__Vclklast__TOP__resetn = vlTOPp->resetn;
