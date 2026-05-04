@@ -127,7 +127,6 @@ int main(int argc, char **argv)
         dut->clk = 1;
         dut->eval();
         trace->dump(main_time++);
-        if(dut->BRAM12_en_a) printf("BRAM9 write\n");
 
         // ----------------------------------------------------
         // [2단계] 클럭 하강 에지 (입력 신호 주입)
@@ -186,24 +185,14 @@ int main(int argc, char **argv)
         if (dut->BRAM11_en_b) dut->BRAM11_dout_b = bram11[dut->BRAM11_addr_b];
         if (dut->BRAM12_en_b) dut->BRAM12_dout_b = bram12[dut->BRAM12_addr_b];
 
-        if(dut->BRAM9_en_b) {
-            std::cout << "[SUCCESS] BRAM9 READ REQUEST!"<< std::endl;
-        }
-        if(dut->BRAM12_en_a && dut->BRAM12_we_a) {
-            std::cout << "[SUCCESS] BRAM12 WRITE REQUEST!"<< std::endl;
-        }
-        if(bram12[0] > 0) {
-            std::cout << "[SUCCESS] BRAM12 ADDR 0 WRITTEN! DATA: 0x" << std::hex << std::uppercase << bram12[0] << std::endl;
-        }
-        if(bram9[0] > 0) {
-            //std::cout << "[SUCCESS] BRAM9 ADDR 0 WRITTEN! DATA: 0x" << std::hex << std::uppercase << bram9[0] << std::endl;
-        }
         dut->eval();
         trace->dump(main_time++); // 반 클럭 진행 완료 기록
     }
 
     dut->final();
     trace->close();
+
+    std::cout << "BRAM12[0]: 0x" << std::hex << bram12[0] << " BRAM12[1]: 0x" << bram12[1] << " BRAM12[2]: 0x" << bram12[2] << " BRAM12[3]: 0x" << bram12[3] << " BRAM12[4]: 0x" << bram12[4] << " BRAM12[5]: 0x" << bram12[5] << std::dec << std::endl;
 
     std::cout << "Simulation completed successfully. Check waveform.vcd!" << std::endl;
     delete dut; // 메모리 누수 방지

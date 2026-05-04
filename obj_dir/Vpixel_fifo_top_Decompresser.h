@@ -92,6 +92,7 @@ VL_MODULE(Vpixel_fifo_top_Decompresser) {
     CData/*7:0*/ __PVT__decompressed_FIFO_reg_wstrb;
     CData/*0:0*/ __PVT__decompressed_FIFO_reg_counter_reset;
     CData/*7:0*/ __PVT__r_8;
+    CData/*0:0*/ __PVT__r_8_valid;
     CData/*7:0*/ __PVT__r_8_reg;
     CData/*0:0*/ __PVT__r_8_reg_w_ena;
     CData/*6:0*/ __PVT__repeat_counter;

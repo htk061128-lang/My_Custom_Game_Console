@@ -77,7 +77,6 @@ module Decompresser( //Compressed_Data_FIFO 에서 값을 읽어와서 압축을
 //BRAM10: addr 0-127: universal layer1, 128-255: universal layer2, 256-383: script layer, 384-511: status layer
 //BRAM11: addr 0-127: character layer1, 128-255: character layer2, 256-383: character layer3, 384-511: character layer4
 //BRAM12: addr 0-255: background layer1, 256-511: background layer2
-
 wire tdm_match = (BRAM_rw_counter_bits[0] && Clk_Counter[1:0] == 0) || (BRAM_rw_counter_bits[1] && Clk_Counter[1:0] == 1) || (BRAM_rw_counter_bits[2] && Clk_Counter[1:0] == 2) || (BRAM_rw_counter_bits[3] && Clk_Counter[1:0] == 3);
 wire compressed_fifo_r_end = tdm_match && (compressed_fifo_r_ena && (Compressed_FIFO_count > 0) && Compressed_FIFO_r_master); //이 값이 1이면 클럭에지때 해당 BRAM에 읽기가 일어나서 compressed_fifo_r_data에 값이 나옴.
 wire decompressed_fifo_w_end = tdm_match && (decompressed_fifo_w_ena && ((~BRAM_size & ~fifo_full_128) || (BRAM_size & ~fifo_full_256))); //이 값이 1이면 클럭에지떄 해당 BRAM에 쓰기가 일어남.

@@ -64,56 +64,6 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
             }
         }
     }
-    this->__PVT__r_8_reg_w_ena = 0U;
-    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
-               | (1U == (IData)(this->__PVT__decompress_state))) 
-              | (4U == (IData)(this->__PVT__decompress_state))) 
-             | (9U == (IData)(this->__PVT__decompress_state))) 
-            | (3U == (IData)(this->__PVT__decompress_state))) 
-           | (0xaU == (IData)(this->__PVT__decompress_state))) 
-          | (5U == (IData)(this->__PVT__decompress_state))) 
-         | (2U == (IData)(this->__PVT__decompress_state)))) {
-        if ((0U != (IData)(this->__PVT__decompress_state))) {
-            if ((1U != (IData)(this->__PVT__decompress_state))) {
-                if ((4U == (IData)(this->__PVT__decompress_state))) {
-                    if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                        this->__PVT__r_8_reg_w_ena = 1U;
-                    }
-                } else {
-                    if ((9U != (IData)(this->__PVT__decompress_state))) {
-                        if ((3U == (IData)(this->__PVT__decompress_state))) {
-                            if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                                this->__PVT__r_8_reg_w_ena = 1U;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    this->__PVT__pixel_reg_w_ena = 0U;
-    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
-               | (1U == (IData)(this->__PVT__decompress_state))) 
-              | (4U == (IData)(this->__PVT__decompress_state))) 
-             | (9U == (IData)(this->__PVT__decompress_state))) 
-            | (3U == (IData)(this->__PVT__decompress_state))) 
-           | (0xaU == (IData)(this->__PVT__decompress_state))) 
-          | (5U == (IData)(this->__PVT__decompress_state))) 
-         | (2U == (IData)(this->__PVT__decompress_state)))) {
-        if ((0U != (IData)(this->__PVT__decompress_state))) {
-            if ((1U != (IData)(this->__PVT__decompress_state))) {
-                if ((4U != (IData)(this->__PVT__decompress_state))) {
-                    if ((9U != (IData)(this->__PVT__decompress_state))) {
-                        if ((3U == (IData)(this->__PVT__decompress_state))) {
-                            if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                                this->__PVT__pixel_reg_w_ena = 1U;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
     this->__PVT__compressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         if (vlTOPp->PPU_start) {
@@ -152,12 +102,6 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
     this->__PVT__compressed_FIFO_r_req = (((1U == (IData)(this->__PVT__decompress_state)) 
                                            | (4U == (IData)(this->__PVT__decompress_state))) 
                                           | (3U == (IData)(this->__PVT__decompress_state)));
-    this->__PVT__w_8_valid = ((((5U == (IData)(this->__PVT__decompress_state)) 
-                                | (0xaU == (IData)(this->__PVT__decompress_state))) 
-                               | (9U == (IData)(this->__PVT__decompress_state))) 
-                              | (((4U == (IData)(this->__PVT__decompress_state)) 
-                                  | (3U == (IData)(this->__PVT__decompress_state))) 
-                                 & (~ (IData)(vlTOPp->clk))));
     this->__PVT__fifo_front_256_inc_ena = 0U;
     if (this->__PVT__tdm_match) {
         if (((IData)(vlTOPp->bg1_decomp_dequeue) & 
@@ -350,6 +294,149 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
             }
         }
     }
+    this->__PVT__r_8_valid = ((IData)(this->__PVT__compressed_FIFO_r_req) 
+                              & (7U == (IData)(this->__PVT__r_state)));
+    this->__PVT__r_8_reg_w_ena = 0U;
+    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
+               | (1U == (IData)(this->__PVT__decompress_state))) 
+              | (4U == (IData)(this->__PVT__decompress_state))) 
+             | (9U == (IData)(this->__PVT__decompress_state))) 
+            | (3U == (IData)(this->__PVT__decompress_state))) 
+           | (0xaU == (IData)(this->__PVT__decompress_state))) 
+          | (5U == (IData)(this->__PVT__decompress_state))) 
+         | (2U == (IData)(this->__PVT__decompress_state)))) {
+        if ((0U != (IData)(this->__PVT__decompress_state))) {
+            if ((1U != (IData)(this->__PVT__decompress_state))) {
+                if ((4U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_8_valid) {
+                        this->__PVT__r_8_reg_w_ena = 1U;
+                    }
+                } else {
+                    if ((9U != (IData)(this->__PVT__decompress_state))) {
+                        if ((3U == (IData)(this->__PVT__decompress_state))) {
+                            if (this->__PVT__r_8_valid) {
+                                this->__PVT__r_8_reg_w_ena = 1U;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__pixel_reg_w_ena = 0U;
+    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
+               | (1U == (IData)(this->__PVT__decompress_state))) 
+              | (4U == (IData)(this->__PVT__decompress_state))) 
+             | (9U == (IData)(this->__PVT__decompress_state))) 
+            | (3U == (IData)(this->__PVT__decompress_state))) 
+           | (0xaU == (IData)(this->__PVT__decompress_state))) 
+          | (5U == (IData)(this->__PVT__decompress_state))) 
+         | (2U == (IData)(this->__PVT__decompress_state)))) {
+        if ((0U != (IData)(this->__PVT__decompress_state))) {
+            if ((1U != (IData)(this->__PVT__decompress_state))) {
+                if ((4U != (IData)(this->__PVT__decompress_state))) {
+                    if ((9U != (IData)(this->__PVT__decompress_state))) {
+                        if ((3U == (IData)(this->__PVT__decompress_state))) {
+                            if (this->__PVT__r_8_valid) {
+                                this->__PVT__pixel_reg_w_ena = 1U;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__unrepeat_counter_w_ena = 0U;
+    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
+               | (1U == (IData)(this->__PVT__decompress_state))) 
+              | (4U == (IData)(this->__PVT__decompress_state))) 
+             | (9U == (IData)(this->__PVT__decompress_state))) 
+            | (3U == (IData)(this->__PVT__decompress_state))) 
+           | (0xaU == (IData)(this->__PVT__decompress_state))) 
+          | (5U == (IData)(this->__PVT__decompress_state))) 
+         | (2U == (IData)(this->__PVT__decompress_state)))) {
+        if ((0U != (IData)(this->__PVT__decompress_state))) {
+            if ((1U == (IData)(this->__PVT__decompress_state))) {
+                if ((1U & (~ ((IData)(this->__PVT__r_8_valid) 
+                              & (0U == (0x7fU & (IData)(this->__PVT__r_8))))))) {
+                    if (this->__PVT__r_8_valid) {
+                        if ((1U & (~ ((IData)(this->__PVT__r_8) 
+                                      >> 7U)))) {
+                            this->__PVT__unrepeat_counter_w_ena = 1U;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__repeat_counter_w_ena = 0U;
+    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
+               | (1U == (IData)(this->__PVT__decompress_state))) 
+              | (4U == (IData)(this->__PVT__decompress_state))) 
+             | (9U == (IData)(this->__PVT__decompress_state))) 
+            | (3U == (IData)(this->__PVT__decompress_state))) 
+           | (0xaU == (IData)(this->__PVT__decompress_state))) 
+          | (5U == (IData)(this->__PVT__decompress_state))) 
+         | (2U == (IData)(this->__PVT__decompress_state)))) {
+        if ((0U != (IData)(this->__PVT__decompress_state))) {
+            if ((1U == (IData)(this->__PVT__decompress_state))) {
+                if ((1U & (~ ((IData)(this->__PVT__r_8_valid) 
+                              & (0U == (0x7fU & (IData)(this->__PVT__r_8))))))) {
+                    if (this->__PVT__r_8_valid) {
+                        if ((0x80U & (IData)(this->__PVT__r_8))) {
+                            if ((0x80U & (IData)(this->__PVT__r_8))) {
+                                this->__PVT__repeat_counter_w_ena = 1U;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__w_8 = 0U;
+    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
+               | (1U == (IData)(this->__PVT__decompress_state))) 
+              | (4U == (IData)(this->__PVT__decompress_state))) 
+             | (9U == (IData)(this->__PVT__decompress_state))) 
+            | (3U == (IData)(this->__PVT__decompress_state))) 
+           | (0xaU == (IData)(this->__PVT__decompress_state))) 
+          | (5U == (IData)(this->__PVT__decompress_state))) 
+         | (2U == (IData)(this->__PVT__decompress_state)))) {
+        if ((0U != (IData)(this->__PVT__decompress_state))) {
+            if ((1U != (IData)(this->__PVT__decompress_state))) {
+                if ((4U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_8_valid) {
+                        this->__PVT__w_8 = this->__PVT__r_8;
+                    }
+                } else {
+                    if ((9U == (IData)(this->__PVT__decompress_state))) {
+                        this->__PVT__w_8 = this->__PVT__r_8_reg;
+                    } else {
+                        if ((3U == (IData)(this->__PVT__decompress_state))) {
+                            if (this->__PVT__r_8_valid) {
+                                this->__PVT__w_8 = this->__PVT__r_8;
+                            }
+                        } else {
+                            if ((0xaU == (IData)(this->__PVT__decompress_state))) {
+                                this->__PVT__w_8 = this->__PVT__r_8_reg;
+                            } else {
+                                if ((5U == (IData)(this->__PVT__decompress_state))) {
+                                    this->__PVT__w_8 
+                                        = this->__PVT__pixel_reg;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__w_8_valid = ((((5U == (IData)(this->__PVT__decompress_state)) 
+                                | (0xaU == (IData)(this->__PVT__decompress_state))) 
+                               | (9U == (IData)(this->__PVT__decompress_state))) 
+                              | (((4U == (IData)(this->__PVT__decompress_state)) 
+                                  | (3U == (IData)(this->__PVT__decompress_state))) 
+                                 & (IData)(this->__PVT__r_8_valid)));
     this->__PVT__decompressed_FIFO_reg_counter_inc_ena = 0U;
     if ((0U != (IData)(this->__PVT__w_state))) {
         if ((1U == (IData)(this->__PVT__w_state))) {
@@ -468,131 +555,6 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
             }
         }
     }
-    this->__PVT__decompressed_fifo_w_ena = (((((1U 
-                                                == (IData)(this->__PVT__w_state)) 
-                                               & (7U 
-                                                  == (IData)(this->__PVT__decompressed_FIFO_reg_counter))) 
-                                              & (IData)(this->__PVT__w_8_valid)) 
-                                             | (8U 
-                                                == (IData)(this->__PVT__w_state))) 
-                                            | (0xbU 
-                                               == (IData)(this->__PVT__w_state)));
-    this->__PVT__unrepeat_counter_w_ena = 0U;
-    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
-               | (1U == (IData)(this->__PVT__decompress_state))) 
-              | (4U == (IData)(this->__PVT__decompress_state))) 
-             | (9U == (IData)(this->__PVT__decompress_state))) 
-            | (3U == (IData)(this->__PVT__decompress_state))) 
-           | (0xaU == (IData)(this->__PVT__decompress_state))) 
-          | (5U == (IData)(this->__PVT__decompress_state))) 
-         | (2U == (IData)(this->__PVT__decompress_state)))) {
-        if ((0U != (IData)(this->__PVT__decompress_state))) {
-            if ((1U == (IData)(this->__PVT__decompress_state))) {
-                if ((1U & (~ ((~ (IData)(vlTOPp->clk)) 
-                              & (0U == (0x7fU & (IData)(this->__PVT__r_8))))))) {
-                    if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                        if ((1U & (~ ((IData)(this->__PVT__r_8) 
-                                      >> 7U)))) {
-                            this->__PVT__unrepeat_counter_w_ena = 1U;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    this->__PVT__repeat_counter_w_ena = 0U;
-    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
-               | (1U == (IData)(this->__PVT__decompress_state))) 
-              | (4U == (IData)(this->__PVT__decompress_state))) 
-             | (9U == (IData)(this->__PVT__decompress_state))) 
-            | (3U == (IData)(this->__PVT__decompress_state))) 
-           | (0xaU == (IData)(this->__PVT__decompress_state))) 
-          | (5U == (IData)(this->__PVT__decompress_state))) 
-         | (2U == (IData)(this->__PVT__decompress_state)))) {
-        if ((0U != (IData)(this->__PVT__decompress_state))) {
-            if ((1U == (IData)(this->__PVT__decompress_state))) {
-                if ((1U & (~ ((~ (IData)(vlTOPp->clk)) 
-                              & (0U == (0x7fU & (IData)(this->__PVT__r_8))))))) {
-                    if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                        if ((0x80U & (IData)(this->__PVT__r_8))) {
-                            if ((0x80U & (IData)(this->__PVT__r_8))) {
-                                this->__PVT__repeat_counter_w_ena = 1U;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    this->__PVT__w_8 = 0U;
-    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
-               | (1U == (IData)(this->__PVT__decompress_state))) 
-              | (4U == (IData)(this->__PVT__decompress_state))) 
-             | (9U == (IData)(this->__PVT__decompress_state))) 
-            | (3U == (IData)(this->__PVT__decompress_state))) 
-           | (0xaU == (IData)(this->__PVT__decompress_state))) 
-          | (5U == (IData)(this->__PVT__decompress_state))) 
-         | (2U == (IData)(this->__PVT__decompress_state)))) {
-        if ((0U != (IData)(this->__PVT__decompress_state))) {
-            if ((1U != (IData)(this->__PVT__decompress_state))) {
-                if ((4U == (IData)(this->__PVT__decompress_state))) {
-                    if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                        this->__PVT__w_8 = this->__PVT__r_8;
-                    }
-                } else {
-                    if ((9U == (IData)(this->__PVT__decompress_state))) {
-                        this->__PVT__w_8 = this->__PVT__r_8_reg;
-                    } else {
-                        if ((3U == (IData)(this->__PVT__decompress_state))) {
-                            if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                                this->__PVT__w_8 = this->__PVT__r_8;
-                            }
-                        } else {
-                            if ((0xaU == (IData)(this->__PVT__decompress_state))) {
-                                this->__PVT__w_8 = this->__PVT__r_8_reg;
-                            } else {
-                                if ((5U == (IData)(this->__PVT__decompress_state))) {
-                                    this->__PVT__w_8 
-                                        = this->__PVT__pixel_reg;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    this->__PVT__fifo_rear_256_inc_ena = 0U;
-    if (this->__PVT__tdm_match) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_256)))) {
-            this->__PVT__fifo_rear_256_inc_ena = 1U;
-        }
-    }
-    this->BRAM12_en_a = 0U;
-    if (this->__PVT__tdm_match) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_256)))) {
-            this->BRAM12_en_a = 1U;
-        }
-    }
-    this->BRAM12_we_a = 0U;
-    if (this->__PVT__tdm_match) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_256)))) {
-            this->BRAM12_we_a = 1U;
-        }
-    }
-    this->BRAM12_addr_a = 0U;
-    if (this->__PVT__tdm_match) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_256)))) {
-            this->BRAM12_addr_a = (0xffU & (IData)(this->__PVT__fifo_rear_256));
-        }
-    }
-    this->__PVT__decompressed_fifo_w_end = ((IData)(this->__PVT__tdm_match) 
-                                            & ((IData)(this->__PVT__decompressed_fifo_w_ena) 
-                                               & (~ (IData)(this->__PVT__fifo_full_256))));
     this->__PVT__decompressed_fifo_w_data = 0ULL;
     if ((0U != (IData)(this->__PVT__w_state))) {
         if ((1U == (IData)(this->__PVT__w_state))) {
@@ -680,6 +642,53 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
             }
         }
     }
+    this->__PVT__decompressed_fifo_w_ena = (((((1U 
+                                                == (IData)(this->__PVT__w_state)) 
+                                               & (7U 
+                                                  == (IData)(this->__PVT__decompressed_FIFO_reg_counter))) 
+                                              & (IData)(this->__PVT__w_8_valid)) 
+                                             | (8U 
+                                                == (IData)(this->__PVT__w_state))) 
+                                            | (0xbU 
+                                               == (IData)(this->__PVT__w_state)));
+    this->__PVT__fifo_rear_256_inc_ena = 0U;
+    if (this->__PVT__tdm_match) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_256)))) {
+            this->__PVT__fifo_rear_256_inc_ena = 1U;
+        }
+    }
+    this->BRAM12_en_a = 0U;
+    if (this->__PVT__tdm_match) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_256)))) {
+            this->BRAM12_en_a = 1U;
+        }
+    }
+    this->BRAM12_we_a = 0U;
+    if (this->__PVT__tdm_match) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_256)))) {
+            this->BRAM12_we_a = 1U;
+        }
+    }
+    this->BRAM12_addr_a = 0U;
+    if (this->__PVT__tdm_match) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_256)))) {
+            this->BRAM12_addr_a = (0xffU & (IData)(this->__PVT__fifo_rear_256));
+        }
+    }
+    this->BRAM12_din_a = 0ULL;
+    if (this->__PVT__tdm_match) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_256)))) {
+            this->BRAM12_din_a = this->__PVT__decompressed_fifo_w_data;
+        }
+    }
+    this->__PVT__decompressed_fifo_w_end = ((IData)(this->__PVT__tdm_match) 
+                                            & ((IData)(this->__PVT__decompressed_fifo_w_ena) 
+                                               & (~ (IData)(this->__PVT__fifo_full_256))));
     this->__PVT__decompressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__w_state))) {
         if (vlTOPp->PPU_start) {
@@ -766,13 +775,6 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                                      & (IData)(this->__PVT__decompressed_fifo_w_end)))) 
                               | ((8U == (IData)(this->__PVT__w_state)) 
                                  & (IData)(this->__PVT__decompressed_fifo_w_end)));
-    this->BRAM12_din_a = 0ULL;
-    if (this->__PVT__tdm_match) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_256)))) {
-            this->BRAM12_din_a = this->__PVT__decompressed_fifo_w_data;
-        }
-    }
     this->__PVT__repeat_counter_dec_ena = 0U;
     if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
                | (1U == (IData)(this->__PVT__decompress_state))) 
@@ -787,7 +789,7 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                 if ((4U != (IData)(this->__PVT__decompress_state))) {
                     if ((9U != (IData)(this->__PVT__decompress_state))) {
                         if ((3U == (IData)(this->__PVT__decompress_state))) {
-                            if ((1U & (~ (IData)(vlTOPp->clk)))) {
+                            if (this->__PVT__r_8_valid) {
                                 if (this->__PVT__w_8_ready) {
                                     if ((1U == (IData)(this->__PVT__repeat_counter))) {
                                         this->__PVT__repeat_counter_dec_ena = 1U;
@@ -841,7 +843,7 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
         if ((0U != (IData)(this->__PVT__decompress_state))) {
             if ((1U != (IData)(this->__PVT__decompress_state))) {
                 if ((4U == (IData)(this->__PVT__decompress_state))) {
-                    if ((1U & (~ (IData)(vlTOPp->clk)))) {
+                    if (this->__PVT__r_8_valid) {
                         if (this->__PVT__w_8_ready) {
                             this->__PVT__unrepeat_counter_dec_ena = 1U;
                         }
@@ -877,15 +879,11 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                                                    : 0U);
         } else {
             if ((1U == (IData)(this->__PVT__decompress_state))) {
-                if (((~ (IData)(vlTOPp->clk)) & (0U 
-                                                 == 
-                                                 (0x7fU 
-                                                  & (IData)(this->__PVT__r_8))))) {
+                if (((IData)(this->__PVT__r_8_valid) 
+                     & (0U == (0x7fU & (IData)(this->__PVT__r_8))))) {
                     this->__PVT__decompress_state_next = 2U;
                 } else {
-                    if (vlTOPp->clk) {
-                        this->__PVT__decompress_state_next = 1U;
-                    } else {
+                    if (this->__PVT__r_8_valid) {
                         if ((0x80U & (IData)(this->__PVT__r_8))) {
                             if ((0x80U & (IData)(this->__PVT__r_8))) {
                                 this->__PVT__decompress_state_next = 3U;
@@ -893,15 +891,18 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                         } else {
                             this->__PVT__decompress_state_next = 4U;
                         }
+                    } else {
+                        this->__PVT__decompress_state_next = 1U;
                     }
                 }
             } else {
                 if ((4U == (IData)(this->__PVT__decompress_state))) {
                     this->__PVT__decompress_state_next 
-                        = ((IData)(vlTOPp->clk) ? 4U
-                            : ((IData)(this->__PVT__w_8_ready)
+                        = ((IData)(this->__PVT__r_8_valid)
+                            ? ((IData)(this->__PVT__w_8_ready)
                                 ? ((1U == (IData)(this->__PVT__unrepeat_counter))
-                                    ? 1U : 4U) : 9U));
+                                    ? 1U : 4U) : 9U)
+                            : 4U);
                 } else {
                     if ((9U == (IData)(this->__PVT__decompress_state))) {
                         if (this->__PVT__w_8_ready) {
@@ -917,9 +918,7 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                         }
                     } else {
                         if ((3U == (IData)(this->__PVT__decompress_state))) {
-                            if (vlTOPp->clk) {
-                                this->__PVT__decompress_state_next = 3U;
-                            } else {
+                            if (this->__PVT__r_8_valid) {
                                 if (this->__PVT__w_8_ready) {
                                     if ((1U == (IData)(this->__PVT__repeat_counter))) {
                                         this->__PVT__decompress_state_next = 1U;
@@ -931,6 +930,8 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                                 } else {
                                     this->__PVT__decompress_state_next = 0xaU;
                                 }
+                            } else {
+                                this->__PVT__decompress_state_next = 3U;
                             }
                         } else {
                             if ((0xaU == (IData)(this->__PVT__decompress_state))) {
@@ -1141,56 +1142,6 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
             }
         }
     }
-    this->__PVT__r_8_reg_w_ena = 0U;
-    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
-               | (1U == (IData)(this->__PVT__decompress_state))) 
-              | (4U == (IData)(this->__PVT__decompress_state))) 
-             | (9U == (IData)(this->__PVT__decompress_state))) 
-            | (3U == (IData)(this->__PVT__decompress_state))) 
-           | (0xaU == (IData)(this->__PVT__decompress_state))) 
-          | (5U == (IData)(this->__PVT__decompress_state))) 
-         | (2U == (IData)(this->__PVT__decompress_state)))) {
-        if ((0U != (IData)(this->__PVT__decompress_state))) {
-            if ((1U != (IData)(this->__PVT__decompress_state))) {
-                if ((4U == (IData)(this->__PVT__decompress_state))) {
-                    if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                        this->__PVT__r_8_reg_w_ena = 1U;
-                    }
-                } else {
-                    if ((9U != (IData)(this->__PVT__decompress_state))) {
-                        if ((3U == (IData)(this->__PVT__decompress_state))) {
-                            if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                                this->__PVT__r_8_reg_w_ena = 1U;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    this->__PVT__pixel_reg_w_ena = 0U;
-    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
-               | (1U == (IData)(this->__PVT__decompress_state))) 
-              | (4U == (IData)(this->__PVT__decompress_state))) 
-             | (9U == (IData)(this->__PVT__decompress_state))) 
-            | (3U == (IData)(this->__PVT__decompress_state))) 
-           | (0xaU == (IData)(this->__PVT__decompress_state))) 
-          | (5U == (IData)(this->__PVT__decompress_state))) 
-         | (2U == (IData)(this->__PVT__decompress_state)))) {
-        if ((0U != (IData)(this->__PVT__decompress_state))) {
-            if ((1U != (IData)(this->__PVT__decompress_state))) {
-                if ((4U != (IData)(this->__PVT__decompress_state))) {
-                    if ((9U != (IData)(this->__PVT__decompress_state))) {
-                        if ((3U == (IData)(this->__PVT__decompress_state))) {
-                            if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                                this->__PVT__pixel_reg_w_ena = 1U;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
     this->__PVT__compressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         if (vlTOPp->PPU_start) {
@@ -1229,12 +1180,6 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
     this->__PVT__compressed_FIFO_r_req = (((1U == (IData)(this->__PVT__decompress_state)) 
                                            | (4U == (IData)(this->__PVT__decompress_state))) 
                                           | (3U == (IData)(this->__PVT__decompress_state)));
-    this->__PVT__w_8_valid = ((((5U == (IData)(this->__PVT__decompress_state)) 
-                                | (0xaU == (IData)(this->__PVT__decompress_state))) 
-                               | (9U == (IData)(this->__PVT__decompress_state))) 
-                              | (((4U == (IData)(this->__PVT__decompress_state)) 
-                                  | (3U == (IData)(this->__PVT__decompress_state))) 
-                                 & (~ (IData)(vlTOPp->clk))));
     this->__PVT__fifo_front_256_inc_ena = 0U;
     if (this->__PVT__tdm_match) {
         if (((IData)(vlTOPp->bg2_decomp_dequeue) & 
@@ -1429,6 +1374,149 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
             }
         }
     }
+    this->__PVT__r_8_valid = ((IData)(this->__PVT__compressed_FIFO_r_req) 
+                              & (7U == (IData)(this->__PVT__r_state)));
+    this->__PVT__r_8_reg_w_ena = 0U;
+    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
+               | (1U == (IData)(this->__PVT__decompress_state))) 
+              | (4U == (IData)(this->__PVT__decompress_state))) 
+             | (9U == (IData)(this->__PVT__decompress_state))) 
+            | (3U == (IData)(this->__PVT__decompress_state))) 
+           | (0xaU == (IData)(this->__PVT__decompress_state))) 
+          | (5U == (IData)(this->__PVT__decompress_state))) 
+         | (2U == (IData)(this->__PVT__decompress_state)))) {
+        if ((0U != (IData)(this->__PVT__decompress_state))) {
+            if ((1U != (IData)(this->__PVT__decompress_state))) {
+                if ((4U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_8_valid) {
+                        this->__PVT__r_8_reg_w_ena = 1U;
+                    }
+                } else {
+                    if ((9U != (IData)(this->__PVT__decompress_state))) {
+                        if ((3U == (IData)(this->__PVT__decompress_state))) {
+                            if (this->__PVT__r_8_valid) {
+                                this->__PVT__r_8_reg_w_ena = 1U;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__pixel_reg_w_ena = 0U;
+    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
+               | (1U == (IData)(this->__PVT__decompress_state))) 
+              | (4U == (IData)(this->__PVT__decompress_state))) 
+             | (9U == (IData)(this->__PVT__decompress_state))) 
+            | (3U == (IData)(this->__PVT__decompress_state))) 
+           | (0xaU == (IData)(this->__PVT__decompress_state))) 
+          | (5U == (IData)(this->__PVT__decompress_state))) 
+         | (2U == (IData)(this->__PVT__decompress_state)))) {
+        if ((0U != (IData)(this->__PVT__decompress_state))) {
+            if ((1U != (IData)(this->__PVT__decompress_state))) {
+                if ((4U != (IData)(this->__PVT__decompress_state))) {
+                    if ((9U != (IData)(this->__PVT__decompress_state))) {
+                        if ((3U == (IData)(this->__PVT__decompress_state))) {
+                            if (this->__PVT__r_8_valid) {
+                                this->__PVT__pixel_reg_w_ena = 1U;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__unrepeat_counter_w_ena = 0U;
+    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
+               | (1U == (IData)(this->__PVT__decompress_state))) 
+              | (4U == (IData)(this->__PVT__decompress_state))) 
+             | (9U == (IData)(this->__PVT__decompress_state))) 
+            | (3U == (IData)(this->__PVT__decompress_state))) 
+           | (0xaU == (IData)(this->__PVT__decompress_state))) 
+          | (5U == (IData)(this->__PVT__decompress_state))) 
+         | (2U == (IData)(this->__PVT__decompress_state)))) {
+        if ((0U != (IData)(this->__PVT__decompress_state))) {
+            if ((1U == (IData)(this->__PVT__decompress_state))) {
+                if ((1U & (~ ((IData)(this->__PVT__r_8_valid) 
+                              & (0U == (0x7fU & (IData)(this->__PVT__r_8))))))) {
+                    if (this->__PVT__r_8_valid) {
+                        if ((1U & (~ ((IData)(this->__PVT__r_8) 
+                                      >> 7U)))) {
+                            this->__PVT__unrepeat_counter_w_ena = 1U;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__repeat_counter_w_ena = 0U;
+    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
+               | (1U == (IData)(this->__PVT__decompress_state))) 
+              | (4U == (IData)(this->__PVT__decompress_state))) 
+             | (9U == (IData)(this->__PVT__decompress_state))) 
+            | (3U == (IData)(this->__PVT__decompress_state))) 
+           | (0xaU == (IData)(this->__PVT__decompress_state))) 
+          | (5U == (IData)(this->__PVT__decompress_state))) 
+         | (2U == (IData)(this->__PVT__decompress_state)))) {
+        if ((0U != (IData)(this->__PVT__decompress_state))) {
+            if ((1U == (IData)(this->__PVT__decompress_state))) {
+                if ((1U & (~ ((IData)(this->__PVT__r_8_valid) 
+                              & (0U == (0x7fU & (IData)(this->__PVT__r_8))))))) {
+                    if (this->__PVT__r_8_valid) {
+                        if ((0x80U & (IData)(this->__PVT__r_8))) {
+                            if ((0x80U & (IData)(this->__PVT__r_8))) {
+                                this->__PVT__repeat_counter_w_ena = 1U;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__w_8 = 0U;
+    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
+               | (1U == (IData)(this->__PVT__decompress_state))) 
+              | (4U == (IData)(this->__PVT__decompress_state))) 
+             | (9U == (IData)(this->__PVT__decompress_state))) 
+            | (3U == (IData)(this->__PVT__decompress_state))) 
+           | (0xaU == (IData)(this->__PVT__decompress_state))) 
+          | (5U == (IData)(this->__PVT__decompress_state))) 
+         | (2U == (IData)(this->__PVT__decompress_state)))) {
+        if ((0U != (IData)(this->__PVT__decompress_state))) {
+            if ((1U != (IData)(this->__PVT__decompress_state))) {
+                if ((4U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_8_valid) {
+                        this->__PVT__w_8 = this->__PVT__r_8;
+                    }
+                } else {
+                    if ((9U == (IData)(this->__PVT__decompress_state))) {
+                        this->__PVT__w_8 = this->__PVT__r_8_reg;
+                    } else {
+                        if ((3U == (IData)(this->__PVT__decompress_state))) {
+                            if (this->__PVT__r_8_valid) {
+                                this->__PVT__w_8 = this->__PVT__r_8;
+                            }
+                        } else {
+                            if ((0xaU == (IData)(this->__PVT__decompress_state))) {
+                                this->__PVT__w_8 = this->__PVT__r_8_reg;
+                            } else {
+                                if ((5U == (IData)(this->__PVT__decompress_state))) {
+                                    this->__PVT__w_8 
+                                        = this->__PVT__pixel_reg;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__w_8_valid = ((((5U == (IData)(this->__PVT__decompress_state)) 
+                                | (0xaU == (IData)(this->__PVT__decompress_state))) 
+                               | (9U == (IData)(this->__PVT__decompress_state))) 
+                              | (((4U == (IData)(this->__PVT__decompress_state)) 
+                                  | (3U == (IData)(this->__PVT__decompress_state))) 
+                                 & (IData)(this->__PVT__r_8_valid)));
     this->__PVT__decompressed_FIFO_reg_counter_inc_ena = 0U;
     if ((0U != (IData)(this->__PVT__w_state))) {
         if ((1U == (IData)(this->__PVT__w_state))) {
@@ -1547,133 +1635,6 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
             }
         }
     }
-    this->__PVT__decompressed_fifo_w_ena = (((((1U 
-                                                == (IData)(this->__PVT__w_state)) 
-                                               & (7U 
-                                                  == (IData)(this->__PVT__decompressed_FIFO_reg_counter))) 
-                                              & (IData)(this->__PVT__w_8_valid)) 
-                                             | (8U 
-                                                == (IData)(this->__PVT__w_state))) 
-                                            | (0xbU 
-                                               == (IData)(this->__PVT__w_state)));
-    this->__PVT__unrepeat_counter_w_ena = 0U;
-    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
-               | (1U == (IData)(this->__PVT__decompress_state))) 
-              | (4U == (IData)(this->__PVT__decompress_state))) 
-             | (9U == (IData)(this->__PVT__decompress_state))) 
-            | (3U == (IData)(this->__PVT__decompress_state))) 
-           | (0xaU == (IData)(this->__PVT__decompress_state))) 
-          | (5U == (IData)(this->__PVT__decompress_state))) 
-         | (2U == (IData)(this->__PVT__decompress_state)))) {
-        if ((0U != (IData)(this->__PVT__decompress_state))) {
-            if ((1U == (IData)(this->__PVT__decompress_state))) {
-                if ((1U & (~ ((~ (IData)(vlTOPp->clk)) 
-                              & (0U == (0x7fU & (IData)(this->__PVT__r_8))))))) {
-                    if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                        if ((1U & (~ ((IData)(this->__PVT__r_8) 
-                                      >> 7U)))) {
-                            this->__PVT__unrepeat_counter_w_ena = 1U;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    this->__PVT__repeat_counter_w_ena = 0U;
-    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
-               | (1U == (IData)(this->__PVT__decompress_state))) 
-              | (4U == (IData)(this->__PVT__decompress_state))) 
-             | (9U == (IData)(this->__PVT__decompress_state))) 
-            | (3U == (IData)(this->__PVT__decompress_state))) 
-           | (0xaU == (IData)(this->__PVT__decompress_state))) 
-          | (5U == (IData)(this->__PVT__decompress_state))) 
-         | (2U == (IData)(this->__PVT__decompress_state)))) {
-        if ((0U != (IData)(this->__PVT__decompress_state))) {
-            if ((1U == (IData)(this->__PVT__decompress_state))) {
-                if ((1U & (~ ((~ (IData)(vlTOPp->clk)) 
-                              & (0U == (0x7fU & (IData)(this->__PVT__r_8))))))) {
-                    if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                        if ((0x80U & (IData)(this->__PVT__r_8))) {
-                            if ((0x80U & (IData)(this->__PVT__r_8))) {
-                                this->__PVT__repeat_counter_w_ena = 1U;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    this->__PVT__w_8 = 0U;
-    if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
-               | (1U == (IData)(this->__PVT__decompress_state))) 
-              | (4U == (IData)(this->__PVT__decompress_state))) 
-             | (9U == (IData)(this->__PVT__decompress_state))) 
-            | (3U == (IData)(this->__PVT__decompress_state))) 
-           | (0xaU == (IData)(this->__PVT__decompress_state))) 
-          | (5U == (IData)(this->__PVT__decompress_state))) 
-         | (2U == (IData)(this->__PVT__decompress_state)))) {
-        if ((0U != (IData)(this->__PVT__decompress_state))) {
-            if ((1U != (IData)(this->__PVT__decompress_state))) {
-                if ((4U == (IData)(this->__PVT__decompress_state))) {
-                    if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                        this->__PVT__w_8 = this->__PVT__r_8;
-                    }
-                } else {
-                    if ((9U == (IData)(this->__PVT__decompress_state))) {
-                        this->__PVT__w_8 = this->__PVT__r_8_reg;
-                    } else {
-                        if ((3U == (IData)(this->__PVT__decompress_state))) {
-                            if ((1U & (~ (IData)(vlTOPp->clk)))) {
-                                this->__PVT__w_8 = this->__PVT__r_8;
-                            }
-                        } else {
-                            if ((0xaU == (IData)(this->__PVT__decompress_state))) {
-                                this->__PVT__w_8 = this->__PVT__r_8_reg;
-                            } else {
-                                if ((5U == (IData)(this->__PVT__decompress_state))) {
-                                    this->__PVT__w_8 
-                                        = this->__PVT__pixel_reg;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    this->__PVT__fifo_rear_256_inc_ena = 0U;
-    if (this->__PVT__tdm_match) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_256)))) {
-            this->__PVT__fifo_rear_256_inc_ena = 1U;
-        }
-    }
-    this->BRAM12_en_a = 0U;
-    if (this->__PVT__tdm_match) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_256)))) {
-            this->BRAM12_en_a = 1U;
-        }
-    }
-    this->BRAM12_we_a = 0U;
-    if (this->__PVT__tdm_match) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_256)))) {
-            this->BRAM12_we_a = 1U;
-        }
-    }
-    this->BRAM12_addr_a = 0U;
-    if (this->__PVT__tdm_match) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_256)))) {
-            this->BRAM12_addr_a = (0x1ffU & ((IData)(0x100U) 
-                                             + (0xffU 
-                                                & (IData)(this->__PVT__fifo_rear_256))));
-        }
-    }
-    this->__PVT__decompressed_fifo_w_end = ((IData)(this->__PVT__tdm_match) 
-                                            & ((IData)(this->__PVT__decompressed_fifo_w_ena) 
-                                               & (~ (IData)(this->__PVT__fifo_full_256))));
     this->__PVT__decompressed_fifo_w_data = 0ULL;
     if ((0U != (IData)(this->__PVT__w_state))) {
         if ((1U == (IData)(this->__PVT__w_state))) {
@@ -1761,6 +1722,55 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
             }
         }
     }
+    this->__PVT__decompressed_fifo_w_ena = (((((1U 
+                                                == (IData)(this->__PVT__w_state)) 
+                                               & (7U 
+                                                  == (IData)(this->__PVT__decompressed_FIFO_reg_counter))) 
+                                              & (IData)(this->__PVT__w_8_valid)) 
+                                             | (8U 
+                                                == (IData)(this->__PVT__w_state))) 
+                                            | (0xbU 
+                                               == (IData)(this->__PVT__w_state)));
+    this->__PVT__fifo_rear_256_inc_ena = 0U;
+    if (this->__PVT__tdm_match) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_256)))) {
+            this->__PVT__fifo_rear_256_inc_ena = 1U;
+        }
+    }
+    this->BRAM12_en_a = 0U;
+    if (this->__PVT__tdm_match) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_256)))) {
+            this->BRAM12_en_a = 1U;
+        }
+    }
+    this->BRAM12_we_a = 0U;
+    if (this->__PVT__tdm_match) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_256)))) {
+            this->BRAM12_we_a = 1U;
+        }
+    }
+    this->BRAM12_addr_a = 0U;
+    if (this->__PVT__tdm_match) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_256)))) {
+            this->BRAM12_addr_a = (0x1ffU & ((IData)(0x100U) 
+                                             + (0xffU 
+                                                & (IData)(this->__PVT__fifo_rear_256))));
+        }
+    }
+    this->BRAM12_din_a = 0ULL;
+    if (this->__PVT__tdm_match) {
+        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
+             & (~ (IData)(this->__PVT__fifo_full_256)))) {
+            this->BRAM12_din_a = this->__PVT__decompressed_fifo_w_data;
+        }
+    }
+    this->__PVT__decompressed_fifo_w_end = ((IData)(this->__PVT__tdm_match) 
+                                            & ((IData)(this->__PVT__decompressed_fifo_w_ena) 
+                                               & (~ (IData)(this->__PVT__fifo_full_256))));
     this->__PVT__decompressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__w_state))) {
         if (vlTOPp->PPU_start) {
@@ -1847,13 +1857,6 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                                      & (IData)(this->__PVT__decompressed_fifo_w_end)))) 
                               | ((8U == (IData)(this->__PVT__w_state)) 
                                  & (IData)(this->__PVT__decompressed_fifo_w_end)));
-    this->BRAM12_din_a = 0ULL;
-    if (this->__PVT__tdm_match) {
-        if (((IData)(this->__PVT__decompressed_fifo_w_ena) 
-             & (~ (IData)(this->__PVT__fifo_full_256)))) {
-            this->BRAM12_din_a = this->__PVT__decompressed_fifo_w_data;
-        }
-    }
     this->__PVT__repeat_counter_dec_ena = 0U;
     if (((((((((0U == (IData)(this->__PVT__decompress_state)) 
                | (1U == (IData)(this->__PVT__decompress_state))) 
@@ -1868,7 +1871,7 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                 if ((4U != (IData)(this->__PVT__decompress_state))) {
                     if ((9U != (IData)(this->__PVT__decompress_state))) {
                         if ((3U == (IData)(this->__PVT__decompress_state))) {
-                            if ((1U & (~ (IData)(vlTOPp->clk)))) {
+                            if (this->__PVT__r_8_valid) {
                                 if (this->__PVT__w_8_ready) {
                                     if ((1U == (IData)(this->__PVT__repeat_counter))) {
                                         this->__PVT__repeat_counter_dec_ena = 1U;
@@ -1922,7 +1925,7 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
         if ((0U != (IData)(this->__PVT__decompress_state))) {
             if ((1U != (IData)(this->__PVT__decompress_state))) {
                 if ((4U == (IData)(this->__PVT__decompress_state))) {
-                    if ((1U & (~ (IData)(vlTOPp->clk)))) {
+                    if (this->__PVT__r_8_valid) {
                         if (this->__PVT__w_8_ready) {
                             this->__PVT__unrepeat_counter_dec_ena = 1U;
                         }
@@ -1958,15 +1961,11 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                                                    : 0U);
         } else {
             if ((1U == (IData)(this->__PVT__decompress_state))) {
-                if (((~ (IData)(vlTOPp->clk)) & (0U 
-                                                 == 
-                                                 (0x7fU 
-                                                  & (IData)(this->__PVT__r_8))))) {
+                if (((IData)(this->__PVT__r_8_valid) 
+                     & (0U == (0x7fU & (IData)(this->__PVT__r_8))))) {
                     this->__PVT__decompress_state_next = 2U;
                 } else {
-                    if (vlTOPp->clk) {
-                        this->__PVT__decompress_state_next = 1U;
-                    } else {
+                    if (this->__PVT__r_8_valid) {
                         if ((0x80U & (IData)(this->__PVT__r_8))) {
                             if ((0x80U & (IData)(this->__PVT__r_8))) {
                                 this->__PVT__decompress_state_next = 3U;
@@ -1974,15 +1973,18 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                         } else {
                             this->__PVT__decompress_state_next = 4U;
                         }
+                    } else {
+                        this->__PVT__decompress_state_next = 1U;
                     }
                 }
             } else {
                 if ((4U == (IData)(this->__PVT__decompress_state))) {
                     this->__PVT__decompress_state_next 
-                        = ((IData)(vlTOPp->clk) ? 4U
-                            : ((IData)(this->__PVT__w_8_ready)
+                        = ((IData)(this->__PVT__r_8_valid)
+                            ? ((IData)(this->__PVT__w_8_ready)
                                 ? ((1U == (IData)(this->__PVT__unrepeat_counter))
-                                    ? 1U : 4U) : 9U));
+                                    ? 1U : 4U) : 9U)
+                            : 4U);
                 } else {
                     if ((9U == (IData)(this->__PVT__decompress_state))) {
                         if (this->__PVT__w_8_ready) {
@@ -1998,9 +2000,7 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                         }
                     } else {
                         if ((3U == (IData)(this->__PVT__decompress_state))) {
-                            if (vlTOPp->clk) {
-                                this->__PVT__decompress_state_next = 3U;
-                            } else {
+                            if (this->__PVT__r_8_valid) {
                                 if (this->__PVT__w_8_ready) {
                                     if ((1U == (IData)(this->__PVT__repeat_counter))) {
                                         this->__PVT__decompress_state_next = 1U;
@@ -2012,6 +2012,8 @@ void Vpixel_fifo_top_Decompresser::_settle__TOP__pixel_fifo_top__DOT__u_decomp_b
                                 } else {
                                     this->__PVT__decompress_state_next = 0xaU;
                                 }
+                            } else {
+                                this->__PVT__decompress_state_next = 3U;
                             }
                         } else {
                             if ((0xaU == (IData)(this->__PVT__decompress_state))) {
@@ -2243,6 +2245,7 @@ void Vpixel_fifo_top_Decompresser::_ctor_var_reset() {
     __PVT__decompressed_FIFO_reg_wstrb = VL_RAND_RESET_I(8);
     __PVT__decompressed_FIFO_reg_counter_reset = VL_RAND_RESET_I(1);
     __PVT__r_8 = VL_RAND_RESET_I(8);
+    __PVT__r_8_valid = VL_RAND_RESET_I(1);
     __PVT__r_8_reg = VL_RAND_RESET_I(8);
     __PVT__r_8_reg_w_ena = VL_RAND_RESET_I(1);
     __PVT__repeat_counter = VL_RAND_RESET_I(7);

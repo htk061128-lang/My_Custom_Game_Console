@@ -1424,6 +1424,22 @@ VL_INLINE_OPT void Vpixel_fifo_top::_sequent__TOP__4(Vpixel_fifo_top__Syms* __re
                                           + (0x7fU 
                                              & (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__uni2_fifo_front))));
     }
+    vlTOPp->BRAM10_en_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_en_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_en_a)) 
+                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_en_a)) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_en_a));
+    vlTOPp->BRAM10_we_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_we_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_we_a)) 
+                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_we_a)) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_we_a));
+    vlTOPp->BRAM10_addr_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_addr_a) 
+                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_addr_a)) 
+                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_addr_a)) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_addr_a));
+    vlTOPp->BRAM10_din_a = (((vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_din_a 
+                              | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_din_a) 
+                             | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_din_a) 
+                            | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_din_a);
     vlTOPp->ch1_decomp_r_master = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.Decompressed_FIFO_r_master;
     vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__char1_fifo_dec_want = 0U;
     if ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.Compressed_FIFO_dequeue) 
@@ -1521,6 +1537,22 @@ VL_INLINE_OPT void Vpixel_fifo_top::_sequent__TOP__4(Vpixel_fifo_top__Syms* __re
                                           + (0x7fU 
                                              & (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__char4_fifo_front))));
     }
+    vlTOPp->BRAM11_en_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_en_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_en_a)) 
+                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_en_a)) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_en_a));
+    vlTOPp->BRAM11_we_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_we_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_we_a)) 
+                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_we_a)) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_we_a));
+    vlTOPp->BRAM11_addr_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_addr_a) 
+                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_addr_a)) 
+                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_addr_a)) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_addr_a));
+    vlTOPp->BRAM11_din_a = (((vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_din_a 
+                              | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_din_a) 
+                             | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_din_a) 
+                            | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_din_a);
     vlTOPp->bg1_decomp_r_master = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.Decompressed_FIFO_r_master;
     vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__back1_fifo_dec_want = 0U;
     if ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.Compressed_FIFO_dequeue) 
@@ -1570,6 +1602,14 @@ VL_INLINE_OPT void Vpixel_fifo_top::_sequent__TOP__4(Vpixel_fifo_top__Syms* __re
                                           + (0xffU 
                                              & (IData)(vlTOPp->pixel_fifo_top__DOT__u_compressed_fifo__DOT__back2_fifo_front))));
     }
+    vlTOPp->BRAM12_en_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_en_a) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_en_a));
+    vlTOPp->BRAM12_we_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_we_a) 
+                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_we_a));
+    vlTOPp->BRAM12_addr_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_addr_a) 
+                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_addr_a));
+    vlTOPp->BRAM12_din_a = (vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_din_a 
+                            | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_din_a);
 }
 
 VL_INLINE_OPT void Vpixel_fifo_top::_combo__TOP__5(Vpixel_fifo_top__Syms* __restrict vlSymsp) {
@@ -2598,22 +2638,6 @@ VL_INLINE_OPT void Vpixel_fifo_top::_combo__TOP__5(Vpixel_fifo_top__Syms* __rest
                                | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_addr_b)) 
                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_addr_b)) 
                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_addr_b));
-    vlTOPp->BRAM10_en_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_en_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_en_a)) 
-                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_en_a)) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_en_a));
-    vlTOPp->BRAM10_we_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_we_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_we_a)) 
-                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_we_a)) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_we_a));
-    vlTOPp->BRAM10_addr_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_addr_a) 
-                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_addr_a)) 
-                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_addr_a)) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_addr_a));
-    vlTOPp->BRAM10_din_a = (((vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni1.BRAM10_din_a 
-                              | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_uni2.BRAM10_din_a) 
-                             | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_script.BRAM10_din_a) 
-                            | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_status.BRAM10_din_a);
     vlTOPp->ch1_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.Decompressed_FIFO_data;
     vlTOPp->ch2_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.Decompressed_FIFO_data;
     vlTOPp->ch3_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.Decompressed_FIFO_data;
@@ -2626,36 +2650,12 @@ VL_INLINE_OPT void Vpixel_fifo_top::_combo__TOP__5(Vpixel_fifo_top__Syms* __rest
                                | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_addr_b)) 
                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_addr_b)) 
                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_addr_b));
-    vlTOPp->BRAM11_en_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_en_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_en_a)) 
-                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_en_a)) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_en_a));
-    vlTOPp->BRAM11_we_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_we_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_we_a)) 
-                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_we_a)) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_we_a));
-    vlTOPp->BRAM11_addr_a = ((((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_addr_a) 
-                               | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_addr_a)) 
-                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_addr_a)) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_addr_a));
-    vlTOPp->BRAM11_din_a = (((vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch1.BRAM11_din_a 
-                              | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch2.BRAM11_din_a) 
-                             | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch3.BRAM11_din_a) 
-                            | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_ch4.BRAM11_din_a);
     vlTOPp->bg1_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.Decompressed_FIFO_data;
     vlTOPp->bg2_decomp_data = vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.Decompressed_FIFO_data;
     vlTOPp->BRAM12_en_b = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_en_b) 
                            | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_en_b));
     vlTOPp->BRAM12_addr_b = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_addr_b) 
                              | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_addr_b));
-    vlTOPp->BRAM12_en_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_en_a) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_en_a));
-    vlTOPp->BRAM12_we_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_we_a) 
-                           | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_we_a));
-    vlTOPp->BRAM12_addr_a = ((IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_addr_a) 
-                             | (IData)(vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_addr_a));
-    vlTOPp->BRAM12_din_a = (vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg1.BRAM12_din_a 
-                            | vlSymsp->TOP__pixel_fifo_top__DOT__u_decomp_bg2.BRAM12_din_a);
 }
 
 void Vpixel_fifo_top::_eval(Vpixel_fifo_top__Syms* __restrict vlSymsp) {
