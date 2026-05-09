@@ -6,6 +6,11 @@ module RGB_Converter(
 
     input PPU_start,
 
+    input [7:0] Cache1_pixel, //직접 input으로 4개의 범용캐시에 저장할 8비트 픽셀값을 주면 거기에 그 값을 쓰고 유지되는 구조임.
+    input [7:0] Cache2_pixel,
+    input [7:0] Cache3_pixel,
+    input [7:0] Cache4_pixel,
+
     //256 * 18 bit, 쓰기포트 1개, 읽기포트 2개인 Distribute RAM 인터페이스. 비동기 메모리이므로 주소를 주면 즉시 데이터가 나옴.
     // [포트 A] 쓰기 전용 포트 (Write Port) //쓰기 포트는 CPU가 사용할 수 있게 해야하고 여기서는 사용하지는 않지만 일단 적어둠.
     output  wire        LUT_we,         // 쓰기 활성화 (Write Enable)
@@ -82,7 +87,7 @@ module RGB_Converter(
     output Req12_end
 );
 reg [7:0] cache1_pixel; //여기있는 4개의 캐시값과 Req_pixel이 일치하면 Distribute Ram에 접근없이 RGB값을 줌.
-reg [17:0] cache1_RGB;
+reg [17:0] cache1_RGB; //범용캐시 4개를 CPU가 범용적으로 자주 쓰이는 값을 직접 지정해서 고정시킬 수 있게 만드는게 최선일 것 같음...
 reg cache1_valid;
 reg [7:0] cache2_pixel;
 reg [17:0] cache2_RGB;
@@ -221,12 +226,30 @@ reg [1:0] random_counter_0_3; //0 - 1 - 2 - 3 을 반복하는 카운터고, 어
 reg random_counter_0_1;
 reg random_counter_0_2;
 
+reg cache1_w_ena;
+reg cache2_w_ena;
+reg cache3_w_ena;
+reg cache4_w_ena;
+
+reg req1_w_ena;
+reg req2_w_ena;
+reg req3_w_ena;
+reg req4_w_ena;
+reg req5_w_ena;
+reg req6_w_ena;
+reg req7_w_ena;
+reg req8_w_ena;
+reg req9_w_ena;
+reg req10_w_ena;
+reg req11_w_ena;
+reg req12_w_ena;
+
 //읽기포트 1번에는 Request 1, 2, 3, 4, 5, 6 읽기포트 2번에는 Request 7, 8, 9, 10, 11, 12를 할당함.
 //읽기포트 1에 경우 random_counter_0_1가 0일때는 Request 1, 2, 3으로 범위를 설정하고 random_counter_0_1가 1일때는 Request 4, 5, 6으로 범위를 설정함.
 //범위에는 3개의 요청이 들어가고 random_counter_0_2의 값에 따라서 3개의 Request의 우선순위가 각각 결정됨.
 //예를 들어 random_counter_0_2의 값이 1이면 우선순위는 1번: Request 2, 2번: Request 3, 3번: Request 1인 식임.
 //우선순위가 높은것 먼저 total_req값으로 cache miss인 요청이 있는지 확인하고 있으면 Distribute RAM에서 값을 읽어옴. 없으면 2순위 체크, 그것도 없으면 3순위 체크임/
-//만약 3개 다 total_req가 0이면 그때는 Distribute RAM 읽기가 일어나지 않음(ㅠㅠㅠㅠㅠ). 다음 클럭에 다시 우선순위가 설정되고 Distribute RAM 사용할 Request를 탐색함.
+//만약 3개 다 total_req가 0이면 그때는 Distribute RAM 읽기가 일어나지 않음. 다음 클럭에 다시 우선순위가 설정되고 Distribute RAM 사용할 Request를 탐색함.
 
 always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
@@ -289,6 +312,112 @@ always @(posedge clk or negedge resetn) begin
         random_counter_0_1 <= ~random_counter_0_1; //0 - 1 - 0 - 1 - 0을 반복.
         if(random_counter_0_2[1:0] == 2) random_counter_0_2[1:0] <= 0; // 0 - 1 - 2 - 0 - 1 - 2를 반복.
         else random_counter_0_2[1:0] <= random_counter_0_2[1:0] + 1;
+
+        if(Cache1_pixel[7:0] == LUT_addr_r1[7:0]) begin
+            cache1_valid <= 1;
+            cache1_pixel[7:0] <= Cache1_pixel[7:0];
+            cache1_RGB[17:0] <= LUT_data_out1[17:0];
+        end
+        else if(Cache1_pixel[7:0] == LUT_addr_r2[7:0]) begin
+            cache1_valid <= 1;
+            cache1_pixel[7:0] <= Cache1_pixel[7:0];
+            cache1_RGB[17:0] <= LUT_data_out2[17:0];
+        end
+
+        if(Cache2_pixel[7:0] == LUT_addr_r1[7:0]) begin
+            cache2_valid <= 1;
+            cache2_pixel[7:0] <= Cache2_pixel[7:0];
+            cache2_RGB[17:0] <= LUT_data_out1[17:0];
+        end
+        else if(Cache2_pixel[7:0] == LUT_addr_r2[7:0]) begin
+            cache2_valid <= 1;
+            cache2_pixel[7:0] <= Cache2_pixel[7:0];
+            cache2_RGB[17:0] <= LUT_data_out2[17:0];
+        end
+
+        if(Cache3_pixel[7:0] == LUT_addr_r1[7:0]) begin
+            cache3_valid <= 1;
+            cache3_pixel[7:0] <= Cache3_pixel[7:0];
+            cache3_RGB[17:0] <= LUT_data_out1[17:0];
+        end
+        else if(Cache3_pixel[7:0] == LUT_addr_r2[7:0]) begin
+            cache3_valid <= 1;
+            cache3_pixel[7:0] <= Cache3_pixel[7:0];
+            cache3_RGB[17:0] <= LUT_data_out2[17:0];
+        end
+
+        if(Cache4_pixel[7:0] == LUT_addr_r1[7:0]) begin
+            cache4_valid <= 1;
+            cache4_pixel[7:0] <= Cache4_pixel[7:0];
+            cache4_RGB[17:0] <= LUT_data_out1[17:0];
+        end
+        else if(Cache4_pixel[7:0] == LUT_addr_r2[7:0]) begin
+            cache4_valid <= 1;
+            cache4_pixel[7:0] <= Cache4_pixel[7:0];
+            cache4_RGB[17:0] <= LUT_data_out2[17:0];
+        end
+
+        if(req1_w_ena) begin
+            req1_exclusive_valid <= 1;
+            req1_exclusive_pixel[7:0] <= Req1_pixel[7:0];
+            req1_exclusive_RGB[17:0] <= Req1_RGB[17:0];
+        end
+        if(req2_w_ena) begin
+            req2_exclusive_valid <= 1;
+            req2_exclusive_pixel[7:0] <= Req2_pixel[7:0];
+            req2_exclusive_RGB[17:0] <= Req2_RGB[17:0];
+        end
+        if(req3_w_ena) begin
+            req3_exclusive_valid <= 1;
+            req3_exclusive_pixel[7:0] <= Req3_pixel[7:0];
+            req3_exclusive_RGB[17:0] <= Req3_RGB[17:0];
+        end
+        if(req4_w_ena) begin
+            req4_exclusive_valid <= 1;
+            req4_exclusive_pixel[7:0] <= Req4_pixel[7:0];
+            req4_exclusive_RGB[17:0] <= Req4_RGB[17:0];
+        end
+        if(req5_w_ena) begin
+            req5_exclusive_valid <= 1;
+            req5_exclusive_pixel[7:0] <= Req5_pixel[7:0];
+            req5_exclusive_RGB[17:0] <= Req5_RGB[17:0];
+        end
+        if(req6_w_ena) begin
+            req6_exclusive_valid <= 1;
+            req6_exclusive_pixel[7:0] <= Req6_pixel[7:0];
+            req6_exclusive_RGB[17:0] <= Req6_RGB[17:0];
+        end
+        if(req7_w_ena) begin
+            req7_exclusive_valid <= 1;
+            req7_exclusive_pixel[7:0] <= Req7_pixel[7:0];
+            req7_exclusive_RGB[17:0] <= Req7_RGB[17:0];
+        end
+        if(req8_w_ena) begin
+            req8_exclusive_valid <= 1;
+            req8_exclusive_pixel[7:0] <= Req8_pixel[7:0];
+            req8_exclusive_RGB[17:0] <= Req8_RGB[17:0];
+        end
+        if(req9_w_ena) begin
+            req9_exclusive_valid <= 1;
+            req9_exclusive_pixel[7:0] <= Req9_pixel[7:0];
+            req9_exclusive_RGB[17:0] <= Req9_RGB[17:0];
+        end
+        if(req10_w_ena) begin
+            req10_exclusive_valid <= 1;
+            req10_exclusive_pixel[7:0] <= Req10_pixel[7:0];
+            req10_exclusive_RGB[17:0] <= Req10_RGB[17:0];
+        end
+        if(req11_w_ena) begin
+            req11_exclusive_valid <= 1;
+            req11_exclusive_pixel[7:0] <= Req11_pixel[7:0];
+            req11_exclusive_RGB[17:0] <= Req11_RGB[17:0];
+        end
+        if(req12_w_ena) begin
+            req12_exclusive_valid <= 1;
+            req12_exclusive_pixel[7:0] <= Req12_pixel[7:0];
+            req12_exclusive_RGB[17:0] <= Req12_RGB[17:0];
+        end
+        end
     end
 end
 
@@ -318,6 +447,24 @@ always @(*) begin
     Req12_end = 0;
     Req12_RGB[17:0] = 0;
 
+    cache1_w_ena = 0;
+    cache2_w_ena = 0;
+    cache3_w_ena = 0;
+    cache4_w_ena = 0;
+
+    req1_w_ena = 0;
+    req2_w_ena = 0;
+    req3_w_ena = 0;
+    req4_w_ena = 0;
+    req5_w_ena = 0;
+    req6_w_ena = 0;
+    req7_w_ena = 0;
+    req8_w_ena = 0;
+    req9_w_ena = 0;
+    req10_w_ena = 0;
+    req11_w_ena = 0;
+    req12_w_ena = 0;
+
     total_req[0] = Req1_ena && ~req1_hit1 && ~req1_hit2 && ~req1_hit3 && ~req1_hit4 && ~req1_exclusive_hit;
     total_req[1] = Req2_ena && ~req2_hit1 && ~req2_hit2 && ~req2_hit3 && ~req2_hit4 && ~req2_exclusive_hit;
     total_req[2] = Req3_ena && ~req3_hit1 && ~req3_hit2 && ~req3_hit3 && ~req3_hit4 && ~req3_exclusive_hit;
@@ -340,16 +487,19 @@ always @(*) begin
                         LUT_addr_r1[7:0] = Req1_pixel[7:0];
                         Req1_end = 1;
                         Req1_RGB[17:0] = LUT_data_out1[17:0];
+                        req1_w_ena = 1;
                     end
                     else if(total_req[1]) begin
                         LUT_addr_r1[7:0] = Req2_pixel[7:0];
                         Req2_end = 1;
                         Req2_RGB[17:0] = LUT_data_out1[17:0];
+                        req2_w_ena = 1;
                     end
                     else if(total_req[2]) begin
                         LUT_addr_r1[7:0] = Req3_pixel[7:0];
                         Req3_end = 1;
                         Req3_RGB[17:0] = LUT_data_out1[17:0];
+                        req3_w_ena = 1;
                     end
                 end
                 2'd1: begin
@@ -357,16 +507,19 @@ always @(*) begin
                         LUT_addr_r1[7:0] = Req2_pixel[7:0];
                         Req2_end = 1;
                         Req2_RGB[17:0] = LUT_data_out1[17:0];
+                        req2_w_ena = 1;
                     end
                     else if(total_req[2]) begin
                         LUT_addr_r1[7:0] = Req3_pixel[7:0];
                         Req3_end = 1;
                         Req3_RGB[17:0] = LUT_data_out1[17:0];
+                        req3_w_ena = 1;
                     end
                     else if(total_req[0]) begin
                         LUT_addr_r1[7:0] = Req1_pixel[7:0];
                         Req1_end = 1;
                         Req1_RGB[17:0] = LUT_data_out1[17:0];
+                        req1_w_ena = 1;
                     end
                 end
                 2'd2: begin
@@ -374,16 +527,19 @@ always @(*) begin
                         LUT_addr_r1[7:0] = Req3_pixel[7:0];
                         Req3_end = 1;
                         Req3_RGB[17:0] = LUT_data_out1[17:0];
+                        req3_w_ena = 1;
                     end
                     else if(total_req[0]) begin
                         LUT_addr_r1[7:0] = Req1_pixel[7:0];
                         Req1_end = 1;
                         Req1_RGB[17:0] = LUT_data_out1[17:0];
+                        req1_w_ena = 1;
                     end
                     else if(total_req[1]) begin
                         LUT_addr_r1[7:0] = Req2_pixel[7:0];
                         Req2_end = 1;
                         Req2_RGB[17:0] = LUT_data_out1[17:0];
+                        req2_w_ena = 1;
                     end
                 end
             endcase
@@ -395,16 +551,19 @@ always @(*) begin
                         LUT_addr_r1[7:0] = Req4_pixel[7:0];
                         Req4_end = 1;
                         Req4_RGB[17:0] = LUT_data_out1[17:0];
+                        req4_w_ena = 1;
                     end
                     else if(total_req[4]) begin
                         LUT_addr_r1[7:0] = Req5_pixel[7:0];
                         Req5_end = 1;
                         Req5_RGB[17:0] = LUT_data_out1[17:0];
+                        req5_w_ena = 1;
                     end
                     else if(total_req[5]) begin
                         LUT_addr_r1[7:0] = Req6_pixel[7:0];
                         Req6_end = 1;
                         Req6_RGB[17:0] = LUT_data_out1[17:0];
+                        req6_w_ena = 1;
                     end
                 end
                 2'd1: begin
@@ -412,16 +571,19 @@ always @(*) begin
                         LUT_addr_r1[7:0] = Req5_pixel[7:0];
                         Req5_end = 1;
                         Req5_RGB[17:0] = LUT_data_out1[17:0];
+                        req5_w_ena = 1;
                     end
                     else if(total_req[5]) begin
                         LUT_addr_r1[7:0] = Req6_pixel[7:0];
                         Req6_end = 1;
                         Req6_RGB[17:0] = LUT_data_out1[17:0];
+                        req6_w_ena = 1;
                     end
                     else if(total_req[3]) begin
                         LUT_addr_r1[7:0] = Req4_pixel[7:0];
                         Req4_end = 1;
                         Req4_RGB[17:0] = LUT_data_out1[17:0];
+                        req4_w_ena = 1;
                     end
                 end
                 2'd2: begin
@@ -429,16 +591,19 @@ always @(*) begin
                         LUT_addr_r1[7:0] = Req6_pixel[7:0];
                         Req6_end = 1;
                         Req6_RGB[17:0] = LUT_data_out1[17:0];
+                        req6_w_ena = 1;
                     end
                     else if(total_req[3]) begin
                         LUT_addr_r1[7:0] = Req4_pixel[7:0];
                         Req4_end = 1;
                         Req4_RGB[17:0] = LUT_data_out1[17:0];
+                        req4_w_ena = 1;
                     end
                     else if(total_req[4]) begin
                         LUT_addr_r1[7:0] = Req5_pixel[7:0];
                         Req5_end = 1;
                         Req5_RGB[17:0] = LUT_data_out1[17:0];
+                        req5_w_ena = 1;
                     end
                 end
             endcase
@@ -454,16 +619,19 @@ always @(*) begin
                         LUT_addr_r2[7:0] = Req7_pixel[7:0];
                         Req7_end = 1;
                         Req7_RGB[17:0] = LUT_data_out2[17:0];
+                        req7_w_ena = 1;
                     end
                     else if(total_req[7]) begin
                         LUT_addr_r2[7:0] = Req8_pixel[7:0];
                         Req8_end = 1;
                         Req8_RGB[17:0] = LUT_data_out2[17:0];
+                        req8_w_ena = 1;
                     end
                     else if(total_req[8]) begin
                         LUT_addr_r2[7:0] = Req9_pixel[7:0];
                         Req9_end = 1;
                         Req9_RGB[17:0] = LUT_data_out2[17:0];
+                        req9_w_ena = 1;
                     end
                 end
                 2'd1: begin
@@ -471,16 +639,19 @@ always @(*) begin
                         LUT_addr_r2[7:0] = Req8_pixel[7:0];
                         Req8_end = 1;
                         Req8_RGB[17:0] = LUT_data_out2[17:0];
+                        req8_w_ena = 1;
                     end
                     else if(total_req[8]) begin
                         LUT_addr_r2[7:0] = Req9_pixel[7:0];
                         Req9_end = 1;
                         Req9_RGB[17:0] = LUT_data_out2[17:0];
+                        req9_w_ena = 1;
                     end
                     else if(total_req[6]) begin
                         LUT_addr_r2[7:0] = Req7_pixel[7:0];
                         Req7_end = 1;
                         Req7_RGB[17:0] = LUT_data_out2[17:0];
+                        req7_w_ena = 1;
                     end
                 end
                 2'd2: begin
@@ -488,16 +659,19 @@ always @(*) begin
                         LUT_addr_r2[7:0] = Req9_pixel[7:0];
                         Req9_end = 1;
                         Req9_RGB[17:0] = LUT_data_out2[17:0];
+                        req9_w_ena = 1;
                     end
                     else if(total_req[6]) begin
                         LUT_addr_r2[7:0] = Req7_pixel[7:0];
                         Req7_end = 1;
                         Req7_RGB[17:0] = LUT_data_out2[17:0];
+                        req7_w_ena = 1;
                     end
                     else if(total_req[7]) begin
                         LUT_addr_r2[7:0] = Req8_pixel[7:0];
                         Req8_end = 1;
                         Req8_RGB[17:0] = LUT_data_out2[17:0];
+                        req8_w_ena = 1;
                     end
                 end
             endcase
@@ -509,16 +683,19 @@ always @(*) begin
                         LUT_addr_r2[7:0] = Req10_pixel[7:0];
                         Req10_end = 1;
                         Req10_RGB[17:0] = LUT_data_out2[17:0];
+                        req10_w_ena = 1;
                     end
                     else if(total_req[10]) begin
                         LUT_addr_r2[7:0] = Req11_pixel[7:0];
                         Req11_end = 1;
                         Req11_RGB[17:0] = LUT_data_out2[17:0];
+                        req11_w_ena = 1;
                     end
                     else if(total_req[11]) begin
                         LUT_addr_r2[7:0] = Req12_pixel[7:0];
                         Req12_end = 1;
                         Req12_RGB[17:0] = LUT_data_out2[17:0];
+                        req12_w_ena = 1;
                     end
                 end
                 2'd1: begin
@@ -526,16 +703,19 @@ always @(*) begin
                         LUT_addr_r2[7:0] = Req11_pixel[7:0];
                         Req11_end = 1;
                         Req11_RGB[17:0] = LUT_data_out2[17:0];
+                        req11_w_ena = 1;
                     end
                     else if(total_req[11]) begin
                         LUT_addr_r2[7:0] = Req12_pixel[7:0];
                         Req12_end = 1;
                         Req12_RGB[17:0] = LUT_data_out2[17:0];
+                        req12_w_ena = 1;
                     end
                     else if(total_req[9]) begin
                         LUT_addr_r2[7:0] = Req10_pixel[7:0];
                         Req10_end = 1;
                         Req10_RGB[17:0] = LUT_data_out2[17:0];
+                        req10_w_ena = 1;
                     end
                 end
                 2'd2: begin
@@ -543,16 +723,19 @@ always @(*) begin
                         LUT_addr_r2[7:0] = Req12_pixel[7:0];
                         Req12_end = 1;
                         Req12_RGB[17:0] = LUT_data_out2[17:0];
+                        req12_w_ena = 1;
                     end
                     else if(total_req[9]) begin
                         LUT_addr_r2[7:0] = Req10_pixel[7:0];
                         Req10_end = 1;
                         Req10_RGB[17:0] = LUT_data_out2[17:0];
+                        req10_w_ena = 1;
                     end
                     else if(total_req[10]) begin
                         LUT_addr_r2[7:0] = Req11_pixel[7:0];
                         Req11_end = 1;
                         Req11_RGB[17:0] = LUT_data_out2[17:0];
+                        req11_w_ena = 1;
                     end
                 end
             endcase
