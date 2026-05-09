@@ -7,9 +7,11 @@ module RGB_Converter(
     input PPU_start,
 
     input [7:0] Cache1_pixel, //직접 input으로 4개의 범용캐시에 저장할 8비트 픽셀값을 주면 거기에 그 값을 쓰고 유지되는 구조임.
-    input [7:0] Cache2_pixel,
-    input [7:0] Cache3_pixel,
+    input [7:0] Cache2_pixel, //이 신호들은 반드시 프레임 완성 후 쉬는 시간에서만 바꿔줘야 함!!! PPU_start가 0 -> 1로 변하기 전에 이미 신호가 고정되어 있어야 함!!!!
+    input [7:0] Cache3_pixel, //또한 이 값은 절대 0(투명) 이어서는 안됨.
     input [7:0] Cache4_pixel,
+
+    //pixel값이 0이면 투명을 말하는것으로 이 모듈에 RGB값을 요청해서는 안됨!!!
 
     //256 * 18 bit, 쓰기포트 1개, 읽기포트 2개인 Distribute RAM 인터페이스. 비동기 메모리이므로 주소를 주면 즉시 데이터가 나옴.
     // [포트 A] 쓰기 전용 포트 (Write Port) //쓰기 포트는 CPU가 사용할 수 있게 해야하고 여기서는 사용하지는 않지만 일단 적어둠.
@@ -27,7 +29,7 @@ module RGB_Converter(
 
     //10개의 레이어, 스트라이트기능 포함한다고 가정해서 최대 12개의 요청이 들어온다고 가정함. 읽은 RGB값을 플립플롭에 한번 저장한다음에 사용할 예정. 조합회로 너무 길어지는것 예방.
     input Req1_ena, //이 신호와 pixel값을 보내고 대기하면 end와 RGB값이 들어옴.
-    input [7:0] Req1_pixel,
+    input [7:0] Req1_pixel, //절대 이 값이 0(투명)이어서는 안됨. 그러면 영원히 end가 안옴. 
     output [17:0] Req1_RGB,
     output Req1_end,
 
@@ -220,6 +222,19 @@ wire req12_hit2 = Req12_ena && (Req12_pixel[7:0] == cache2_pixel[7:0]) && cache2
 wire req12_hit3 = Req12_ena && (Req12_pixel[7:0] == cache3_pixel[7:0]) && cache3_valid;
 wire req12_hit4 = Req12_ena && (Req12_pixel[7:0] == cache4_pixel[7:0]) && cache4_valid;
 
+wire req1_is_zero = Req1_ena && (Req1_pixel[7:0] == 0);
+wire req2_is_zero = Req2_ena && (Req2_pixel[7:0] == 0);
+wire req3_is_zero = Req3_ena && (Req3_pixel[7:0] == 0);
+wire req4_is_zero = Req4_ena && (Req4_pixel[7:0] == 0);
+wire req5_is_zero = Req5_ena && (Req5_pixel[7:0] == 0);
+wire req6_is_zero = Req6_ena && (Req6_pixel[7:0] == 0);
+wire req7_is_zero = Req7_ena && (Req7_pixel[7:0] == 0);
+wire req8_is_zero = Req8_ena && (Req8_pixel[7:0] == 0);
+wire req9_is_zero = Req9_ena && (Req9_pixel[7:0] == 0);
+wire req10_is_zero = Req10_ena && (Req10_pixel[7:0] == 0);
+wire req11_is_zero = Req11_ena && (Req11_pixel[7:0] == 0);
+wire req12_is_zero = Req12_ena && (Req12_pixel[7:0] == 0);
+
 reg [11:0] total_req; //12비트짜리 변수로 cache miss인 Req_ena가 왔으면 해당 비트가 1로 설정됨. 참고로 Req1은 [0], Req12는 [11]임. 햇갈리지 않게 주의해야 할듯.
 
 reg [1:0] random_counter_0_3; //0 - 1 - 2 - 3 을 반복하는 카운터고, 어느 범용 캐시에 RGB값과 pixel값을 넣을지 결정함.
@@ -312,6 +327,11 @@ always @(posedge clk or negedge resetn) begin
         random_counter_0_1 <= ~random_counter_0_1; //0 - 1 - 0 - 1 - 0을 반복.
         if(random_counter_0_2[1:0] == 2) random_counter_0_2[1:0] <= 0; // 0 - 1 - 2 - 0 - 1 - 2를 반복.
         else random_counter_0_2[1:0] <= random_counter_0_2[1:0] + 1;
+
+        if((Cache1_pixel[7:0] != cache1_pixel[7:0]) && (cache1_valid == 1)) cache1_valid <= 0;
+        if((Cache2_pixel[7:0] != cache2_pixel[7:0]) && (cache2_valid == 1)) cache2_valid <= 0;
+        if((Cache3_pixel[7:0] != cache3_pixel[7:0]) && (cache3_valid == 1)) cache3_valid <= 0;
+        if((Cache4_pixel[7:0] != cache4_pixel[7:0]) && (cache4_valid == 1)) cache4_valid <= 0;
 
         if(Cache1_pixel[7:0] == LUT_addr_r1[7:0]) begin
             cache1_valid <= 1;
@@ -422,6 +442,9 @@ always @(posedge clk or negedge resetn) begin
 end
 
 always @(*) begin
+    LUT_addr_r1[7:0] = 8'd0;
+    LUT_addr_r2[7:0] = 8'd0;
+
     Req1_end = 0;
     Req1_RGB[17:0] = 0;
     Req2_end = 0;
@@ -465,18 +488,18 @@ always @(*) begin
     req11_w_ena = 0;
     req12_w_ena = 0;
 
-    total_req[0] = Req1_ena && ~req1_hit1 && ~req1_hit2 && ~req1_hit3 && ~req1_hit4 && ~req1_exclusive_hit;
-    total_req[1] = Req2_ena && ~req2_hit1 && ~req2_hit2 && ~req2_hit3 && ~req2_hit4 && ~req2_exclusive_hit;
-    total_req[2] = Req3_ena && ~req3_hit1 && ~req3_hit2 && ~req3_hit3 && ~req3_hit4 && ~req3_exclusive_hit;
-    total_req[3] = Req4_ena && ~req4_hit1 && ~req4_hit2 && ~req4_hit3 && ~req4_hit4 && ~req4_exclusive_hit;
-    total_req[4] = Req5_ena && ~req5_hit1 && ~req5_hit2 && ~req5_hit3 && ~req5_hit4 && ~req5_exclusive_hit;
-    total_req[5] = Req6_ena && ~req6_hit1 && ~req6_hit2 && ~req6_hit3 && ~req6_hit4 && ~req6_exclusive_hit;
-    total_req[6] = Req7_ena && ~req7_hit1 && ~req7_hit2 && ~req7_hit3 && ~req7_hit4 && ~req7_exclusive_hit;
-    total_req[7] = Req8_ena && ~req8_hit1 && ~req8_hit2 && ~req8_hit3 && ~req8_hit4 && ~req8_exclusive_hit;
-    total_req[8] = Req9_ena && ~req9_hit1 && ~req9_hit2 && ~req9_hit3 && ~req9_hit4 && ~req9_exclusive_hit;
-    total_req[9] = Req10_ena && ~req10_hit1 && ~req10_hit2 && ~req10_hit3 && ~req10_hit4 && ~req10_exclusive_hit;
-    total_req[10] = Req11_ena && ~req11_hit1 && ~req11_hit2 && ~req11_hit3 && ~req11_hit4 && ~req11_exclusive_hit;
-    total_req[11] = Req12_ena && ~req12_hit1 && ~req12_hit2 && ~req12_hit3 && ~req12_hit4 && ~req12_exclusive_hit;
+    total_req[0] = ~req1_is_zero && Req1_ena && ~req1_hit1 && ~req1_hit2 && ~req1_hit3 && ~req1_hit4 && ~req1_exclusive_hit;
+    total_req[1] = ~req2_is_zero && Req2_ena && ~req2_hit1 && ~req2_hit2 && ~req2_hit3 && ~req2_hit4 && ~req2_exclusive_hit;
+    total_req[2] = ~req3_is_zero && Req3_ena && ~req3_hit1 && ~req3_hit2 && ~req3_hit3 && ~req3_hit4 && ~req3_exclusive_hit;
+    total_req[3] = ~req4_is_zero && Req4_ena && ~req4_hit1 && ~req4_hit2 && ~req4_hit3 && ~req4_hit4 && ~req4_exclusive_hit;
+    total_req[4] = ~req5_is_zero && Req5_ena && ~req5_hit1 && ~req5_hit2 && ~req5_hit3 && ~req5_hit4 && ~req5_exclusive_hit;
+    total_req[5] = ~req6_is_zero && Req6_ena && ~req6_hit1 && ~req6_hit2 && ~req6_hit3 && ~req6_hit4 && ~req6_exclusive_hit;
+    total_req[6] = ~req7_is_zero && Req7_ena && ~req7_hit1 && ~req7_hit2 && ~req7_hit3 && ~req7_hit4 && ~req7_exclusive_hit;
+    total_req[7] = ~req8_is_zero && Req8_ena && ~req8_hit1 && ~req8_hit2 && ~req8_hit3 && ~req8_hit4 && ~req8_exclusive_hit;
+    total_req[8] = ~req9_is_zero && Req9_ena && ~req9_hit1 && ~req9_hit2 && ~req9_hit3 && ~req9_hit4 && ~req9_exclusive_hit;
+    total_req[9] = ~req10_is_zero && Req10_ena && ~req10_hit1 && ~req10_hit2 && ~req10_hit3 && ~req10_hit4 && ~req10_exclusive_hit;
+    total_req[10] = ~req11_is_zero && Req11_ena && ~req11_hit1 && ~req11_hit2 && ~req11_hit3 && ~req11_hit4 && ~req11_exclusive_hit;
+    total_req[11] = ~req12_is_zero && Req12_ena && ~req12_hit1 && ~req12_hit2 && ~req12_hit3 && ~req12_hit4 && ~req12_exclusive_hit;
 
     //읽기 포트 1번
     case(random_counter_0_1)
