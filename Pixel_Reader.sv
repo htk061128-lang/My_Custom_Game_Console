@@ -24,10 +24,10 @@ module Pixel_Reader( //Decompressed FIFO에서 값을 읽어서 RGB_Converter로
     input Pixel_ready,
 
     //Decompressed FIFO에서 값을 읽기위한 인터페이스.
-    input Background1_decomp_fifo_r_master,
-    input Background1_decomp_fifo_empty,
-    input [63:0] Background1_decomp_fifo_data,
-    output Background1_decomp_fifo_dequeue, //r_master가 1일때 dequeue신호를 보내면 클럭에지때 decomp_fifo_data[63:0] 값이 나옴.
+    input Decomp_fifo_r_master,
+    input Decomp_fifo_empty,
+    input [63:0] Decomp_fifo_data,
+    output Decomp_fifo_dequeue, //r_master가 1일때 dequeue신호를 보내면 클럭에지때 decomp_fifo_data[63:0] 값이 나옴.
 
     //RGB_Converter에서 값을 읽기위한 인터페이스.
     output Lookup_ena, //ena신호와 pixel값을 주면 end신호와 RGB가 올때까지 대기하고 나온값을 바로 플립플롭에 저장해주면 됨.
@@ -36,10 +36,26 @@ module Pixel_Reader( //Decompressed FIFO에서 값을 읽어서 RGB_Converter로
     input [17:0] Lookup_RGB
 );
 reg [63:0] decomp_pixel_reg;
-reg [17:0] RGB_reg;
+reg [17:0] RGB_reg; //이 레지스터에 RGB_Converter에서 읽은 값을 바로 저장하고 다음 값을 읽을때는 RGB_reg의 값을 RGB_reg_reg에 저장하고 새 값을 RGB_reg에 저장함. 
+reg [17:0] RGB_reg_reg; //main_state에게 RGB_reg_reg를 줄지 다이렉트로 RGB_reg를 줄지 
+
+reg [8:0] personal_counter_x; //Pixel_Processer에게 값을 주고 ready를 받을때마다 1씩 증가함. 증가하면서 318 - 319 - 0으로 가면서 personal_counter_y가 1 증가함.
+reg [8:0] personal_counter_y;
 
 reg [3:0] main_state;
-parameter IDLE = 0, START = 1, WAIT = 2;
+parameter IDLE = 0, BG_START = 1, NO_BG_START = 2;
+
+reg [3:0] fifo_r_state;
+reg [3:0] fifo_r_state_next;
+reg [3:0] fifo_r_state_counter;
+reg [3:0] fifo_r_state_counter_next;
+
+reg [7:0] valid_pixel_check; //8비트 짜리 레지스터로 Decompressed FIFO에서 읽어온 64비트 8개의 픽셀중 실제 화면에 나타나는 유효한 픽셀을 표시함.
+reg [5:0] read_pixel_x; //BG인 경우에는 0 ~ 49, 아닌 경우에는 0 - 39. ****꼭 63으로 초기화 해야 함!!!****
+reg [8:0] read_pixel_y; ////BG인 경우에는 0 ~ 319, 아닌 경우에는 0 - 239. ****꼭 511으로 초기화 해야 함!!!****
+
+reg [3:0] rgb_r_state;
+reg [3:0] rgb_r_state_next;
 
 //일단 WX, WY부터 생각해보자. display_x(0~319), display_y(0~239), layer_x, layer_y로 정리함.
 
@@ -89,12 +105,148 @@ parameter IDLE = 0, START = 1, WAIT = 2;
 //0 <= SCY <= 80 : layer_y = SCY ~ (SCY + 239), display_x = layer_y - SCY 
 //0 <= SCX <= 80 : layer_x = SCX ~ (SCX + 319), display_x = layer_x - SCX
 
+always @(*) begin
+    Decomp_fifo_dequeue = 0;
+    fifo_r_state_counter_next = fifo_r_state_counter; //매 클럭 fifo_r_state_counter가 next로 갱신되므로 이 문장이 꼭 필요함.
+    fifo_r_state_next = fifo_r_state;
+    case(fifo_r_state) 
+        IDLE: begin
+            fifo_r_state_counter_next = 0;
+        end
+        BG_START: begin //BG Layer일때는 굳이 처음부터 RGB변환을 할 필요가 없음. SCX, SCY값에 따라서 화면에 나오는 부분만 RGB변환이 필요함.
+            case(fifo_r_state_counter)
+                0: begin
+                    if(Decomp_fifo_r_master && ~Decomp_fifo_empty) begin
+                        Decomp_fifo_dequeue = 1;
+                        fifo_r_state_counter_next = 1;
+                        fifo_r_state_next = BG_START;
+                    end
+                    else begin
+                        fifo_r_state_counter_next = 0;
+                        fifo_r_state_next = BG_START;
+                    end
+                end
+                1: begin //여기서 read_pixel_x, read_pixel_y가 결정됨.
+                    fifo_r_state_counter_next = 2;
+                    fifo_r_state_next = BG_START;
+                end
+                2: begin
+                end
+                3: begin
+                end
+            endcase
+        end
+        NO_BG_START: begin //여기서도 WX, WY값에 따라서 화면에 나오는 부분만 RGB변환이 필요함. 그런데 그걸 계산하는 로직이 BG일때랑 아닐때가 다름.
+        end
+    endcase
+end
+
+always @(*) begin
+    case(rgb_r_state) //rgb_r_state는 fifo_r_state에서 요청이 오면 그 픽셀을 RGB로 변환한 후 main_state에 
+        IDLE: begin
+        end
+    endcase
+end
+
+always @(*) begin
+    case(main_state) //main_state가 Pixel_Processer에게 RGB, valid를 보내고 ready를 받는 핸드쉐이크를 전담함.
+        IDLE: begin
+        end
+        BG_START: begin
+
+        end
+        NO_BG_START: begin
+        end
+    endcase
+end
+
 always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
         decomp_pixel_reg[63:0] <= 0;
         RGB_reg[17:0] <= 0;
+
+        main_state[3:0] <= IDLE;
+        fifo_r_state[3:0] <= IDLE;
+        rgb_r_state[3:0] <= IDLE;
+
+        fifo_r_state_counter[3:0] <= 0;
+        valid_pixel_check[7:0] <= 0;
+        read_pixel_x[5:0] <= 6'b111111; //63으로 초기화 해야 함!!!!
+        read_pixel_y[8:0] <= 9'b111111111; //511으로 초기화 해야 함!!!
+
+        personal_counter_x[8:0] <= 0;
+        personal_counter_y[8:0] <= 0;
     end
     else begin
+        fifo_r_state <= fifo_r_state_next;
+        fifo_r_state_counter[3:0] <= fifo_r_state_counter_next[3:0];
+        case(main_state)
+            IDLE: begin
+                if(PPU_start) begin
+                    if(is_background) main_state <= BG_START; //Background layer면 BG_START로 이동. 
+                    else main_state <= NO_BG_START; //아니면 NO_BG_START로 이동.
+                end
+                else begin
+                    main_state <= IDLE; //PPU_START가 1이 될때까지 현 상태 유지.
+                end
+            end
+            BG_START: begin
+            end
+            NO_BG_START: begin
+            end
+        endcase
+
+        case(fifo_r_state)
+            IDLE: begin
+                if(PPU_start) begin
+                    if(is_background) fifo_r_state <= BG_START; //Background layer면 BG_START로 이동. 
+                    else fifo_r_state <= NO_BG_START; //아니면 NO_BG_START로 이동.
+                    read_pixel_x[5:0] <= 63; //사용되는 레지스터들 초기화.
+                    read_pixel_y[8:0] <= 511;
+                    fifo_r_state_counter[3:0] <= 0;
+                    valid_pixel_check[7:0] <= 0;
+                end
+                else begin
+                    fifo_r_state <= IDLE; //PPU_START가 1이 될때까지 현 상태 유지.
+                end
+            end
+            BG_START: begin
+                case(fifo_r_state_counter)
+                    0: begin
+                    end
+                    1: begin //fifo_r_state_counter가 0 -> 1로가는 에지에서 Decomp_fifo_data[63:0]가 나옴.
+                        decomp_pixel_reg[63:0] <= Decomp_fifo_data[63:0]; //decomp_pixel_reg[63:0]에 읽은 값 저장.
+                        if(read_pixel_x[5:0] == 49) begin //read_pixel_x, read_pixel_y 설정.
+                            read_pixel_x[5:0] <= 0;
+                            read_pixel_y[5:0] <= read_pixel_y[5:0] + 1; 
+                        end
+                        else if(read_pixel_x[5:0] == 63 && read_pixel_y[5:0] == 511) begin //read_pixel_x, read_pixel_y의 초기값은 사용되지 않는 각각 63, 511로 설정되어 있음. 주의!!
+                            read_pixel_x[5:0] <= 0;
+                            read_pixel_y[5:0] <= 0;
+                        end
+                        else begin
+                            read_pixel_x[5:0] <= read_pixel_x[5:0] + 1;
+                        end
+                    end
+                    2: begin
+                    end
+                    3: begin
+                    end
+                endcase
+            end
+            NO_BG_START: begin
+            end
+        endcase
+
+        case(rgb_r_state)
+            IDLE: begin
+            end
+            BG_START: begin
+            end
+            NO_BG_START: begin
+            end
+        endcase
+
     end
 end
 
