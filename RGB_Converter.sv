@@ -31,61 +31,73 @@ module RGB_Converter(
     input Req1_ena, //이 신호와 pixel값을 보내고 대기하면 end와 RGB값이 들어옴.
     input [7:0] Req1_pixel, //절대 이 값이 0(투명)이어서는 안됨. 그러면 영원히 end가 안옴. 
     output [17:0] Req1_RGB,
+    output Req1_trans, //만약 Req1_pixel 이 0이라면 이 신호를 1로 설정하고 바로 end를 보내서 마무리 함.
     output Req1_end,
 
     input Req2_ena,
     input [7:0] Req2_pixel,
     output [17:0] Req2_RGB,
+    output Req2_trans,
     output Req2_end,
 
     input Req3_ena,
     input [7:0] Req3_pixel,
     output [17:0] Req3_RGB,
+    output Req3_trans,
     output Req3_end,
 
     input Req4_ena,
     input [7:0] Req4_pixel,
     output [17:0] Req4_RGB,
+    output Req4_trans,
     output Req4_end,
 
     input Req5_ena,
     input [7:0] Req5_pixel,
     output [17:0] Req5_RGB,
+    output Req5_trans,
     output Req5_end,
 
     input Req6_ena,
     input [7:0] Req6_pixel,
     output [17:0] Req6_RGB,
+    output Req6_trans,
     output Req6_end,
 
     input Req7_ena,
     input [7:0] Req7_pixel,
     output [17:0] Req7_RGB,
+    output Req7_trans,
     output Req7_end,
 
     input Req8_ena,
     input [7:0] Req8_pixel,
     output [17:0] Req8_RGB,
+    output Req8_trans,
     output Req8_end,
 
     input Req9_ena,
     input [7:0] Req9_pixel,
     output [17:0] Req9_RGB,
+    output Req9_trans,
     output Req9_end,
 
     input Req10_ena,
     input [7:0] Req10_pixel,
     output [17:0] Req10_RGB,
+    output Req10_trans,
     output Req10_end,
 
     input Req11_ena,
     input [7:0] Req11_pixel,
     output [17:0] Req11_RGB,
+    output Req11_trans,
     output Req11_end,
 
     input Req12_ena,
     input [7:0] Req12_pixel,
     output [17:0] Req12_RGB,
+    output Req12_trans,
     output Req12_end
 );
 reg [7:0] cache1_pixel; //여기있는 4개의 캐시값과 Req_pixel이 일치하면 Distribute Ram에 접근없이 RGB값을 줌.
@@ -470,6 +482,19 @@ always @(*) begin
     Req12_end = 0;
     Req12_RGB[17:0] = 0;
 
+    Req1_trans = 0;
+    Req2_trans = 0;
+    Req3_trans = 0;
+    Req4_trans = 0;
+    Req5_trans = 0;
+    Req6_trans = 0;
+    Req7_trans = 0;
+    Req8_trans = 0;
+    Req9_trans = 0;
+    Req10_trans = 0;
+    Req11_trans = 0;
+    Req12_trans = 0;
+
     cache1_w_ena = 0;
     cache2_w_ena = 0;
     cache3_w_ena = 0;
@@ -766,6 +791,10 @@ always @(*) begin
     endcase
     
     case(1'b1)
+        req1_is_zero: begin
+            Req1_end = 1;
+            Req1_trans = 1;
+        end
         req1_exclusive_hit: begin
             Req1_end = 1;
             Req1_RGB[17:0] = req1_exclusive_RGB[17:0];
@@ -789,6 +818,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req2_is_zero: begin
+            Req2_end = 1;
+            Req2_trans = 1;
+        end
         req2_exclusive_hit: begin
             Req2_end = 1;
             Req2_RGB[17:0] = req2_exclusive_RGB[17:0];
@@ -812,6 +845,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req3_is_zero: begin
+            Req3_end = 1;
+            Req3_trans = 1;
+        end
         req3_exclusive_hit: begin
             Req3_end = 1;
             Req3_RGB[17:0] = req3_exclusive_RGB[17:0];
@@ -835,6 +872,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req4_is_zero: begin
+            Req4_end = 1;
+            Req4_trans = 1;
+        end
         req4_exclusive_hit: begin
             Req4_end = 1;
             Req4_RGB[17:0] = req4_exclusive_RGB[17:0];
@@ -858,6 +899,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req5_is_zero: begin
+            Req5_end = 1;
+            Req5_trans = 1;
+        end
         req5_exclusive_hit: begin
             Req5_end = 1;
             Req5_RGB[17:0] = req5_exclusive_RGB[17:0];
@@ -881,6 +926,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req6_is_zero: begin
+            Req6_end = 1;
+            Req6_trans = 1;
+        end
         req6_exclusive_hit: begin
             Req6_end = 1;
             Req6_RGB[17:0] = req6_exclusive_RGB[17:0];
@@ -904,6 +953,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req7_is_zero: begin
+            Req7_end = 1;
+            Req7_trans = 1;
+        end
         req7_exclusive_hit: begin
             Req7_end = 1;
             Req7_RGB[17:0] = req7_exclusive_RGB[17:0];
@@ -927,6 +980,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req8_is_zero: begin
+            Req8_end = 1;
+            Req8_trans = 1;
+        end
         req8_exclusive_hit: begin
             Req8_end = 1;
             Req8_RGB[17:0] = req8_exclusive_RGB[17:0];
@@ -950,6 +1007,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req9_is_zero: begin
+            Req9_end = 1;
+            Req9_trans = 1;
+        end
         req9_exclusive_hit: begin
             Req9_end = 1;
             Req9_RGB[17:0] = req9_exclusive_RGB[17:0];
@@ -973,6 +1034,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req10_is_zero: begin
+            Req10_end = 1;
+            Req10_trans = 1;
+        end
         req10_exclusive_hit: begin
             Req10_end = 1;
             Req10_RGB[17:0] = req10_exclusive_RGB[17:0];
@@ -996,6 +1061,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req11_is_zero: begin
+            Req11_end = 1;
+            Req11_trans = 1;
+        end
         req11_exclusive_hit: begin
             Req11_end = 1;
             Req11_RGB[17:0] = req11_exclusive_RGB[17:0];
@@ -1019,6 +1088,10 @@ always @(*) begin
     endcase
 
     case(1'b1)
+        req12_is_zero: begin
+            Req12_end = 1;
+            Req12_trans = 1;
+        end
         req12_exclusive_hit: begin
             Req12_end = 1;
             Req12_RGB[17:0] = req12_exclusive_RGB[17:0];

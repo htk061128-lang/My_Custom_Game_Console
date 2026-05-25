@@ -33,10 +33,12 @@ module Pixel_Reader( //Decompressed FIFO에서 값을 읽어서 RGB_Converter로
     output Lookup_ena, //ena신호와 pixel값을 주면 end신호와 RGB가 올때까지 대기하고 나온값을 바로 플립플롭에 저장해주면 됨.
     output [7:0] Lookup_pixel,
     input Lookup_end,
-    input [17:0] Lookup_RGB
+    input [17:0] Lookup_RGB,
+    input Lookup_trans
 );
-reg [63:0] decomp_pixel_reg;
+reg [63:0] decomp_pixel_reg; 
 reg [17:0] RGB_reg; 
+reg RGB_reg_trans;
 reg RGB_reg_w_ena;
 reg RGB_reg_valid;
 reg RGB_reg_ready;
@@ -45,6 +47,9 @@ reg [8:0] personal_counter_x; //Pixel_Processer에게 값을 주고 ready를 받
 reg [8:0] personal_counter_y;
 
 reg [3:0] main_state;
+reg [3:0] main_state_next;
+reg [3:0] main_state_counter;
+reg [3:0] main_state_counter_next;
 parameter IDLE = 0, BG_START = 1, NO_BG_START = 2, START = 3;
 
 reg [3:0] fifo_r_state;
@@ -480,11 +485,46 @@ always @(*) begin
 end
 
 always @(*) begin
+    main_state_next = main_state;
+    main_state_counter_next = main_state_counter;
+
+    RGB_reg_ready = 0; //RGB_reg_valid가 오면 이걸로 핸드쉐이크를 함.
+
+    Pixel_is_trans = 0; //output으로 Pixel_Processer에게 보내는 신호들.
+    Pixel_RGB[17:0] = 0;
+    Pixel_valid = 0;
+
     case(main_state) //main_state가 Pixel_Processer에게 RGB, valid를 보내고 ready를 받는 핸드쉐이크를 전담함.
         IDLE: begin
         end
         BG_START: begin
-
+            case(main_state_counter)
+                0: begin
+                    if(RGB_reg_valid) begin 
+                        main_state_next = (personal_counter_x == 319 && personal_counter_y == 239) ? IDLE : BG_START;
+                        main_state_counter_next[3:0] = 0;
+                        Pixel_is_trans = (RGB_reg_trans);
+                        Pixel_RGB[17:0] = (~RGB_reg_trans) ? RGB_reg[17:0] : 18'b0;
+                        Pixel_valid = 1;
+                        if(Pixel_ready) begin //이때 personal_counter_x, personal_counter_y 증가함.
+                            RGB_reg_ready = 1;
+                        end
+                        else begin
+                            RGB_reg_ready = 0;
+                        end
+                    end
+                    else begin //대기
+                        main_state_next = BG_START;
+                        main_state_counter_next[3:0] = 0;
+                    end
+                end
+                1: begin
+                end
+                2: begin
+                end
+                3: begin
+                end
+            endcase
         end
         NO_BG_START: begin
         end
@@ -495,11 +535,14 @@ always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
         decomp_pixel_reg[63:0] <= 0;
         RGB_reg[17:0] <= 0;
+        RGB_reg_trans <= 0;
         RGB_reg_valid <= 0;
 
         main_state[3:0] <= IDLE;
         fifo_r_state[3:0] <= IDLE;
         rgb_r_state[3:0] <= IDLE;
+
+        main_state_counter[3:0] <= 0;
 
         rgb_r_state_counter[3:0] <= 0;
 
@@ -517,9 +560,18 @@ always @(posedge clk or negedge resetn) begin
         rgb_r_state_counter[3:0] <= rgb_r_state_counter_next[3:0];
         rgb_r_state <= rgb_r_state_next;
 
-        if(RGB_reg_w_ena) begin
+        main_state_counter[3:0] <= main_state_counter_next[3:0];
+        main_state <= main_state_next;
+
+        if(RGB_reg_w_ena && ~Lookup_trans) begin
             RGB_reg[17:0] <= Lookup_RGB[17:0];
             RGB_reg_valid <= 1;
+            RGB_reg_trans <= 0;
+        end
+        else if(RGB_reg_w_ena && Lookup_trans) begin //읽어온 픽셀이 투명일때.
+            RGB_reg[17:0] <= 0;
+            RGB_reg_valid <= 1;
+            RGB_reg_trans <= 1;
         end
 
         if(RGB_reg_ready) begin
@@ -529,6 +581,9 @@ always @(posedge clk or negedge resetn) begin
         case(main_state)
             IDLE: begin
                 if(PPU_start) begin
+                    main_state_counter[3:0] <= 0;
+                    personal_counter_x[8:0] <= 0;
+                    personal_counter_y[8:0] <= 0;
                     if(is_background) main_state <= BG_START; //Background layer면 BG_START로 이동. 
                     else main_state <= NO_BG_START; //아니면 NO_BG_START로 이동.
                 end
@@ -536,7 +591,31 @@ always @(posedge clk or negedge resetn) begin
                     main_state <= IDLE; //PPU_START가 1이 될때까지 현 상태 유지.
                 end
             end
-            BG_START: begin
+            BG_START: begin //BG 일때는 RGB_reg값을 계속 주면 됨. 알아서 유효한 값만 들어있을 거고, RGB_reg_ready로 답변해주고, personal_counter 계속 증가시켜주면 됨. 
+                case(main_state_counter)
+                    0: begin
+                        if(Pixel_valid && Pixel_ready) begin
+                            if(personal_counter_x[8:0] == 319 && personal_counter_y[8:0] == 239) begin //모든 데이터 전부 전달하면
+                                main_state <= IDLE;
+                                personal_counter_x[8:0] <= 0;
+                                personal_counter_y[8:0] <= 0;
+                            end
+                            else if(personal_counter_x[8:0] == 319) begin
+                                personal_counter_x[8:0] <= 0;
+                                personal_counter_y[8:0] <= personal_counter_y[8:0] + 1;
+                            end
+                            else begin
+                                personal_counter_x[8:0] <= personal_counter_x[8:0] + 1;
+                            end
+                        end
+                    end
+                    1: begin
+                    end
+                    2: begin
+                    end
+                    3: begin
+                    end
+                endcase
             end
             NO_BG_START: begin
             end
