@@ -590,8 +590,8 @@ always @(*) begin
         NO_BG_START: begin
             main_state_next = (personal_counter_x == 319 && personal_counter_y == 239 && Pixel_valid && Pixel_ready) ? IDLE : BG_START;
             main_state_counter_next[3:0] = 0;
-            case(1'b1)
-                ((is_character || is_status) && ($signed({1'b0, personal_counter_x[8:0]}) >= $signed(WX[9:0])) && ($signed({3'b000, personal_counter_x[8:0]}) <= $signed(WX[11:0]) + $signed(12'd159)) && ($signed({1'b0, personal_counter_y[8:0]}) <= $signed(WY[9:0])) && ($signed({3'b000, personal_counter_y[8:0]}) <= $signed(WY[11:0]) + $signed(12'd239))): begin
+            case(1'b1) //12비트 기준으로 연산 및 비교를 함. WX + 319 이런거 하면 10비트(+511까지 표현) 로는 부족하기 때문임.
+                ((is_character || is_status) && ($signed({3'b0, personal_counter_x[8:0]}) >= $signed(WX[11:0])) && ($signed({3'b000, personal_counter_x[8:0]}) <= $signed(WX[11:0]) + $signed(12'd159)) && ($signed({3'b0, personal_counter_y[8:0]}) <= $signed(WY[11:0])) && ($signed({3'b000, personal_counter_y[8:0]}) <= $signed(WY[11:0]) + $signed(12'd239))): begin
                     if(RGB_reg_valid) begin
                         Pixel_is_trans = (RGB_reg_trans);
                         Pixel_RGB[17:0] = (~RGB_reg_trans) ? RGB_reg[17:0] : 18'b0;
@@ -602,7 +602,7 @@ always @(*) begin
                     else begin //RGB_reg_valid가 올때까지 대기
                     end
                 end //160 * 240, 
-                ((is_script) && ($signed({1'b0, personal_counter_x[8:0]}) >= $signed(WX[9:0])) && ($signed({3'b000, personal_counter_x[8:0]}) <= $signed(WX[11:0]) + $signed(12'd319)) && ($signed({1'b0, personal_counter_y[8:0]}) <= $signed(WY[9:0])) && ($signed({3'b000, personal_counter_y[8:0]}) <= $signed(WY[11:0]) + $signed(12'd119))): begin
+                ((is_script) && ($signed({3'b0, personal_counter_x[8:0]}) >= $signed(WX[11:0])) && ($signed({3'b000, personal_counter_x[8:0]}) <= $signed(WX[11:0]) + $signed(12'd319)) && ($signed({3'b0, personal_counter_y[8:0]}) <= $signed(WY[11:0])) && ($signed({3'b000, personal_counter_y[8:0]}) <= $signed(WY[11:0]) + $signed(12'd119))): begin
                     if(RGB_reg_valid) begin
                         Pixel_is_trans = (RGB_reg_trans);
                         Pixel_RGB[17:0] = (~RGB_reg_trans) ? RGB_reg[17:0] : 18'b0;
@@ -613,7 +613,7 @@ always @(*) begin
                     else begin //RGB_reg_valid가 올때까지 대기
                     end
                 end //320 * 120, 
-                ((is_universal) && ($signed({1'b0, personal_counter_x[8:0]}) >= $signed(WX[9:0])) && ($signed({3'b000, personal_counter_x[8:0]}) <= $signed(WX[11:0]) + $signed(12'd319)) && ($signed({1'b0, personal_counter_y[8:0]}) <= $signed(WY[9:0])) && ($signed({3'b000, personal_counter_y[8:0]}) <= $signed(WY[11:0]) + $signed(12'd239))): begin
+                ((is_universal) && ($signed({3'b0, personal_counter_x[8:0]}) >= $signed(WX[11:0])) && ($signed({3'b000, personal_counter_x[8:0]}) <= $signed(WX[11:0]) + $signed(12'd319)) && ($signed({3'b0, personal_counter_y[8:0]}) <= $signed(WY[11:0])) && ($signed({3'b000, personal_counter_y[8:0]}) <= $signed(WY[11:0]) + $signed(12'd239))): begin
                     if(RGB_reg_valid) begin
                         Pixel_is_trans = (RGB_reg_trans);
                         Pixel_RGB[17:0] = (~RGB_reg_trans) ? RGB_reg[17:0] : 18'b0;
