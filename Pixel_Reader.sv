@@ -141,14 +141,14 @@ always @(*) begin
         end
     end
     else begin //WX, WY (전부 signed로 해석해야 함!!!)
-        case(1'b1)
-            (is_character || is_status): begin //160 * 240
-            end
-            (is_script): begin //320 * 120
-            end
-            (is_universal): begin //320 * 240
-            end
-        endcase
+        valid_pixel_check[0] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b000}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b000}) <= 319);
+        valid_pixel_check[1] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b001}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b001}) <= 319);
+        valid_pixel_check[2] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b010}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b010}) <= 319);
+        valid_pixel_check[3] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b011}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b011}) <= 319);
+        valid_pixel_check[4] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b100}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b100}) <= 319);
+        valid_pixel_check[5] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b101}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b101}) <= 319);
+        valid_pixel_check[6] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b110}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b110}) <= 319);
+        valid_pixel_check[7] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b111}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b111}) <= 319);
     end
 
     case(fifo_r_state) 
@@ -186,8 +186,14 @@ always @(*) begin
                 3: begin
                     rgb_convert_req = 1; //rgb_r_state에게 end가 올때까지 요청신호를 유지함.
                     if(rgb_convert_end) begin
-                        fifo_r_state_counter_next = 0; //Decompressed FIFO에서 새로운 값을 읽기를 시작함.
-                        fifo_r_state_next = BG_START;
+                        if(read_pixel_x == 49 && read_pixel_y == 319) begin //전부 읽었다면 IDLE로 이동.
+                            fifo_r_state_counter_next = 0;
+                            fifo_r_state_next = IDLE;
+                        end
+                        else begin
+                            fifo_r_state_counter_next = 0; //Decompressed FIFO에서 새로운 값을 읽기를 시작함.
+                            fifo_r_state_next = BG_START;
+                        end
                     end
                     else begin //계속 현재상태 유지.
                         fifo_r_state_counter_next = 3;
@@ -197,6 +203,61 @@ always @(*) begin
             endcase
         end
         NO_BG_START: begin //여기서도 WX, WY값에 따라서 화면에 나오는 부분만 RGB변환이 필요함. 그런데 그걸 계산하는 로직이 BG일때랑 아닐때가 다름.
+            case(fifo_r_state_counter)
+                0: begin
+                    if(Decomp_fifo_r_master && ~Decomp_fifo_empty) begin
+                        Decomp_fifo_dequeue = 1;
+                        fifo_r_state_counter_next = 1;
+                        fifo_r_state_next = NO_BG_START;
+                    end
+                    else begin
+                        fifo_r_state_counter_next = 0;
+                        fifo_r_state_next = NO_BG_START;
+                    end
+                end
+                1: begin // 1 -> 2 인 에지에서 read_pixel_x, read_pixel_y가 결정되고 decomp_pixel_reg[63:0]에 값이 저장됨.
+                    fifo_r_state_counter_next = 2;
+                    fifo_r_state_next = NO_BG_START;
+                end
+                2: begin
+                    if(valid_pixel_check[7:0] == 8'b00000000) begin
+                        fifo_r_state_counter_next = 0; //다시 Decompressed FIFO에서 값을 읽음.
+                        fifo_r_state_next = NO_BG_START;
+                    end
+                    else begin
+                        rgb_convert_req = 1;
+                        fifo_r_state_counter_next = 3;
+                        fifo_r_state_next = NO_BG_START;
+                    end
+                end
+                3: begin
+                    rgb_convert_req = 1; //rgb_r_state에게 end가 올때까지 요청신호를 유지함.
+                    if(rgb_convert_end) begin
+                        case(1'b1)
+                            (is_character || is_status) && (read_pixel_x == 19 && read_pixel_y == 239): begin // 160 * 240
+                                fifo_r_state_counter_next = 0; //전부 읽었으므로 IDLE로 이동.
+                                fifo_r_state_next = IDLE;
+                            end
+                            (is_script) && (read_pixel_x == 39 && read_pixel_y == 119): begin // 320 * 120
+                                fifo_r_state_counter_next = 0; //전부 읽었으므로 IDLE로 이동.
+                                fifo_r_state_next = IDLE;
+                            end
+                            (is_universal) && (read_pixel_x == 39 && read_pixel_y == 239): begin // 320 * 240
+                                fifo_r_state_counter_next = 0; //전부 읽었으므로 IDLE로 이동.
+                                fifo_r_state_next = IDLE;
+                            end
+                            default: begin
+                                fifo_r_state_counter_next = 0; //Decompressed FIFO에서 새로운 값을 읽기를 시작함.
+                                fifo_r_state_next = NO_BG_START;
+                            end
+                        endcase
+                    end
+                    else begin //계속 현재상태 유지.
+                        fifo_r_state_counter_next = 3;
+                        fifo_r_state_next = NO_BG_START;
+                    end
+                end
+            endcase
         end
     endcase
 end
@@ -453,7 +514,7 @@ always @(*) begin
                         Lookup_ena = 1;
                         Lookup_pixel[7:0] = decomp_pixel_reg[63:56];
                         if(Lookup_end) begin
-                            RGB_reg_w_ena = 1; //RGB_reg에 값이 써지고 동시에 RGB_valid도 1이 저장됨.
+                            RGB_reg_w_ena = 1; //RGB_reg에 값이 써지고 동시에 RGB_reg_valid도 1이 저장됨.
                             rgb_r_state_counter_next = 15;
                             rgb_r_state_next = READ;
                         end
@@ -472,7 +533,7 @@ always @(*) begin
                     if(RGB_reg_ready) begin
                         rgb_r_state_counter_next = 0;
                         rgb_r_state_next = START;
-                        rgb_convert_end = 1;
+                        rgb_convert_end = 1; //이 신호를 보내서 fifo_r_state가 새로운 값 읽기를 시작하게 함.
                     end
                     else begin
                         rgb_r_state_counter_next = 15; //계속 대기
@@ -501,7 +562,7 @@ always @(*) begin
             case(main_state_counter)
                 0: begin
                     if(RGB_reg_valid) begin 
-                        main_state_next = (personal_counter_x == 319 && personal_counter_y == 239) ? IDLE : BG_START;
+                        main_state_next = (personal_counter_x == 319 && personal_counter_y == 239 && Pixel_valid && Pixel_ready) ? IDLE : BG_START;
                         main_state_counter_next[3:0] = 0;
                         Pixel_is_trans = (RGB_reg_trans);
                         Pixel_RGB[17:0] = (~RGB_reg_trans) ? RGB_reg[17:0] : 18'b0;
@@ -527,6 +588,48 @@ always @(*) begin
             endcase
         end
         NO_BG_START: begin
+            main_state_next = (personal_counter_x == 319 && personal_counter_y == 239 && Pixel_valid && Pixel_ready) ? IDLE : BG_START;
+            main_state_counter_next[3:0] = 0;
+            case(1'b1)
+                ((is_character || is_status) && ($signed({1'b0, personal_counter_x[8:0]}) >= $signed(WX[9:0])) && ($signed({1'b0, personal_counter_x[8:0]}) <= $signed(WX[9:0]) + $signed(10'd159)) && ($signed({1'b0, personal_counter_y[8:0]}) <= $signed(WY[9:0])) && ($signed({1'b0, personal_counter_y[8:0]}) <= $signed(WY[9:0]) + $signed(10'd239))): begin
+                    if(RGB_reg_valid) begin
+                        Pixel_is_trans = (RGB_reg_trans);
+                        Pixel_RGB[17:0] = (~RGB_reg_trans) ? RGB_reg[17:0] : 18'b0;
+                        Pixel_valid = 1;
+                        if(Pixel_ready) RGB_reg_ready = 1;
+                        else RGB_reg_ready = 0;
+                    end
+                    else begin //RGB_reg_valid가 올때까지 대기
+                    end
+                end //160 * 240, 
+                ((is_script) && ($signed({1'b0, personal_counter_x[8:0]}) >= $signed(WX[9:0])) && ($signed({1'b0, personal_counter_x[8:0]}) <= $signed(WX[9:0]) + $signed(10'd319)) && ($signed({1'b0, personal_counter_y[8:0]}) <= $signed(WY[9:0])) && ($signed({1'b0, personal_counter_y[8:0]}) <= $signed(WY[9:0]) + $signed(10'd119))): begin
+                    if(RGB_reg_valid) begin
+                        Pixel_is_trans = (RGB_reg_trans);
+                        Pixel_RGB[17:0] = (~RGB_reg_trans) ? RGB_reg[17:0] : 18'b0;
+                        Pixel_valid = 1;
+                        if(Pixel_ready) RGB_reg_ready = 1;
+                        else RGB_reg_ready = 0;
+                    end
+                    else begin //RGB_reg_valid가 올때까지 대기
+                    end
+                end //320 * 120, 
+                ((is_universal) && ($signed({1'b0, personal_counter_x[8:0]}) >= $signed(WX[9:0])) && ($signed({1'b0, personal_counter_x[8:0]}) <= $signed(WX[9:0]) + $signed(10'd319)) && ($signed({1'b0, personal_counter_y[8:0]}) <= $signed(WY[9:0])) && ($signed({1'b0, personal_counter_y[8:0]}) <= $signed(WY[9:0]) + $signed(10'd239))): begin
+                    if(RGB_reg_valid) begin
+                        Pixel_is_trans = (RGB_reg_trans);
+                        Pixel_RGB[17:0] = (~RGB_reg_trans) ? RGB_reg[17:0] : 18'b0;
+                        Pixel_valid = 1;
+                        if(Pixel_ready) RGB_reg_ready = 1;
+                        else RGB_reg_ready = 0;
+                    end
+                    else begin //RGB_reg_valid가 올때까지 대기
+                    end
+                end //320 * 240, 
+                default: begin //레이어 밖 범위일때. 투명 픽셀을 Pixel_Processer 에게 줘야함.
+                    Pixel_is_trans = 1;
+                    Pixel_RGB[17:0] = 0;
+                    Pixel_valid = 1;
+                end
+            endcase
         end
     endcase
 end
@@ -618,6 +721,20 @@ always @(posedge clk or negedge resetn) begin
                 endcase
             end
             NO_BG_START: begin
+                if(Pixel_valid && Pixel_ready) begin
+                    if(personal_counter_x[8:0] == 319 && personal_counter_y[8:0] == 239) begin //모든 데이터 전부 전달하면
+                        main_state <= IDLE;
+                        personal_counter_x[8:0] <= 0;
+                        personal_counter_y[8:0] <= 0;
+                    end
+                    else if(personal_counter_x[8:0] == 319) begin
+                        personal_counter_x[8:0] <= 0;
+                        personal_counter_y[8:0] <= personal_counter_y[8:0] + 1;
+                    end
+                    else begin
+                        personal_counter_x[8:0] <= personal_counter_x[8:0] + 1;
+                    end
+                end
             end
         endcase
 
@@ -659,6 +776,58 @@ always @(posedge clk or negedge resetn) begin
                 endcase
             end
             NO_BG_START: begin
+                case(fifo_r_state_counter)
+                    0: begin
+                    end
+                    1: begin //fifo_r_state_counter가 0 -> 1로가는 에지에서 Decomp_fifo_data[63:0]가 나옴.
+                        decomp_pixel_reg[63:0] <= Decomp_fifo_data[63:0]; //decomp_pixel_reg[63:0]에 읽은 값 저장.
+                        case(1'b1)
+                            (is_character || is_status): begin //160 * 240
+                                if(read_pixel_x[5:0] == 19) begin
+                                    read_pixel_x[5:0] <= 0;
+                                    read_pixel_y[8:0] <= read_pixel_y[8:0] + 1; 
+                                end
+                                else if(read_pixel_x[5:0] == 63 && read_pixel_y[8:0] == 511) begin
+                                    read_pixel_x[5:0] <= 0;
+                                    read_pixel_y[8:0] <= 0;
+                                end
+                                else begin
+                                    read_pixel_x[5:0] <= read_pixel_x[5:0] + 1;
+                                end
+                            end
+                            (is_script): begin //320 * 120
+                                if(read_pixel_x[5:0] == 39) begin
+                                    read_pixel_x[5:0] <= 0;
+                                    read_pixel_y[8:0] <= read_pixel_y[8:0] + 1; 
+                                end
+                                else if(read_pixel_x[5:0] == 63 && read_pixel_y[8:0] == 511) begin
+                                    read_pixel_x[5:0] <= 0;
+                                    read_pixel_y[8:0] <= 0;
+                                end
+                                else begin
+                                    read_pixel_x[5:0] <= read_pixel_x[5:0] + 1;
+                                end
+                            end
+                            (is_universal): begin //320 * 240
+                                if(read_pixel_x[5:0] == 39) begin
+                                    read_pixel_x[5:0] <= 0;
+                                    read_pixel_y[8:0] <= read_pixel_y[8:0] + 1; 
+                                end
+                                else if(read_pixel_x[5:0] == 63 && read_pixel_y[8:0] == 511) begin
+                                    read_pixel_x[5:0] <= 0;
+                                    read_pixel_y[8:0] <= 0;
+                                end
+                                else begin
+                                    read_pixel_x[5:0] <= read_pixel_x[5:0] + 1;
+                                end
+                            end
+                        endcase
+                    end
+                    2: begin
+                    end
+                    3: begin
+                    end
+                endcase
             end
         endcase
 
