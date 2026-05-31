@@ -38,6 +38,18 @@ module PPU_TOP(
     output wire [7:0] LUT_addr_r2,
     input  wire [17:0] LUT_data_out2,
 
+    // Layer control: WX, WY, SCX, SCY, alpha, z for each layer (exposed)
+    input  [15:0] Background1_WX, input [15:0] Background1_WY, input [15:0] Background1_SCX, input [15:0] Background1_SCY, input [7:0] Background1_a, input [7:0] Background1_z,
+    input  [15:0] Background2_WX, input [15:0] Background2_WY, input [15:0] Background2_SCX, input [15:0] Background2_SCY, input [7:0] Background2_a, input [7:0] Background2_z,
+    input  [15:0] Character1_WX, input [15:0] Character1_WY, input [15:0] Character1_SCX, input [15:0] Character1_SCY, input [7:0] Character1_a, input [7:0] Character1_z,
+    input  [15:0] Character2_WX, input [15:0] Character2_WY, input [15:0] Character2_SCX, input [15:0] Character2_SCY, input [7:0] Character2_a, input [7:0] Character2_z,
+    input  [15:0] Character3_WX, input [15:0] Character3_WY, input [15:0] Character3_SCX, input [15:0] Character3_SCY, input [7:0] Character3_a, input [7:0] Character3_z,
+    input  [15:0] Character4_WX, input [15:0] Character4_WY, input [15:0] Character4_SCX, input [15:0] Character4_SCY, input [7:0] Character4_a, input [7:0] Character4_z,
+    input  [15:0] Script_WX, input [15:0] Script_WY, input [15:0] Script_SCX, input [15:0] Script_SCY, input [7:0] Script_a, input [7:0] Script_z,
+    input  [15:0] Status_WX, input [15:0] Status_WY, input [15:0] Status_SCX, input [15:0] Status_SCY, input [7:0] Status_a, input [7:0] Status_z,
+    input  [15:0] Universal1_WX, input [15:0] Universal1_WY, input [15:0] Universal1_SCX, input [15:0] Universal1_SCY, input [7:0] Universal1_a, input [7:0] Universal1_z,
+    input  [15:0] Universal2_WX, input [15:0] Universal2_WY, input [15:0] Universal2_SCX, input [15:0] Universal2_SCY, input [7:0] Universal2_a, input [7:0] Universal2_z,
+
     // Final pixel output
     output Final_pixel_valid,
     output [17:0] Final_pixel_RGB
@@ -191,55 +203,32 @@ wire UN1_Pixel_valid; wire [17:0] UN1_Pixel_RGB; wire UN1_Pixel_is_trans; wire U
 // Universal2
 wire UN2_Pixel_valid; wire [17:0] UN2_Pixel_RGB; wire UN2_Pixel_is_trans; wire UN2_Pixel_ready;
 
-// Control/config inputs for readers/processer (expose minimal set as top-level regs)
-// For brevity, tie coordinates to 0 here — testbench can modify PPU_TOP if needed later.
-wire [15:0] Background1_SCX = 16'd0; wire [15:0] Background1_SCY = 16'd0;
-wire [15:0] Background2_SCX = 16'd0; wire [15:0] Background2_SCY = 16'd0;
-wire [15:0] Character1_WX = 16'd0; wire [15:0] Character1_WY = 16'd0;
-wire [15:0] Character2_WX = 16'd0; wire [15:0] Character2_WY = 16'd0;
-wire [15:0] Character3_WX = 16'd0; wire [15:0] Character3_WY = 16'd0;
-wire [15:0] Character4_WX = 16'd0; wire [15:0] Character4_WY = 16'd0;
-wire [15:0] Script_WX = 16'd0; wire [15:0] Script_WY = 16'd0;
-wire [15:0] Status_WX = 16'd0; wire [15:0] Status_WY = 16'd0;
-wire [15:0] Universal1_WX = 16'd0; wire [15:0] Universal1_WY = 16'd0;
-wire [15:0] Universal2_WX = 16'd0; wire [15:0] Universal2_WY = 16'd0;
-
-// Layer alpha and z controls — expose as knobs to testbench if needed; tie defaults
-wire [7:0] Background1_a = 8'd16; wire [7:0] Background1_z = 8'd1;
-wire [7:0] Background2_a = 8'd16; wire [7:0] Background2_z = 8'd2;
-wire [7:0] Character1_a = 8'd16; wire [7:0] Character1_z = 8'd3;
-wire [7:0] Character2_a = 8'd16; wire [7:0] Character2_z = 8'd4;
-wire [7:0] Character3_a = 8'd16; wire [7:0] Character3_z = 8'd5;
-wire [7:0] Character4_a = 8'd16; wire [7:0] Character4_z = 8'd6;
-wire [7:0] Script_a = 8'd16; wire [7:0] Script_z = 8'd7;
-wire [7:0] Status_a = 8'd16; wire [7:0] Status_z = 8'd8;
-wire [7:0] Universal1_a = 8'd16; wire [7:0] Universal1_z = 8'd9;
-wire [7:0] Universal2_a = 8'd16; wire [7:0] Universal2_z = 8'd10;
+// Layer control inputs are provided as module ports (see header)
 
 // Pixel_Reader instances
 
 Pixel_Reader u_bg1 (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
     .is_background(1'b1), .is_character(1'b0), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
-    .WX(Background1_SCX), .WY(Background1_SCY), .SCX(Background1_SCX), .SCY(Background1_SCY),
+    .WX(Background1_WX), .WY(Background1_WY), .SCX(Background1_SCX), .SCY(Background1_SCY),
     .Pixel_valid(BG1_Pixel_valid), .Pixel_RGB(BG1_Pixel_RGB), .Pixel_is_trans(BG1_Pixel_is_trans), .Pixel_ready(BG1_Pixel_ready),
-    .Decomp_fifo_r_master(uni1_decomp_r_master), .Decomp_fifo_empty(uni1_decomp_empty), .Decomp_fifo_data(uni1_decomp_data), .Decomp_fifo_dequeue(uni1_decomp_dequeue),
+    .Decomp_fifo_r_master(bg1_decomp_r_master), .Decomp_fifo_empty(bg1_decomp_empty), .Decomp_fifo_data(bg1_decomp_data), .Decomp_fifo_dequeue(bg1_decomp_dequeue),
     .Lookup_ena(Req1_ena), .Lookup_pixel(Req1_pixel), .Lookup_end(Req_end[1]), .Lookup_RGB(Req_RGB[1]), .Lookup_trans(Req_trans[1])
 );
 
 Pixel_Reader u_bg2 (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
     .is_background(1'b1), .is_character(1'b0), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
-    .WX(Background2_SCX), .WY(Background2_SCY), .SCX(Background2_SCX), .SCY(Background2_SCY),
+    .WX(Background2_WX), .WY(Background2_WY), .SCX(Background2_SCX), .SCY(Background2_SCY),
     .Pixel_valid(BG2_Pixel_valid), .Pixel_RGB(BG2_Pixel_RGB), .Pixel_is_trans(BG2_Pixel_is_trans), .Pixel_ready(BG2_Pixel_ready),
-    .Decomp_fifo_r_master(bg1_decomp_r_master), .Decomp_fifo_empty(bg1_decomp_empty), .Decomp_fifo_data(bg1_decomp_data), .Decomp_fifo_dequeue(bg1_decomp_dequeue),
+    .Decomp_fifo_r_master(bg2_decomp_r_master), .Decomp_fifo_empty(bg2_decomp_empty), .Decomp_fifo_data(bg2_decomp_data), .Decomp_fifo_dequeue(bg2_decomp_dequeue),
     .Lookup_ena(Req2_ena), .Lookup_pixel(Req2_pixel), .Lookup_end(Req_end[2]), .Lookup_RGB(Req_RGB[2]), .Lookup_trans(Req_trans[2])
 );
 
 Pixel_Reader u_ch1 (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
     .is_background(1'b0), .is_character(1'b1), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
-    .WX(Character1_WX), .WY(Character1_WY), .SCX(16'd0), .SCY(16'd0),
+    .WX(Character1_WX), .WY(Character1_WY), .SCX(Character1_SCX), .SCY(Character1_SCY),
     .Pixel_valid(CH1_Pixel_valid), .Pixel_RGB(CH1_Pixel_RGB), .Pixel_is_trans(CH1_Pixel_is_trans), .Pixel_ready(CH1_Pixel_ready),
     .Decomp_fifo_r_master(ch1_decomp_r_master), .Decomp_fifo_empty(ch1_decomp_empty), .Decomp_fifo_data(ch1_decomp_data), .Decomp_fifo_dequeue(ch1_decomp_dequeue),
     .Lookup_ena(Req3_ena), .Lookup_pixel(Req3_pixel), .Lookup_end(Req_end[3]), .Lookup_RGB(Req_RGB[3]), .Lookup_trans(Req_trans[3])
@@ -248,7 +237,7 @@ Pixel_Reader u_ch1 (
 Pixel_Reader u_ch2 (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
     .is_background(1'b0), .is_character(1'b1), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
-    .WX(Character2_WX), .WY(Character2_WY), .SCX(16'd0), .SCY(16'd0),
+    .WX(Character2_WX), .WY(Character2_WY), .SCX(Character2_SCX), .SCY(Character2_SCY),
     .Pixel_valid(CH2_Pixel_valid), .Pixel_RGB(CH2_Pixel_RGB), .Pixel_is_trans(CH2_Pixel_is_trans), .Pixel_ready(CH2_Pixel_ready),
     .Decomp_fifo_r_master(ch2_decomp_r_master), .Decomp_fifo_empty(ch2_decomp_empty), .Decomp_fifo_data(ch2_decomp_data), .Decomp_fifo_dequeue(ch2_decomp_dequeue),
     .Lookup_ena(Req4_ena), .Lookup_pixel(Req4_pixel), .Lookup_end(Req_end[4]), .Lookup_RGB(Req_RGB[4]), .Lookup_trans(Req_trans[4])
@@ -257,7 +246,7 @@ Pixel_Reader u_ch2 (
 Pixel_Reader u_ch3 (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
     .is_background(1'b0), .is_character(1'b1), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
-    .WX(Character3_WX), .WY(Character3_WY), .SCX(16'd0), .SCY(16'd0),
+    .WX(Character3_WX), .WY(Character3_WY), .SCX(Character3_SCX), .SCY(Character3_SCY),
     .Pixel_valid(CH3_Pixel_valid), .Pixel_RGB(CH3_Pixel_RGB), .Pixel_is_trans(CH3_Pixel_is_trans), .Pixel_ready(CH3_Pixel_ready),
     .Decomp_fifo_r_master(ch3_decomp_r_master), .Decomp_fifo_empty(ch3_decomp_empty), .Decomp_fifo_data(ch3_decomp_data), .Decomp_fifo_dequeue(ch3_decomp_dequeue),
     .Lookup_ena(Req5_ena), .Lookup_pixel(Req5_pixel), .Lookup_end(Req_end[5]), .Lookup_RGB(Req_RGB[5]), .Lookup_trans(Req_trans[5])
@@ -266,7 +255,7 @@ Pixel_Reader u_ch3 (
 Pixel_Reader u_ch4 (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
     .is_background(1'b0), .is_character(1'b1), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
-    .WX(Character4_WX), .WY(Character4_WY), .SCX(16'd0), .SCY(16'd0),
+    .WX(Character4_WX), .WY(Character4_WY), .SCX(Character4_SCX), .SCY(Character4_SCY),
     .Pixel_valid(CH4_Pixel_valid), .Pixel_RGB(CH4_Pixel_RGB), .Pixel_is_trans(CH4_Pixel_is_trans), .Pixel_ready(CH4_Pixel_ready),
     .Decomp_fifo_r_master(ch4_decomp_r_master), .Decomp_fifo_empty(ch4_decomp_empty), .Decomp_fifo_data(ch4_decomp_data), .Decomp_fifo_dequeue(ch4_decomp_dequeue),
     .Lookup_ena(Req6_ena), .Lookup_pixel(Req6_pixel), .Lookup_end(Req_end[6]), .Lookup_RGB(Req_RGB[6]), .Lookup_trans(Req_trans[6])
@@ -275,7 +264,7 @@ Pixel_Reader u_ch4 (
 Pixel_Reader u_sc (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
     .is_background(1'b0), .is_character(1'b0), .is_status(1'b0), .is_script(1'b1), .is_universal(1'b0),
-    .WX(Script_WX), .WY(Script_WY), .SCX(16'd0), .SCY(16'd0),
+    .WX(Script_WX), .WY(Script_WY), .SCX(Script_SCX), .SCY(Script_SCY),
     .Pixel_valid(SC_Pixel_valid), .Pixel_RGB(SC_Pixel_RGB), .Pixel_is_trans(SC_Pixel_is_trans), .Pixel_ready(SC_Pixel_ready),
     .Decomp_fifo_r_master(sc_decomp_r_master), .Decomp_fifo_empty(sc_decomp_empty), .Decomp_fifo_data(sc_decomp_data), .Decomp_fifo_dequeue(sc_decomp_dequeue),
     .Lookup_ena(Req7_ena), .Lookup_pixel(Req7_pixel), .Lookup_end(Req_end[7]), .Lookup_RGB(Req_RGB[7]), .Lookup_trans(Req_trans[7])
@@ -284,7 +273,7 @@ Pixel_Reader u_sc (
 Pixel_Reader u_st (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
     .is_background(1'b0), .is_character(1'b0), .is_status(1'b1), .is_script(1'b0), .is_universal(1'b0),
-    .WX(Status_WX), .WY(Status_WY), .SCX(16'd0), .SCY(16'd0),
+    .WX(Status_WX), .WY(Status_WY), .SCX(Status_SCX), .SCY(Status_SCY),
     .Pixel_valid(ST_Pixel_valid), .Pixel_RGB(ST_Pixel_RGB), .Pixel_is_trans(ST_Pixel_is_trans), .Pixel_ready(ST_Pixel_ready),
     .Decomp_fifo_r_master(st_decomp_r_master), .Decomp_fifo_empty(st_decomp_empty), .Decomp_fifo_data(st_decomp_data), .Decomp_fifo_dequeue(st_decomp_dequeue),
     .Lookup_ena(Req8_ena), .Lookup_pixel(Req8_pixel), .Lookup_end(Req_end[8]), .Lookup_RGB(Req_RGB[8]), .Lookup_trans(Req_trans[8])
@@ -293,22 +282,22 @@ Pixel_Reader u_st (
 Pixel_Reader u_un1 (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
     .is_background(1'b0), .is_character(1'b0), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b1),
-    .WX(Universal1_WX), .WY(Universal1_WY), .SCX(16'd0), .SCY(16'd0),
+    .WX(Universal1_WX), .WY(Universal1_WY), .SCX(Universal1_SCX), .SCY(Universal1_SCY),
     .Pixel_valid(UN1_Pixel_valid), .Pixel_RGB(UN1_Pixel_RGB), .Pixel_is_trans(UN1_Pixel_is_trans), .Pixel_ready(UN1_Pixel_ready),
-    .Decomp_fifo_r_master(uni2_decomp_r_master), .Decomp_fifo_empty(uni2_decomp_empty), .Decomp_fifo_data(uni2_decomp_data), .Decomp_fifo_dequeue(uni2_decomp_dequeue),
+    .Decomp_fifo_r_master(uni1_decomp_r_master), .Decomp_fifo_empty(uni1_decomp_empty), .Decomp_fifo_data(uni1_decomp_data), .Decomp_fifo_dequeue(uni1_decomp_dequeue),
     .Lookup_ena(Req9_ena), .Lookup_pixel(Req9_pixel), .Lookup_end(Req_end[9]), .Lookup_RGB(Req_RGB[9]), .Lookup_trans(Req_trans[9])
 );
 
 Pixel_Reader u_un2 (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
     .is_background(1'b0), .is_character(1'b0), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b1),
-    .WX(Universal2_WX), .WY(Universal2_WY), .SCX(16'd0), .SCY(16'd0),
+    .WX(Universal2_WX), .WY(Universal2_WY), .SCX(Universal2_SCX), .SCY(Universal2_SCY),
     .Pixel_valid(UN2_Pixel_valid), .Pixel_RGB(UN2_Pixel_RGB), .Pixel_is_trans(UN2_Pixel_is_trans), .Pixel_ready(UN2_Pixel_ready),
-    .Decomp_fifo_r_master(ch4_decomp_r_master), .Decomp_fifo_empty(ch4_decomp_empty), .Decomp_fifo_data(ch4_decomp_data), .Decomp_fifo_dequeue(ch4_decomp_dequeue),
+    .Decomp_fifo_r_master(uni2_decomp_r_master), .Decomp_fifo_empty(uni2_decomp_empty), .Decomp_fifo_data(uni2_decomp_data), .Decomp_fifo_dequeue(uni2_decomp_dequeue),
     .Lookup_ena(Req10_ena), .Lookup_pixel(Req10_pixel), .Lookup_end(Req_end[10]), .Lookup_RGB(Req_RGB[10]), .Lookup_trans(Req_trans[10])
 );
 
-// Note: For simplicity some of the Decomp FIFO connections above reused ch4 wires for un2; adapt in testbench if needed.
+// Decomp FIFO wiring fixed: Background1->bg1, Background2->bg2, Character1..4->ch1..ch4, Script->sc, Status->st, Universal1->uni1, Universal2->uni2
 
 // -----------------------------------------------------------------------------
 // Instantiate Pixel_Processer and connect layer pixel signals
