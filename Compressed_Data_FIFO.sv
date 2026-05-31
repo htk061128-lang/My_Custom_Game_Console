@@ -5,6 +5,7 @@ module Compressed_Data_FIFO( //외부 메모리에서 라운드 로빈 방식으
     output [1:0] Clk_Counter, //Decompresser 모듈에 전달해줄 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3을 반복하는 카운터.
 
     input PPU_start, //이 신호가 들어오면 비로소 작동을 시작함. 프레임 생성 시작할때 1로 켜주면 됨. 그러면 main_state가 IDLE -> START로 변경됨. 
+    input All_Decompresser_is_IDLE, //10개의 Decompresser 모듈이 전부 IDLE 상태가 되면 싹 &&연산해서 여기로 보내주면 됨. 이 신호가 1이 되면 main_state가 START -> IDLE로 변경됨.
 
     //외부 메모리에서 읽어와야 할 압축된 레이어 데이터 위치. 상위 4비트는 0임.
     input [31:0] Universal_Layer1_Address,
@@ -1001,10 +1002,10 @@ always @(posedge clk or negedge resetn) begin
                 end
                 else if(next_should_read_layer[9:0] == 10'b0) begin 
                     //모든 FIFO가 다 채워졌거나 모든 레이어의 데이터를 전부 읽었을 때. 혹은 잠시 대기상태. 
-                    if(PPU_start == 1) begin
+                    if(All_Decompresser_is_IDLE == 0) begin
                         main_state <= START;
                     end
-                    else if(PPU_start == 0) begin //프레임이 완성되고 잠시 대기시간에 PPU_start를 0으로 설정하고, 제어 레지스터들을 바꾼 후 다시 프레임을 만들 시간에 1로 설정하면 다음 프레임을 만들기 위한 작업이 시작됨. 
+                    else if(All_Decompresser_is_IDLE == 1) begin //10개의 Decompresser 모듈의 작업이 끝났으면 All_Decompresser_is_IDLE가 1로 설정되어야 함.
                         main_state <= IDLE;
                     end
                 end

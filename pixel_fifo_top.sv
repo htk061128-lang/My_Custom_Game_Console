@@ -2,6 +2,7 @@ module pixel_fifo_top(
     input clk,
     input resetn,
     input PPU_start,
+    input [1:0] Clk_Counter,
 
     // 10개 레이어 외부 메모리 주소
     input [31:0] Universal_Layer1_Address,
@@ -59,7 +60,10 @@ module pixel_fifo_top(
     // =========================================================================
     // 내부 연결 와이어 선언 (Compressed FIFO <-> Decompressers)
     // =========================================================================
-    wire [1:0] clk_counter;
+    wire uni1_decomp_is_IDLE, uni2_decomp_is_IDLE, sc_decomp_is_IDLE, st_decomp_is_IDLE;
+    wire ch1_decomp_is_IDLE, ch2_decomp_is_IDLE, ch3_decomp_is_IDLE, ch4_decomp_is_IDLE;
+    wire bg1_decomp_is_IDLE, bg2_decomp_is_IDLE;
+    wire All_Decompresser_is_IDLE = uni1_decomp_is_IDLE & uni2_decomp_is_IDLE & sc_decomp_is_IDLE & st_decomp_is_IDLE & ch1_decomp_is_IDLE & ch2_decomp_is_IDLE & ch3_decomp_is_IDLE & ch4_decomp_is_IDLE & bg1_decomp_is_IDLE & bg2_decomp_is_IDLE;
     
     // Background 1, 2
     wire bg1_comp_ena, bg1_comp_dequeue, bg1_comp_r_master; wire [63:0] bg1_comp_data; wire [8:0] bg1_comp_count;
@@ -81,7 +85,7 @@ module pixel_fifo_top(
     // 모듈 1: Compressed_Data_FIFO 인스턴스화
     // =========================================================================
     Compressed_Data_FIFO u_compressed_fifo (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .All_Decompresser_is_IDLE(All_Decompresser_is_IDLE),
         
         .Universal_Layer1_Address(Universal_Layer1_Address), .Universal_Layer2_Address(Universal_Layer2_Address),
         .Script_Layer_Address(Script_Layer_Address),         .Status_Layer_Address(Status_Layer_Address),
@@ -135,104 +139,114 @@ module pixel_fifo_top(
     // --- BRAM 10 Group (Universal 1, 2, Script, Status) ---
     /* verilator lint_off PINMISSING */
     Decompresser u_decomp_uni1 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
         .BRAM_number(4'd10), .BRAM_base(9'd0), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0001),
         .Compressed_FIFO_r_master(uni1_comp_r_master), .Compressed_FIFO_data(uni1_comp_data), .Compressed_FIFO_count({1'b0, uni1_comp_count}), .Compressed_FIFO_ena(uni1_comp_ena), .Compressed_FIFO_dequeue(uni1_comp_dequeue),
         .BRAM10_en_a(un1_b10_en_a), .BRAM10_we_a(un1_b10_we_a), .BRAM10_addr_a(un1_b10_addr_a), .BRAM10_din_a(un1_b10_din_a), .BRAM10_en_b(un1_b10_en_b), .BRAM10_addr_b(un1_b10_addr_b), .BRAM10_dout_b(BRAM10_dout_b),
         .BRAM11_dout_b(64'd0), // 미사용
         .BRAM12_dout_b(64'd0), // 미사용
-        .Decompressed_FIFO_ena(uni1_decomp_ena), .Decompressed_FIFO_dequeue(uni1_decomp_dequeue), .Decompressed_FIFO_r_master(uni1_decomp_r_master), .Decompressed_FIFO_data(uni1_decomp_data), .Decompressed_FIFO_empty(uni1_decomp_empty)
+        .Decompressed_FIFO_ena(uni1_decomp_ena), .Decompressed_FIFO_dequeue(uni1_decomp_dequeue), .Decompressed_FIFO_r_master(uni1_decomp_r_master), .Decompressed_FIFO_data(uni1_decomp_data), .Decompressed_FIFO_empty(uni1_decomp_empty),
+        .Decompresser_is_IDLE(uni1_decomp_is_IDLE)
     );
 
     Decompresser u_decomp_uni2 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
         .BRAM_number(4'd10), .BRAM_base(9'd128), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0010),
         .Compressed_FIFO_r_master(uni2_comp_r_master), .Compressed_FIFO_data(uni2_comp_data), .Compressed_FIFO_count({1'b0, uni2_comp_count}), .Compressed_FIFO_ena(uni2_comp_ena), .Compressed_FIFO_dequeue(uni2_comp_dequeue),
         .BRAM10_en_a(un2_b10_en_a), .BRAM10_we_a(un2_b10_we_a), .BRAM10_addr_a(un2_b10_addr_a), .BRAM10_din_a(un2_b10_din_a), .BRAM10_en_b(un2_b10_en_b), .BRAM10_addr_b(un2_b10_addr_b), .BRAM10_dout_b(BRAM10_dout_b),
         .BRAM11_dout_b(64'd0),
         .BRAM12_dout_b(64'd0),
-        .Decompressed_FIFO_ena(uni2_decomp_ena), .Decompressed_FIFO_dequeue(uni2_decomp_dequeue), .Decompressed_FIFO_r_master(uni2_decomp_r_master), .Decompressed_FIFO_data(uni2_decomp_data), .Decompressed_FIFO_empty(uni2_decomp_empty)
+        .Decompressed_FIFO_ena(uni2_decomp_ena), .Decompressed_FIFO_dequeue(uni2_decomp_dequeue), .Decompressed_FIFO_r_master(uni2_decomp_r_master), .Decompressed_FIFO_data(uni2_decomp_data), .Decompressed_FIFO_empty(uni2_decomp_empty),
+        .Decompresser_is_IDLE(uni2_decomp_is_IDLE)
     );
 
     Decompresser u_decomp_script (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
         .BRAM_number(4'd10), .BRAM_base(9'd256), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0100),
         .Compressed_FIFO_r_master(sc_comp_r_master), .Compressed_FIFO_data(sc_comp_data), .Compressed_FIFO_count({1'b0, sc_comp_count}), .Compressed_FIFO_ena(sc_comp_ena), .Compressed_FIFO_dequeue(sc_comp_dequeue),
         .BRAM10_en_a(sc_b10_en_a), .BRAM10_we_a(sc_b10_we_a), .BRAM10_addr_a(sc_b10_addr_a), .BRAM10_din_a(sc_b10_din_a), .BRAM10_en_b(sc_b10_en_b), .BRAM10_addr_b(sc_b10_addr_b), .BRAM10_dout_b(BRAM10_dout_b),
         .BRAM11_dout_b(64'd0),
         .BRAM12_dout_b(64'd0),
-        .Decompressed_FIFO_ena(sc_decomp_ena), .Decompressed_FIFO_dequeue(sc_decomp_dequeue), .Decompressed_FIFO_r_master(sc_decomp_r_master), .Decompressed_FIFO_data(sc_decomp_data), .Decompressed_FIFO_empty(sc_decomp_empty)
+        .Decompressed_FIFO_ena(sc_decomp_ena), .Decompressed_FIFO_dequeue(sc_decomp_dequeue), .Decompressed_FIFO_r_master(sc_decomp_r_master), .Decompressed_FIFO_data(sc_decomp_data), .Decompressed_FIFO_empty(sc_decomp_empty),
+        .Decompresser_is_IDLE(sc_decomp_is_IDLE)
     );
 
     Decompresser u_decomp_status (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
         .BRAM_number(4'd10), .BRAM_base(9'd384), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b1000),
         .Compressed_FIFO_r_master(st_comp_r_master), .Compressed_FIFO_data(st_comp_data), .Compressed_FIFO_count({1'b0, st_comp_count}), .Compressed_FIFO_ena(st_comp_ena), .Compressed_FIFO_dequeue(st_comp_dequeue),
         .BRAM10_en_a(st_b10_en_a), .BRAM10_we_a(st_b10_we_a), .BRAM10_addr_a(st_b10_addr_a), .BRAM10_din_a(st_b10_din_a), .BRAM10_en_b(st_b10_en_b), .BRAM10_addr_b(st_b10_addr_b), .BRAM10_dout_b(BRAM10_dout_b),
         .BRAM11_dout_b(64'd0),
         .BRAM12_dout_b(64'd0),
-        .Decompressed_FIFO_ena(st_decomp_ena), .Decompressed_FIFO_dequeue(st_decomp_dequeue), .Decompressed_FIFO_r_master(st_decomp_r_master), .Decompressed_FIFO_data(st_decomp_data), .Decompressed_FIFO_empty(st_decomp_empty)
+        .Decompressed_FIFO_ena(st_decomp_ena), .Decompressed_FIFO_dequeue(st_decomp_dequeue), .Decompressed_FIFO_r_master(st_decomp_r_master), .Decompressed_FIFO_data(st_decomp_data), .Decompressed_FIFO_empty(st_decomp_empty),
+        .Decompresser_is_IDLE(st_decomp_is_IDLE)
     );
 
     // --- BRAM 11 Group (Character 1, 2, 3, 4) ---
     Decompresser u_decomp_ch1 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
         .BRAM_number(4'd11), .BRAM_base(9'd0), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0001),
         .Compressed_FIFO_r_master(ch1_comp_r_master), .Compressed_FIFO_data(ch1_comp_data), .Compressed_FIFO_count({1'b0, ch1_comp_count}), .Compressed_FIFO_ena(ch1_comp_ena), .Compressed_FIFO_dequeue(ch1_comp_dequeue),
         .BRAM10_dout_b(64'd0), // 미사용
         .BRAM11_en_a(ch1_b11_en_a), .BRAM11_we_a(ch1_b11_we_a), .BRAM11_addr_a(ch1_b11_addr_a), .BRAM11_din_a(ch1_b11_din_a), .BRAM11_en_b(ch1_b11_en_b), .BRAM11_addr_b(ch1_b11_addr_b), .BRAM11_dout_b(BRAM11_dout_b),
         .BRAM12_dout_b(64'd0),
-        .Decompressed_FIFO_ena(ch1_decomp_ena), .Decompressed_FIFO_dequeue(ch1_decomp_dequeue), .Decompressed_FIFO_r_master(ch1_decomp_r_master), .Decompressed_FIFO_data(ch1_decomp_data), .Decompressed_FIFO_empty(ch1_decomp_empty)
+        .Decompressed_FIFO_ena(ch1_decomp_ena), .Decompressed_FIFO_dequeue(ch1_decomp_dequeue), .Decompressed_FIFO_r_master(ch1_decomp_r_master), .Decompressed_FIFO_data(ch1_decomp_data), .Decompressed_FIFO_empty(ch1_decomp_empty),
+        .Decompresser_is_IDLE(ch1_decomp_is_IDLE)
     );
 
     Decompresser u_decomp_ch2 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
         .BRAM_number(4'd11), .BRAM_base(9'd128), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0010),
         .Compressed_FIFO_r_master(ch2_comp_r_master), .Compressed_FIFO_data(ch2_comp_data), .Compressed_FIFO_count({1'b0, ch2_comp_count}), .Compressed_FIFO_ena(ch2_comp_ena), .Compressed_FIFO_dequeue(ch2_comp_dequeue),
         .BRAM10_dout_b(64'd0),
         .BRAM11_en_a(ch2_b11_en_a), .BRAM11_we_a(ch2_b11_we_a), .BRAM11_addr_a(ch2_b11_addr_a), .BRAM11_din_a(ch2_b11_din_a), .BRAM11_en_b(ch2_b11_en_b), .BRAM11_addr_b(ch2_b11_addr_b), .BRAM11_dout_b(BRAM11_dout_b),
         .BRAM12_dout_b(64'd0),
-        .Decompressed_FIFO_ena(ch2_decomp_ena), .Decompressed_FIFO_dequeue(ch2_decomp_dequeue), .Decompressed_FIFO_r_master(ch2_decomp_r_master), .Decompressed_FIFO_data(ch2_decomp_data), .Decompressed_FIFO_empty(ch2_decomp_empty)
+        .Decompressed_FIFO_ena(ch2_decomp_ena), .Decompressed_FIFO_dequeue(ch2_decomp_dequeue), .Decompressed_FIFO_r_master(ch2_decomp_r_master), .Decompressed_FIFO_data(ch2_decomp_data), .Decompressed_FIFO_empty(ch2_decomp_empty),
+        .Decompresser_is_IDLE(ch2_decomp_is_IDLE)
     );
 
     Decompresser u_decomp_ch3 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
         .BRAM_number(4'd11), .BRAM_base(9'd256), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0100),
         .Compressed_FIFO_r_master(ch3_comp_r_master), .Compressed_FIFO_data(ch3_comp_data), .Compressed_FIFO_count({1'b0, ch3_comp_count}), .Compressed_FIFO_ena(ch3_comp_ena), .Compressed_FIFO_dequeue(ch3_comp_dequeue),
         .BRAM10_dout_b(64'd0),
         .BRAM11_en_a(ch3_b11_en_a), .BRAM11_we_a(ch3_b11_we_a), .BRAM11_addr_a(ch3_b11_addr_a), .BRAM11_din_a(ch3_b11_din_a), .BRAM11_en_b(ch3_b11_en_b), .BRAM11_addr_b(ch3_b11_addr_b), .BRAM11_dout_b(BRAM11_dout_b),
         .BRAM12_dout_b(64'd0),
-        .Decompressed_FIFO_ena(ch3_decomp_ena), .Decompressed_FIFO_dequeue(ch3_decomp_dequeue), .Decompressed_FIFO_r_master(ch3_decomp_r_master), .Decompressed_FIFO_data(ch3_decomp_data), .Decompressed_FIFO_empty(ch3_decomp_empty)
+        .Decompressed_FIFO_ena(ch3_decomp_ena), .Decompressed_FIFO_dequeue(ch3_decomp_dequeue), .Decompressed_FIFO_r_master(ch3_decomp_r_master), .Decompressed_FIFO_data(ch3_decomp_data), .Decompressed_FIFO_empty(ch3_decomp_empty),
+        .Decompresser_is_IDLE(ch3_decomp_is_IDLE)
     );
 
     Decompresser u_decomp_ch4 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
         .BRAM_number(4'd11), .BRAM_base(9'd384), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b1000),
         .Compressed_FIFO_r_master(ch4_comp_r_master), .Compressed_FIFO_data(ch4_comp_data), .Compressed_FIFO_count({1'b0, ch4_comp_count}), .Compressed_FIFO_ena(ch4_comp_ena), .Compressed_FIFO_dequeue(ch4_comp_dequeue),
         .BRAM10_dout_b(64'd0),
         .BRAM11_en_a(ch4_b11_en_a), .BRAM11_we_a(ch4_b11_we_a), .BRAM11_addr_a(ch4_b11_addr_a), .BRAM11_din_a(ch4_b11_din_a), .BRAM11_en_b(ch4_b11_en_b), .BRAM11_addr_b(ch4_b11_addr_b), .BRAM11_dout_b(BRAM11_dout_b),
         .BRAM12_dout_b(64'd0),
-        .Decompressed_FIFO_ena(ch4_decomp_ena), .Decompressed_FIFO_dequeue(ch4_decomp_dequeue), .Decompressed_FIFO_r_master(ch4_decomp_r_master), .Decompressed_FIFO_data(ch4_decomp_data), .Decompressed_FIFO_empty(ch4_decomp_empty)
+        .Decompressed_FIFO_ena(ch4_decomp_ena), .Decompressed_FIFO_dequeue(ch4_decomp_dequeue), .Decompressed_FIFO_r_master(ch4_decomp_r_master), .Decompressed_FIFO_data(ch4_decomp_data), .Decompressed_FIFO_empty(ch4_decomp_empty),
+        .Decompresser_is_IDLE(ch4_decomp_is_IDLE)
     );
 
     // --- BRAM 12 Group (Background 1, 2) ---
     Decompresser u_decomp_bg1 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
         .BRAM_number(4'd12), .BRAM_base(9'd0), .BRAM_size(1'b1), .BRAM_rw_counter_bits(4'b0011),
         .Compressed_FIFO_r_master(bg1_comp_r_master), .Compressed_FIFO_data(bg1_comp_data), .Compressed_FIFO_count(bg1_comp_count), .Compressed_FIFO_ena(bg1_comp_ena), .Compressed_FIFO_dequeue(bg1_comp_dequeue),
         .BRAM10_dout_b(64'd0), // 미사용
         .BRAM11_dout_b(64'd0), // 미사용
         .BRAM12_en_a(bg1_b12_en_a), .BRAM12_we_a(bg1_b12_we_a), .BRAM12_addr_a(bg1_b12_addr_a), .BRAM12_din_a(bg1_b12_din_a), .BRAM12_en_b(bg1_b12_en_b), .BRAM12_addr_b(bg1_b12_addr_b), .BRAM12_dout_b(BRAM12_dout_b),
-        .Decompressed_FIFO_ena(bg1_decomp_ena), .Decompressed_FIFO_dequeue(bg1_decomp_dequeue), .Decompressed_FIFO_r_master(bg1_decomp_r_master), .Decompressed_FIFO_data(bg1_decomp_data), .Decompressed_FIFO_empty(bg1_decomp_empty)
+        .Decompressed_FIFO_ena(bg1_decomp_ena), .Decompressed_FIFO_dequeue(bg1_decomp_dequeue), .Decompressed_FIFO_r_master(bg1_decomp_r_master), .Decompressed_FIFO_data(bg1_decomp_data), .Decompressed_FIFO_empty(bg1_decomp_empty),
+        .Decompresser_is_IDLE(bg1_decomp_is_IDLE)
     );
 
     Decompresser u_decomp_bg2 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(clk_counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
         .BRAM_number(4'd12), .BRAM_base(9'd256), .BRAM_size(1'b1), .BRAM_rw_counter_bits(4'b1100),
         .Compressed_FIFO_r_master(bg2_comp_r_master), .Compressed_FIFO_data(bg2_comp_data), .Compressed_FIFO_count(bg2_comp_count), .Compressed_FIFO_ena(bg2_comp_ena), .Compressed_FIFO_dequeue(bg2_comp_dequeue),
         .BRAM10_dout_b(64'd0), .BRAM11_dout_b(64'd0),
         .BRAM12_en_a(bg2_b12_en_a), .BRAM12_we_a(bg2_b12_we_a), .BRAM12_addr_a(bg2_b12_addr_a), .BRAM12_din_a(bg2_b12_din_a), .BRAM12_en_b(bg2_b12_en_b), .BRAM12_addr_b(bg2_b12_addr_b), .BRAM12_dout_b(BRAM12_dout_b),
-        .Decompressed_FIFO_ena(bg2_decomp_ena), .Decompressed_FIFO_dequeue(bg2_decomp_dequeue), .Decompressed_FIFO_r_master(bg2_decomp_r_master), .Decompressed_FIFO_data(bg2_decomp_data), .Decompressed_FIFO_empty(bg2_decomp_empty)
+        .Decompressed_FIFO_ena(bg2_decomp_ena), .Decompressed_FIFO_dequeue(bg2_decomp_dequeue), .Decompressed_FIFO_r_master(bg2_decomp_r_master), .Decompressed_FIFO_data(bg2_decomp_data), .Decompressed_FIFO_empty(bg2_decomp_empty),
+        .Decompresser_is_IDLE(bg2_decomp_is_IDLE)
     );
     /* verilator lint_on PINMISSING */
 

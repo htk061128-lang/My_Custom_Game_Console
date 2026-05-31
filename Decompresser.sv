@@ -17,6 +17,7 @@ module Decompresser( //Compressed_Data_FIFO 에서 값을 읽어와서 압축을
     //이렇게 설정해야 함!!!!!! 괄호는 대응하는 직접적인 Clk_Counter 값임.
 
     input PPU_start, //프레임 생성을 시작할때 1로 설정되고 완성되면 0으로 떨어지고 다음 프레임 생성을 시작할때 1로 설정됨.
+    output reg Decompresser_is_IDLE, //이 신호는 r_state가 IDLE일때 1로 설정됨. 이 신호를 top 모듈에서 10개 Decompresser의 상태를 && 연산해서 Compressed_Data_FIFO에 전달함.
 
     //Compressed_Data_FIFO 인터페이스. 이걸로 압축된 데이터를 읽어와야 함.
     input Compressed_FIFO_r_master, //이 신호가 1일때만 dequeue가 가능함.
@@ -455,6 +456,7 @@ always @(*) begin
 end
 
 always @(*) begin
+    Decompresser_is_IDLE = 0;
     r_state_next = r_state;
     r_8[7:0] = 0;
     //r_8_valid = 0;
@@ -469,6 +471,8 @@ always @(*) begin
 
     case(r_state)
         IDLE: begin
+            Compressed_FIFO_ena = 0; //0으로 쭉 내려줘서, Compressed_Data_FIFO 모듈에서 외부 메모리에서 데이터읽기요청을 중단시킴.
+            Decompresser_is_IDLE = 1;
             if(PPU_start) begin 
                 r_state_next = START; //PPU_start가 오면 START로 이동함. 
                 compressed_FIFO_reg_counter_reset = 1; //counter 리셋 필수임!! 중간에 바로 COMPLETE로 갈 수도 있기 때문.
@@ -492,7 +496,7 @@ always @(*) begin
         WAIT_DATA: begin //r_state가 클럭에지때 WAIT_DATA로 가는 동시에 compressed_fifo_r_data[63:0]가 나옴.
             r_state_next = READ;
             compressed_FIFO_reg_64_w_ena = 1;
-            if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
+            if(r_end_req) begin //decompress_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
                 r_state_next = COMPLETE;
             end
             /*else if(compressed_FIFO_r_req) begin
@@ -571,18 +575,19 @@ always @(*) begin
                     end
                 end
             endcase
-            if(r_end_req) begin //r_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
+            if(r_end_req) begin //decompress_state로부터 r_end_req가 오면 모든 데이터를 다 읽었다는 의미이므로 COMPLETE로 이동해서 Compressed_FIFO_ena를 0으로 내려줘야 함.
                 r_state_next = COMPLETE;
             end
         end
         COMPLETE: begin
             Compressed_FIFO_ena = 0; //0으로 쭉 내려줘서, Compressed_Data_FIFO 모듈에서 외부 메모리에서 데이터읽기요청을 중단시킴.
-            if(PPU_start == 0) begin
+            r_state_next = IDLE; 
+            /*if(PPU_start == 0) begin
                 r_state_next = IDLE;
             end
             else if(PPU_start == 1) begin
                 r_state_next = COMPLETE;
-            end
+            end*/
         end
     endcase
 end

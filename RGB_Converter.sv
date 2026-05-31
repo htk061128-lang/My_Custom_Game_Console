@@ -4,7 +4,7 @@ module RGB_Converter(
 
     input [1:0] Clk_Counter, //Decompresser, Compressed_Data_FIFO 모듈과 연동되는 동일한 2비트짜리 클럭 카운터.
 
-    input PPU_start,
+    input PPU_start, //사용되지 않음.
 
     input [7:0] Cache1_pixel, //직접 input으로 4개의 범용캐시에 저장할 8비트 픽셀값을 주면 거기에 그 값을 쓰고 유지되는 구조임.
     input [7:0] Cache2_pixel, //이 신호들은 반드시 프레임 완성 후 쉬는 시간에서만 바꿔줘야 함!!! PPU_start가 0 -> 1로 변하기 전에 이미 신호가 고정되어 있어야 함!!!!
