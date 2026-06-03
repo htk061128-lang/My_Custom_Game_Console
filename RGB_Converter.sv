@@ -25,38 +25,38 @@ module RGB_Converter(
 
     // [포트 C] 읽기 전용 포트 2 (Read Port 2)
     output  wire [7:0]  LUT_addr_r2,    // 읽기 주소 2
-    input wire [17:0] LUT_data_out2   // 읽어온 데이터 2 (조합 논리 즉시 출력)
+    input wire [17:0] LUT_data_out2,   // 읽어온 데이터 2 (조합 논리 즉시 출력)
 
     //10개의 레이어, 스트라이트기능 포함한다고 가정해서 최대 12개의 요청이 들어온다고 가정함. 읽은 RGB값을 플립플롭에 한번 저장한다음에 사용할 예정. 조합회로 너무 길어지는것 예방.
     input Req1_ena, //이 신호와 pixel값을 보내고 대기하면 end와 RGB값이 들어옴.
     input [7:0] Req1_pixel, //절대 이 값이 0(투명)이어서는 안됨. 그러면 영원히 end가 안옴. 
-    output [17:0] Req1_RGB,
-    output Req1_trans, //만약 Req1_pixel 이 0이라면 이 신호를 1로 설정하고 바로 end를 보내서 마무리 함.
-    output Req1_end,
+    output reg [17:0] Req1_RGB,
+    output reg Req1_trans, //만약 Req1_pixel 이 0이라면 이 신호를 1로 설정하고 바로 end를 보내서 마무리 함.
+    output reg Req1_end,
 
     input Req2_ena,
     input [7:0] Req2_pixel,
-    output [17:0] Req2_RGB,
-    output Req2_trans,
-    output Req2_end,
+    output reg [17:0] Req2_RGB,
+    output reg  Req2_trans,
+    output reg Req2_end,
 
     input Req3_ena,
     input [7:0] Req3_pixel,
-    output [17:0] Req3_RGB,
-    output Req3_trans,
-    output Req3_end,
+    output reg [17:0] Req3_RGB,
+    output reg Req3_trans,
+    output reg Req3_end,
 
     input Req4_ena,
     input [7:0] Req4_pixel,
-    output [17:0] Req4_RGB,
-    output Req4_trans,
-    output Req4_end,
+    output reg [17:0] Req4_RGB,
+    output reg Req4_trans,
+    output reg Req4_end,
 
     input Req5_ena,
     input [7:0] Req5_pixel,
-    output [17:0] Req5_RGB,
-    output Req5_trans,
-    output Req5_end,
+    output reg [17:0] Req5_RGB,
+    output reg Req5_trans,
+    output reg Req5_end,
 
     input Req6_ena,
     input [7:0] Req6_pixel,
@@ -66,39 +66,39 @@ module RGB_Converter(
 
     input Req7_ena,
     input [7:0] Req7_pixel,
-    output [17:0] Req7_RGB,
-    output Req7_trans,
-    output Req7_end,
+    output reg [17:0] Req7_RGB,
+    output reg Req7_trans,
+    output reg Req7_end,
 
     input Req8_ena,
     input [7:0] Req8_pixel,
-    output [17:0] Req8_RGB,
-    output Req8_trans,
-    output Req8_end,
+    output reg [17:0] Req8_RGB,
+    output reg Req8_trans,
+    output reg Req8_end,
 
     input Req9_ena,
     input [7:0] Req9_pixel,
-    output [17:0] Req9_RGB,
-    output Req9_trans,
-    output Req9_end,
+    output reg [17:0] Req9_RGB,
+    output reg Req9_trans,
+    output reg Req9_end,
 
     input Req10_ena,
     input [7:0] Req10_pixel,
-    output [17:0] Req10_RGB,
-    output Req10_trans,
-    output Req10_end,
+    output reg [17:0] Req10_RGB,
+    output reg Req10_trans,
+    output reg Req10_end,
 
     input Req11_ena,
     input [7:0] Req11_pixel,
-    output [17:0] Req11_RGB,
-    output Req11_trans,
-    output Req11_end,
+    output reg [17:0] Req11_RGB,
+    output reg Req11_trans,
+    output reg Req11_end,
 
     input Req12_ena,
     input [7:0] Req12_pixel,
-    output [17:0] Req12_RGB,
-    output Req12_trans,
-    output Req12_end
+    output reg [17:0] Req12_RGB,
+    output reg Req12_trans,
+    output reg Req12_end
 );
 reg [7:0] cache1_pixel; //여기있는 4개의 캐시값과 Req_pixel이 일치하면 Distribute Ram에 접근없이 RGB값을 줌.
 reg [17:0] cache1_RGB; //범용캐시 4개를 CPU가 범용적으로 자주 쓰이는 값을 직접 지정해서 고정시킬 수 있게 만드는게 최선일 것 같음...
@@ -251,7 +251,7 @@ reg [11:0] total_req; //12비트짜리 변수로 cache miss인 Req_ena가 왔으
 
 reg [1:0] random_counter_0_3; //0 - 1 - 2 - 3 을 반복하는 카운터고, 어느 범용 캐시에 RGB값과 pixel값을 넣을지 결정함.
 reg random_counter_0_1;
-reg random_counter_0_2;
+reg [1:0] random_counter_0_2;
 
 reg cache1_w_ena;
 reg cache2_w_ena;
@@ -332,7 +332,7 @@ always @(posedge clk or negedge resetn) begin
 
         random_counter_0_3[1:0] <= 0;
         random_counter_0_1 <= 0;
-        random_counter_0_2 <= 0;
+        random_counter_0_2[1:0] <= 0;
     end
     else begin
         random_counter_0_3[1:0] <= random_counter_0_3[1:0] + 1; // 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3을 반복.
@@ -448,7 +448,6 @@ always @(posedge clk or negedge resetn) begin
             req12_exclusive_valid <= 1;
             req12_exclusive_pixel[7:0] <= Req12_pixel[7:0];
             req12_exclusive_RGB[17:0] <= Req12_RGB[17:0];
-        end
         end
     end
 end

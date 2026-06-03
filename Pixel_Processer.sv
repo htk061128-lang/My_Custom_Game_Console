@@ -502,8 +502,7 @@ always @(*) begin
                 z_input_ready[1] = 0;
             end
         end
-        2'b11: begin
-        end
+        default: ;
     endcase
 
     case(Z2_state[1:0])
@@ -539,8 +538,7 @@ always @(*) begin
                 z_input_ready[2] = 0;
             end
         end
-        2'b11: begin
-        end
+        default: ;
     endcase
 
     case(Z3_state[1:0])
@@ -576,8 +574,7 @@ always @(*) begin
                 z_input_ready[3] = 0;
             end
         end
-        2'b11: begin
-        end
+        default: ;
     endcase
 
     case(Z4_state[1:0])
@@ -613,8 +610,7 @@ always @(*) begin
                 z_input_ready[4] = 0;
             end
         end
-        2'b11: begin
-        end
+        default: ;
     endcase
 
     case(Z5_state[1:0])
@@ -650,8 +646,7 @@ always @(*) begin
                 z_input_ready[5] = 0;
             end
         end
-        2'b11: begin
-        end
+        default: ;
     endcase
 
     case(Z6_state[1:0])
@@ -687,8 +682,7 @@ always @(*) begin
                 z_input_ready[6] = 0;
             end
         end
-        2'b11: begin
-        end
+        default: ;
     endcase
 
     case(Z7_state[1:0])
@@ -724,8 +718,7 @@ always @(*) begin
                 z_input_ready[7] = 0;
             end
         end
-        2'b11: begin
-        end
+        default: ;
     endcase
 
     case(Z8_state[1:0])
@@ -761,8 +754,7 @@ always @(*) begin
                 z_input_ready[8] = 0;
             end
         end
-        2'b11: begin
-        end
+        default: ;
     endcase
 
     case(Z9_state[1:0])
@@ -798,8 +790,7 @@ always @(*) begin
                 z_input_ready[9] = 0;
             end
         end
-        2'b11: begin
-        end
+        default: ;
     endcase
 
     case(Z10_state[1:0])
@@ -835,8 +826,7 @@ always @(*) begin
                 z_input_ready[10] = 0;
             end
         end
-        2'b11: begin
-        end
+        default: ;
     endcase
 end
 

@@ -18,20 +18,20 @@ module Pixel_Reader( //Decompressed FIFO에서 값을 읽어서 RGB_Converter로
     input [15:0] SCY,
 
     //Pixel_Processer과 상호작용하기 위한 인터페이스
-    output Pixel_valid, //Pixel_RGB와 Pixel_valid 신호를 주고 ready를 받으면 전달이 완료된 것임. ready를 받을때마다 내부에 카운터를 증가시키고 레이어 외부 위치라면 Pixel_is_trans와 valid를 계속 주면 됨.
-    output [17:0] Pixel_RGB,
-    output Pixel_is_trans,  //이 신호가 1이면 해당 픽셀은 투명이라는 소리임. 따라서 Pixel_RGB 값은 Pixel_Processer에서 무시됨.
+    output reg Pixel_valid, //Pixel_RGB와 Pixel_valid 신호를 주고 ready를 받으면 전달이 완료된 것임. ready를 받을때마다 내부에 카운터를 증가시키고 레이어 외부 위치라면 Pixel_is_trans와 valid를 계속 주면 됨.
+    output reg [17:0] Pixel_RGB,
+    output reg Pixel_is_trans,  //이 신호가 1이면 해당 픽셀은 투명이라는 소리임. 따라서 Pixel_RGB 값은 Pixel_Processer에서 무시됨.
     input Pixel_ready,
 
     //Decompressed FIFO에서 값을 읽기위한 인터페이스.
     input Decomp_fifo_r_master,
     input Decomp_fifo_empty,
     input [63:0] Decomp_fifo_data,
-    output Decomp_fifo_dequeue, //r_master가 1일때 dequeue신호를 보내면 클럭에지때 decomp_fifo_data[63:0] 값이 나옴.
+    output reg Decomp_fifo_dequeue, //r_master가 1일때 dequeue신호를 보내면 클럭에지때 decomp_fifo_data[63:0] 값이 나옴.
 
     //RGB_Converter에서 값을 읽기위한 인터페이스.
-    output Lookup_ena, //ena신호와 pixel값을 주면 end신호와 RGB가 올때까지 대기하고 나온값을 바로 플립플롭에 저장해주면 됨.
-    output [7:0] Lookup_pixel,
+    output reg Lookup_ena, //ena신호와 pixel값을 주면 end신호와 RGB가 올때까지 대기하고 나온값을 바로 플립플롭에 저장해주면 됨.
+    output reg [7:0] Lookup_pixel,
     input Lookup_end,
     input [17:0] Lookup_RGB,
     input Lookup_trans
@@ -50,7 +50,7 @@ reg [3:0] main_state;
 reg [3:0] main_state_next;
 reg [3:0] main_state_counter;
 reg [3:0] main_state_counter_next;
-parameter IDLE = 0, BG_START = 1, NO_BG_START = 2, START = 3;
+parameter IDLE = 0, BG_START = 1, NO_BG_START = 2, START = 3, READ = 4;
 
 reg [3:0] fifo_r_state;
 reg [3:0] fifo_r_state_next;

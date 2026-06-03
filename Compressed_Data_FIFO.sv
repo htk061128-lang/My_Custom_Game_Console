@@ -2,7 +2,7 @@ module Compressed_Data_FIFO( //외부 메모리에서 라운드 로빈 방식으
     input clk, //50MHz
     input resetn, //negedge resetn
 
-    output [1:0] Clk_Counter, //Decompresser 모듈에 전달해줄 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3을 반복하는 카운터.
+    input [1:0] clk_counter, //Decompresser 모듈에 전달해줄 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3을 반복하는 카운터.
 
     input PPU_start, //이 신호가 들어오면 비로소 작동을 시작함. 프레임 생성 시작할때 1로 켜주면 됨. 그러면 main_state가 IDLE -> START로 변경됨. 
     input All_Decompresser_is_IDLE, //10개의 Decompresser 모듈이 전부 IDLE 상태가 되면 싹 &&연산해서 여기로 보내주면 됨. 이 신호가 1이 되면 main_state가 START -> IDLE로 변경됨.
@@ -148,7 +148,6 @@ module Compressed_Data_FIFO( //외부 메모리에서 라운드 로빈 방식으
     output [7:0] Universal_Layer2_count
 );
 
-assign Clk_Counter[1:0] = clk_counter[1:0];
 
 assign Background_Layer1_r_master = back1_fifo_r_master;
 assign Background_Layer2_r_master = back2_fifo_r_master;
@@ -272,7 +271,7 @@ reg uni2_fifo_inc_want;
 reg uni2_fifo_dec_want;
 
 //FIFO를 쓰는것은 라운드로빈 방식으로 하나의 FIFO에 50MHz로 쓰기가 일어나고, FIFO를 읽는것은 시분할로 12.5MHz로 각각의 FIFO가 독립적으로 읽는것이 가능함.
-reg [1:0] clk_counter; // 50MHz에 맞춰서 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3 - 0 를 반복함.
+//reg [1:0] clk_counter; // 50MHz에 맞춰서 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3 - 0 를 반복함.
 
 wire uni1_fifo_r_master = (clk_counter == 0); //이 신호가 1이어야지 BRAM에서 해당 FIFO를 읽기가 가능함.
 wire uni2_fifo_r_master = (clk_counter == 1);
@@ -625,7 +624,7 @@ end
 
 always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
-        clk_counter[1:0] <= 0;
+        //clk_counter[1:0] <= 0;
         main_state <= IDLE;
         uni1_next_ad <= 0;
         uni2_next_ad <= 0;
@@ -697,7 +696,7 @@ always @(posedge clk or negedge resetn) begin
         BRAM9_read_state[2:0] <= 0;
     end
     else begin
-        clk_counter[1:0] <= clk_counter[1:0] + 1; // 50MHz에 맞춰서 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3 - 0 를 반복
+        //clk_counter[1:0] <= clk_counter[1:0] + 1; // 50MHz에 맞춰서 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3 - 0 를 반복
         BRAM7_read_state[2:0] <= BRAM7_read_state_next[2:0];
         BRAM8_read_state[2:0] <= BRAM8_read_state_next[2:0];
         BRAM9_read_state[2:0] <= BRAM9_read_state_next[2:0];

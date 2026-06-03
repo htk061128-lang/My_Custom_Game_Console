@@ -3,6 +3,19 @@ module PPU_TOP(
     input resetn,
     input PPU_start,
 
+    input [7:0] CPU_LUT_Cache1_pixel, input [7:0] CPU_LUT_Cache2_pixel, input [7:0] CPU_LUT_Cache3_pixel, input [7:0] CPU_LUT_Cache4_pixel,
+
+    input [31:0] Background_Layer1_Address,
+    input [31:0] Background_Layer2_Address,
+    input [31:0] Character_Layer1_Address,
+    input [31:0] Character_Layer2_Address,
+    input [31:0] Character_Layer3_Address,
+    input [31:0] Character_Layer4_Address,
+    input [31:0] Script_Layer_Address,
+    input [31:0] Status_Layer_Address,
+    input [31:0] Universal_Layer1_Address,
+    input [31:0] Universal_Layer2_Address,
+
     // External memory (EMEM) passthrough from pixel_fifo_top
     output EMEM_valid,
     input  EMEM_ready,
@@ -96,16 +109,16 @@ wire bg2_decomp_ena  = 1'b1;
 pixel_fifo_top u_pixel_fifo (
     .clk(clk), .resetn(resetn), .PPU_start(PPU_start), .Clk_Counter(Clk_Counter),
 
-    .Universal_Layer1_Address(32'd0), // address inputs are left 0 (external memory setup done via BRAM writes in tests)
-    .Universal_Layer2_Address(32'd0),
-    .Script_Layer_Address(32'd0),
-    .Status_Layer_Address(32'd0),
-    .Character_Layer1_Address(32'd0),
-    .Character_Layer2_Address(32'd0),
-    .Character_Layer3_Address(32'd0),
-    .Character_Layer4_Address(32'd0),
-    .Background_Layer1_Address(32'd0),
-    .Background_Layer2_Address(32'd0),
+    .Universal_Layer1_Address(Universal_Layer1_Address[31:0]),
+    .Universal_Layer2_Address(Universal_Layer2_Address[31:0]),
+    .Script_Layer_Address(Script_Layer_Address[31:0]),
+    .Status_Layer_Address(Status_Layer_Address[31:0]),
+    .Character_Layer1_Address(Character_Layer1_Address[31:0]),
+    .Character_Layer2_Address(Character_Layer2_Address[31:0]),
+    .Character_Layer3_Address(Character_Layer3_Address[31:0]),
+    .Character_Layer4_Address(Character_Layer4_Address[31:0]),
+    .Background_Layer1_Address(Background_Layer1_Address[31:0]),
+    .Background_Layer2_Address(Background_Layer2_Address[31:0]),
 
     .EMEM_valid(EMEM_valid), .EMEM_ready(EMEM_ready), .EMEM_addr(EMEM_addr),
     .EMEM_wdata(EMEM_wdata), .EMEM_wstrb(EMEM_wstrb), .EMEM_rdata(EMEM_rdata),
@@ -148,6 +161,8 @@ wire Req_end [12:1];
 
 RGB_Converter u_rgb (
     .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+
+    .Cache1_pixel(CPU_LUT_Cache1_pixel), .Cache2_pixel(CPU_LUT_Cache2_pixel), .Cache3_pixel(CPU_LUT_Cache3_pixel), .Cache4_pixel(CPU_LUT_Cache4_pixel),
 
     // small LUT write inputs (exposed)
     .LUT_we(LUT_we), .LUT_addr_w(LUT_addr_w), .LUT_data_in(LUT_data_in),

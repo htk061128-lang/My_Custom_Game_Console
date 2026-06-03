@@ -85,7 +85,7 @@ module pixel_fifo_top(
     // 모듈 1: Compressed_Data_FIFO 인스턴스화
     // =========================================================================
     Compressed_Data_FIFO u_compressed_fifo (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .All_Decompresser_is_IDLE(All_Decompresser_is_IDLE),
+        .clk(clk), .resetn(resetn), .clk_counter(Clk_Counter), .PPU_start(PPU_start), .All_Decompresser_is_IDLE(All_Decompresser_is_IDLE),
         
         .Universal_Layer1_Address(Universal_Layer1_Address), .Universal_Layer2_Address(Universal_Layer2_Address),
         .Script_Layer_Address(Script_Layer_Address),         .Status_Layer_Address(Status_Layer_Address),
