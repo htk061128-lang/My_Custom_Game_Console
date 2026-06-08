@@ -245,7 +245,7 @@ int main(int argc, char **argv)
         std::vector<uint8_t> rle_layer;
         if (layer.empty())
         {
-            rle_layer.push_back(0x00); // 빈 레이어 처리
+            rle_layer.push_back(0x00);
             return rle_layer;
         }
 
@@ -254,30 +254,27 @@ int main(int argc, char **argv)
 
         while (i < n)
         {
-            // 1. 현재 위치에서부터 똑같은 픽셀이 몇 개 연속되는지 카운트
+            // [수정] 매 루프마다 run_length를 1로 확실하게 초기화해야 합니다.
             int run_length = 1;
             while (i + run_length < n && layer[i] == layer[i + run_length])
             {
                 run_length++;
             }
 
-            // 2. 만약 2개 이상 연속된다면 -> Repeat RLE 세그먼트로 압축 처리!
-            // (RLE 압축 효율을 극대화하기 위해 보통 2개 이상 연속될 때 RLE 모드를 켭니다)
+            // 2개 이상 연속되면 Repeat 처리
             if (run_length >= 2)
             {
                 append_rle(rle_layer, layer[i], run_length);
-                i += run_length; // 연속된 만큼 건너뛰기
+                i += run_length;
             }
-            // 3. 연속되지 않는다면 -> 연속이 깨질 때까지 혹은 배열 끝까지 unrepeat 구간으로 묶기
+            // 연속되지 않으면 Non-repeat 구간 처리
             else
             {
                 int unrepeat_len = 0;
                 int start_base = i;
 
-                // 다음 연속되는 구간이 나오기 전까지 non-repeat 길이 측정
                 while (i < n)
                 {
-                    // 뒤에 똑같은 게 2개 연속해서 나오는 구조를 발견하면 non-repeat 구간을 종료시킴
                     if (i + 2 < n && layer[i] == layer[i + 1] && layer[i + 1] == layer[i + 2])
                     {
                         break;
@@ -285,15 +282,12 @@ int main(int argc, char **argv)
                     unrepeat_len++;
                     i++;
                 }
-
-                // 측정한 non-repeat 구간을 통째로 밀어넣기 (127개 쪼개기는 내부 append_range가 처리)
                 append_range(start_base, unrepeat_len, layer, rle_layer);
             }
         }
 
-        // 포맷 규칙에 따른 최종 터미네이터(종료 마커) 부착
+        // 최종 터미네이터 부착
         rle_layer.push_back(0x00);
-
         return rle_layer;
     };
 
@@ -311,7 +305,10 @@ int main(int argc, char **argv)
     constexpr uint32_t UNIVERSAL1_ADDR = 0x10000;
     constexpr uint32_t UNIVERSAL2_ADDR = 0x12000;
 
-    write_stream(BACKGROUND1_ADDR, rle_convert(background1));
+    // RLE 변환 후 저장
+    std::vector<uint8_t> bg1_rle = rle_convert(background1);
+    write_stream(BACKGROUND1_ADDR, bg1_rle);
+
     load_layer(BACKGROUND2_ADDR, 0, 0);
     write_stream(CHARACTER1_ADDR, rle_convert(character1));
     load_layer(CHARACTER2_ADDR, 0, 0);
@@ -323,13 +320,22 @@ int main(int argc, char **argv)
     load_layer(UNIVERSAL2_ADDR, 0, 0);
 
     // Dump first few words of BACKGROUND1 to verify RLE packing / endianness
-    std::cout << "DDRR3[BACKGROUND1] words:";
-    for (int i = 0; i < 8; ++i)
+    /*std::cout << "\n=== BACKGROUND1 RLE DATA ===\n";
+    std::cout << "RLE 바이트 개수: " << bg1_rle.size() << std::endl;
+    std::cout << "첫 20 바이트: ";
+    for (int i = 0; i < 20 && i < (int)bg1_rle.size(); ++i)
+    {
+        printf("%02X ", bg1_rle[i]);
+    }
+    std::cout << "\n\nDDR3[BACKGROUND1] 워드 (16진수):\n";
+    for (int i = 0; i < 1000; ++i)
     {
         uint32_t w = ddr3_memory[(BACKGROUND1_ADDR / 4) + i];
-        std::cout << " 0x" << std::hex << w << std::dec;
+        printf("ddr3_memory[%d] = 0x%08X", i, w);
+        printf("  (bytes: %02X %02X %02X %02X)\n",
+               (w & 0xFF), (w >> 8) & 0xFF, (w >> 16) & 0xFF, (w >> 24) & 0xFF);
     }
-    std::cout << std::endl;
+    std::cout << std::endl;*/
 
     lut[0] = 0x00000;  // 투명 픽셀 (Transparent)
     lut[1] = 0x3F000;  // Red
@@ -587,6 +593,20 @@ int main(int argc, char **argv)
                 dut->EMEM_ready = 1;
                 emem_current_addr = dut->EMEM_addr >> 2;
                 dut->EMEM_rdata = ddr3_memory[emem_current_addr];
+                /*
+                if(ddr3_memory[emem_current_addr] == 0x10FF10FF)
+                {
+                    printf("EMEM READ: addr=0x%08X rdata=0x%08X (Transparent Pixel) main_time: %lu\n", emem_current_addr, dut->EMEM_rdata, main_time);
+                }
+                if(ddr3_memory[emem_current_addr] == 0x11FF11FF)
+                {
+                    printf("EMEM READ: addr=0x%08X rdata=0x%08X (Transparent Pixel) main_time: %lu\n", emem_current_addr, dut->EMEM_rdata, main_time);
+                }*/
+               if(dut->EMEM_addr == 0x00000 || dut->EMEM_addr == 0x02000 || dut->EMEM_addr == 0x04000 || dut->EMEM_addr == 0x06000 || dut->EMEM_addr == 0x08000 || dut->EMEM_addr == 0x0A000 || dut->EMEM_addr == 0x0C000 || dut->EMEM_addr == 0x0E000 || dut->EMEM_addr == 0x10000 || dut->EMEM_addr == 0x12000)
+                {
+                    printf("EMEM READ: addr=0x%08X rdata=0x%08X (Background1 RLE Data) main_time: %lu\n", dut->EMEM_addr, dut->EMEM_rdata, main_time);
+                }
+                
                 emem_burst_counter = dut->EMEM_burst_en ? dut->EMEM_burst_len : 0;
                 // std::cout << "EMEM_REQ addr=0x" << std::hex << dut->EMEM_addr << std::dec
                 //            << " idx=" << emem_current_addr << " rdata=0x" << std::hex << dut->EMEM_rdata << std::dec << std::endl;
@@ -609,6 +629,16 @@ int main(int argc, char **argv)
             }
             dut->EMEM_ready = 1;
             dut->EMEM_rdata = ddr3_memory[emem_current_addr];
+            /*
+            if(ddr3_memory[emem_current_addr] == 0x10FF10FF)
+                {
+                    printf("EMEM READ: addr=0x%08X rdata=0x%08X (Transparent Pixel) main_time: %lu\n", emem_current_addr, dut->EMEM_rdata, main_time);
+                }
+            if(ddr3_memory[emem_current_addr] == 0x11FF11FF)
+                {
+                    printf("EMEM READ: addr=0x%08X rdata=0x%08X (Transparent Pixel) main_time: %lu\n", emem_current_addr, dut->EMEM_rdata, main_time);
+                }
+            */
             // std::cout << "EMEM_BURST idx=" << emem_current_addr << " rdata=0x" << std::hex << dut->EMEM_rdata << std::dec << std::endl;
             if (emem_burst_counter == 0)
             {
@@ -652,14 +682,14 @@ int main(int argc, char **argv)
         if (dut->Final_pixel_valid)
         {
             final_pixels.push_back(dut->Final_pixel_RGB);
-            if (final_pixels.size() <= 32)
+            /*if (final_pixels.size() <= 32)
             {
                 std::cout << "DEBUG: pix[" << final_pixels.size() - 1 << "]=0x" << std::hex << dut->Final_pixel_RGB
                           << std::dec << std::endl;
-            }
+            }*/
         }
 
-        if (main_time < 100)
+        /*if (main_time < 100)
         {
             std::cout << "time=" << main_time
                       << " final_count=" << final_pixels.size()
@@ -668,21 +698,21 @@ int main(int argc, char **argv)
                       << " Final_valid=" << (int)(dut->Final_pixel_valid)
                       << " Final_RGB=0x" << std::hex << (uint32_t)(dut->Final_pixel_RGB) << std::dec
                       << std::endl;
-        }
+        }*/
 
         if (final_pixels.size() >= 320 * 240)
         {
-            std::cout << "Captured full frame: " << final_pixels.size() << " pixels" << std::endl;
+            std::cout << "Captured full frame: " << final_pixels.size() << " pixels" << "main_time : " << main_time << std::endl;
             break;
         }
 
-        if (main_time > 1000) 
+        /*if (main_time > 1000)
         {
             dut->final();
             trace->close();
             std::cerr << "main_time is 1000" << std::endl;
             return 1;
-        }
+        }*/
     }
 
     std::cout << "Captured " << final_pixels.size() << " final pixels." << std::endl; // 총 76800개의 픽셀을 캡쳐해야 함. 이것보다 작으면 문제 있는거임.
