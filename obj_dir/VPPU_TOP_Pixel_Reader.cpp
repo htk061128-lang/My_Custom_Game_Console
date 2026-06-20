@@ -352,7 +352,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_bg1__21
         this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
         this->__Vdly__main_state = this->__PVT__main_state_next;
         if ((0U == (IData)(this->__PVT__main_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Background1_z)))) {
                 this->__Vdly__main_state_counter = 0U;
                 this->__Vdly__personal_counter_x = 0U;
                 this->__Vdly__personal_counter_y = 0U;
@@ -423,7 +423,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_bg1__21
         this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
         this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
         if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Background1_z)))) {
                 this->__Vdly__fifo_r_state = 1U;
                 this->__Vdly__read_pixel_x = 0x3fU;
                 this->__Vdly__read_pixel_y = 0x1ffU;
@@ -467,7 +467,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_bg1__21
             }
         }
         if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Background1_z)))) {
                 this->__Vdly__rgb_r_state = 3U;
                 this->__PVT__rgb_r_state_counter = 0U;
             } else {
@@ -1609,7 +1609,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_bg2__22
         this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
         this->__Vdly__main_state = this->__PVT__main_state_next;
         if ((0U == (IData)(this->__PVT__main_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Background2_z)))) {
                 this->__Vdly__main_state_counter = 0U;
                 this->__Vdly__personal_counter_x = 0U;
                 this->__Vdly__personal_counter_y = 0U;
@@ -1680,7 +1680,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_bg2__22
         this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
         this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
         if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Background2_z)))) {
                 this->__Vdly__fifo_r_state = 1U;
                 this->__Vdly__read_pixel_x = 0x3fU;
                 this->__Vdly__read_pixel_y = 0x1ffU;
@@ -1724,7 +1724,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_bg2__22
             }
         }
         if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Background2_z)))) {
                 this->__Vdly__rgb_r_state = 3U;
                 this->__PVT__rgb_r_state_counter = 0U;
             } else {
@@ -2866,7 +2866,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch1__23
         this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
         this->__Vdly__main_state = this->__PVT__main_state_next;
         if ((0U == (IData)(this->__PVT__main_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character1_z)))) {
                 this->__Vdly__main_state_counter = 0U;
                 this->__Vdly__personal_counter_x = 0U;
                 this->__Vdly__personal_counter_y = 0U;
@@ -2937,7 +2937,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch1__23
         this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
         this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
         if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character1_z)))) {
                 this->__Vdly__fifo_r_state = 2U;
                 this->__Vdly__read_pixel_x = 0x3fU;
                 this->__Vdly__read_pixel_y = 0x1ffU;
@@ -2998,7 +2998,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch1__23
             }
         }
         if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character1_z)))) {
                 this->__Vdly__rgb_r_state = 3U;
                 this->__PVT__rgb_r_state_counter = 0U;
             } else {
@@ -4338,7 +4338,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch2__24
         this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
         this->__Vdly__main_state = this->__PVT__main_state_next;
         if ((0U == (IData)(this->__PVT__main_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character2_z)))) {
                 this->__Vdly__main_state_counter = 0U;
                 this->__Vdly__personal_counter_x = 0U;
                 this->__Vdly__personal_counter_y = 0U;
@@ -4409,7 +4409,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch2__24
         this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
         this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
         if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character2_z)))) {
                 this->__Vdly__fifo_r_state = 2U;
                 this->__Vdly__read_pixel_x = 0x3fU;
                 this->__Vdly__read_pixel_y = 0x1ffU;
@@ -4470,7 +4470,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch2__24
             }
         }
         if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character2_z)))) {
                 this->__Vdly__rgb_r_state = 3U;
                 this->__PVT__rgb_r_state_counter = 0U;
             } else {
@@ -5810,7 +5810,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch3__25
         this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
         this->__Vdly__main_state = this->__PVT__main_state_next;
         if ((0U == (IData)(this->__PVT__main_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character3_z)))) {
                 this->__Vdly__main_state_counter = 0U;
                 this->__Vdly__personal_counter_x = 0U;
                 this->__Vdly__personal_counter_y = 0U;
@@ -5881,7 +5881,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch3__25
         this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
         this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
         if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character3_z)))) {
                 this->__Vdly__fifo_r_state = 2U;
                 this->__Vdly__read_pixel_x = 0x3fU;
                 this->__Vdly__read_pixel_y = 0x1ffU;
@@ -5942,7 +5942,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch3__25
             }
         }
         if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character3_z)))) {
                 this->__Vdly__rgb_r_state = 3U;
                 this->__PVT__rgb_r_state_counter = 0U;
             } else {
@@ -7282,7 +7282,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch4__26
         this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
         this->__Vdly__main_state = this->__PVT__main_state_next;
         if ((0U == (IData)(this->__PVT__main_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character4_z)))) {
                 this->__Vdly__main_state_counter = 0U;
                 this->__Vdly__personal_counter_x = 0U;
                 this->__Vdly__personal_counter_y = 0U;
@@ -7353,7 +7353,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch4__26
         this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
         this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
         if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character4_z)))) {
                 this->__Vdly__fifo_r_state = 2U;
                 this->__Vdly__read_pixel_x = 0x3fU;
                 this->__Vdly__read_pixel_y = 0x1ffU;
@@ -7414,7 +7414,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_ch4__26
             }
         }
         if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Character4_z)))) {
                 this->__Vdly__rgb_r_state = 3U;
                 this->__PVT__rgb_r_state_counter = 0U;
             } else {
@@ -8754,7 +8754,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_sc__27(
         this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
         this->__Vdly__main_state = this->__PVT__main_state_next;
         if ((0U == (IData)(this->__PVT__main_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Script_z)))) {
                 this->__Vdly__main_state_counter = 0U;
                 this->__Vdly__personal_counter_x = 0U;
                 this->__Vdly__personal_counter_y = 0U;
@@ -8825,7 +8825,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_sc__27(
         this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
         this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
         if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Script_z)))) {
                 this->__Vdly__fifo_r_state = 2U;
                 this->__Vdly__read_pixel_x = 0x3fU;
                 this->__Vdly__read_pixel_y = 0x1ffU;
@@ -8886,7 +8886,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_sc__27(
             }
         }
         if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Script_z)))) {
                 this->__Vdly__rgb_r_state = 3U;
                 this->__PVT__rgb_r_state_counter = 0U;
             } else {

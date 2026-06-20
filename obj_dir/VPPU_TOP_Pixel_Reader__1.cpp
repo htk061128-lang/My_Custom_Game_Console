@@ -1272,7 +1272,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_st__28(
         this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
         this->__Vdly__main_state = this->__PVT__main_state_next;
         if ((0U == (IData)(this->__PVT__main_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Status_z)))) {
                 this->__Vdly__main_state_counter = 0U;
                 this->__Vdly__personal_counter_x = 0U;
                 this->__Vdly__personal_counter_y = 0U;
@@ -1343,7 +1343,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_st__28(
         this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
         this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
         if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Status_z)))) {
                 this->__Vdly__fifo_r_state = 2U;
                 this->__Vdly__read_pixel_x = 0x3fU;
                 this->__Vdly__read_pixel_y = 0x1ffU;
@@ -1404,7 +1404,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_st__28(
             }
         }
         if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Status_z)))) {
                 this->__Vdly__rgb_r_state = 3U;
                 this->__PVT__rgb_r_state_counter = 0U;
             } else {
@@ -2744,7 +2744,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_un1__29
         this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
         this->__Vdly__main_state = this->__PVT__main_state_next;
         if ((0U == (IData)(this->__PVT__main_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Universal1_z)))) {
                 this->__Vdly__main_state_counter = 0U;
                 this->__Vdly__personal_counter_x = 0U;
                 this->__Vdly__personal_counter_y = 0U;
@@ -2815,7 +2815,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_un1__29
         this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
         this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
         if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Universal1_z)))) {
                 this->__Vdly__fifo_r_state = 2U;
                 this->__Vdly__read_pixel_x = 0x3fU;
                 this->__Vdly__read_pixel_y = 0x1ffU;
@@ -2876,7 +2876,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_un1__29
             }
         }
         if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Universal1_z)))) {
                 this->__Vdly__rgb_r_state = 3U;
                 this->__PVT__rgb_r_state_counter = 0U;
             } else {
@@ -4216,7 +4216,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_un2__30
         this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
         this->__Vdly__main_state = this->__PVT__main_state_next;
         if ((0U == (IData)(this->__PVT__main_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Universal2_z)))) {
                 this->__Vdly__main_state_counter = 0U;
                 this->__Vdly__personal_counter_x = 0U;
                 this->__Vdly__personal_counter_y = 0U;
@@ -4287,7 +4287,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_un2__30
         this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
         this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
         if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Universal2_z)))) {
                 this->__Vdly__fifo_r_state = 2U;
                 this->__Vdly__read_pixel_x = 0x3fU;
                 this->__Vdly__read_pixel_y = 0x1ffU;
@@ -4348,7 +4348,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_sequent__TOP__PPU_TOP__DOT__u_un2__30
             }
         }
         if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (vlTOPp->PPU_start) {
+            if (((IData)(vlTOPp->PPU_start) & (0U != (IData)(vlTOPp->Universal2_z)))) {
                 this->__Vdly__rgb_r_state = 3U;
                 this->__PVT__rgb_r_state_counter = 0U;
             } else {

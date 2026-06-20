@@ -23,6 +23,7 @@ VL_MODULE(VPPU_TOP_Pixel_Reader) {
     VL_IN8(resetn,0,0);
     VL_IN8(Clk_Counter,1,0);
     VL_IN8(PPU_start,0,0);
+    VL_IN8(Pixel_Reader_ena,0,0);
     VL_IN8(is_background,0,0);
     VL_IN8(is_character,0,0);
     VL_IN8(is_status,0,0);

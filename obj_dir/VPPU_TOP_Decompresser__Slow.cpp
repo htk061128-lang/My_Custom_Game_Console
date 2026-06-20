@@ -95,18 +95,16 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             if ((8U != (IData)(this->__PVT__w_state))) {
                 if ((0xbU != (IData)(this->__PVT__w_state))) {
                     if ((2U == (IData)(this->__PVT__w_state))) {
-                        if (vlTOPp->PPU_start) {
-                            if (vlTOPp->PPU_start) {
-                                this->__PVT__r_state_next = 2U;
-                            }
-                        } else {
-                            this->__PVT__r_state_next = 0U;
-                        }
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
         }
     }
+    this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
+    this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
     this->Decompresser_is_IDLE = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Decompresser_is_IDLE = 1U;
@@ -208,7 +206,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                       ? 1U : 0U);
     } else {
         if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((2U == (IData)(this->__PVT__decompress_state))
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
                                           ? 2U : ((
                                                    (0U 
                                                     == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)) 
@@ -223,7 +221,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
         } else {
             if ((6U == (IData)(this->__PVT__r_state))) {
                 this->__PVT__r_state_next = 7U;
-                if ((2U == (IData)(this->__PVT__decompress_state))) {
+                if (this->__PVT__r_end_req) {
                     this->__PVT__r_state_next = 2U;
                 }
             } else {
@@ -263,7 +261,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                         ? 1U
                                                         : 7U))))))));
                     }
-                    if ((2U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_end_req) {
                         this->__PVT__r_state_next = 2U;
                     }
                 } else {
@@ -826,14 +824,13 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                          : 8U)
                                                         : 1U))))))));
             }
-            if ((2U == (IData)(this->__PVT__decompress_state))) {
+            if (this->__PVT__w_end_req) {
                 this->__PVT__w_state_next = 0xbU;
             }
         } else {
             if ((8U == (IData)(this->__PVT__w_state))) {
                 this->__PVT__w_state_next = ((IData)(this->__PVT__decompressed_fifo_w_end)
-                                              ? ((2U 
-                                                  == (IData)(this->__PVT__decompress_state))
+                                              ? ((IData)(this->__PVT__w_end_req)
                                                   ? 2U
                                                   : 1U)
                                               : 8U);
@@ -1039,13 +1036,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                         this->__PVT__decompress_state_next = 5U;
                                     }
                                 } else {
-                                    if (vlTOPp->PPU_start) {
-                                        if (vlTOPp->PPU_start) {
-                                            this->__PVT__decompress_state_next = 2U;
-                                        }
-                                    } else {
-                                        this->__PVT__decompress_state_next = 0U;
-                                    }
+                                    this->__PVT__decompress_state_next = 0U;
                                 }
                             }
                         }
@@ -1171,18 +1162,16 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             if ((8U != (IData)(this->__PVT__w_state))) {
                 if ((0xbU != (IData)(this->__PVT__w_state))) {
                     if ((2U == (IData)(this->__PVT__w_state))) {
-                        if (vlTOPp->PPU_start) {
-                            if (vlTOPp->PPU_start) {
-                                this->__PVT__r_state_next = 2U;
-                            }
-                        } else {
-                            this->__PVT__r_state_next = 0U;
-                        }
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
         }
     }
+    this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
+    this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
     this->Decompresser_is_IDLE = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Decompresser_is_IDLE = 1U;
@@ -1284,7 +1273,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                       ? 1U : 0U);
     } else {
         if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((2U == (IData)(this->__PVT__decompress_state))
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
                                           ? 2U : ((
                                                    (1U 
                                                     == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)) 
@@ -1299,7 +1288,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
         } else {
             if ((6U == (IData)(this->__PVT__r_state))) {
                 this->__PVT__r_state_next = 7U;
-                if ((2U == (IData)(this->__PVT__decompress_state))) {
+                if (this->__PVT__r_end_req) {
                     this->__PVT__r_state_next = 2U;
                 }
             } else {
@@ -1339,7 +1328,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                         ? 1U
                                                         : 7U))))))));
                     }
-                    if ((2U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_end_req) {
                         this->__PVT__r_state_next = 2U;
                     }
                 } else {
@@ -1904,14 +1893,13 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                          : 8U)
                                                         : 1U))))))));
             }
-            if ((2U == (IData)(this->__PVT__decompress_state))) {
+            if (this->__PVT__w_end_req) {
                 this->__PVT__w_state_next = 0xbU;
             }
         } else {
             if ((8U == (IData)(this->__PVT__w_state))) {
                 this->__PVT__w_state_next = ((IData)(this->__PVT__decompressed_fifo_w_end)
-                                              ? ((2U 
-                                                  == (IData)(this->__PVT__decompress_state))
+                                              ? ((IData)(this->__PVT__w_end_req)
                                                   ? 2U
                                                   : 1U)
                                               : 8U);
@@ -2117,13 +2105,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                         this->__PVT__decompress_state_next = 5U;
                                     }
                                 } else {
-                                    if (vlTOPp->PPU_start) {
-                                        if (vlTOPp->PPU_start) {
-                                            this->__PVT__decompress_state_next = 2U;
-                                        }
-                                    } else {
-                                        this->__PVT__decompress_state_next = 0U;
-                                    }
+                                    this->__PVT__decompress_state_next = 0U;
                                 }
                             }
                         }
@@ -2251,18 +2233,16 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             if ((8U != (IData)(this->__PVT__w_state))) {
                 if ((0xbU != (IData)(this->__PVT__w_state))) {
                     if ((2U == (IData)(this->__PVT__w_state))) {
-                        if (vlTOPp->PPU_start) {
-                            if (vlTOPp->PPU_start) {
-                                this->__PVT__r_state_next = 2U;
-                            }
-                        } else {
-                            this->__PVT__r_state_next = 0U;
-                        }
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
         }
     }
+    this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
+    this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
     this->Decompresser_is_IDLE = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Decompresser_is_IDLE = 1U;
@@ -2364,7 +2344,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                       ? 1U : 0U);
     } else {
         if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((2U == (IData)(this->__PVT__decompress_state))
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
                                           ? 2U : ((
                                                    (2U 
                                                     == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)) 
@@ -2379,7 +2359,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
         } else {
             if ((6U == (IData)(this->__PVT__r_state))) {
                 this->__PVT__r_state_next = 7U;
-                if ((2U == (IData)(this->__PVT__decompress_state))) {
+                if (this->__PVT__r_end_req) {
                     this->__PVT__r_state_next = 2U;
                 }
             } else {
@@ -2419,7 +2399,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                         ? 1U
                                                         : 7U))))))));
                     }
-                    if ((2U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_end_req) {
                         this->__PVT__r_state_next = 2U;
                     }
                 } else {
@@ -2984,14 +2964,13 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                          : 8U)
                                                         : 1U))))))));
             }
-            if ((2U == (IData)(this->__PVT__decompress_state))) {
+            if (this->__PVT__w_end_req) {
                 this->__PVT__w_state_next = 0xbU;
             }
         } else {
             if ((8U == (IData)(this->__PVT__w_state))) {
                 this->__PVT__w_state_next = ((IData)(this->__PVT__decompressed_fifo_w_end)
-                                              ? ((2U 
-                                                  == (IData)(this->__PVT__decompress_state))
+                                              ? ((IData)(this->__PVT__w_end_req)
                                                   ? 2U
                                                   : 1U)
                                               : 8U);
@@ -3197,13 +3176,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                         this->__PVT__decompress_state_next = 5U;
                                     }
                                 } else {
-                                    if (vlTOPp->PPU_start) {
-                                        if (vlTOPp->PPU_start) {
-                                            this->__PVT__decompress_state_next = 2U;
-                                        }
-                                    } else {
-                                        this->__PVT__decompress_state_next = 0U;
-                                    }
+                                    this->__PVT__decompress_state_next = 0U;
                                 }
                             }
                         }
@@ -3331,18 +3304,16 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             if ((8U != (IData)(this->__PVT__w_state))) {
                 if ((0xbU != (IData)(this->__PVT__w_state))) {
                     if ((2U == (IData)(this->__PVT__w_state))) {
-                        if (vlTOPp->PPU_start) {
-                            if (vlTOPp->PPU_start) {
-                                this->__PVT__r_state_next = 2U;
-                            }
-                        } else {
-                            this->__PVT__r_state_next = 0U;
-                        }
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
         }
     }
+    this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
+    this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
     this->Decompresser_is_IDLE = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Decompresser_is_IDLE = 1U;
@@ -3444,7 +3415,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                       ? 1U : 0U);
     } else {
         if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((2U == (IData)(this->__PVT__decompress_state))
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
                                           ? 2U : ((
                                                    (3U 
                                                     == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)) 
@@ -3459,7 +3430,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
         } else {
             if ((6U == (IData)(this->__PVT__r_state))) {
                 this->__PVT__r_state_next = 7U;
-                if ((2U == (IData)(this->__PVT__decompress_state))) {
+                if (this->__PVT__r_end_req) {
                     this->__PVT__r_state_next = 2U;
                 }
             } else {
@@ -3499,7 +3470,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                         ? 1U
                                                         : 7U))))))));
                     }
-                    if ((2U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_end_req) {
                         this->__PVT__r_state_next = 2U;
                     }
                 } else {
@@ -4064,14 +4035,13 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                          : 8U)
                                                         : 1U))))))));
             }
-            if ((2U == (IData)(this->__PVT__decompress_state))) {
+            if (this->__PVT__w_end_req) {
                 this->__PVT__w_state_next = 0xbU;
             }
         } else {
             if ((8U == (IData)(this->__PVT__w_state))) {
                 this->__PVT__w_state_next = ((IData)(this->__PVT__decompressed_fifo_w_end)
-                                              ? ((2U 
-                                                  == (IData)(this->__PVT__decompress_state))
+                                              ? ((IData)(this->__PVT__w_end_req)
                                                   ? 2U
                                                   : 1U)
                                               : 8U);
@@ -4277,13 +4247,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                         this->__PVT__decompress_state_next = 5U;
                                     }
                                 } else {
-                                    if (vlTOPp->PPU_start) {
-                                        if (vlTOPp->PPU_start) {
-                                            this->__PVT__decompress_state_next = 2U;
-                                        }
-                                    } else {
-                                        this->__PVT__decompress_state_next = 0U;
-                                    }
+                                    this->__PVT__decompress_state_next = 0U;
                                 }
                             }
                         }
@@ -4411,18 +4375,16 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             if ((8U != (IData)(this->__PVT__w_state))) {
                 if ((0xbU != (IData)(this->__PVT__w_state))) {
                     if ((2U == (IData)(this->__PVT__w_state))) {
-                        if (vlTOPp->PPU_start) {
-                            if (vlTOPp->PPU_start) {
-                                this->__PVT__r_state_next = 2U;
-                            }
-                        } else {
-                            this->__PVT__r_state_next = 0U;
-                        }
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
         }
     }
+    this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
+    this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
     this->Decompresser_is_IDLE = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Decompresser_is_IDLE = 1U;
@@ -4524,7 +4486,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                       ? 1U : 0U);
     } else {
         if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((2U == (IData)(this->__PVT__decompress_state))
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
                                           ? 2U : ((
                                                    (0U 
                                                     == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)) 
@@ -4539,7 +4501,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
         } else {
             if ((6U == (IData)(this->__PVT__r_state))) {
                 this->__PVT__r_state_next = 7U;
-                if ((2U == (IData)(this->__PVT__decompress_state))) {
+                if (this->__PVT__r_end_req) {
                     this->__PVT__r_state_next = 2U;
                 }
             } else {
@@ -4579,7 +4541,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                         ? 1U
                                                         : 7U))))))));
                     }
-                    if ((2U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_end_req) {
                         this->__PVT__r_state_next = 2U;
                     }
                 } else {
@@ -5142,14 +5104,13 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                          : 8U)
                                                         : 1U))))))));
             }
-            if ((2U == (IData)(this->__PVT__decompress_state))) {
+            if (this->__PVT__w_end_req) {
                 this->__PVT__w_state_next = 0xbU;
             }
         } else {
             if ((8U == (IData)(this->__PVT__w_state))) {
                 this->__PVT__w_state_next = ((IData)(this->__PVT__decompressed_fifo_w_end)
-                                              ? ((2U 
-                                                  == (IData)(this->__PVT__decompress_state))
+                                              ? ((IData)(this->__PVT__w_end_req)
                                                   ? 2U
                                                   : 1U)
                                               : 8U);
@@ -5355,13 +5316,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                         this->__PVT__decompress_state_next = 5U;
                                     }
                                 } else {
-                                    if (vlTOPp->PPU_start) {
-                                        if (vlTOPp->PPU_start) {
-                                            this->__PVT__decompress_state_next = 2U;
-                                        }
-                                    } else {
-                                        this->__PVT__decompress_state_next = 0U;
-                                    }
+                                    this->__PVT__decompress_state_next = 0U;
                                 }
                             }
                         }
@@ -5487,18 +5442,16 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             if ((8U != (IData)(this->__PVT__w_state))) {
                 if ((0xbU != (IData)(this->__PVT__w_state))) {
                     if ((2U == (IData)(this->__PVT__w_state))) {
-                        if (vlTOPp->PPU_start) {
-                            if (vlTOPp->PPU_start) {
-                                this->__PVT__r_state_next = 2U;
-                            }
-                        } else {
-                            this->__PVT__r_state_next = 0U;
-                        }
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
         }
     }
+    this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
+    this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
     this->Decompresser_is_IDLE = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Decompresser_is_IDLE = 1U;
@@ -5600,7 +5553,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                       ? 1U : 0U);
     } else {
         if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((2U == (IData)(this->__PVT__decompress_state))
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
                                           ? 2U : ((
                                                    (1U 
                                                     == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)) 
@@ -5615,7 +5568,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
         } else {
             if ((6U == (IData)(this->__PVT__r_state))) {
                 this->__PVT__r_state_next = 7U;
-                if ((2U == (IData)(this->__PVT__decompress_state))) {
+                if (this->__PVT__r_end_req) {
                     this->__PVT__r_state_next = 2U;
                 }
             } else {
@@ -5655,7 +5608,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                         ? 1U
                                                         : 7U))))))));
                     }
-                    if ((2U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_end_req) {
                         this->__PVT__r_state_next = 2U;
                     }
                 } else {
@@ -6220,14 +6173,13 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                          : 8U)
                                                         : 1U))))))));
             }
-            if ((2U == (IData)(this->__PVT__decompress_state))) {
+            if (this->__PVT__w_end_req) {
                 this->__PVT__w_state_next = 0xbU;
             }
         } else {
             if ((8U == (IData)(this->__PVT__w_state))) {
                 this->__PVT__w_state_next = ((IData)(this->__PVT__decompressed_fifo_w_end)
-                                              ? ((2U 
-                                                  == (IData)(this->__PVT__decompress_state))
+                                              ? ((IData)(this->__PVT__w_end_req)
                                                   ? 2U
                                                   : 1U)
                                               : 8U);
@@ -6433,13 +6385,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                         this->__PVT__decompress_state_next = 5U;
                                     }
                                 } else {
-                                    if (vlTOPp->PPU_start) {
-                                        if (vlTOPp->PPU_start) {
-                                            this->__PVT__decompress_state_next = 2U;
-                                        }
-                                    } else {
-                                        this->__PVT__decompress_state_next = 0U;
-                                    }
+                                    this->__PVT__decompress_state_next = 0U;
                                 }
                             }
                         }
@@ -6567,18 +6513,16 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             if ((8U != (IData)(this->__PVT__w_state))) {
                 if ((0xbU != (IData)(this->__PVT__w_state))) {
                     if ((2U == (IData)(this->__PVT__w_state))) {
-                        if (vlTOPp->PPU_start) {
-                            if (vlTOPp->PPU_start) {
-                                this->__PVT__r_state_next = 2U;
-                            }
-                        } else {
-                            this->__PVT__r_state_next = 0U;
-                        }
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
         }
     }
+    this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
+    this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
     this->Decompresser_is_IDLE = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Decompresser_is_IDLE = 1U;
@@ -6680,7 +6624,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                       ? 1U : 0U);
     } else {
         if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((2U == (IData)(this->__PVT__decompress_state))
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
                                           ? 2U : ((
                                                    (2U 
                                                     == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)) 
@@ -6695,7 +6639,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
         } else {
             if ((6U == (IData)(this->__PVT__r_state))) {
                 this->__PVT__r_state_next = 7U;
-                if ((2U == (IData)(this->__PVT__decompress_state))) {
+                if (this->__PVT__r_end_req) {
                     this->__PVT__r_state_next = 2U;
                 }
             } else {
@@ -6735,7 +6679,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                         ? 1U
                                                         : 7U))))))));
                     }
-                    if ((2U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_end_req) {
                         this->__PVT__r_state_next = 2U;
                     }
                 } else {
@@ -7300,14 +7244,13 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                          : 8U)
                                                         : 1U))))))));
             }
-            if ((2U == (IData)(this->__PVT__decompress_state))) {
+            if (this->__PVT__w_end_req) {
                 this->__PVT__w_state_next = 0xbU;
             }
         } else {
             if ((8U == (IData)(this->__PVT__w_state))) {
                 this->__PVT__w_state_next = ((IData)(this->__PVT__decompressed_fifo_w_end)
-                                              ? ((2U 
-                                                  == (IData)(this->__PVT__decompress_state))
+                                              ? ((IData)(this->__PVT__w_end_req)
                                                   ? 2U
                                                   : 1U)
                                               : 8U);
@@ -7513,13 +7456,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                         this->__PVT__decompress_state_next = 5U;
                                     }
                                 } else {
-                                    if (vlTOPp->PPU_start) {
-                                        if (vlTOPp->PPU_start) {
-                                            this->__PVT__decompress_state_next = 2U;
-                                        }
-                                    } else {
-                                        this->__PVT__decompress_state_next = 0U;
-                                    }
+                                    this->__PVT__decompress_state_next = 0U;
                                 }
                             }
                         }
@@ -7647,18 +7584,16 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             if ((8U != (IData)(this->__PVT__w_state))) {
                 if ((0xbU != (IData)(this->__PVT__w_state))) {
                     if ((2U == (IData)(this->__PVT__w_state))) {
-                        if (vlTOPp->PPU_start) {
-                            if (vlTOPp->PPU_start) {
-                                this->__PVT__r_state_next = 2U;
-                            }
-                        } else {
-                            this->__PVT__r_state_next = 0U;
-                        }
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
         }
     }
+    this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
+    this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
     this->Decompresser_is_IDLE = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Decompresser_is_IDLE = 1U;
@@ -7760,7 +7695,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                       ? 1U : 0U);
     } else {
         if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((2U == (IData)(this->__PVT__decompress_state))
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
                                           ? 2U : ((
                                                    (3U 
                                                     == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)) 
@@ -7775,7 +7710,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
         } else {
             if ((6U == (IData)(this->__PVT__r_state))) {
                 this->__PVT__r_state_next = 7U;
-                if ((2U == (IData)(this->__PVT__decompress_state))) {
+                if (this->__PVT__r_end_req) {
                     this->__PVT__r_state_next = 2U;
                 }
             } else {
@@ -7815,7 +7750,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                         ? 1U
                                                         : 7U))))))));
                     }
-                    if ((2U == (IData)(this->__PVT__decompress_state))) {
+                    if (this->__PVT__r_end_req) {
                         this->__PVT__r_state_next = 2U;
                     }
                 } else {
@@ -8380,14 +8315,13 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                          : 8U)
                                                         : 1U))))))));
             }
-            if ((2U == (IData)(this->__PVT__decompress_state))) {
+            if (this->__PVT__w_end_req) {
                 this->__PVT__w_state_next = 0xbU;
             }
         } else {
             if ((8U == (IData)(this->__PVT__w_state))) {
                 this->__PVT__w_state_next = ((IData)(this->__PVT__decompressed_fifo_w_end)
-                                              ? ((2U 
-                                                  == (IData)(this->__PVT__decompress_state))
+                                              ? ((IData)(this->__PVT__w_end_req)
                                                   ? 2U
                                                   : 1U)
                                               : 8U);
@@ -8593,13 +8527,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                         this->__PVT__decompress_state_next = 5U;
                                     }
                                 } else {
-                                    if (vlTOPp->PPU_start) {
-                                        if (vlTOPp->PPU_start) {
-                                            this->__PVT__decompress_state_next = 2U;
-                                        }
-                                    } else {
-                                        this->__PVT__decompress_state_next = 0U;
-                                    }
+                                    this->__PVT__decompress_state_next = 0U;
                                 }
                             }
                         }

@@ -387,7 +387,7 @@ always @(*) begin
     Universal_Layer2_data[63:0] = 0;
 
     next_should_read_layer[9:0] = 10'b0; //기본적으로 싹 0으로 설정. 이후 코드에서 비트 하나만 바꿔줄거임.
-    urgent_req[9:0] = {back1_fifo_urgent, back2_fifo_urgent, char1_fifo_urgent, char2_fifo_urgent, char3_fifo_urgent, char4_fifo_urgent, script_fifo_urgent, status_fifo_urgent, uni1_fifo_urgent, uni2_fifo_urgent};
+    urgent_req[9:0] = {uni2_fifo_urgent, uni1_fifo_urgent, status_fifo_urgent, script_fifo_urgent, char4_fifo_urgent, char3_fifo_urgent, char2_fifo_urgent, char1_fifo_urgent, back2_fifo_urgent, back1_fifo_urgent};
     is_urgent_mode = (urgent_req[9:0] != 10'b0); //round_end가 1이고 is_urgent_mode가 0이면 last_read_basic을 초기화해야 함.
     
     basic_req[0] = Background_Layer1_ena && (back1_fifo_count[8:0] <= 240); //한번에 16줄(64*16=1024bit=128byte)씩 읽어오기때문에 240줄을 초과하면 읽어온 데이터를 모두 FIFO에 넣을수 없음.

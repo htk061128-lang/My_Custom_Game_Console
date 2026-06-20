@@ -105,9 +105,11 @@ VL_MODULE(VPPU_TOP_Decompresser) {
     CData/*7:0*/ __PVT__pixel_reg;
     CData/*0:0*/ __PVT__pixel_reg_w_ena;
     CData/*0:0*/ __PVT__compressed_FIFO_r_req;
+    CData/*0:0*/ __PVT__r_end_req;
     CData/*7:0*/ __PVT__w_8;
     CData/*0:0*/ __PVT__w_8_valid;
     CData/*0:0*/ __PVT__w_8_ready;
+    CData/*0:0*/ __PVT__w_end_req;
     SData/*8:0*/ __PVT__fifo_front_256;
     SData/*8:0*/ __PVT__fifo_rear_256;
     QData/*63:0*/ __PVT__compressed_fifo_r_data;

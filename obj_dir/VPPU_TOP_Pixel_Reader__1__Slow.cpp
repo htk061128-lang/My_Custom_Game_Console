@@ -12,6 +12,7 @@ void VPPU_TOP_Pixel_Reader::_ctor_var_reset() {
     resetn = VL_RAND_RESET_I(1);
     Clk_Counter = VL_RAND_RESET_I(2);
     PPU_start = VL_RAND_RESET_I(1);
+    Pixel_Reader_ena = VL_RAND_RESET_I(1);
     is_background = VL_RAND_RESET_I(1);
     is_character = VL_RAND_RESET_I(1);
     is_status = VL_RAND_RESET_I(1);

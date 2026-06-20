@@ -4,6 +4,7 @@ module Pixel_Reader( //Decompressed FIFO에서 값을 읽어서 RGB_Converter로
 
     input [1:0] Clk_Counter, //0 - 1 - 2 - 3 - 0 - 1을 반복 함. Decompresser.sv 모듈과 동기화 되어있음.
     input PPU_start,
+    input Pixel_Reader_ena, //이 값이 0이면 그냥 IDLE에서 PPU_start가 왔을때 IDLE을 유지함. 
 
     //
     input is_background, //Background1, 2 레이어는 SCX, SCY를 사용하고 나머지 Character, Status, Script, Universal 레이어들은 WX, WY를 사용하기 때문에 구분을 위해 이 신호를 만들었음.
@@ -683,7 +684,7 @@ always @(posedge clk or negedge resetn) begin
 
         case(main_state)
             IDLE: begin
-                if(PPU_start) begin
+                if(PPU_start && Pixel_Reader_ena) begin
                     main_state_counter[3:0] <= 0;
                     personal_counter_x[8:0] <= 0;
                     personal_counter_y[8:0] <= 0;
@@ -740,7 +741,7 @@ always @(posedge clk or negedge resetn) begin
 
         case(fifo_r_state)
             IDLE: begin
-                if(PPU_start) begin
+                if(PPU_start && Pixel_Reader_ena) begin
                     if(is_background) fifo_r_state <= BG_START; //Background layer면 BG_START로 이동. 
                     else fifo_r_state <= NO_BG_START; //아니면 NO_BG_START로 이동.
                     read_pixel_x[5:0] <= 63; //사용되는 레지스터들 초기화.
@@ -833,7 +834,7 @@ always @(posedge clk or negedge resetn) begin
 
         case(rgb_r_state)
             IDLE: begin
-                if(PPU_start) begin
+                if(PPU_start && Pixel_Reader_ena) begin
                     rgb_r_state <= START;
                     rgb_r_state_counter[3:0] <= 0;
                 end

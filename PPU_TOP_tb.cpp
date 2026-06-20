@@ -27,6 +27,18 @@ std::vector<uint8_t> generate_background_layer()
     {
         for (int x = 0; x < width; ++x)
         {
+            if (y < 5)
+            {
+                bg.push_back(6); 
+            }
+            else if (y < 10)
+            {
+                bg.push_back(7); 
+            }
+            else if (y < 15)
+            {
+                bg.push_back(8);
+            }
             if (y < 140)
             {
                 bg.push_back(16); // 0 ~ 139 라인은 하늘색
@@ -307,10 +319,12 @@ int main(int argc, char **argv)
 
     // RLE 변환 후 저장
     std::vector<uint8_t> bg1_rle = rle_convert(background1);
-    write_stream(BACKGROUND1_ADDR, bg1_rle);
+    //write_stream(BACKGROUND1_ADDR, bg1_rle);
 
+    load_layer(BACKGROUND1_ADDR, 0, 0);
     load_layer(BACKGROUND2_ADDR, 0, 0);
-    write_stream(CHARACTER1_ADDR, rle_convert(character1));
+    //write_stream(CHARACTER1_ADDR, rle_convert(character1));
+    load_layer(CHARACTER1_ADDR, 0, 0);
     load_layer(CHARACTER2_ADDR, 0, 0);
     load_layer(CHARACTER3_ADDR, 0, 0);
     load_layer(CHARACTER4_ADDR, 0, 0);
@@ -318,6 +332,54 @@ int main(int argc, char **argv)
     load_layer(STATUS_ADDR, 0, 0);
     load_layer(UNIVERSAL1_ADDR, 0, 0);
     load_layer(UNIVERSAL2_ADDR, 0, 0);
+
+
+    for (int i = 0; i < 240; i++) //UNIVERSAL 1 LAYER 사용. d0 = 80번 반복.
+    {
+        if(i < 20) 
+        {
+            ddr3_memory[(2*i) + UNIVERSAL1_ADDR] = 0x10d010d0; //하늘색 1줄.
+            ddr3_memory[(2*i) + 1 + UNIVERSAL1_ADDR] = 0x10d010d0;
+
+        }
+        else if(i < 60)
+        {
+            ddr3_memory[(2*i) + UNIVERSAL1_ADDR] = 0x11d011d0; //파랑색 1줄.
+            ddr3_memory[(2*i) + 1 + UNIVERSAL1_ADDR] = 0x11d011d0;
+        }
+        else if(i < 120)
+        {
+            ddr3_memory[(2*i) + UNIVERSAL1_ADDR] = 0x12d012d0; //초록색 1줄.
+            ddr3_memory[(2*i) + 1 + UNIVERSAL1_ADDR] = 0x12d012d0;
+        }
+        else {
+            ddr3_memory[(2*i) + UNIVERSAL1_ADDR] = 0x01d001d0; //빨간색 1줄.
+            ddr3_memory[(2*i) + 1 + UNIVERSAL1_ADDR] = 0x01d001d0;
+            if(i == 319) ddr3_memory[(2*i) + 2 + UNIVERSAL1_ADDR] = 0x00000000; //끝났다는것 표시
+        }
+    }
+
+
+    for (int i = 0; i < 320; i++) //BACKGROUND 1 LAYER 사용. 400 * 320 임. e4 = 100번 반복..
+    {
+        if(i < 10) 
+        {
+            ddr3_memory[(2*i) + BACKGROUND1_ADDR] = 0x10e410e4; //하늘색 1줄.
+            ddr3_memory[(2*i) + 1 + BACKGROUND1_ADDR] = 0x10e410e4;
+
+        }
+        else
+        {
+            ddr3_memory[(2*i) + BACKGROUND1_ADDR] = 0x13e413e4; //노란색 1줄
+            ddr3_memory[(2*i) + 1 + BACKGROUND1_ADDR] = 0x13e413e4;
+            if(i == 319) ddr3_memory[(2*i) + 2 + BACKGROUND1_ADDR] = 0x00000000; //끝났다는것 표시
+        }
+    }
+
+
+
+
+
 
     // Dump first few words of BACKGROUND1 to verify RLE packing / endianness
     /*std::cout << "\n=== BACKGROUND1 RLE DATA ===\n";
@@ -385,8 +447,8 @@ int main(int argc, char **argv)
     dut->Background1_WY = 0;
     dut->Background1_SCX = 0;
     dut->Background1_SCY = 0;
-    dut->Background1_a = 16;
-    dut->Background1_z = 1;
+    dut->Background1_a = 0;
+    dut->Background1_z = 0;
 
     dut->Background2_WX = 0;
     dut->Background2_WY = 0;
@@ -513,7 +575,7 @@ int main(int argc, char **argv)
     dut->Character1_WX = 0;
     dut->Character1_WY = 0;
     dut->Character1_a = 16;
-    dut->Character1_z = 2;
+    dut->Character1_z = 0;
 
     dut->Character2_WX = 0;
     dut->Character2_WY = 0;
@@ -522,12 +584,12 @@ int main(int argc, char **argv)
 
     dut->Character3_WX = 0;
     dut->Character3_WY = 0;
-    dut->Character3_a = 0;
+    dut->Character3_a = 16;
     dut->Character3_z = 0;
 
     dut->Character4_WX = 0;
     dut->Character4_WY = 0;
-    dut->Character4_a = 0;
+    dut->Character4_a = 16;
     dut->Character4_z = 0;
 
     dut->Script_WX = 0;
@@ -535,27 +597,36 @@ int main(int argc, char **argv)
     dut->Script_a = 16;
     dut->Script_z = 0;
 
-    dut->Status_WX = 160;
+    dut->Status_WX = 0;
     dut->Status_WY = 0;
     dut->Status_a = 16;
     dut->Status_z = 0;
 
-    dut->Universal1_WX = 0;
-    dut->Universal1_WY = 0;
-    dut->Universal1_a = 0;
-    dut->Universal1_z = 0;
+    dut->Universal1_WX = 160;
+    dut->Universal1_WY = 120;
+    dut->Universal1_a = 16;
+    dut->Universal1_z = 2;
 
     dut->Universal2_WX = 0;
     dut->Universal2_WY = 0;
-    dut->Universal2_a = 0;
+    dut->Universal2_a = 16;
     dut->Universal2_z = 0;
 
     dut->clk = 1;
-    dut->PPU_start = 1;
     dut->eval();
     trace->dump(main_time++);
 
     dut->clk = 0;
+    dut->PPU_start = 1;
+    dut->eval();
+    trace->dump(main_time++);
+
+    dut->clk = 1;
+    dut->eval();
+    trace->dump(main_time++);
+
+    dut->clk = 0;
+    dut->PPU_start = 0; //PPU_START는 한클럭만 신호를 주고 바로 내림.
     dut->eval();
     trace->dump(main_time++);
 
@@ -706,7 +777,7 @@ int main(int argc, char **argv)
             break;
         }
 
-        /*if (main_time > 1000)
+        /*if (main_time > 10000)
         {
             dut->final();
             trace->close();
