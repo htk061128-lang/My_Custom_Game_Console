@@ -340,8 +340,6 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count;
     __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count 
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count;
-    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
-        = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
     __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count 
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count;
     __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count 
@@ -350,6 +348,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count;
     __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count 
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count;
+    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
+        = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
     if (vlTOPp->resetn) {
         vlTOPp->PPU_TOP__DOT__u_rgb__DOT__random_counter_0_3 
             = (3U & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_rgb__DOT__random_counter_0_3)));
@@ -1138,16 +1138,26 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         }
     } else {
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__main_state = 0U;
-        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_next_ad = 0U;
-        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_next_ad = 0U;
-        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_next_ad = 0U;
-        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_next_ad = 0U;
-        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_next_ad = 0U;
-        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_next_ad = 0U;
-        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_next_ad = 0U;
-        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_next_ad = 0U;
-        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_next_ad = 0U;
-        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_next_ad = 0U;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_next_ad 
+            = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_count;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_next_ad 
+            = vlTOPp->Universal_Layer2_Address;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_next_ad 
+            = vlTOPp->Status_Layer_Address;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_next_ad 
+            = vlTOPp->Script_Layer_Address;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_next_ad 
+            = vlTOPp->Character_Layer1_Address;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_next_ad 
+            = vlTOPp->Character_Layer2_Address;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_next_ad 
+            = vlTOPp->Character_Layer3_Address;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_next_ad 
+            = vlTOPp->Character_Layer4_Address;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_next_ad 
+            = vlTOPp->Background_Layer1_Address;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_next_ad 
+            = vlTOPp->Background_Layer2_Address;
         vlTOPp->EMEM_valid = 0U;
         vlTOPp->EMEM_addr = 0U;
         vlTOPp->EMEM_wdata = 0U;
@@ -1533,6 +1543,10 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         vlTOPp->PPU_TOP__DOT__u_rgb__DOT__req7_exclusive_pixel = 0U;
     }
     if (vlTOPp->resetn) {
+        vlTOPp->PPU_TOP__DOT__u_proc__DOT__is_new_pixel 
+            = (((IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipeline_move) 
+                & (IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Z10_valid)) 
+               & (IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe8_valid));
         if (vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipeline_move) {
             if (((((IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Z10_is_trans) 
                    & (IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe8_is_trans)) 
@@ -2611,6 +2625,7 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_B = 0U;
         vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_is_trans = 0U;
         vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_valid = 0U;
+        vlTOPp->PPU_TOP__DOT__u_proc__DOT__is_new_pixel = 0U;
     }
     if (vlTOPp->resetn) {
         if ((((IData)(vlTOPp->CPU_LUT_Cache4_pixel) 
@@ -2746,16 +2761,20 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count;
     vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count 
         = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count;
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
-        = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
     vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count 
         = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count;
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
+        = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_count 
+        = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
     vlTOPp->Final_pixel_valid = 0U;
-    if (vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_valid) {
+    if (((IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_valid) 
+         & (IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__is_new_pixel))) {
         vlTOPp->Final_pixel_valid = 1U;
     }
     vlTOPp->Final_pixel_RGB = 0U;
-    if (vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_valid) {
+    if (((IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_valid) 
+         & (IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__is_new_pixel))) {
         vlTOPp->Final_pixel_RGB = ((0x3f000U & ((IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_R) 
                                                 << 8U)) 
                                    | ((0xfc0U & ((IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_G) 
@@ -7496,37 +7515,37 @@ VL_INLINE_OPT QData VPPU_TOP::_change_request_1(VPPU_TOP__Syms* __restrict vlSym
         || (vlSymsp->TOP__PPU_TOP__DOT__u_un2.__PVT__rgb_convert_end ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_un2__rgb_convert_end));
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [0U] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [0U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [0U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [1U] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [1U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [1U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [2U] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [2U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [2U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [3U] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [3U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [3U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [4U] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [4U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [4U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [5U] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [5U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [5U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [6U] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [6U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [6U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [7U] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [7U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [7U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [8U] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [8U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [8U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [9U] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [9U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [9U]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlTOPp->PPU_TOP__DOT__u_proc__DOT__layer_ready
                                [0xaU] ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_proc__DOT__layer_ready
-                               [0xaU]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:269\n"); );
+                               [0xaU]))) VL_DBG_MSGF("        CHANGE: Pixel_Processer.sv:271\n"); );
     VL_DEBUG_IF( if(__req && ((vlSymsp->TOP__PPU_TOP__DOT__u_bg1.__PVT__rgb_convert_end ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_bg1__rgb_convert_end))) VL_DBG_MSGF("        CHANGE: Pixel_Reader.sv:119: rgb_convert_end\n"); );
     VL_DEBUG_IF( if(__req && ((vlSymsp->TOP__PPU_TOP__DOT__u_bg2.__PVT__rgb_convert_end ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_bg2__rgb_convert_end))) VL_DBG_MSGF("        CHANGE: Pixel_Reader.sv:119: rgb_convert_end\n"); );
     VL_DEBUG_IF( if(__req && ((vlSymsp->TOP__PPU_TOP__DOT__u_ch1.__PVT__rgb_convert_end ^ vlTOPp->__Vchglast__TOP__PPU_TOP__DOT__u_ch1__rgb_convert_end))) VL_DBG_MSGF("        CHANGE: Pixel_Reader.sv:119: rgb_convert_end\n"); );

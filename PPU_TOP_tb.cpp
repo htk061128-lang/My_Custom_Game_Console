@@ -338,41 +338,46 @@ int main(int argc, char **argv)
     {
         if(i < 20) 
         {
-            ddr3_memory[(2*i) + UNIVERSAL1_ADDR] = 0x10d010d0; //하늘색 1줄.
-            ddr3_memory[(2*i) + 1 + UNIVERSAL1_ADDR] = 0x10d010d0;
+            ddr3_memory[(2*i) + (UNIVERSAL1_ADDR/4)] = 0x11d011d0; //파랑색 1줄.
+            ddr3_memory[(2*i) + 1 + (UNIVERSAL1_ADDR/4)] = 0x11d011d0;
 
         }
         else if(i < 60)
         {
-            ddr3_memory[(2*i) + UNIVERSAL1_ADDR] = 0x11d011d0; //파랑색 1줄.
-            ddr3_memory[(2*i) + 1 + UNIVERSAL1_ADDR] = 0x11d011d0;
+            ddr3_memory[(2*i) + (UNIVERSAL1_ADDR/4)] = 0x11d011d0; //파랑색 1줄.
+            ddr3_memory[(2*i) + 1 + (UNIVERSAL1_ADDR/4)] = 0x11d011d0;
         }
         else if(i < 120)
         {
-            ddr3_memory[(2*i) + UNIVERSAL1_ADDR] = 0x12d012d0; //초록색 1줄.
-            ddr3_memory[(2*i) + 1 + UNIVERSAL1_ADDR] = 0x12d012d0;
+            ddr3_memory[(2*i) + (UNIVERSAL1_ADDR/4)] = 0x12d012d0; //초록색 1줄.
+            ddr3_memory[(2*i) + 1 + (UNIVERSAL1_ADDR/4)] = 0x12d012d0;
         }
         else {
-            ddr3_memory[(2*i) + UNIVERSAL1_ADDR] = 0x01d001d0; //빨간색 1줄.
-            ddr3_memory[(2*i) + 1 + UNIVERSAL1_ADDR] = 0x01d001d0;
-            if(i == 319) ddr3_memory[(2*i) + 2 + UNIVERSAL1_ADDR] = 0x00000000; //끝났다는것 표시
+            ddr3_memory[(2*i) + (UNIVERSAL1_ADDR/4)] = 0x01d001d0; //빨간색 1줄.
+            ddr3_memory[(2*i) + 1 + (UNIVERSAL1_ADDR/4)] = 0x01d001d0;
+            if(i == 319) ddr3_memory[(2*i) + 2 + (UNIVERSAL1_ADDR/4)] = 0x00000000; //끝났다는것 표시
         }
     }
 
 
     for (int i = 0; i < 320; i++) //BACKGROUND 1 LAYER 사용. 400 * 320 임. e4 = 100번 반복..
     {
-        if(i < 10) 
+        /*if(i == 0) 
         {
-            ddr3_memory[(2*i) + BACKGROUND1_ADDR] = 0x10e410e4; //하늘색 1줄.
-            ddr3_memory[(2*i) + 1 + BACKGROUND1_ADDR] = 0x10e410e4;
+            ddr3_memory[(BACKGROUND1_ADDR/4)] = 0x03020103; //red - green - blue
+            ddr3_memory[(BACKGROUND1_ADDR/4) + 1] = 0x03020103; 
+        }*/
+        /*else*/ if(i < 10) 
+        {
+            ddr3_memory[(2*i) + (BACKGROUND1_ADDR/4)] = 0x10e410e4; //하늘색 1줄.
+            ddr3_memory[(2*i) + 1 + (BACKGROUND1_ADDR/4)] = 0x10e410e4;
 
         }
         else
         {
-            ddr3_memory[(2*i) + BACKGROUND1_ADDR] = 0x13e413e4; //노란색 1줄
-            ddr3_memory[(2*i) + 1 + BACKGROUND1_ADDR] = 0x13e413e4;
-            if(i == 319) ddr3_memory[(2*i) + 2 + BACKGROUND1_ADDR] = 0x00000000; //끝났다는것 표시
+            ddr3_memory[(2*i) + (BACKGROUND1_ADDR/4)] = 0x13e413e4; //노란색 1줄
+            ddr3_memory[(2*i) + 1 + (BACKGROUND1_ADDR/4)] = 0x13e413e4;
+            if(i == 319) ddr3_memory[(2*i) + 2 + (BACKGROUND1_ADDR/4)] = 0x00000000; //끝났다는것 표시
         }
     }
 
@@ -603,8 +608,8 @@ int main(int argc, char **argv)
     dut->Status_z = 0;
 
     dut->Universal1_WX = 160;
-    dut->Universal1_WY = 120;
-    dut->Universal1_a = 16;
+    dut->Universal1_WY = 100;
+    dut->Universal1_a = 8;
     dut->Universal1_z = 2;
 
     dut->Universal2_WX = 0;
@@ -630,7 +635,7 @@ int main(int argc, char **argv)
     dut->eval();
     trace->dump(main_time++);
 
-    while (!Verilated::gotFinish() && main_time < 200000)
+    while (!Verilated::gotFinish() && main_time < 2000000)
     {
 
         // ----------------------------------------------------
@@ -781,7 +786,7 @@ int main(int argc, char **argv)
         {
             dut->final();
             trace->close();
-            std::cerr << "main_time is 1000" << std::endl;
+            std::cerr << "main_time is 10000" << std::endl;
             return 1;
         }*/
     }

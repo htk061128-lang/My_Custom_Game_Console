@@ -192,6 +192,7 @@ VL_MODULE(VPPU_TOP) {
     struct {
         CData/*1:0*/ PPU_TOP__DOT__Clk_Counter;
         CData/*0:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__All_Decompresser_is_IDLE;
+        CData/*7:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_count;
         CData/*7:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
         CData/*7:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_front;
         CData/*7:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_rear;
@@ -253,9 +254,9 @@ VL_MODULE(VPPU_TOP) {
         CData/*7:0*/ PPU_TOP__DOT__u_rgb__DOT__cache2_pixel;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__cache2_valid;
         CData/*7:0*/ PPU_TOP__DOT__u_rgb__DOT__cache3_pixel;
-        CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__cache3_valid;
     };
     struct {
+        CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__cache3_valid;
         CData/*7:0*/ PPU_TOP__DOT__u_rgb__DOT__cache4_pixel;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__cache4_valid;
         CData/*7:0*/ PPU_TOP__DOT__u_rgb__DOT__req1_exclusive_pixel;
@@ -319,9 +320,9 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req7_hit1;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req7_hit2;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req7_hit3;
-        CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req7_hit4;
     };
     struct {
+        CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req7_hit4;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req8_hit1;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req8_hit2;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req8_hit3;
@@ -359,6 +360,7 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req10_w_ena;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req11_w_ena;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req12_w_ena;
+        CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__is_new_pixel;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z1_is_trans;
         CData/*7:0*/ PPU_TOP__DOT__u_proc__DOT__Z1_a;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z1_valid;
@@ -384,10 +386,10 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z6_valid;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z6_ready;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z7_is_trans;
-        CData/*7:0*/ PPU_TOP__DOT__u_proc__DOT__Z7_a;
-        CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z7_valid;
     };
     struct {
+        CData/*7:0*/ PPU_TOP__DOT__u_proc__DOT__Z7_a;
+        CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z7_valid;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z7_ready;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z8_is_trans;
         CData/*7:0*/ PPU_TOP__DOT__u_proc__DOT__Z8_a;
@@ -450,10 +452,10 @@ VL_MODULE(VPPU_TOP) {
         SData/*8:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_front;
         SData/*8:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_rear;
         SData/*9:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__next_should_read_layer;
-        SData/*9:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__last_read_basic;
-        SData/*9:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__last_read_urgent;
     };
     struct {
+        SData/*9:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__last_read_basic;
+        SData/*9:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__last_read_urgent;
         SData/*9:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__valid_req;
         SData/*9:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__urgent_req;
         SData/*9:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__basic_req;
@@ -516,10 +518,10 @@ VL_MODULE(VPPU_TOP) {
         IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req8_exclusive_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req9_exclusive_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req10_exclusive_RGB;
-        IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req11_exclusive_RGB;
-        IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req12_exclusive_RGB;
     };
     struct {
+        IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req11_exclusive_RGB;
+        IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req12_exclusive_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_proc__DOT__Z1_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_proc__DOT__Z2_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_proc__DOT__Z3_RGB;

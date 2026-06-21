@@ -99,8 +99,11 @@ void VPPU_TOP::_settle__TOP__1(VPPU_TOP__Syms* __restrict vlSymsp) {
         = vlTOPp->Universal2_z;
     vlTOPp->PPU_TOP__DOT__Req_trans[0xbU] = 0U;
     vlTOPp->PPU_TOP__DOT__Req_trans[0xaU] = 0U;
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_count 
+        = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
     vlTOPp->Final_pixel_valid = 0U;
-    if (vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_valid) {
+    if (((IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_valid) 
+         & (IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__is_new_pixel))) {
         vlTOPp->Final_pixel_valid = 1U;
     }
     vlTOPp->BRAM9_we_a = 0U;
@@ -696,7 +699,8 @@ void VPPU_TOP::_settle__TOP__1(VPPU_TOP__Syms* __restrict vlSymsp) {
         }
     }
     vlTOPp->Final_pixel_RGB = 0U;
-    if (vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_valid) {
+    if (((IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_valid) 
+         & (IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__is_new_pixel))) {
         vlTOPp->Final_pixel_RGB = ((0x3f000U & ((IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_R) 
                                                 << 8U)) 
                                    | ((0xfc0U & ((IData)(vlTOPp->PPU_TOP__DOT__u_proc__DOT__Pipe9_G) 
@@ -4403,6 +4407,7 @@ void VPPU_TOP::_ctor_var_reset() {
     PPU_TOP__DOT__u_pixel_fifo__DOT__ch3_comp_data = VL_RAND_RESET_Q(64);
     PPU_TOP__DOT__u_pixel_fifo__DOT__ch4_comp_data = VL_RAND_RESET_Q(64);
     PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_data = VL_RAND_RESET_Q(64);
+    PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_count = VL_RAND_RESET_I(8);
     PPU_TOP__DOT__u_pixel_fifo__DOT__uni2_comp_data = VL_RAND_RESET_Q(64);
     PPU_TOP__DOT__u_pixel_fifo__DOT__sc_comp_data = VL_RAND_RESET_Q(64);
     PPU_TOP__DOT__u_pixel_fifo__DOT__st_comp_data = VL_RAND_RESET_Q(64);
@@ -4611,6 +4616,7 @@ void VPPU_TOP::_ctor_var_reset() {
     PPU_TOP__DOT__u_rgb__DOT__req10_w_ena = VL_RAND_RESET_I(1);
     PPU_TOP__DOT__u_rgb__DOT__req11_w_ena = VL_RAND_RESET_I(1);
     PPU_TOP__DOT__u_rgb__DOT__req12_w_ena = VL_RAND_RESET_I(1);
+    PPU_TOP__DOT__u_proc__DOT__is_new_pixel = VL_RAND_RESET_I(1);
     PPU_TOP__DOT__u_proc__DOT__Z1_RGB = VL_RAND_RESET_I(18);
     PPU_TOP__DOT__u_proc__DOT__Z1_is_trans = VL_RAND_RESET_I(1);
     PPU_TOP__DOT__u_proc__DOT__Z1_a = VL_RAND_RESET_I(8);

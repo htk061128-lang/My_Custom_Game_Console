@@ -626,16 +626,16 @@ always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
         //clk_counter[1:0] <= 0;
         main_state <= IDLE;
-        uni1_next_ad <= 0;
-        uni2_next_ad <= 0;
-        status_next_ad <= 0;
-        script_next_ad <= 0;
-        char1_next_ad <= 0;
-        char2_next_ad <= 0;
-        char3_next_ad <= 0;
-        char4_next_ad <= 0;
-        back1_next_ad <= 0;
-        back2_next_ad <= 0;
+        uni1_next_ad <= Universal_Layer1_count;
+        uni2_next_ad <= Universal_Layer2_Address;
+        status_next_ad <= Status_Layer_Address;
+        script_next_ad <= Script_Layer_Address;
+        char1_next_ad <= Character_Layer1_Address;
+        char2_next_ad <= Character_Layer2_Address;
+        char3_next_ad <= Character_Layer3_Address;
+        char4_next_ad <= Character_Layer4_Address;
+        back1_next_ad <= Background_Layer1_Address;
+        back2_next_ad <= Background_Layer2_Address;
 
         EMEM_valid <= 0;
         EMEM_addr[31:0] <= 0;
