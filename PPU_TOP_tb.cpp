@@ -607,10 +607,10 @@ int main(int argc, char **argv)
     dut->Status_a = 16;
     dut->Status_z = 0;
 
-    dut->Universal1_WX = 160;
-    dut->Universal1_WY = 100;
-    dut->Universal1_a = 8;
-    dut->Universal1_z = 2;
+    dut->Universal1_WX = 10;
+    dut->Universal1_WY = 0;
+    dut->Universal1_a = 5;
+    dut->Universal1_z = 3;
 
     dut->Universal2_WX = 0;
     dut->Universal2_WY = 0;
@@ -648,7 +648,11 @@ int main(int argc, char **argv)
         dut->LUT_data_out1 = lut[dut->LUT_addr_r1]; // lut 배열의 하위 18비트만 dut->LUT_data_out1에 들어가게 됨.
         dut->LUT_data_out2 = lut[dut->LUT_addr_r2];
         dut->eval();
-        trace->dump(main_time++);
+        if(main_time > 00000 && main_time < 10000) //딱 10000 클럭만 확인할 예정.
+        {
+            trace->dump(main_time);
+        }
+        main_time++;
 
         if (dut->LUT_we)
         {
@@ -753,7 +757,11 @@ int main(int argc, char **argv)
             dut->BRAM12_dout_b = bram12[dut->BRAM12_addr_b];
 
         dut->eval();
-        trace->dump(main_time++); // 반 클럭 진행 완료 기록
+        if(main_time > 00000 && main_time < 10000) //딱 10000클럭만 확인할 예정.
+        {
+            trace->dump(main_time); // 반 클럭 진행 완료 기록
+        }
+        main_time++;
 
         if (dut->Final_pixel_valid)
         {

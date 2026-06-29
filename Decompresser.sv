@@ -694,7 +694,6 @@ always @(*) begin
             //decompressed_fifo_w_ena = 1; //end가 올때까지 신호 계속 유지해 줘야 함. 
             decompressed_fifo_w_data[63:0] = decompressed_FIFO_reg_64[63:0]; //이제는 decompressed_FIFO_reg_64에 다 저장되었으므로 이렇게 유지함. 현재 counter는 오버플로로 인해 0으로 초기화 된 상황.
             if(decompressed_fifo_w_end) begin
-                w_state_next = START;
                 decompressed_FIFO_reg_counter_reset = 1; //혹시 모르니 다시 초기화 해줌.
                 //w_8_ready = 1; //이제야 w_8_ready를 decompress_state에게 줌.
                 if(w_end_req) begin //Decompressed FIFO에 써지는것이 확정된 시점에 COMPLETE로 이동해야 함. 따라서 w_end_req는 r_state가 계속 유지해야 하는 신호임. 
@@ -751,7 +750,7 @@ always @(*) begin
             end
         end
         COMPLETE: begin
-            r_state_next = IDLE;
+            w_state_next = IDLE;
             /*if(PPU_start == 0) begin
                 r_state_next = IDLE;
             end

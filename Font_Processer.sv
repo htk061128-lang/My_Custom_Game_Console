@@ -126,8 +126,45 @@ base_index = unicode_in - 16'hAC00;
     종성 3벌 : 중성 'ㅐㅒㅔㅖㅙㅞ'
     종성 4벌 : 중성 'ㅗㅛㅜㅠㅡ'
 
-총 344개의 16*16 폰트를 저장해야 함. 거기에 ASCII의 제어문자와 확장 아스크 코드를 제외한 16'h0020 ~ 16'h007E까지의 95개의 폰트와 한글 344개의 폰트를 합쳐서 총 439개의 폰트를 저장해야 함.
+총 344개의 16*16 폰트를 저장해야 함. 거기에 ASCII의 제어문자와 확장 아스키 코드를 제외한 16'h0020 ~ 16'h007E까지의 95개의 폰트와 한글 344개의 폰트를 합쳐서 총 439개의 폰트를 저장해야 함.
     
 PPU로부터 한 줄의 픽셀이 나올때까지 최소 320클럭이 소요됨. 한줄에 20개의 유니코드가 다 채워져 있다고 가정할때 한 글자를 초성, 중성, 종성으로 분리하려면 4클럭
 */
+reg [3:0] fifo_state; //PPU_pixel_RGB를 BRAM으로 구현된 FIFO에 저장하는 FSM
+reg [3:0] fifo_state_next;
+parameter IDLE = 0, START = 1;
+
+reg [8:0] pixel_counter_x; //FIFO에서 픽셀을 꺼낼 때마다 증가시킴.
+reg [8:0] pixel_counter_y; //한 줄인 320 픽셀을 다 꺼내면 1씩 증가시킴.
+
+always @(*) begin
+    fifo_state_next = fifo_state; //기본적으로 기존 상태 유지.
+    case(fifo_state[3:0])
+        IDLE: begin
+            
+        end
+        START: begin
+        end
+    endcase
+end
+
+always @(posedge clk or negedge resetn) begin
+    if(!resetn) begin
+        fifo_state[3:0] <= IDLE;
+    end
+    else begin
+        fifo_state[3:0] <= fifo_state_next;
+        case(fifo_state[3:0])
+            IDLE: begin
+                if(PPU_start) begin
+                    fifo_state[3:0] <= START;
+                end
+                else begin
+                    fifo_state[3:0] <= IDLE;
+                end
+            end
+        endcase
+    end
+end
+
 endmodule

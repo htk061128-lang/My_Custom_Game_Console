@@ -114,25 +114,12 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             this->__PVT__compressed_FIFO_reg_counter_reset = 1U;
         }
     }
-    if ((0U != (IData)(this->__PVT__w_state))) {
-        if ((1U != (IData)(this->__PVT__w_state))) {
-            if ((8U != (IData)(this->__PVT__w_state))) {
-                if ((0xbU != (IData)(this->__PVT__w_state))) {
-                    if ((2U == (IData)(this->__PVT__w_state))) {
-                        this->__PVT__r_state_next = 0U;
-                    }
-                }
-            }
-        }
-    }
-    this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
-                              | (0U == (IData)(this->__PVT__decompress_state)));
-    this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
-                              | (0U == (IData)(this->__PVT__decompress_state)));
     this->Decompresser_is_IDLE = 0U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Decompresser_is_IDLE = 1U;
     }
+    this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
+                              | (0U == (IData)(this->__PVT__decompress_state)));
     this->Compressed_FIFO_ena = 1U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Compressed_FIFO_ena = 0U;
@@ -783,6 +770,10 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                     this->__PVT__w_state_next = ((IData)(this->__PVT__decompressed_fifo_w_end)
                                                   ? 2U
                                                   : 0xbU);
+                } else {
+                    if ((2U == (IData)(this->__PVT__w_state))) {
+                        this->__PVT__w_state_next = 0U;
+                    }
                 }
             }
         }
@@ -1025,7 +1016,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                       ? 1U : 0U);
     } else {
         if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
+            this->__PVT__r_state_next = ((IData)(this->__PVT__w_end_req)
                                           ? 2U : (((IData)(this->__PVT__tdm_match) 
                                                    & (((1U 
                                                         == (IData)(this->__PVT__r_state)) 
@@ -1037,7 +1028,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
         } else {
             if ((6U == (IData)(this->__PVT__r_state))) {
                 this->__PVT__r_state_next = 7U;
-                if (this->__PVT__r_end_req) {
+                if (this->__PVT__w_end_req) {
                     this->__PVT__r_state_next = 2U;
                 }
             } else {
@@ -1077,7 +1068,7 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                                                         ? 1U
                                                         : 7U))))))));
                     }
-                    if (this->__PVT__r_end_req) {
+                    if (this->__PVT__w_end_req) {
                         this->__PVT__r_state_next = 2U;
                     }
                 } else {
@@ -1181,17 +1172,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
     if ((0U == (IData)(this->__PVT__r_state))) {
         if (vlTOPp->PPU_start) {
             this->__PVT__compressed_FIFO_reg_counter_reset = 1U;
-        }
-    }
-    if ((0U != (IData)(this->__PVT__w_state))) {
-        if ((1U != (IData)(this->__PVT__w_state))) {
-            if ((8U != (IData)(this->__PVT__w_state))) {
-                if ((0xbU != (IData)(this->__PVT__w_state))) {
-                    if ((2U == (IData)(this->__PVT__w_state))) {
-                        this->__PVT__r_state_next = 0U;
-                    }
-                }
-            }
         }
     }
     this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
@@ -1854,6 +1834,10 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                     this->__PVT__w_state_next = ((IData)(this->__PVT__decompressed_fifo_w_end)
                                                   ? 2U
                                                   : 0xbU);
+                } else {
+                    if ((2U == (IData)(this->__PVT__w_state))) {
+                        this->__PVT__w_state_next = 0U;
+                    }
                 }
             }
         }
