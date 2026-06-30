@@ -17,7 +17,7 @@ module Decompresser( //Compressed_Data_FIFO 에서 값을 읽어와서 압축을
     //이렇게 설정해야 함!!!!!! 괄호는 대응하는 직접적인 Clk_Counter 값임.
 
     input PPU_start, //프레임 생성을 시작할때 1로 설정되고 완성되면 0으로 떨어지고 다음 프레임 생성을 시작할때 1로 설정됨.
-    output reg Decompresser_is_IDLE, //이 신호는 r_state가 IDLE일때 1로 설정됨. 이 신호를 top 모듈에서 10개 Decompresser의 상태를 && 연산해서 Compressed_Data_FIFO에 전달함.
+    output Decompresser_is_IDLE, //이 신호는 세 FSM가 IDLE일때 1로 설정됨. 이 신호를 top 모듈에서 10개 Decompresser의 상태를 && 연산해서 Compressed_Data_FIFO에 전달함.
 
     //Compressed_Data_FIFO 인터페이스. 이걸로 압축된 데이터를 읽어와야 함.
     input Compressed_FIFO_r_master, //이 신호가 1일때만 dequeue가 가능함.
@@ -73,6 +73,7 @@ module Decompresser( //Compressed_Data_FIFO 에서 값을 읽어와서 압축을
     output [63:0] Decompressed_FIFO_data,
     output Decompressed_FIFO_empty //Compressed Data FIFO와 달리 여기서는 count대시 empty신호를 사용함. empty신호가 1이 아닐때만(0일때만) 외부에서 dequeue가 가능함. 
 );
+assign Decompresser_is_IDLE = (r_state == IDLE) && (w_state == IDLE) && (decompress_state == IDLE);
 //BRAM 구조 정리(decompressed data FIFO)
 //하나의 BRAM을 4개의 레이어가 각각 128줄씩 나눠 씀. (BRAM12는 256줄씩 사용)
 //BRAM10: addr 0-127: universal layer1, 128-255: universal layer2, 256-383: script layer, 384-511: status layer
@@ -453,7 +454,6 @@ always @(*) begin
 end
 
 always @(*) begin
-    Decompresser_is_IDLE = 0;
     r_state_next = r_state;
     r_8[7:0] = 0;
     //r_8_valid = 0;
@@ -469,7 +469,6 @@ always @(*) begin
     case(r_state)
         IDLE: begin
             Compressed_FIFO_ena = 0; //0으로 쭉 내려줘서, Compressed_Data_FIFO 모듈에서 외부 메모리에서 데이터읽기요청을 중단시킴.
-            Decompresser_is_IDLE = 1;
             if(PPU_start) begin 
                 r_state_next = START; //PPU_start가 오면 START로 이동함. 
                 compressed_FIFO_reg_counter_reset = 1; //counter 리셋 필수임!! 중간에 바로 COMPLETE로 갈 수도 있기 때문.

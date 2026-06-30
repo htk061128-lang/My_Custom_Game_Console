@@ -367,7 +367,7 @@ int main(int argc, char **argv)
             ddr3_memory[(BACKGROUND1_ADDR/4)] = 0x03020103; //red - green - blue
             ddr3_memory[(BACKGROUND1_ADDR/4) + 1] = 0x03020103; 
         }*/
-        /*else*/ if(i < 10) 
+        /*else*/ if(i < 120) 
         {
             ddr3_memory[(2*i) + (BACKGROUND1_ADDR/4)] = 0x10e410e4; //하늘색 1줄.
             ddr3_memory[(2*i) + 1 + (BACKGROUND1_ADDR/4)] = 0x10e410e4;
@@ -375,9 +375,35 @@ int main(int argc, char **argv)
         }
         else
         {
-            ddr3_memory[(2*i) + (BACKGROUND1_ADDR/4)] = 0x13e413e4; //노란색 1줄
-            ddr3_memory[(2*i) + 1 + (BACKGROUND1_ADDR/4)] = 0x13e413e4;
+            ddr3_memory[(2*i) + (BACKGROUND1_ADDR/4)] = 0x10e410e4; //하늘색 1줄
+            ddr3_memory[(2*i) + 1 + (BACKGROUND1_ADDR/4)] = 0x10e410e4;
             if(i == 319) ddr3_memory[(2*i) + 2 + (BACKGROUND1_ADDR/4)] = 0x00000000; //끝났다는것 표시
+        }
+    }
+
+    for (int i = 0; i < 320; i++) //BACKGROUND 2 LAYER 사용. 400 * 320 임. e4 = 100번 반복..
+    {
+        /*if(i == 0) 
+        {
+            ddr3_memory[(BACKGROUND2_ADDR/4)] = 0x03020103; //red - green - blue
+            ddr3_memory[(BACKGROUND2_ADDR/4) + 1] = 0x03020103; 
+        }*/
+        /*else*/ if(i < 20) 
+        {
+            ddr3_memory[(2*i) + (BACKGROUND2_ADDR/4)] = 0x11e411e4; //파랑색 반 줄.
+            ddr3_memory[(2*i) + 1 + (BACKGROUND2_ADDR/4)] = 0x10e410e4; //하늘색 반 줄.
+
+        }
+        else if(i < 50)
+        {
+            ddr3_memory[(2*i) + (BACKGROUND2_ADDR/4)] = 0x01e401e4; //빨간색 반 줄
+            ddr3_memory[(2*i) + 1 + (BACKGROUND2_ADDR/4)] = 0x02e402e4; //초록색 반 줄
+        }
+        else
+        {
+            ddr3_memory[(2*i) + (BACKGROUND2_ADDR/4)] = 0x13e413e4; //노란색 1줄
+            ddr3_memory[(2*i) + 1 + (BACKGROUND2_ADDR/4)] = 0x13e413e4;
+            if(i == 319) ddr3_memory[(2*i) + 2 + (BACKGROUND2_ADDR/4)] = 0x00000000; //끝났다는것 표시
         }
     }
 
@@ -569,13 +595,13 @@ int main(int argc, char **argv)
 
     dut->Background1_SCX = 0;
     dut->Background1_SCY = 0;
-    dut->Background1_a = 16;
-    dut->Background1_z = 1;
+    dut->Background1_a = 8;
+    dut->Background1_z = 2;
 
-    dut->Background2_SCX = 0;
+    dut->Background2_SCX = 40;
     dut->Background2_SCY = 0;
-    dut->Background2_a = 0;
-    dut->Background2_z = 0; // z가 0이면 사용되지 않는거임.
+    dut->Background2_a = 16;
+    dut->Background2_z = 1; 
 
     dut->Character1_WX = 0;
     dut->Character1_WY = 0;
@@ -610,7 +636,7 @@ int main(int argc, char **argv)
     dut->Universal1_WX = 10;
     dut->Universal1_WY = 0;
     dut->Universal1_a = 5;
-    dut->Universal1_z = 3;
+    dut->Universal1_z = 0;
 
     dut->Universal2_WX = 0;
     dut->Universal2_WY = 0;
