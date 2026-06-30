@@ -114,10 +114,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             this->__PVT__compressed_FIFO_reg_counter_reset = 1U;
         }
     }
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
-    }
     this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
                               | (0U == (IData)(this->__PVT__decompress_state)));
     this->Compressed_FIFO_ena = 1U;
@@ -1178,10 +1174,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                               | (0U == (IData)(this->__PVT__decompress_state)));
     this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
                               | (0U == (IData)(this->__PVT__decompress_state)));
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
-    }
     this->Compressed_FIFO_ena = 1U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Compressed_FIFO_ena = 0U;

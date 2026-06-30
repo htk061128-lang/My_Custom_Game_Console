@@ -135,128 +135,110 @@ void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_bg1__1(VPPU_TOP__Syms*
     this->__PVT__fifo_r_state_next = this->__PVT__fifo_r_state;
     this->__PVT__valid_pixel_check = 0U;
     this->__PVT__rgb_convert_req = 0U;
-    if ((((IData)(this->__PVT__read_pixel_y) >= (0x1ffU 
-                                                 & (IData)(vlTOPp->Background1_SCY))) 
-         & ((IData)(this->__PVT__read_pixel_y) <= ((IData)(0xefU) 
-                                                   + 
-                                                   (0x1ffU 
-                                                    & (IData)(vlTOPp->Background1_SCY)))))) {
+    if ((((IData)(this->__PVT__read_pixel_y) >= (IData)(vlTOPp->Background1_SCY)) 
+         & ((IData)(this->__PVT__read_pixel_y) <= (0xffffU 
+                                                   & ((IData)(0xefU) 
+                                                      + (IData)(vlTOPp->Background1_SCY)))))) {
         this->__PVT__valid_pixel_check = ((0xfeU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((IData)(this->__PVT__read_pixel_x) 
                                                << 3U) 
-                                              >= (0x1ffU 
-                                                  & (IData)(vlTOPp->Background1_SCX))) 
+                                              >= (IData)(vlTOPp->Background1_SCX)) 
                                              & (((IData)(this->__PVT__read_pixel_x) 
                                                  << 3U) 
                                                 <= 
-                                                ((IData)(0x13fU) 
-                                                 + 
-                                                 (0x1ffU 
-                                                  & (IData)(vlTOPp->Background1_SCX))))));
+                                                (0xffffU 
+                                                 & ((IData)(0x13fU) 
+                                                    + (IData)(vlTOPp->Background1_SCX))))));
         this->__PVT__valid_pixel_check = ((0xfdU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((1U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))) 
+                                               >= (IData)(vlTOPp->Background1_SCX)) 
                                               & ((1U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background1_SCX))))) 
                                              << 1U));
         this->__PVT__valid_pixel_check = ((0xfbU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((2U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))) 
+                                               >= (IData)(vlTOPp->Background1_SCX)) 
                                               & ((2U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background1_SCX))))) 
                                              << 2U));
         this->__PVT__valid_pixel_check = ((0xf7U & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((3U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))) 
+                                               >= (IData)(vlTOPp->Background1_SCX)) 
                                               & ((3U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background1_SCX))))) 
                                              << 3U));
         this->__PVT__valid_pixel_check = ((0xefU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((4U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))) 
+                                               >= (IData)(vlTOPp->Background1_SCX)) 
                                               & ((4U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background1_SCX))))) 
                                              << 4U));
         this->__PVT__valid_pixel_check = ((0xdfU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((5U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))) 
+                                               >= (IData)(vlTOPp->Background1_SCX)) 
                                               & ((5U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background1_SCX))))) 
                                              << 5U));
         this->__PVT__valid_pixel_check = ((0xbfU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((6U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))) 
+                                               >= (IData)(vlTOPp->Background1_SCX)) 
                                               & ((6U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background1_SCX))))) 
                                              << 6U));
         this->__PVT__valid_pixel_check = ((0x7fU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((7U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))) 
+                                               >= (IData)(vlTOPp->Background1_SCX)) 
                                               & ((7U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background1_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background1_SCX))))) 
                                              << 7U));
     } else {
         this->__PVT__valid_pixel_check = 0U;
@@ -891,128 +873,110 @@ void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_bg2__2(VPPU_TOP__Syms*
     this->__PVT__fifo_r_state_next = this->__PVT__fifo_r_state;
     this->__PVT__valid_pixel_check = 0U;
     this->__PVT__rgb_convert_req = 0U;
-    if ((((IData)(this->__PVT__read_pixel_y) >= (0x1ffU 
-                                                 & (IData)(vlTOPp->Background2_SCY))) 
-         & ((IData)(this->__PVT__read_pixel_y) <= ((IData)(0xefU) 
-                                                   + 
-                                                   (0x1ffU 
-                                                    & (IData)(vlTOPp->Background2_SCY)))))) {
+    if ((((IData)(this->__PVT__read_pixel_y) >= (IData)(vlTOPp->Background2_SCY)) 
+         & ((IData)(this->__PVT__read_pixel_y) <= (0xffffU 
+                                                   & ((IData)(0xefU) 
+                                                      + (IData)(vlTOPp->Background2_SCY)))))) {
         this->__PVT__valid_pixel_check = ((0xfeU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((IData)(this->__PVT__read_pixel_x) 
                                                << 3U) 
-                                              >= (0x1ffU 
-                                                  & (IData)(vlTOPp->Background2_SCX))) 
+                                              >= (IData)(vlTOPp->Background2_SCX)) 
                                              & (((IData)(this->__PVT__read_pixel_x) 
                                                  << 3U) 
                                                 <= 
-                                                ((IData)(0x13fU) 
-                                                 + 
-                                                 (0x1ffU 
-                                                  & (IData)(vlTOPp->Background2_SCX))))));
+                                                (0xffffU 
+                                                 & ((IData)(0x13fU) 
+                                                    + (IData)(vlTOPp->Background2_SCX))))));
         this->__PVT__valid_pixel_check = ((0xfdU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((1U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))) 
+                                               >= (IData)(vlTOPp->Background2_SCX)) 
                                               & ((1U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background2_SCX))))) 
                                              << 1U));
         this->__PVT__valid_pixel_check = ((0xfbU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((2U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))) 
+                                               >= (IData)(vlTOPp->Background2_SCX)) 
                                               & ((2U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background2_SCX))))) 
                                              << 2U));
         this->__PVT__valid_pixel_check = ((0xf7U & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((3U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))) 
+                                               >= (IData)(vlTOPp->Background2_SCX)) 
                                               & ((3U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background2_SCX))))) 
                                              << 3U));
         this->__PVT__valid_pixel_check = ((0xefU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((4U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))) 
+                                               >= (IData)(vlTOPp->Background2_SCX)) 
                                               & ((4U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background2_SCX))))) 
                                              << 4U));
         this->__PVT__valid_pixel_check = ((0xdfU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((5U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))) 
+                                               >= (IData)(vlTOPp->Background2_SCX)) 
                                               & ((5U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background2_SCX))))) 
                                              << 5U));
         this->__PVT__valid_pixel_check = ((0xbfU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((6U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))) 
+                                               >= (IData)(vlTOPp->Background2_SCX)) 
                                               & ((6U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background2_SCX))))) 
                                              << 6U));
         this->__PVT__valid_pixel_check = ((0x7fU & (IData)(this->__PVT__valid_pixel_check)) 
                                           | ((((7U 
                                                 | ((IData)(this->__PVT__read_pixel_x) 
                                                    << 3U)) 
-                                               >= (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))) 
+                                               >= (IData)(vlTOPp->Background2_SCX)) 
                                               & ((7U 
                                                   | ((IData)(this->__PVT__read_pixel_x) 
                                                      << 3U)) 
                                                  <= 
-                                                 ((IData)(0x13fU) 
-                                                  + 
-                                                  (0x1ffU 
-                                                   & (IData)(vlTOPp->Background2_SCX))))) 
+                                                 (0xffffU 
+                                                  & ((IData)(0x13fU) 
+                                                     + (IData)(vlTOPp->Background2_SCX))))) 
                                              << 7U));
     } else {
         this->__PVT__valid_pixel_check = 0U;
@@ -1714,253 +1678,189 @@ void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch1__3(VPPU_TOP__Syms*
     this->__PVT__rgb_convert_req = 0U;
     this->__PVT__valid_pixel_check = ((0xfeU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | (((VL_LTES_III(1,32,32, 0U, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Character1_WY))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                        VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                            & VL_GTES_III(1,32,32, 0xefU, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character1_WY))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                          VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                           & VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        ((IData)(this->__PVT__read_pixel_x) 
                                                                         << 3U))))) 
                                          & VL_GTES_III(1,32,32, 0x13fU, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Character1_WX))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,9, 
+                                                        VL_EXTENDS_II(32,16, 
                                                                       ((IData)(this->__PVT__read_pixel_x) 
                                                                        << 3U))))));
     this->__PVT__valid_pixel_check = ((0xfdU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (1U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (1U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 1U));
     this->__PVT__valid_pixel_check = ((0xfbU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (2U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (2U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 2U));
     this->__PVT__valid_pixel_check = ((0xf7U & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (3U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (3U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 3U));
     this->__PVT__valid_pixel_check = ((0xefU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (4U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (4U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 4U));
     this->__PVT__valid_pixel_check = ((0xdfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (5U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (5U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 5U));
     this->__PVT__valid_pixel_check = ((0xbfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (6U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (6U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 6U));
     this->__PVT__valid_pixel_check = ((0x7fU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (7U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (7U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
@@ -2668,253 +2568,189 @@ void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch2__4(VPPU_TOP__Syms*
     this->__PVT__rgb_convert_req = 0U;
     this->__PVT__valid_pixel_check = ((0xfeU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | (((VL_LTES_III(1,32,32, 0U, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Character2_WY))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                        VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                            & VL_GTES_III(1,32,32, 0xefU, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character2_WY))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                          VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                           & VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        ((IData)(this->__PVT__read_pixel_x) 
                                                                         << 3U))))) 
                                          & VL_GTES_III(1,32,32, 0x13fU, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Character2_WX))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,9, 
+                                                        VL_EXTENDS_II(32,16, 
                                                                       ((IData)(this->__PVT__read_pixel_x) 
                                                                        << 3U))))));
     this->__PVT__valid_pixel_check = ((0xfdU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (1U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (1U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 1U));
     this->__PVT__valid_pixel_check = ((0xfbU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (2U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (2U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 2U));
     this->__PVT__valid_pixel_check = ((0xf7U & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (3U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (3U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 3U));
     this->__PVT__valid_pixel_check = ((0xefU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (4U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (4U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 4U));
     this->__PVT__valid_pixel_check = ((0xdfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (5U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (5U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 5U));
     this->__PVT__valid_pixel_check = ((0xbfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (6U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (6U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 6U));
     this->__PVT__valid_pixel_check = ((0x7fU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (7U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (7U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
@@ -3622,253 +3458,189 @@ void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch3__5(VPPU_TOP__Syms*
     this->__PVT__rgb_convert_req = 0U;
     this->__PVT__valid_pixel_check = ((0xfeU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | (((VL_LTES_III(1,32,32, 0U, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Character3_WY))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                        VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                            & VL_GTES_III(1,32,32, 0xefU, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character3_WY))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                          VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                           & VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        ((IData)(this->__PVT__read_pixel_x) 
                                                                         << 3U))))) 
                                          & VL_GTES_III(1,32,32, 0x13fU, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Character3_WX))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,9, 
+                                                        VL_EXTENDS_II(32,16, 
                                                                       ((IData)(this->__PVT__read_pixel_x) 
                                                                        << 3U))))));
     this->__PVT__valid_pixel_check = ((0xfdU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character3_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character3_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (1U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (1U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 1U));
     this->__PVT__valid_pixel_check = ((0xfbU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character3_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character3_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (2U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (2U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 2U));
     this->__PVT__valid_pixel_check = ((0xf7U & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character3_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character3_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (3U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (3U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 3U));
     this->__PVT__valid_pixel_check = ((0xefU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character3_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character3_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (4U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (4U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 4U));
     this->__PVT__valid_pixel_check = ((0xdfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character3_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character3_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (5U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (5U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 5U));
     this->__PVT__valid_pixel_check = ((0xbfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character3_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character3_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (6U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (6U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 6U));
     this->__PVT__valid_pixel_check = ((0x7fU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character3_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character3_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (7U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character3_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character3_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (7U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
@@ -4576,253 +4348,189 @@ void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch4__6(VPPU_TOP__Syms*
     this->__PVT__rgb_convert_req = 0U;
     this->__PVT__valid_pixel_check = ((0xfeU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | (((VL_LTES_III(1,32,32, 0U, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Character4_WY))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                        VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                            & VL_GTES_III(1,32,32, 0xefU, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character4_WY))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                          VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                           & VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        ((IData)(this->__PVT__read_pixel_x) 
                                                                         << 3U))))) 
                                          & VL_GTES_III(1,32,32, 0x13fU, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Character4_WX))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,9, 
+                                                        VL_EXTENDS_II(32,16, 
                                                                       ((IData)(this->__PVT__read_pixel_x) 
                                                                        << 3U))))));
     this->__PVT__valid_pixel_check = ((0xfdU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character4_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character4_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (1U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (1U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 1U));
     this->__PVT__valid_pixel_check = ((0xfbU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character4_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character4_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (2U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (2U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 2U));
     this->__PVT__valid_pixel_check = ((0xf7U & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character4_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character4_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (3U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (3U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 3U));
     this->__PVT__valid_pixel_check = ((0xefU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character4_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character4_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (4U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (4U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 4U));
     this->__PVT__valid_pixel_check = ((0xdfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character4_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character4_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (5U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (5U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 5U));
     this->__PVT__valid_pixel_check = ((0xbfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character4_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character4_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (6U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (6U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 6U));
     this->__PVT__valid_pixel_check = ((0x7fU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Character4_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Character4_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (7U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Character4_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Character4_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (7U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
@@ -5530,253 +5238,189 @@ void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_sc__7(VPPU_TOP__Syms* 
     this->__PVT__rgb_convert_req = 0U;
     this->__PVT__valid_pixel_check = ((0xfeU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | (((VL_LTES_III(1,32,32, 0U, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Script_WY))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                        VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                            & VL_GTES_III(1,32,32, 0xefU, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Script_WY))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                          VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                           & VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        ((IData)(this->__PVT__read_pixel_x) 
                                                                         << 3U))))) 
                                          & VL_GTES_III(1,32,32, 0x13fU, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Script_WX))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,9, 
+                                                        VL_EXTENDS_II(32,16, 
                                                                       ((IData)(this->__PVT__read_pixel_x) 
                                                                        << 3U))))));
     this->__PVT__valid_pixel_check = ((0xfdU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Script_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Script_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (1U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (1U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 1U));
     this->__PVT__valid_pixel_check = ((0xfbU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Script_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Script_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (2U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (2U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 2U));
     this->__PVT__valid_pixel_check = ((0xf7U & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Script_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Script_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (3U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (3U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 3U));
     this->__PVT__valid_pixel_check = ((0xefU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Script_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Script_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (4U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (4U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 4U));
     this->__PVT__valid_pixel_check = ((0xdfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Script_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Script_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (5U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (5U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 5U));
     this->__PVT__valid_pixel_check = ((0xbfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Script_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Script_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (6U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (6U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 6U));
     this->__PVT__valid_pixel_check = ((0x7fU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Script_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Script_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (7U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Script_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Script_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (7U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
@@ -6484,253 +6128,189 @@ void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_st__8(VPPU_TOP__Syms* 
     this->__PVT__rgb_convert_req = 0U;
     this->__PVT__valid_pixel_check = ((0xfeU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | (((VL_LTES_III(1,32,32, 0U, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Status_WY))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                        VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                            & VL_GTES_III(1,32,32, 0xefU, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Status_WY))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                          VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                           & VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        ((IData)(this->__PVT__read_pixel_x) 
                                                                         << 3U))))) 
                                          & VL_GTES_III(1,32,32, 0x13fU, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Status_WX))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,9, 
+                                                        VL_EXTENDS_II(32,16, 
                                                                       ((IData)(this->__PVT__read_pixel_x) 
                                                                        << 3U))))));
     this->__PVT__valid_pixel_check = ((0xfdU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Status_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Status_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (1U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (1U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 1U));
     this->__PVT__valid_pixel_check = ((0xfbU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Status_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Status_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (2U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (2U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 2U));
     this->__PVT__valid_pixel_check = ((0xf7U & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Status_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Status_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (3U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (3U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 3U));
     this->__PVT__valid_pixel_check = ((0xefU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Status_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Status_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (4U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (4U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 4U));
     this->__PVT__valid_pixel_check = ((0xdfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Status_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Status_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (5U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (5U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 5U));
     this->__PVT__valid_pixel_check = ((0xbfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Status_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Status_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (6U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (6U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 6U));
     this->__PVT__valid_pixel_check = ((0x7fU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Status_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Status_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (7U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Status_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Status_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (7U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
@@ -7438,253 +7018,189 @@ void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_un1__9(VPPU_TOP__Syms*
     this->__PVT__rgb_convert_req = 0U;
     this->__PVT__valid_pixel_check = ((0xfeU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | (((VL_LTES_III(1,32,32, 0U, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Universal1_WY))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                        VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                            & VL_GTES_III(1,32,32, 0xefU, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal1_WY))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                          VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                           & VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        ((IData)(this->__PVT__read_pixel_x) 
                                                                         << 3U))))) 
                                          & VL_GTES_III(1,32,32, 0x13fU, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Universal1_WX))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,9, 
+                                                        VL_EXTENDS_II(32,16, 
                                                                       ((IData)(this->__PVT__read_pixel_x) 
                                                                        << 3U))))));
     this->__PVT__valid_pixel_check = ((0xfdU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (1U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (1U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 1U));
     this->__PVT__valid_pixel_check = ((0xfbU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (2U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (2U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 2U));
     this->__PVT__valid_pixel_check = ((0xf7U & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (3U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (3U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 3U));
     this->__PVT__valid_pixel_check = ((0xefU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (4U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (4U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 4U));
     this->__PVT__valid_pixel_check = ((0xdfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (5U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (5U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 5U));
     this->__PVT__valid_pixel_check = ((0xbfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (6U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (6U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 6U));
     this->__PVT__valid_pixel_check = ((0x7fU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal1_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal1_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (7U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal1_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal1_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (7U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
@@ -8392,253 +7908,189 @@ void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_un2__10(VPPU_TOP__Syms
     this->__PVT__rgb_convert_req = 0U;
     this->__PVT__valid_pixel_check = ((0xfeU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | (((VL_LTES_III(1,32,32, 0U, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Universal2_WY))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                        VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                            & VL_GTES_III(1,32,32, 0xefU, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal2_WY))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                          VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                           & VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        ((IData)(this->__PVT__read_pixel_x) 
                                                                         << 3U))))) 
                                          & VL_GTES_III(1,32,32, 0x13fU, 
-                                                       (VL_EXTENDS_II(32,10, 
-                                                                      (0x3ffU 
-                                                                       & (IData)(vlTOPp->Universal2_WX))) 
+                                                       (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                         + 
-                                                        VL_EXTENDS_II(32,9, 
+                                                        VL_EXTENDS_II(32,16, 
                                                                       ((IData)(this->__PVT__read_pixel_x) 
                                                                        << 3U))))));
     this->__PVT__valid_pixel_check = ((0xfdU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (1U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (1U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 1U));
     this->__PVT__valid_pixel_check = ((0xfbU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (2U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (2U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 2U));
     this->__PVT__valid_pixel_check = ((0xf7U & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (3U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (3U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 3U));
     this->__PVT__valid_pixel_check = ((0xefU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (4U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (4U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 4U));
     this->__PVT__valid_pixel_check = ((0xdfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (5U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (5U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 5U));
     this->__PVT__valid_pixel_check = ((0xbfU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (6U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (6U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 
                                          << 6U));
     this->__PVT__valid_pixel_check = ((0x7fU & (IData)(this->__PVT__valid_pixel_check)) 
                                       | ((((VL_LTES_III(1,32,32, 0U, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WY))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y)))) 
+                                                         VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y)))) 
                                             & VL_GTES_III(1,32,32, 0xefU, 
-                                                          (VL_EXTENDS_II(32,10, 
-                                                                         (0x3ffU 
-                                                                          & (IData)(vlTOPp->Universal2_WY))) 
+                                                          (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WY)) 
                                                            + 
-                                                           VL_EXTENDS_II(32,10, (IData)(this->__PVT__read_pixel_y))))) 
+                                                           VL_EXTENDS_II(32,16, (IData)(this->__PVT__read_pixel_y))))) 
                                            & VL_LTES_III(1,32,32, 0U, 
-                                                         (VL_EXTENDS_II(32,10, 
-                                                                        (0x3ffU 
-                                                                         & (IData)(vlTOPp->Universal2_WX))) 
+                                                         (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                           + 
-                                                          VL_EXTENDS_II(32,9, 
+                                                          VL_EXTENDS_II(32,16, 
                                                                         (7U 
                                                                          | ((IData)(this->__PVT__read_pixel_x) 
                                                                             << 3U)))))) 
                                           & VL_GTES_III(1,32,32, 0x13fU, 
-                                                        (VL_EXTENDS_II(32,10, 
-                                                                       (0x3ffU 
-                                                                        & (IData)(vlTOPp->Universal2_WX))) 
+                                                        (VL_EXTENDS_II(32,16, (IData)(vlTOPp->Universal2_WX)) 
                                                          + 
-                                                         VL_EXTENDS_II(32,9, 
+                                                         VL_EXTENDS_II(32,16, 
                                                                        (7U 
                                                                         | ((IData)(this->__PVT__read_pixel_x) 
                                                                            << 3U)))))) 

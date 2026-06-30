@@ -568,10 +568,6 @@ VL_INLINE_OPT void VPPU_TOP_Decompresser::_sequent__TOP__PPU_TOP__DOT__u_pixel_f
             this->__PVT__compressed_fifo_r_state_next = 1U;
         }
     }
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
-    }
     this->Compressed_FIFO_ena = 1U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Compressed_FIFO_ena = 0U;
@@ -1828,10 +1824,6 @@ VL_INLINE_OPT void VPPU_TOP_Decompresser::_sequent__TOP__PPU_TOP__DOT__u_pixel_f
             this->__PVT__compressed_fifo_r_state_next = 1U;
         }
     }
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
-    }
     this->Compressed_FIFO_dequeue = 0U;
     if (this->__PVT__tdm_match) {
         if ((((1U == (IData)(this->__PVT__r_state)) 
@@ -3078,10 +3070,6 @@ VL_INLINE_OPT void VPPU_TOP_Decompresser::_sequent__TOP__PPU_TOP__DOT__u_pixel_f
              & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_r_master))) {
             this->__PVT__compressed_fifo_r_state_next = 1U;
         }
-    }
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
     }
     this->Compressed_FIFO_dequeue = 0U;
     if (this->__PVT__tdm_match) {

@@ -1317,6 +1317,37 @@ void VPPU_TOP::_settle__TOP__1(VPPU_TOP__Syms* __restrict vlSymsp) {
             }
         }
     }
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__All_Decompresser_is_IDLE 
+        = ((((((((((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni1.__PVT__r_state)) 
+                     & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni1.__PVT__w_state))) 
+                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni1.__PVT__decompress_state))) 
+                   & (((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni2.__PVT__r_state)) 
+                       & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni2.__PVT__w_state))) 
+                      & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni2.__PVT__decompress_state)))) 
+                  & (((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_script.__PVT__r_state)) 
+                      & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_script.__PVT__w_state))) 
+                     & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_script.__PVT__decompress_state)))) 
+                 & (((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_status.__PVT__r_state)) 
+                     & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_status.__PVT__w_state))) 
+                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_status.__PVT__decompress_state)))) 
+                & (((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch1.__PVT__r_state)) 
+                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch1.__PVT__w_state))) 
+                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch1.__PVT__decompress_state)))) 
+               & (((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch2.__PVT__r_state)) 
+                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch2.__PVT__w_state))) 
+                  & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch2.__PVT__decompress_state)))) 
+              & (((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch3.__PVT__r_state)) 
+                  & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch3.__PVT__w_state))) 
+                 & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch3.__PVT__decompress_state)))) 
+             & (((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch4.__PVT__r_state)) 
+                 & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch4.__PVT__w_state))) 
+                & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch4.__PVT__decompress_state)))) 
+            & (((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg1.__PVT__r_state)) 
+                & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg1.__PVT__w_state))) 
+               & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg1.__PVT__decompress_state)))) 
+           & (((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg2.__PVT__r_state)) 
+               & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg2.__PVT__w_state))) 
+              & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg2.__PVT__decompress_state))));
     vlTOPp->PPU_TOP__DOT__u_proc__DOT__Z1_ready = 0U;
     vlTOPp->PPU_TOP__DOT__u_proc__DOT__Z2_ready = 0U;
     vlTOPp->PPU_TOP__DOT__u_proc__DOT__Z3_ready = 0U;
@@ -1701,17 +1732,6 @@ void VPPU_TOP::_settle__TOP__1(VPPU_TOP__Syms* __restrict vlSymsp) {
                               | vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch2.BRAM11_din_a) 
                              | vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch3.BRAM11_din_a) 
                             | vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch4.BRAM11_din_a);
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__All_Decompresser_is_IDLE 
-        = ((((((((((IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni1.Decompresser_is_IDLE) 
-                   & (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni2.Decompresser_is_IDLE)) 
-                  & (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_script.Decompresser_is_IDLE)) 
-                 & (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_status.Decompresser_is_IDLE)) 
-                & (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch1.Decompresser_is_IDLE)) 
-               & (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch2.Decompresser_is_IDLE)) 
-              & (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch3.Decompresser_is_IDLE)) 
-             & (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch4.Decompresser_is_IDLE)) 
-            & (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg1.Decompresser_is_IDLE)) 
-           & (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg2.Decompresser_is_IDLE));
     vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__next_should_read_layer = 0U;
     vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__urgent_req 
         = ((((0x20U >= (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count)) 

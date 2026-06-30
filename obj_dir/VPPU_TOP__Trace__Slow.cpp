@@ -3753,16 +3753,36 @@ void VPPU_TOP::traceFullSub0(void* userp, VerilatedVcd* tracep) {
         tracep->fullBit(oldp+779,(vlSymsp->TOP__PPU_TOP__DOT__u_bg1.Pixel_is_trans));
         tracep->fullIData(oldp+780,(vlSymsp->TOP__PPU_TOP__DOT__u_bg2.Pixel_RGB),18);
         tracep->fullBit(oldp+781,(vlSymsp->TOP__PPU_TOP__DOT__u_bg2.Pixel_is_trans));
-        tracep->fullBit(oldp+782,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni1.Decompresser_is_IDLE));
-        tracep->fullBit(oldp+783,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni2.Decompresser_is_IDLE));
-        tracep->fullBit(oldp+784,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_script.Decompresser_is_IDLE));
-        tracep->fullBit(oldp+785,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_status.Decompresser_is_IDLE));
-        tracep->fullBit(oldp+786,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch1.Decompresser_is_IDLE));
-        tracep->fullBit(oldp+787,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch2.Decompresser_is_IDLE));
-        tracep->fullBit(oldp+788,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch3.Decompresser_is_IDLE));
-        tracep->fullBit(oldp+789,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch4.Decompresser_is_IDLE));
-        tracep->fullBit(oldp+790,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg1.Decompresser_is_IDLE));
-        tracep->fullBit(oldp+791,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg2.Decompresser_is_IDLE));
+        tracep->fullBit(oldp+782,((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni1.__PVT__r_state)) 
+                                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni1.__PVT__w_state))) 
+                                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni1.__PVT__decompress_state)))));
+        tracep->fullBit(oldp+783,((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni2.__PVT__r_state)) 
+                                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni2.__PVT__w_state))) 
+                                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_uni2.__PVT__decompress_state)))));
+        tracep->fullBit(oldp+784,((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_script.__PVT__r_state)) 
+                                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_script.__PVT__w_state))) 
+                                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_script.__PVT__decompress_state)))));
+        tracep->fullBit(oldp+785,((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_status.__PVT__r_state)) 
+                                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_status.__PVT__w_state))) 
+                                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_status.__PVT__decompress_state)))));
+        tracep->fullBit(oldp+786,((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch1.__PVT__r_state)) 
+                                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch1.__PVT__w_state))) 
+                                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch1.__PVT__decompress_state)))));
+        tracep->fullBit(oldp+787,((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch2.__PVT__r_state)) 
+                                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch2.__PVT__w_state))) 
+                                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch2.__PVT__decompress_state)))));
+        tracep->fullBit(oldp+788,((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch3.__PVT__r_state)) 
+                                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch3.__PVT__w_state))) 
+                                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch3.__PVT__decompress_state)))));
+        tracep->fullBit(oldp+789,((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch4.__PVT__r_state)) 
+                                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch4.__PVT__w_state))) 
+                                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_ch4.__PVT__decompress_state)))));
+        tracep->fullBit(oldp+790,((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg1.__PVT__r_state)) 
+                                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg1.__PVT__w_state))) 
+                                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg1.__PVT__decompress_state)))));
+        tracep->fullBit(oldp+791,((((0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg2.__PVT__r_state)) 
+                                    & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg2.__PVT__w_state))) 
+                                   & (0U == (IData)(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg2.__PVT__decompress_state)))));
         tracep->fullBit(oldp+792,(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__All_Decompresser_is_IDLE));
         tracep->fullBit(oldp+793,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg1.Compressed_FIFO_ena));
         tracep->fullBit(oldp+794,(vlSymsp->TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_decomp_bg1.Compressed_FIFO_dequeue));

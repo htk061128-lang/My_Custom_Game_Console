@@ -29,11 +29,11 @@ std::vector<uint8_t> generate_background_layer()
         {
             if (y < 5)
             {
-                bg.push_back(6); 
+                bg.push_back(6);
             }
             else if (y < 10)
             {
-                bg.push_back(7); 
+                bg.push_back(7);
             }
             else if (y < 15)
             {
@@ -319,11 +319,11 @@ int main(int argc, char **argv)
 
     // RLE 변환 후 저장
     std::vector<uint8_t> bg1_rle = rle_convert(background1);
-    //write_stream(BACKGROUND1_ADDR, bg1_rle);
+    // write_stream(BACKGROUND1_ADDR, bg1_rle);
 
     load_layer(BACKGROUND1_ADDR, 0, 0);
     load_layer(BACKGROUND2_ADDR, 0, 0);
-    //write_stream(CHARACTER1_ADDR, rle_convert(character1));
+    // write_stream(CHARACTER1_ADDR, rle_convert(character1));
     load_layer(CHARACTER1_ADDR, 0, 0);
     load_layer(CHARACTER2_ADDR, 0, 0);
     load_layer(CHARACTER3_ADDR, 0, 0);
@@ -333,84 +333,78 @@ int main(int argc, char **argv)
     load_layer(UNIVERSAL1_ADDR, 0, 0);
     load_layer(UNIVERSAL2_ADDR, 0, 0);
 
-
-    for (int i = 0; i < 240; i++) //UNIVERSAL 1 LAYER 사용. d0 = 80번 반복.
+    for (int i = 0; i < 240; i++) // UNIVERSAL 1 LAYER 사용. d0 = 80번 반복.
     {
-        if(i < 20) 
+        if (i < 20)
         {
-            ddr3_memory[(2*i) + (UNIVERSAL1_ADDR/4)] = 0x11d011d0; //파랑색 1줄.
-            ddr3_memory[(2*i) + 1 + (UNIVERSAL1_ADDR/4)] = 0x11d011d0;
-
+            ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x02d001d0; //Red 80개, Green 80개, Blue 80개, Yellow 80개
+            ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x04d003d0;
         }
-        else if(i < 60)
+        else if (i < 60)
         {
-            ddr3_memory[(2*i) + (UNIVERSAL1_ADDR/4)] = 0x11d011d0; //파랑색 1줄.
-            ddr3_memory[(2*i) + 1 + (UNIVERSAL1_ADDR/4)] = 0x11d011d0;
+            ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x06d005d0;
+            ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x08d007d0;
         }
-        else if(i < 120)
+        else if (i < 120)
         {
-            ddr3_memory[(2*i) + (UNIVERSAL1_ADDR/4)] = 0x12d012d0; //초록색 1줄.
-            ddr3_memory[(2*i) + 1 + (UNIVERSAL1_ADDR/4)] = 0x12d012d0;
+            ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x12d012d0; // 초록색 1줄.
+            ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x12d012d0;
         }
-        else {
-            ddr3_memory[(2*i) + (UNIVERSAL1_ADDR/4)] = 0x01d001d0; //빨간색 1줄.
-            ddr3_memory[(2*i) + 1 + (UNIVERSAL1_ADDR/4)] = 0x01d001d0;
-            if(i == 319) ddr3_memory[(2*i) + 2 + (UNIVERSAL1_ADDR/4)] = 0x00000000; //끝났다는것 표시
+        else
+        {
+            ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x01d001d0; // 빨간색 1줄.
+            ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x01d001d0;
+            if (i == 319)
+                ddr3_memory[(2 * i) + 2 + (UNIVERSAL1_ADDR / 4)] = 0x00000000; // 끝났다는것 표시
         }
     }
 
-
-    for (int i = 0; i < 320; i++) //BACKGROUND 1 LAYER 사용. 400 * 320 임. e4 = 100번 반복..
+    for (int i = 0; i < 320; i++) // BACKGROUND 1 LAYER 사용. 400 * 320 임. e4 = 100번 반복..
     {
-        /*if(i == 0) 
+        /*if(i == 0)
         {
             ddr3_memory[(BACKGROUND1_ADDR/4)] = 0x03020103; //red - green - blue
-            ddr3_memory[(BACKGROUND1_ADDR/4) + 1] = 0x03020103; 
+            ddr3_memory[(BACKGROUND1_ADDR/4) + 1] = 0x03020103;
         }*/
-        /*else*/ if(i < 120) 
+        /*else*/ if (i < 120)
         {
-            ddr3_memory[(2*i) + (BACKGROUND1_ADDR/4)] = 0x10e410e4; //하늘색 1줄.
-            ddr3_memory[(2*i) + 1 + (BACKGROUND1_ADDR/4)] = 0x10e410e4;
-
+            ddr3_memory[(2 * i) + (BACKGROUND1_ADDR / 4)] = 0x10e410e4; // 하늘색 1줄.
+            ddr3_memory[(2 * i) + 1 + (BACKGROUND1_ADDR / 4)] = 0x10e410e4;
         }
         else
         {
-            ddr3_memory[(2*i) + (BACKGROUND1_ADDR/4)] = 0x10e410e4; //하늘색 1줄
-            ddr3_memory[(2*i) + 1 + (BACKGROUND1_ADDR/4)] = 0x10e410e4;
-            if(i == 319) ddr3_memory[(2*i) + 2 + (BACKGROUND1_ADDR/4)] = 0x00000000; //끝났다는것 표시
+            ddr3_memory[(2 * i) + (BACKGROUND1_ADDR / 4)] = 0x10e410e4; // 하늘색 1줄
+            ddr3_memory[(2 * i) + 1 + (BACKGROUND1_ADDR / 4)] = 0x10e410e4;
+            if (i == 319)
+                ddr3_memory[(2 * i) + 2 + (BACKGROUND1_ADDR / 4)] = 0x00000000; // 끝났다는것 표시
         }
     }
 
-    for (int i = 0; i < 320; i++) //BACKGROUND 2 LAYER 사용. 400 * 320 임. e4 = 100번 반복..
+    for (int i = 0; i < 320; i++) // BACKGROUND 2 LAYER 사용. 400 * 320 임. e4 = 100번 반복..
     {
-        /*if(i == 0) 
+        /*if(i == 0)
         {
             ddr3_memory[(BACKGROUND2_ADDR/4)] = 0x03020103; //red - green - blue
-            ddr3_memory[(BACKGROUND2_ADDR/4) + 1] = 0x03020103; 
+            ddr3_memory[(BACKGROUND2_ADDR/4) + 1] = 0x03020103;
         }*/
-        /*else*/ if(i < 20) 
+        /*else*/ if (i < 20)
         {
-            ddr3_memory[(2*i) + (BACKGROUND2_ADDR/4)] = 0x11e411e4; //파랑색 반 줄.
-            ddr3_memory[(2*i) + 1 + (BACKGROUND2_ADDR/4)] = 0x10e410e4; //하늘색 반 줄.
-
+            ddr3_memory[(2 * i) + (BACKGROUND2_ADDR / 4)] = 0x11e411e4;     // 파랑색 반 줄.
+            ddr3_memory[(2 * i) + 1 + (BACKGROUND2_ADDR / 4)] = 0x10e410e4; // 하늘색 반 줄.
         }
-        else if(i < 50)
+        else if (i < 50)
         {
-            ddr3_memory[(2*i) + (BACKGROUND2_ADDR/4)] = 0x01e401e4; //빨간색 반 줄
-            ddr3_memory[(2*i) + 1 + (BACKGROUND2_ADDR/4)] = 0x02e402e4; //초록색 반 줄
+            ddr3_memory[(2 * i) + (BACKGROUND2_ADDR / 4)] = 0x01e401e4;     // 빨간색 반 줄
+            ddr3_memory[(2 * i) + 1 + (BACKGROUND2_ADDR / 4)] = 0x02e402e4; // 초록색 반 줄
         }
         else
         {
-            ddr3_memory[(2*i) + (BACKGROUND2_ADDR/4)] = 0x13e413e4; //노란색 1줄
-            ddr3_memory[(2*i) + 1 + (BACKGROUND2_ADDR/4)] = 0x13e413e4;
-            if(i == 319) ddr3_memory[(2*i) + 2 + (BACKGROUND2_ADDR/4)] = 0x00000000; //끝났다는것 표시
+            ddr3_memory[(2 * i) + (BACKGROUND2_ADDR / 4)] = 0x13e413e4; // 노란색 1줄
+            ddr3_memory[(2 * i) + 1 + (BACKGROUND2_ADDR / 4)] = 0x13e413e4;
+            if (i == 319)
+                ddr3_memory[(2 * i) + 2 + (BACKGROUND2_ADDR / 4)] = 0x00000000; // 끝났다는것 표시
         }
     }
-
-
-
-
-
 
     // Dump first few words of BACKGROUND1 to verify RLE packing / endianness
     /*std::cout << "\n=== BACKGROUND1 RLE DATA ===\n";
@@ -595,13 +589,13 @@ int main(int argc, char **argv)
 
     dut->Background1_SCX = 0;
     dut->Background1_SCY = 0;
-    dut->Background1_a = 8;
-    dut->Background1_z = 2;
+    dut->Background1_a = 16;
+    dut->Background1_z = 1;
 
     dut->Background2_SCX = 40;
     dut->Background2_SCY = 0;
-    dut->Background2_a = 16;
-    dut->Background2_z = 1; 
+    dut->Background2_a = 12;
+    dut->Background2_z = 2;
 
     dut->Character1_WX = 0;
     dut->Character1_WY = 0;
@@ -633,12 +627,12 @@ int main(int argc, char **argv)
     dut->Status_a = 16;
     dut->Status_z = 0;
 
-    dut->Universal1_WX = 10;
+    dut->Universal1_WX = 0;
     dut->Universal1_WY = 0;
     dut->Universal1_a = 5;
-    dut->Universal1_z = 0;
+    dut->Universal1_z = 3;
 
-    dut->Universal2_WX = 0;
+    dut->Universal2_WX = 10;
     dut->Universal2_WY = 0;
     dut->Universal2_a = 16;
     dut->Universal2_z = 0;
@@ -657,9 +651,17 @@ int main(int argc, char **argv)
     trace->dump(main_time++);
 
     dut->clk = 0;
-    dut->PPU_start = 0; //PPU_START는 한클럭만 신호를 주고 바로 내림.
+    dut->PPU_start = 0; // PPU_START는 한클럭만 신호를 주고 바로 내림.
     dut->eval();
     trace->dump(main_time++);
+
+    // 🚀 [추가] 메인 루프 진입 전, 다음 클럭에 출력될 BRAM 데이터를 담아둘 버퍼 선언
+    uint64_t next_bram7_dout_b = 0;
+    uint64_t next_bram8_dout_b = 0;
+    uint64_t next_bram9_dout_b = 0;
+    uint64_t next_bram10_dout_b = 0;
+    uint64_t next_bram11_dout_b = 0;
+    uint64_t next_bram12_dout_b = 0;
 
     while (!Verilated::gotFinish() && main_time < 2000000)
     {
@@ -669,12 +671,20 @@ int main(int argc, char **argv)
         // ----------------------------------------------------
         dut->clk = 1;
         dut->eval();
-        // (removed real-time pixel streaming from copied project)
+        // 🚀 [추가] 실제 BRAM처럼 상승 에지 직후에 새로운 데이터 출력 (Hold time 모사)
+        dut->BRAM7_dout_b = next_bram7_dout_b;
+        dut->BRAM8_dout_b = next_bram8_dout_b;
+        dut->BRAM9_dout_b = next_bram9_dout_b;
+        dut->BRAM10_dout_b = next_bram10_dout_b;
+        dut->BRAM11_dout_b = next_bram11_dout_b;
+        dut->BRAM12_dout_b = next_bram12_dout_b;
+        // BRAM 출력이 갱신되었으므로, 이 값들이 조합회로를 타고 전파되도록 한 번 더 eval()
+        dut->eval();
 
         dut->LUT_data_out1 = lut[dut->LUT_addr_r1]; // lut 배열의 하위 18비트만 dut->LUT_data_out1에 들어가게 됨.
         dut->LUT_data_out2 = lut[dut->LUT_addr_r2];
         dut->eval();
-        if(main_time > 00000 && main_time < 10000) //딱 10000 클럭만 확인할 예정.
+        if (main_time > 00000 && main_time < 10000) // 딱 10000 클럭만 확인할 예정.
         {
             trace->dump(main_time);
         }
@@ -684,6 +694,7 @@ int main(int argc, char **argv)
         {
             lut[dut->LUT_addr_w] = dut->LUT_data_in;
         } // 지금은 LUT에 쓰기는 사용되지 않음.
+
 
         // ----------------------------------------------------
         // [2단계] 클럭 하강 에지 (입력 신호 주입)
@@ -708,11 +719,11 @@ int main(int argc, char **argv)
                 {
                     printf("EMEM READ: addr=0x%08X rdata=0x%08X (Transparent Pixel) main_time: %lu\n", emem_current_addr, dut->EMEM_rdata, main_time);
                 }*/
-               if(dut->EMEM_addr == 0x00000 || dut->EMEM_addr == 0x02000 || dut->EMEM_addr == 0x04000 || dut->EMEM_addr == 0x06000 || dut->EMEM_addr == 0x08000 || dut->EMEM_addr == 0x0A000 || dut->EMEM_addr == 0x0C000 || dut->EMEM_addr == 0x0E000 || dut->EMEM_addr == 0x10000 || dut->EMEM_addr == 0x12000)
+                if (dut->EMEM_addr == 0x00000 || dut->EMEM_addr == 0x02000 || dut->EMEM_addr == 0x04000 || dut->EMEM_addr == 0x06000 || dut->EMEM_addr == 0x08000 || dut->EMEM_addr == 0x0A000 || dut->EMEM_addr == 0x0C000 || dut->EMEM_addr == 0x0E000 || dut->EMEM_addr == 0x10000 || dut->EMEM_addr == 0x12000)
                 {
                     printf("EMEM READ: addr=0x%08X rdata=0x%08X (Background1 RLE Data) main_time: %lu\n", dut->EMEM_addr, dut->EMEM_rdata, main_time);
                 }
-                
+
                 emem_burst_counter = dut->EMEM_burst_en ? dut->EMEM_burst_len : 0;
                 // std::cout << "EMEM_REQ addr=0x" << std::hex << dut->EMEM_addr << std::dec
                 //            << " idx=" << emem_current_addr << " rdata=0x" << std::hex << dut->EMEM_rdata << std::dec << std::endl;
@@ -768,22 +779,22 @@ int main(int argc, char **argv)
         if (dut->BRAM12_en_a && dut->BRAM12_we_a)
             bram12[dut->BRAM12_addr_a] = dut->BRAM12_din_a;
 
-        // --- BRAM 읽기 동작 (1클럭 셋업) ---
+        // 🚀 [수정] BRAM 읽기 동작 (1클럭 셋업) -> 즉시 반영하지 않고 next_* 버퍼에 저장!
         if (dut->BRAM7_en_b)
-            dut->BRAM7_dout_b = bram7[dut->BRAM7_addr_b];
+            next_bram7_dout_b = bram7[dut->BRAM7_addr_b];
         if (dut->BRAM8_en_b)
-            dut->BRAM8_dout_b = bram8[dut->BRAM8_addr_b];
+            next_bram8_dout_b = bram8[dut->BRAM8_addr_b];
         if (dut->BRAM9_en_b)
-            dut->BRAM9_dout_b = bram9[dut->BRAM9_addr_b];
+            next_bram9_dout_b = bram9[dut->BRAM9_addr_b];
         if (dut->BRAM10_en_b)
-            dut->BRAM10_dout_b = bram10[dut->BRAM10_addr_b];
+            next_bram10_dout_b = bram10[dut->BRAM10_addr_b];
         if (dut->BRAM11_en_b)
-            dut->BRAM11_dout_b = bram11[dut->BRAM11_addr_b];
+            next_bram11_dout_b = bram11[dut->BRAM11_addr_b];
         if (dut->BRAM12_en_b)
-            dut->BRAM12_dout_b = bram12[dut->BRAM12_addr_b];
+            next_bram12_dout_b = bram12[dut->BRAM12_addr_b];
 
         dut->eval();
-        if(main_time > 00000 && main_time < 10000) //딱 10000클럭만 확인할 예정.
+        if (main_time > 00000 && main_time < 10000) // 딱 10000클럭만 확인할 예정.
         {
             trace->dump(main_time); // 반 클럭 진행 완료 기록
         }

@@ -90,10 +90,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             this->__PVT__compressed_fifo_r_state_next = 1U;
         }
     }
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
-    }
     this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
                               | (0U == (IData)(this->__PVT__decompress_state)));
     this->Compressed_FIFO_ena = 1U;
@@ -1147,10 +1143,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
              & (1U == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)))) {
             this->__PVT__compressed_fifo_r_state_next = 1U;
         }
-    }
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
     }
     this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
                               | (0U == (IData)(this->__PVT__decompress_state)));
@@ -2210,10 +2202,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
             this->__PVT__compressed_fifo_r_state_next = 1U;
         }
     }
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
-    }
     this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
                               | (0U == (IData)(this->__PVT__decompress_state)));
     this->Compressed_FIFO_ena = 1U;
@@ -3271,10 +3259,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
              & (3U == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)))) {
             this->__PVT__compressed_fifo_r_state_next = 1U;
         }
-    }
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
     }
     this->__PVT__w_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
                               | (0U == (IData)(this->__PVT__decompress_state)));
@@ -4338,10 +4322,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                               | (0U == (IData)(this->__PVT__decompress_state)));
     this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
                               | (0U == (IData)(this->__PVT__decompress_state)));
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
-    }
     this->Compressed_FIFO_ena = 1U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Compressed_FIFO_ena = 0U;
@@ -5398,10 +5378,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                               | (0U == (IData)(this->__PVT__decompress_state)));
     this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
                               | (0U == (IData)(this->__PVT__decompress_state)));
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
-    }
     this->Compressed_FIFO_ena = 1U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Compressed_FIFO_ena = 0U;
@@ -6457,10 +6433,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
              & (2U == (IData)(vlTOPp->PPU_TOP__DOT__Clk_Counter)))) {
             this->__PVT__compressed_fifo_r_state_next = 1U;
         }
-    }
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
     }
     this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
                               | (0U == (IData)(this->__PVT__decompress_state)));
@@ -7524,10 +7496,6 @@ void VPPU_TOP_Decompresser::_settle__TOP__PPU_TOP__DOT__u_pixel_fifo__DOT__u_dec
                               | (0U == (IData)(this->__PVT__decompress_state)));
     this->__PVT__r_end_req = ((2U == (IData)(this->__PVT__decompress_state)) 
                               | (0U == (IData)(this->__PVT__decompress_state)));
-    this->Decompresser_is_IDLE = 0U;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->Decompresser_is_IDLE = 1U;
-    }
     this->Compressed_FIFO_ena = 1U;
     if ((0U == (IData)(this->__PVT__r_state))) {
         this->Compressed_FIFO_ena = 0U;

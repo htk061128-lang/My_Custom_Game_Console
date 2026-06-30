@@ -127,29 +127,29 @@ always @(*) begin
     rgb_convert_req = 0;
 
     if(is_background) begin //SCX, SCY (0 ~ 80)
-        if((read_pixel_y[8:0] >= SCY[8:0]) && (read_pixel_y[8:0] <= SCY[8:0] + 239)) begin
-            valid_pixel_check[0] = ({read_pixel_x, 3'b000} >= SCX[8:0]) && ({read_pixel_x, 3'b000} <= SCX[8:0] + 319); //SCX는 0 ~ 80까지의 값이기 때문에 319를 더해도 9비트 안에 충분히 들어감.
-            valid_pixel_check[1] = ({read_pixel_x, 3'b001} >= SCX[8:0]) && ({read_pixel_x, 3'b001} <= SCX[8:0] + 319);
-            valid_pixel_check[2] = ({read_pixel_x, 3'b010} >= SCX[8:0]) && ({read_pixel_x, 3'b010} <= SCX[8:0] + 319);
-            valid_pixel_check[3] = ({read_pixel_x, 3'b011} >= SCX[8:0]) && ({read_pixel_x, 3'b011} <= SCX[8:0] + 319);
-            valid_pixel_check[4] = ({read_pixel_x, 3'b100} >= SCX[8:0]) && ({read_pixel_x, 3'b100} <= SCX[8:0] + 319);
-            valid_pixel_check[5] = ({read_pixel_x, 3'b101} >= SCX[8:0]) && ({read_pixel_x, 3'b101} <= SCX[8:0] + 319);
-            valid_pixel_check[6] = ({read_pixel_x, 3'b110} >= SCX[8:0]) && ({read_pixel_x, 3'b110} <= SCX[8:0] + 319);
-            valid_pixel_check[7] = ({read_pixel_x, 3'b111} >= SCX[8:0]) && ({read_pixel_x, 3'b111} <= SCX[8:0] + 319);
+        if(({7'b0, read_pixel_y[8:0]} >= SCY[15:0]) && ({7'b0, read_pixel_y[8:0]} <= SCY[15:0] + 16'd239)) begin
+            valid_pixel_check[0] = ({7'b0, read_pixel_x[5:0], 3'b000} >= SCX[15:0]) && ({7'b0, read_pixel_x[5:0], 3'b000} <= SCX[15:0] + 16'd319); //SCX는 0 ~ 80까지의 값이기 때문에 319를 더해도 9비트 안에 충분히 들어감.
+            valid_pixel_check[1] = ({7'b0, read_pixel_x[5:0], 3'b001} >= SCX[15:0]) && ({7'b0, read_pixel_x[5:0], 3'b001} <= SCX[15:0] + 16'd319);
+            valid_pixel_check[2] = ({7'b0, read_pixel_x[5:0], 3'b010} >= SCX[15:0]) && ({7'b0, read_pixel_x[5:0], 3'b010} <= SCX[15:0] + 16'd319);
+            valid_pixel_check[3] = ({7'b0, read_pixel_x[5:0], 3'b011} >= SCX[15:0]) && ({7'b0, read_pixel_x[5:0], 3'b011} <= SCX[15:0] + 16'd319);
+            valid_pixel_check[4] = ({7'b0, read_pixel_x[5:0], 3'b100} >= SCX[15:0]) && ({7'b0, read_pixel_x[5:0], 3'b100} <= SCX[15:0] + 16'd319);
+            valid_pixel_check[5] = ({7'b0, read_pixel_x[5:0], 3'b101} >= SCX[15:0]) && ({7'b0, read_pixel_x[5:0], 3'b101} <= SCX[15:0] + 16'd319);
+            valid_pixel_check[6] = ({7'b0, read_pixel_x[5:0], 3'b110} >= SCX[15:0]) && ({7'b0, read_pixel_x[5:0], 3'b110} <= SCX[15:0] + 16'd319);
+            valid_pixel_check[7] = ({7'b0, read_pixel_x[5:0], 3'b111} >= SCX[15:0]) && ({7'b0, read_pixel_x[5:0], 3'b111} <= SCX[15:0] + 16'd319);
         end
         else begin
             valid_pixel_check[7:0] = 8'b00000000;
         end
     end
     else begin //WX, WY (전부 signed로 해석해야 함!!!)
-        valid_pixel_check[0] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b000}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b000}) <= 319);
-        valid_pixel_check[1] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b001}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b001}) <= 319);
-        valid_pixel_check[2] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b010}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b010}) <= 319);
-        valid_pixel_check[3] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b011}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b011}) <= 319);
-        valid_pixel_check[4] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b100}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b100}) <= 319);
-        valid_pixel_check[5] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b101}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b101}) <= 319);
-        valid_pixel_check[6] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b110}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b110}) <= 319);
-        valid_pixel_check[7] = ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[9:0]) + $signed({1'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b111}) >= 0) && ($signed(WX[9:0]) + $signed({read_pixel_x[5:0], 3'b111}) <= 319);
+        valid_pixel_check[0] = ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b000}) >= 0) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b000}) <= 319);
+        valid_pixel_check[1] = ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b001}) >= 0) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b001}) <= 319);
+        valid_pixel_check[2] = ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b010}) >= 0) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b010}) <= 319);
+        valid_pixel_check[3] = ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b011}) >= 0) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b011}) <= 319);
+        valid_pixel_check[4] = ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b100}) >= 0) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b100}) <= 319);
+        valid_pixel_check[5] = ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b101}) >= 0) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b101}) <= 319);
+        valid_pixel_check[6] = ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b110}) >= 0) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b110}) <= 319);
+        valid_pixel_check[7] = ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) >= 0) && ($signed(WY[15:0]) + $signed({7'b0, read_pixel_y[8:0]}) <= 239) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b111}) >= 0) && ($signed(WX[15:0]) + $signed({7'b0, read_pixel_x[5:0], 3'b111}) <= 319);
     end
 
     case(fifo_r_state) 
