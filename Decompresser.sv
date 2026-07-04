@@ -789,7 +789,7 @@ always @(posedge clk or negedge resetn) begin
         compressed_fifo_r_state <= compressed_fifo_r_state_next;
         decompressed_fifo_r_state <= decompressed_fifo_r_state_next;
 
-        if(r_state == IDLE && w_state == IDLE && decompress_state == IDLE) begin //레지스터들 다 초기화 해줘야 함.
+        if(r_state == IDLE && w_state == IDLE && decompress_state == IDLE && PPU_start) begin //IDLE 상태일때 PPU_start가 올때 레지스터들 다 초기화 해줘야 함. 그 전에는 초기화 시키면 안됨. 아직 Pixel_Reader가 다 읽지 않았을 수 있음.
             fifo_front_128[7:0] <= 0;
             fifo_front_256[8:0] <= 0;
             fifo_rear_128[7:0] <= 0;

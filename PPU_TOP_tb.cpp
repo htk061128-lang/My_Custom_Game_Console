@@ -350,6 +350,16 @@ int main(int argc, char **argv)
             ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x12d012d0; // 초록색 1줄.
             ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x12d012d0;
         }
+        else if (i == 235) //236번째 줄
+        {
+            ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x08d008d0; // 회색 1줄.
+            ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x08d008d0;
+        }
+        else if (i == 236) //237번째 줄
+        {
+            ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x09d009d0; // 흰색 1줄.
+            ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x09d009d0;
+        }
         else
         {
             ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x01d001d0; // 빨간색 1줄.
@@ -627,9 +637,9 @@ int main(int argc, char **argv)
     dut->Status_a = 16;
     dut->Status_z = 0;
 
-    dut->Universal1_WX = 0;
-    dut->Universal1_WY = 0;
-    dut->Universal1_a = 5;
+    dut->Universal1_WX = 40;
+    dut->Universal1_WY = 30;
+    dut->Universal1_a = 16;
     dut->Universal1_z = 3;
 
     dut->Universal2_WX = 10;
@@ -663,6 +673,10 @@ int main(int argc, char **argv)
     uint64_t next_bram11_dout_b = 0;
     uint64_t next_bram12_dout_b = 0;
 
+    int z1 = 0;
+    int z2 = 0;
+    int z3 = 0;
+
     while (!Verilated::gotFinish() && main_time < 2000000)
     {
 
@@ -684,7 +698,7 @@ int main(int argc, char **argv)
         dut->LUT_data_out1 = lut[dut->LUT_addr_r1]; // lut 배열의 하위 18비트만 dut->LUT_data_out1에 들어가게 됨.
         dut->LUT_data_out2 = lut[dut->LUT_addr_r2];
         dut->eval();
-        if (main_time > 00000 && main_time < 10000) // 딱 10000 클럭만 확인할 예정.
+        if (main_time > 395000 && main_time < 405000) // 딱 10000 클럭만 확인할 예정.
         {
             trace->dump(main_time);
         }
@@ -695,6 +709,30 @@ int main(int argc, char **argv)
             lut[dut->LUT_addr_w] = dut->LUT_data_in;
         } // 지금은 LUT에 쓰기는 사용되지 않음.
 
+        if(dut->PPU_TOP__DOT__u_proc__DOT__Z3_valid && dut->PPU_TOP__DOT__u_proc__DOT__Z3_ready) 
+        {
+            z3++;
+            if(z3 == 75200) //235줄의 마지막 픽셀
+            {
+                std::cout << std::hex << dut->PPU_TOP__DOT__u_proc__DOT__Z3_RGB << std::dec  << "  main_time: " << main_time << std::endl;
+            }
+            if(z3 == 75520) //236줄의 마지막 픽셀
+            {
+                std::cout << std::hex << dut->PPU_TOP__DOT__u_proc__DOT__Z3_RGB << std::dec << std::endl;
+            }
+            if(z3 == 75840) //237줄의 마지막 픽셀
+            {
+                std::cout << std::hex << dut->PPU_TOP__DOT__u_proc__DOT__Z3_RGB << std::dec << std::endl;
+            }
+        }
+        if(dut->PPU_TOP__DOT__u_proc__DOT__Z2_valid && dut->PPU_TOP__DOT__u_proc__DOT__Z2_ready) 
+        {
+            z2++;
+        }
+        if(dut->PPU_TOP__DOT__u_proc__DOT__Z1_valid && dut->PPU_TOP__DOT__u_proc__DOT__Z1_ready) 
+        {
+            z1++;
+        }
 
         // ----------------------------------------------------
         // [2단계] 클럭 하강 에지 (입력 신호 주입)
@@ -794,7 +832,7 @@ int main(int argc, char **argv)
             next_bram12_dout_b = bram12[dut->BRAM12_addr_b];
 
         dut->eval();
-        if (main_time > 00000 && main_time < 10000) // 딱 10000클럭만 확인할 예정.
+        if (main_time > 395000 && main_time < 405000) // 딱 10000클럭만 확인할 예정.
         {
             trace->dump(main_time); // 반 클럭 진행 완료 기록
         }
@@ -837,6 +875,9 @@ int main(int argc, char **argv)
     }
 
     std::cout << "Captured " << final_pixels.size() << " final pixels." << std::endl; // 총 76800개의 픽셀을 캡쳐해야 함. 이것보다 작으면 문제 있는거임.
+    std::cout << "z1 pixel: " << z1 << std::endl;
+    std::cout << "z2 pixel: " << z2 << std::endl;
+    std::cout << "z3 pixel: " << z3 << std::endl;
 
     // --- SDL2: display captured frame at 2x scale (640x480) ---
     if (final_pixels.size() >= 320 * 240)

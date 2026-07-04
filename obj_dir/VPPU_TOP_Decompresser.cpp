@@ -24,18 +24,16 @@ VL_INLINE_OPT void VPPU_TOP_Decompresser::_sequent__TOP__PPU_TOP__DOT__u_pixel_f
     this->__Vdly__decompressed_FIFO_reg_counter = this->__PVT__decompressed_FIFO_reg_counter;
     this->__Vdly__fifo_rear_128 = this->__PVT__fifo_rear_128;
     this->__Vdly__fifo_front_128 = this->__PVT__fifo_front_128;
+    this->__PVT__compressed_fifo_r_state = ((IData)(vlTOPp->resetn) 
+                                            & (IData)(this->__PVT__compressed_fifo_r_state_next));
+    this->__PVT__decompressed_fifo_r_state = ((IData)(vlTOPp->resetn)
+                                               ? (IData)(this->__PVT__decompressed_fifo_r_state_next)
+                                               : 0U);
     if (vlTOPp->resetn) {
-        this->__PVT__decompressed_fifo_r_state = this->__PVT__decompressed_fifo_r_state_next;
-        this->__PVT__compressed_fifo_r_state = ((IData)(this->__PVT__compressed_fifo_r_state_next) 
-                                                & 1U);
-    } else {
-        this->__PVT__decompressed_fifo_r_state = 0U;
-        this->__PVT__compressed_fifo_r_state = 0U;
-    }
-    if (vlTOPp->resetn) {
-        if ((((0U == (IData)(this->__PVT__r_state)) 
-              & (0U == (IData)(this->__PVT__w_state))) 
-             & (0U == (IData)(this->__PVT__decompress_state)))) {
+        if (((((0U == (IData)(this->__PVT__r_state)) 
+               & (0U == (IData)(this->__PVT__w_state))) 
+              & (0U == (IData)(this->__PVT__decompress_state))) 
+             & (IData)(vlTOPp->PPU_start))) {
             this->__Vdly__fifo_front_128 = 0U;
             this->__Vdly__fifo_front_256 = 0U;
             this->__Vdly__fifo_rear_128 = 0U;
@@ -1269,18 +1267,16 @@ VL_INLINE_OPT void VPPU_TOP_Decompresser::_sequent__TOP__PPU_TOP__DOT__u_pixel_f
     this->__Vdly__decompressed_FIFO_reg_counter = this->__PVT__decompressed_FIFO_reg_counter;
     this->__Vdly__fifo_rear_128 = this->__PVT__fifo_rear_128;
     this->__Vdly__fifo_front_128 = this->__PVT__fifo_front_128;
+    this->__PVT__compressed_fifo_r_state = ((IData)(vlTOPp->resetn) 
+                                            & (IData)(this->__PVT__compressed_fifo_r_state_next));
+    this->__PVT__decompressed_fifo_r_state = ((IData)(vlTOPp->resetn)
+                                               ? (IData)(this->__PVT__decompressed_fifo_r_state_next)
+                                               : 0U);
     if (vlTOPp->resetn) {
-        this->__PVT__decompressed_fifo_r_state = this->__PVT__decompressed_fifo_r_state_next;
-        this->__PVT__compressed_fifo_r_state = ((IData)(this->__PVT__compressed_fifo_r_state_next) 
-                                                & 1U);
-    } else {
-        this->__PVT__decompressed_fifo_r_state = 0U;
-        this->__PVT__compressed_fifo_r_state = 0U;
-    }
-    if (vlTOPp->resetn) {
-        if ((((0U == (IData)(this->__PVT__r_state)) 
-              & (0U == (IData)(this->__PVT__w_state))) 
-             & (0U == (IData)(this->__PVT__decompress_state)))) {
+        if (((((0U == (IData)(this->__PVT__r_state)) 
+               & (0U == (IData)(this->__PVT__w_state))) 
+              & (0U == (IData)(this->__PVT__decompress_state))) 
+             & (IData)(vlTOPp->PPU_start))) {
             this->__Vdly__fifo_front_128 = 0U;
             this->__Vdly__fifo_front_256 = 0U;
             this->__Vdly__fifo_rear_128 = 0U;
@@ -2518,18 +2514,16 @@ VL_INLINE_OPT void VPPU_TOP_Decompresser::_sequent__TOP__PPU_TOP__DOT__u_pixel_f
     this->__Vdly__decompressed_FIFO_reg_counter = this->__PVT__decompressed_FIFO_reg_counter;
     this->__Vdly__fifo_rear_128 = this->__PVT__fifo_rear_128;
     this->__Vdly__fifo_front_128 = this->__PVT__fifo_front_128;
+    this->__PVT__compressed_fifo_r_state = ((IData)(vlTOPp->resetn) 
+                                            & (IData)(this->__PVT__compressed_fifo_r_state_next));
+    this->__PVT__decompressed_fifo_r_state = ((IData)(vlTOPp->resetn)
+                                               ? (IData)(this->__PVT__decompressed_fifo_r_state_next)
+                                               : 0U);
     if (vlTOPp->resetn) {
-        this->__PVT__decompressed_fifo_r_state = this->__PVT__decompressed_fifo_r_state_next;
-        this->__PVT__compressed_fifo_r_state = ((IData)(this->__PVT__compressed_fifo_r_state_next) 
-                                                & 1U);
-    } else {
-        this->__PVT__decompressed_fifo_r_state = 0U;
-        this->__PVT__compressed_fifo_r_state = 0U;
-    }
-    if (vlTOPp->resetn) {
-        if ((((0U == (IData)(this->__PVT__r_state)) 
-              & (0U == (IData)(this->__PVT__w_state))) 
-             & (0U == (IData)(this->__PVT__decompress_state)))) {
+        if (((((0U == (IData)(this->__PVT__r_state)) 
+               & (0U == (IData)(this->__PVT__w_state))) 
+              & (0U == (IData)(this->__PVT__decompress_state))) 
+             & (IData)(vlTOPp->PPU_start))) {
             this->__Vdly__fifo_front_128 = 0U;
             this->__Vdly__fifo_front_256 = 0U;
             this->__Vdly__fifo_rear_128 = 0U;
@@ -3767,18 +3761,16 @@ VL_INLINE_OPT void VPPU_TOP_Decompresser::_sequent__TOP__PPU_TOP__DOT__u_pixel_f
     this->__Vdly__decompressed_FIFO_reg_counter = this->__PVT__decompressed_FIFO_reg_counter;
     this->__Vdly__fifo_rear_128 = this->__PVT__fifo_rear_128;
     this->__Vdly__fifo_front_128 = this->__PVT__fifo_front_128;
+    this->__PVT__compressed_fifo_r_state = ((IData)(vlTOPp->resetn) 
+                                            & (IData)(this->__PVT__compressed_fifo_r_state_next));
+    this->__PVT__decompressed_fifo_r_state = ((IData)(vlTOPp->resetn)
+                                               ? (IData)(this->__PVT__decompressed_fifo_r_state_next)
+                                               : 0U);
     if (vlTOPp->resetn) {
-        this->__PVT__decompressed_fifo_r_state = this->__PVT__decompressed_fifo_r_state_next;
-        this->__PVT__compressed_fifo_r_state = ((IData)(this->__PVT__compressed_fifo_r_state_next) 
-                                                & 1U);
-    } else {
-        this->__PVT__decompressed_fifo_r_state = 0U;
-        this->__PVT__compressed_fifo_r_state = 0U;
-    }
-    if (vlTOPp->resetn) {
-        if ((((0U == (IData)(this->__PVT__r_state)) 
-              & (0U == (IData)(this->__PVT__w_state))) 
-             & (0U == (IData)(this->__PVT__decompress_state)))) {
+        if (((((0U == (IData)(this->__PVT__r_state)) 
+               & (0U == (IData)(this->__PVT__w_state))) 
+              & (0U == (IData)(this->__PVT__decompress_state))) 
+             & (IData)(vlTOPp->PPU_start))) {
             this->__Vdly__fifo_front_128 = 0U;
             this->__Vdly__fifo_front_256 = 0U;
             this->__Vdly__fifo_rear_128 = 0U;
@@ -5016,18 +5008,16 @@ VL_INLINE_OPT void VPPU_TOP_Decompresser::_sequent__TOP__PPU_TOP__DOT__u_pixel_f
     this->__Vdly__decompressed_FIFO_reg_counter = this->__PVT__decompressed_FIFO_reg_counter;
     this->__Vdly__fifo_rear_128 = this->__PVT__fifo_rear_128;
     this->__Vdly__fifo_front_128 = this->__PVT__fifo_front_128;
+    this->__PVT__compressed_fifo_r_state = ((IData)(vlTOPp->resetn) 
+                                            & (IData)(this->__PVT__compressed_fifo_r_state_next));
+    this->__PVT__decompressed_fifo_r_state = ((IData)(vlTOPp->resetn)
+                                               ? (IData)(this->__PVT__decompressed_fifo_r_state_next)
+                                               : 0U);
     if (vlTOPp->resetn) {
-        this->__PVT__decompressed_fifo_r_state = this->__PVT__decompressed_fifo_r_state_next;
-        this->__PVT__compressed_fifo_r_state = ((IData)(this->__PVT__compressed_fifo_r_state_next) 
-                                                & 1U);
-    } else {
-        this->__PVT__decompressed_fifo_r_state = 0U;
-        this->__PVT__compressed_fifo_r_state = 0U;
-    }
-    if (vlTOPp->resetn) {
-        if ((((0U == (IData)(this->__PVT__r_state)) 
-              & (0U == (IData)(this->__PVT__w_state))) 
-             & (0U == (IData)(this->__PVT__decompress_state)))) {
+        if (((((0U == (IData)(this->__PVT__r_state)) 
+               & (0U == (IData)(this->__PVT__w_state))) 
+              & (0U == (IData)(this->__PVT__decompress_state))) 
+             & (IData)(vlTOPp->PPU_start))) {
             this->__Vdly__fifo_front_128 = 0U;
             this->__Vdly__fifo_front_256 = 0U;
             this->__Vdly__fifo_rear_128 = 0U;
@@ -6263,18 +6253,16 @@ VL_INLINE_OPT void VPPU_TOP_Decompresser::_sequent__TOP__PPU_TOP__DOT__u_pixel_f
     this->__Vdly__decompressed_FIFO_reg_counter = this->__PVT__decompressed_FIFO_reg_counter;
     this->__Vdly__fifo_rear_128 = this->__PVT__fifo_rear_128;
     this->__Vdly__fifo_front_128 = this->__PVT__fifo_front_128;
+    this->__PVT__compressed_fifo_r_state = ((IData)(vlTOPp->resetn) 
+                                            & (IData)(this->__PVT__compressed_fifo_r_state_next));
+    this->__PVT__decompressed_fifo_r_state = ((IData)(vlTOPp->resetn)
+                                               ? (IData)(this->__PVT__decompressed_fifo_r_state_next)
+                                               : 0U);
     if (vlTOPp->resetn) {
-        this->__PVT__decompressed_fifo_r_state = this->__PVT__decompressed_fifo_r_state_next;
-        this->__PVT__compressed_fifo_r_state = ((IData)(this->__PVT__compressed_fifo_r_state_next) 
-                                                & 1U);
-    } else {
-        this->__PVT__decompressed_fifo_r_state = 0U;
-        this->__PVT__compressed_fifo_r_state = 0U;
-    }
-    if (vlTOPp->resetn) {
-        if ((((0U == (IData)(this->__PVT__r_state)) 
-              & (0U == (IData)(this->__PVT__w_state))) 
-             & (0U == (IData)(this->__PVT__decompress_state)))) {
+        if (((((0U == (IData)(this->__PVT__r_state)) 
+               & (0U == (IData)(this->__PVT__w_state))) 
+              & (0U == (IData)(this->__PVT__decompress_state))) 
+             & (IData)(vlTOPp->PPU_start))) {
             this->__Vdly__fifo_front_128 = 0U;
             this->__Vdly__fifo_front_256 = 0U;
             this->__Vdly__fifo_rear_128 = 0U;
@@ -7514,18 +7502,16 @@ VL_INLINE_OPT void VPPU_TOP_Decompresser::_sequent__TOP__PPU_TOP__DOT__u_pixel_f
     this->__Vdly__decompressed_FIFO_reg_counter = this->__PVT__decompressed_FIFO_reg_counter;
     this->__Vdly__fifo_rear_128 = this->__PVT__fifo_rear_128;
     this->__Vdly__fifo_front_128 = this->__PVT__fifo_front_128;
+    this->__PVT__compressed_fifo_r_state = ((IData)(vlTOPp->resetn) 
+                                            & (IData)(this->__PVT__compressed_fifo_r_state_next));
+    this->__PVT__decompressed_fifo_r_state = ((IData)(vlTOPp->resetn)
+                                               ? (IData)(this->__PVT__decompressed_fifo_r_state_next)
+                                               : 0U);
     if (vlTOPp->resetn) {
-        this->__PVT__decompressed_fifo_r_state = this->__PVT__decompressed_fifo_r_state_next;
-        this->__PVT__compressed_fifo_r_state = ((IData)(this->__PVT__compressed_fifo_r_state_next) 
-                                                & 1U);
-    } else {
-        this->__PVT__decompressed_fifo_r_state = 0U;
-        this->__PVT__compressed_fifo_r_state = 0U;
-    }
-    if (vlTOPp->resetn) {
-        if ((((0U == (IData)(this->__PVT__r_state)) 
-              & (0U == (IData)(this->__PVT__w_state))) 
-             & (0U == (IData)(this->__PVT__decompress_state)))) {
+        if (((((0U == (IData)(this->__PVT__r_state)) 
+               & (0U == (IData)(this->__PVT__w_state))) 
+              & (0U == (IData)(this->__PVT__decompress_state))) 
+             & (IData)(vlTOPp->PPU_start))) {
             this->__Vdly__fifo_front_128 = 0U;
             this->__Vdly__fifo_front_256 = 0U;
             this->__Vdly__fifo_rear_128 = 0U;
