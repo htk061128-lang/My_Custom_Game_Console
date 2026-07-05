@@ -10,7 +10,8 @@ module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트
     input PPU__pixel_valid,
     input [17:0] PPU_pixel_RGB, //PPU가 1차 완성한 Pixel. 6bit * 3 = 18bit
 
-    input [7:0] Line1_visible_number, //0 ~ 40 까지의 값을 가져야 함.
+    input [7:0] Line0_visible_number, //0 ~ 40 까지의 값을 가져야 함.
+    input [7:0] Line1_visible_number, 
     input [7:0] Line2_visible_number,
     input [7:0] Line3_visible_number,
     input [7:0] Line4_visible_number,
@@ -24,7 +25,6 @@ module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트
     input [7:0] Line12_visible_number,
     input [7:0] Line13_visible_number,
     input [7:0] Line14_visible_number,
-    input [7:0] Line15_visible_number,
 
     //BRAM들은 미리 초기화 되어 있어야 함. 
     // BRAM4 (폰트 저장용) 인터페이스 - True Dual Port //초성 1~6벌 저장.
@@ -86,34 +86,24 @@ module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트
     output reg [31:0] BRAM13_din_b,   // Port B Data Input
     input      [31:0] BRAM13_dout_b,   // Port B Data Output
 
-    //BRAM14 (PPU가 1차 완성한 pixel RGB 저장용) - Simple Dual Port
-    // Write Port (Port A) - 이 포트를 이용해서 PPU가 1차 완성한 pixel RGB를 저장함. 한 클럭만 PPU_pixel_valid가 나오므로 바로 즉시 저장해야 함.
-    output reg      BRAM14_en_a,   // Write Enable
-    output reg [8:0]  BRAM14_addr_a,
-    output reg [71:0] BRAM14_din_a,
-    // Read Port (Port B) 
-    output reg       BRAM14_en_b,   // Read Enable
-    output reg [8:0]  BRAM14_addr_b,
-    input  [71:0] BRAM14_dout_b,
-
-    //BRAM15 (80 * 15 = 1200바이트) 폰트 맵. 320 * 240 화면에서 한줄에 최대 40글자가 들어가고 총 15줄이 존재할 수 있음. 포트 하나는 반드시 CPU에 할당해야 함.
-    // BRAM15 Port A (32-bit Interface)
-    output reg        BRAM15_en_a,    // Port A Enable
-    output reg [3:0]  BRAM15_wstrb_a,    // Port A Write Enable (Byte-wide strobe: 32비트 = 8비트 x 4)
-    output reg [9:0]  BRAM15_addr_a,  // Port A Address (10-bit for 1024 depth)
-    output reg [31:0] BRAM15_din_a,   // Port A Data Input
-    input      [31:0] BRAM15_dout_a,  // Port A Data Output
-    // BRAM15 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 직접 폰트 맵을 수정해야 함. 
-    output reg        BRAM15_en_b,    // Port B Enable
-    output reg [3:0]  BRAM15_wstrb_b,    // Port B Write Enable
-    output reg [9:0]  BRAM15_addr_b,  // Port B Address (10-bit for 1024 depth)
-    output reg [31:0] BRAM15_din_b,   // Port B Data Input
-    input      [31:0] BRAM15_dout_b,   // Port B Data Output
+    //BRAM14 (80 * 15 = 1200바이트) 폰트 맵. 320 * 240 화면에서 한줄에 최대 40글자가 들어가고 총 15줄이 존재할 수 있음. 포트 하나는 반드시 CPU에 할당해야 함.
+    // BRAM14 Port A (32-bit Interface)
+    output reg        BRAM14_en_a,    // Port A Enable
+    output reg [3:0]  BRAM14_wstrb_a,    // Port A Write Enable (Byte-wide strobe: 32비트 = 8비트 x 4)
+    output reg [9:0]  BRAM14_addr_a,  // Port A Address (10-bit for 1024 depth)
+    output reg [31:0] BRAM14_din_a,   // Port A Data Input
+    input      [31:0] BRAM14_dout_a,  // Port A Data Output
+    // BRAM14 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 직접 폰트 맵을 수정해야 함. 
+    output reg        BRAM14_en_b,    // Port B Enable
+    output reg [3:0]  BRAM14_wstrb_b,    // Port B Write Enable
+    output reg [9:0]  BRAM14_addr_b,  // Port B Address (10-bit for 1024 depth)
+    output reg [31:0] BRAM14_din_b,   // Port B Data Input
+    input      [31:0] BRAM14_dout_b,   // Port B Data Output
 );
 /*
 UTF-16을 사용할 예정이고 한글, 영어, 숫자, 특수문자 다 16비트임.
-범위는 ASCII(영어, 숫자, 기호): 16'h0020 ~ 16'h007F, 한글: 16'hAC00 ~ 16'hD7A3. 이외의 범위의 값은 지원하지 않음!!!
-16'h0000은 그 위치에 폰트가 없는 것을 의미함!! 그냥 비워두면 8*16 픽셀만큼 공백이라고 생각하면 됨.
+범위는 ASCII(영어, 숫자, 기호): 16'h0020 ~ 16'h007F, 한글: 16'hAC00 ~ 16'hD7A3. 커스텀 8 * 16 타일: (총 172개) 16'hE000 ~ 16'hE0AB. 이외의 영역은 사용되지 않음!
+16'h0000은 그 위치에 폰트가 없는 것을 의미함!! 그냥 비워두면 8*16 픽셀만큼 공백이라고 생각하면 됨. ASCII 16'h0020(공백)이라고 자동으로 가정함. 
 
 base_index = unicode_in - 16'hAC00; 
 초성  = base_index / (21 * 28); // 19자
@@ -125,14 +115,14 @@ base_index = unicode_in - 16'hAC00;
 종성 28자 인덱스: 받침없음(0)ㄱ(1)ㄲ(2)ㄳ(3)ㄴ(4)ㄵ(5)ㄶ(6)ㄷ(7)ㄹ(8)ㄺ(9)ㄻ(10)ㄼ(11)ㄽ(12)ㄾ(13)ㄿ(14)ㅀ(15)ㅁ(16)ㅂ(17)ㅃ(18)ㅅ(19)ㅆ(20)ㅇ(21)ㅈ(22)ㅊ(23)ㅋ(24)ㅌ(25)ㅍ(26)ㅎ(27)
 
 초성 - 총 19 * 8 = 152개의 폰트가 존재함. (한글)
-    초성 1벌 : 받침없는 'ㅏㅐㅑㅒㅓㅔㅕㅖㅣ' 와 결합
-    초성 2벌 : 받침없는 'ㅗㅛㅡ'
-    초성 3벌 : 받침없는 'ㅜㅠ'
-    초성 4벌 : 받침없는 'ㅘㅙㅚㅢ'
-    초성 5벌 : 받침없는 'ㅝㅞㅟ'
-    초성 6벌 : 받침있는 'ㅏㅐㅑㅒㅓㅔㅕㅖㅣ' 와 결합
-    초성 7벌 : 받침있는 'ㅗㅛㅜㅠㅡ'
-    초성 8벌 : 받침있는 'ㅘㅙㅚㅢㅝㅞㅟ'
+    초성 1벌 : 받침없는 'ㅏㅐㅑㅒㅓㅔㅕㅖㅣ' 와 결합 (중성 0, 1, 2, 3, 4, 5, 6, 7, 20)
+    초성 2벌 : 받침없는 'ㅗㅛㅡ' (중성 8, 12, 18)
+    초성 3벌 : 받침없는 'ㅜㅠ' (중성 13, 17)
+    초성 4벌 : 받침없는 'ㅘㅙㅚㅢ' (중성 9, 10, 11, 19)
+    초성 5벌 : 받침없는 'ㅝㅞㅟ' (중성 14, 15, 16)
+    초성 6벌 : 받침있는 'ㅏㅐㅑㅒㅓㅔㅕㅖㅣ' 와 결합 (중성 0, 1, 2, 3, 4, 5, 6, 7, 20)
+    초성 7벌 : 받침있는 'ㅗㅛㅜㅠㅡ' (중성 8, 12, 13, 17, 18)
+    초성 8벌 : 받침있는 'ㅘㅙㅚㅢㅝㅞㅟ' (중성 9, 10, 11, 19, 14, 15, 16)
 
 중성 - 총 21 * 4 = 84개의 폰트가 존재함. (한글)
     중성 1벌 : 받침없는 'ㄱㅋ' 와 결합
@@ -141,14 +131,83 @@ base_index = unicode_in - 16'hAC00;
     중성 4벌 : 받침있는 'ㄱㅋ' 이외의 자음
 
 종성 총 28 * 4 = 112개의 폰트가 존재함. (한글)
-    종성 1벌 : 중성 'ㅏㅑㅘ' 와 결합
-    종성 2벌 : 중성 'ㅓㅕㅚㅝㅟㅢㅣ'
-    종성 3벌 : 중성 'ㅐㅒㅔㅖㅙㅞ'
-    종성 4벌 : 중성 'ㅗㅛㅜㅠㅡ'
+    종성 1벌 : 중성 'ㅏㅑㅘ' 와 결합 (중성 0, 2, 9)
+    종성 2벌 : 중성 'ㅓㅕㅚㅝㅟㅢㅣ(중성 4, 6, 11, 14, 16, 19, 20)
+    종성 3벌 : 중성 'ㅐㅒㅔㅖㅙㅞ'(중성 1, 3, 5, 7, 10, 15)
+    종성 4벌 : 중성 'ㅗㅛㅜㅠㅡ'(중성 8, 12, 13, 17, 18)
 
 총 344개의 16*16 폰트를 저장해야 함. 거기에 ASCII의 제어문자와 확장 아스키 코드를 제외한 16'h0020 ~ 16'h007E까지의 95개의 폰트와 한글 344개의 폰트를 합쳐서 총 439개의 폰트를 저장해야 함.
     
-PPU로부터 한 줄의 픽셀이 나올때까지 최소 320클럭이 소요됨. 한줄에 20개의 유니코드가 다 채워져 있다고 가정할때 한 글자를 초성, 중성, 종성으로 분리하려면 4클럭
+16 * 16 픽셀은 BRAM에 이런식으로 저장되어 있음.
+address 0: {line1[15:0], line0[15:0]}
+address 1: {line3[15:0], line2[15:0]}
+address 2: {line5[15:0], line4[15:0]}
+address 3: {line7[15:0], line6[15:0]}
+address 4: {line9[15:0], line8[15:0]}
+address 5: {line11[15:0], line10[15:0]}
+address 6: {line13[15:0], line12[15:0]}
+address 7: {line15[15:0], line14[15:0]}
+
+line0[15:0] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1}; (픽셀이 o,o,o,o,o,o,o,o,o,x,x,x,x,o,o,o 일때, o = 1, x = 0)
+
+8 * 16 ASCII 코드도 비슷함.
+address 0: {line3[7:0], line2[7:0], line1[7:0], line0[7:0]}
+address 1: {line7[7:0], line6[7:0], line5[7:0], line4[7:0]}
+address 2: {line11[7:0], line10[7:0], line9[7:0], line8[7:0]}
+address 3: {line15[7:0], line14[7:0], line13[7:0], line12[7:0]}
+
+line0[7:0] = {1, 1, 1, 1, 1, 1, 0, 0}; (픽셀이 o,o,o,o,o,o,x,x 일때, o = 1, x = 0)
+
+<BRAM 4 주소정리>
+초성 1벌 base: 0 (십진수)
+초성 2벌 base: 152
+초성 3벌 base: 304
+초성 4벌 base: 456
+초성 5벌 base: 608
+초성 6벌 base: 760
+BRAM4 초성 주소 = (벌에 해당하는 base) + (초성 인덱스 * 8) + (offset(0 ~ 15) / 2), offset이 홀수이면 r_data[31:16], 짝수이면 r_data[15:0]
+
+<BRAM 5 주소정리>
+초성 7벌 base: 0
+초성 8벌 base: 152
+ASCII base: 304
+커스텀 타일 base: 688(총 336개의 구간. 총 84개의 8*16 타일 저장. 16'hE000 ~ 16'hE053 범위)
+BRAM5 ASCII 주소 = (ASCII base) + (ASCII index * 4) + (offset(0 ~ 15) / 4)
+
+<BRAM 6 주소정리>
+중성 1벌 base: 0
+중성 2벌 base: 168
+중성 3벌 base: 336
+중성 4벌 base: 504
+커스텀 타일 base: 672(총 352개의 구간. 총 88개의 8*16 타일 저장. 16'hE054 ~ 16'hE0AB 범위)
+
+<BRAM 13 주소정리>
+종성 1벌 base: 0
+종성 2벌 base: 224
+종성 3벌 base: 448
+종성 4벌 base: 672
+
+<BRAM 14 주소정리> -폰트맵, 각 라인당 40개의 UTF-16 코드가 순서대로 배열됨.
+Line0 base: 0
+Line1 base: 20
+Line2 base: 40
+Line3 base: 60 
+Line4 base: 80
+Line5 base: 100
+Line6 base: 120
+Line7 base: 140
+Line8 base: 160
+Line9 base: 180
+Line10 base: 200
+Line11 base: 220
+Line12 base: 240
+Line13 base: 260
+Line14 base: 280
+
+address 0: {UTF-16_1[15:0], UTF-16_0[15:0]}
+address 1: {UTF-16_3[15:0], UTF-16_2[15:0]}
+....
+
 */
 reg [15:0] fontmap_shadow_data; //skid buffer. 파이프라인이 불규칙적으로 정지하므로 BRAM의 출력을 일시 저장하고 다시 전진할때 데이터를 보내줌.
 reg fontmap_shadow_valid;
@@ -168,62 +227,84 @@ parameter IDLE = 0, START = 1;
 reg [8:0] pixel_counter_x; //FIFO에서 픽셀을 꺼낼 때마다 증가시킴.
 reg [8:0] pixel_counter_y; //한 줄인 320 픽셀을 다 꺼내면 1씩 증가시킴.
 
+reg pipeline_move;
+
 reg pipe1_valid; //버블을 삽입할때는 pipe1_valid에 0을 저장시키면 됨. pipe3_is_korea에 저장하기 직전의 값에 의해서 +8, +16 씩 카운터를 증가시키고 마지막에 버블 삽입해서 더 읽을지 다음줄로 갈지 결정함.
 reg [9:0] pipe1_fontmap_ad;
-reg [4:0] pipe1_counter_16; //1~16의 값을 가지고 16*16, 8*16 비트맵에서 몇번째줄을 읽어야 하는지 알려줌. 
-reg [5:0] pipe1_font_x; //1~40의 값을 가짐. 기본적으로 1씩 증가시키고, 줄을 바꿔야 한다 판단되면 1으로 초기화시키고 pipe1_counter_16을 1 증가시킴. 이후 pipe1_counter_16이 16이면 y를 1 증가시킴.
-reg [5:0] pipe1_font_y; //1~15의 값을 가짐.
+reg [3:0] pipe1_counter_16; //0~15의 값을 가지고 16*16, 8*16 비트맵에서 몇번째줄을 읽어야 하는지 알려줌. 
+reg [5:0] pipe1_font_x; //0~39의 값을 가짐. 기본적으로 1씩 증가시키고, 줄을 바꿔야 한다 판단되면 0으로 초기화시키고 pipe1_counter_16을 1 증가시킴. 이후 pipe1_counter_16이 15이면 y를 1 증가시킴.
+reg [5:0] pipe1_font_y; //0~14의 값을 가짐.
 
 reg pipe2_valid; //클럭에지때 BRAM에서 값이 나오면서 pipe2_valid에 값이 저장됨. 이때 
 reg [9:0] pipe2_fontmap_ad;
 reg [5:0] pipe2_font_x;
 reg [5:0] pipe2_font_y;
-reg [4:0] pipe2_counter_16;
+reg [3:0] pipe2_counter_16;
 
 reg pipe3_valid;
 reg [15:0] pipe3_UTF16; //읽은 32비트 중 16비트만 저장함. 이 값이 0을 포함한 정의되지 않은 값이라면 공백이라고 가정.
-reg pipe3_is_korea; //1이면 한글이고 0이면 ASCII코드이거나 공백임. 
+reg pipe3_is_korea; //3개의 is 신호들중에 반드시 한개만 1이 되어야 함!!!!
+reg pipe3_is_ascii; //UTF16값이 정의되지 않은 값이면 ASCII 16'h0020(공백) 이라고 가정하고 이 값이 1로 설정할 예정.
+reg pipe3_is_custom;
 reg [5:0] pipe3_font_x;
 reg [5:0] pipe3_font_y;
-reg [4:0] pipe3_counter_16;
+reg [3:0] pipe3_counter_16;
 
 reg pipe4_valid;
-reg pipe4_is_korea; //1이면 한글이고 0이면 ASCII코드이거나 공백임.
-reg [4:0] pipe4_middle_index; //중성 index. mid_quot_28 - (first_index * 21)
-reg [4:0] pipe4_end_index; //종성 index. base - (mid_quot_28 * 28)
-reg [4:0] pipe4_first_index; //초성 index. mid_quot를 21로 나눈 몫.
+reg [15:0] pipe4_UTF16;
+reg pipe4_is_korea; //1이면 한글임.
+reg pipe4_is_ascii;
+reg pipe4_is_custom;
+reg [4:0] pipe4_jung_sung_index; //중성 index. mid_quot_28 - (first_index * 21)
+reg [4:0] pipe4_chong_sung_index; //종성 index. base - (mid_quot_28 * 28)
+reg [4:0] pipe4_cho_sung_index; //초성 index. mid_quot를 21로 나눈 몫.
 reg [9:0] pipe4_ascii_ad; //pipe4_is_korea가 0일때만 유효. pipe3_UTF16이 0을 포함한 정의되지 않은 값이면 비트맵이 8'b0이 들어있는 BRAM 주소가 들어가 있어야 함!!!!
 reg [5:0] pipe4_font_x;
 reg [5:0] pipe4_font_y;
-reg [4:0] pipe4_counter_16;
+reg [3:0] pipe4_counter_16;
 
 reg pipe5_valid;
 reg pipe5_is_korea;
-reg [4:0] pipe5_middle_index; 
-reg [4:0] pipe5_end_index; 
-reg [4:0] pipe5_first_index;
+reg pipe5_is_ascii;
+reg pipe5_is_custom;
+reg [4:0] pipe5_jung_sung_index; 
+reg [4:0] pipe5_chong_sung_index; 
+reg [4:0] pipe5_cho_sung_index;
 reg [5:0] pipe5_font_x;
 reg [5:0] pipe5_font_y;
-reg [4:0] pipe5_counter_16;
+reg [3:0] pipe5_counter_16;
 
 reg pipe6_valid; //이 값이 0이면 절대 bitmap을 합성해서는 안됨. 파이프라인을 전진시켜서 valid가 나올때까지 전진시켜야 함. 버블이 들어있을 수 있음.
-reg pipe6_is_korea; //이 값이 1이면 pipe6_korea_font_bitmap이 유효하고, 0이면 pipe6_ascii_font_bitmap가 유효함. 
+reg pipe6_is_korea; //이 값이 1이면 pipe6_korea_font_bitmap이 유효함.
+reg pipe6_is_ascii; //이 값이 1이면 pipe6_ascii_font_bitmap가 유효함. 
+reg pipe6_is_custom; //이 값이 1이면 pipe6_custom_tile_bitmap이 유효함.
 reg [15:0] pipe6_korea_font_bitmap;
 reg [7:0] pipe6_ascii_font_bitmap;
+reg [7:0] pipe6_custom_tile_bitmap;
 reg [5:0] pipe6_font_x; //이 값을 이용해서 LineX_visible_number와 대조해서 합성할지 말지 판단함.
 reg [5:0] pipe6_font_y; //이 값을 이용해서 Line1_visible_number ~ Line15_visible_number 중 하나를 선택함.
-reg [4:0] pipe6_counter_16; //이 값을 이용해서 x, y에 해당하는 폰트의 몇번째 줄 비트맵인지(1-16) 판단함.
+reg [3:0] pipe6_counter_16; //이 값을 이용해서 x, y에 해당하는 폰트의 몇번째 줄 비트맵인지(0-15) 판단함.
+
+reg [3:0] cho_sung_set; //초성 벌 수. 조합논리로 계산.
+reg [3:0] jung_sung_set; //중성 벌 수
+reg [3:0] chong_sung_set; //종성 벌 수. 
+
+reg [9:0] cho_sung_bram_ad; //index, set값을 토대로 BRAM의 주소를 계산함. 조합논리로 값이 정해짐.
+reg [9:0] jung_sung_bram_ad;
+reg [9:0] chong_sung_bram_ad;
+reg [9:0] ascii_bram_ad; //
+reg [9:0] custom_tile_bram_ad;
 
 // Pipe3에서 넘어온 UTF-16 값을 조합논리로 한 클럭 안에 통째로 분해
 wire [13:0] base_index = pipe3_UTF16 - 16'hAC00;
 
 // 1. 28로 나누고 종성 빼기 (한 클럭 내 진행)
 wire [13:0] mid_quot   = (base_index * 32'd2341) >> 16;
-wire [4:0]  chong_sung = base_index - ((mid_quot << 4) + (mid_quot << 3) + (mid_quot << 2));
+wire [4:0]  chong_sung_index = base_index - ((mid_quot << 4) + (mid_quot << 3) + (mid_quot << 2)); //종성 인덱스
 
 // 2. 이어서 21로 나누고 중성 빼기 (동일 클럭 내 진행)
-wire [4:0]  cho_sung   = (mid_quot * 32'd3121) >> 16;
-wire [4:0]  jung_sung  = mid_quot - ((cho_sung << 4) + (cho_sung << 2) + cho_sung);
+wire [4:0]  cho_sung_index   = (mid_quot * 32'd3121) >> 16; //초성 인덱스
+wire [4:0]  jung_sung_index  = mid_quot - ((cho_sung_index << 4) + (cho_sung_index << 2) + cho_sung_index); //중성 인덱스
 
 always @(*) begin
     fifo_state_next = fifo_state; //기본적으로 기존 상태 유지.
@@ -241,6 +322,164 @@ always @(*) begin
         IDLE: begin
         end
         START: begin
+        end
+    endcase
+end
+
+wire [4:0] cho_sung = pipe4_cho_sung_index[4:0];
+wire [4:0] jung_sung = pipe4_jung_sung_index[4:0];
+wire [4:0] chong_sung = pipe4_chong_sung_index[4:0];
+
+always @(*) begin //pipe4 레지스터 값에 의해서 조합회로로 cho_sung_set, jung_sung_set, chong_sung_set이 결정됨.
+    cho_sung_set[3:0] = 0;
+    jung_sung_set[3:0] = 0;
+    chong_sung_set[3:0] = 0;
+    case(1'b1)
+        (chong_sung == 0): begin //받침없음.
+            if(cho_sung == 0 || cho_sung == 15) begin //초성이 ㄱ(0), ㅋ(15)일때 
+                jung_sung_set = 1; //중성 1벌
+            end
+            else begin //초성이 ㄱ(0), ㅋ(15)이외의 값일때
+                jung_sung_set = 2; //중성 2벌
+            end
+            case(1'b1) 
+                ((jung_sung <= 7) || (jung_sung == 20)): begin //초성 1벌
+                    cho_sung_set = 1;
+                end
+                ((jung_sung == 8) || (jung_sung == 12) || (jung_sung == 18)): begin //초성 2벌
+                    cho_sung_set = 2;
+                end
+                ((jung_sung == 13) || (jung_sung == 17)): begin //초성 3벌
+                    cho_sung_set = 3;
+                end
+                ((jung_sung == 9) || (jung_sung == 10) || (jung_sung == 11) || (jung_sung == 19)): begin //초성 4벌
+                    cho_sung_set = 4;
+                end
+                ((jung_sung == 14) || (jung_sung == 15) || (jung_sung == 16)): begin //초성 5벌
+                    cho_sung_set = 5;
+                end
+            endcase
+        end
+        (chong_sung != 0): begin //받침있음.
+            if(cho_sung == 0 || cho_sung == 15) begin //초성이 ㄱ(0), ㅋ(15)일때 
+                jung_sung_set = 3; //중성 3벌
+            end
+            else begin //초성이 ㄱ(0), ㅋ(15)이외의 값일때
+                jung_sung_set = 4; //중성 4벌
+            end
+            case(1'b1)
+                ((jung_sung <= 7) || (jung_sung == 20)): begin //초성 6벌
+                    cho_sung_set = 6;
+                end
+                ((jung_sung == 8) || (jung_sung == 12) || (jung_sung == 13) || (jung_sung == 17) || (jung_sung == 18)): begin //초성 7벌
+                    cho_sung_set = 7;
+                end
+                ((jung_sung == 9) || (jung_sung == 10) || (jung_sung == 11) || (jung_sung == 14) || (jung_sung == 15) || (jung_sung == 16) || (jung_sung == 19)): begin //초성 8벌
+                    cho_sung_set = 8;
+                end
+            endcase
+        end
+    endcase
+    
+    case(1'b1)
+        ((chong_sung == 0) || (chong_sung == 2) || (chong_sung == 9)): begin //종성 1벌
+            chong_sung_set = 1;
+        end
+        ((chong_sung == 4) || (chong_sung == 6) || (chong_sung == 11) || (chong_sung == 14) || (chong_sung == 16) || (chong_sung == 19 || (chong_sung == 20))): begin //종성 2벌
+            chong_sung_set = 2;
+        end
+        ((chong_sung == 1) || (chong_sung == 3) || (chong_sung == 5) || (chong_sung == 7) || (chong_sung == 10) || (chong_sung == 15)): begin //종성 3벌
+            chong_sung_set = 3;
+        end
+        ((chong_sung == 8) || (chong_sung == 12) || (chong_sung == 13) || (chong_sung == 17) || (chong_sung == 18)): begin //종성 4벌
+            chong_sung_set = 4;
+        end
+    endcase
+end
+
+always@(*) begin //나중에 pipe4_UTF16 범위에 따라서(한글인지, ASCII인지 커스텀 타일인지) 실제 BRAM 인터페이스의 BRAMX_addr_a에 적절한 bram_ad를 연결해 줘야함.
+    cho_sung_bram_ad[9:0] = 0;
+    jung_sung_bram_ad[9:0] = 0;
+    chong_sung_bram_ad[9:0] = 0;
+    ascii_bram_ad[9:0] = 0;
+    custom_tile_bram_ad[9:0] = 0;
+
+    //ASCII 코드 BRAM 주소. BRAM 5
+    if((pipe4_UTF16[15:0] >= 16'h0020) && (pipe4_UTF16[15:0] <= 16'h007F)) begin //pipe4_UTF16이 ASCII범위안에 있을때
+        ascii_bram_ad[9:0] = 10'd304 + {(pipe4_UTF16[7:0] - 8'h20), 2'b00} + {8'b0, pipe4_counter_16[3:2]};
+    end
+    else begin //그 외 16'h0000같은 범위 이외의 값일때.
+        ascii_bram_ad[9:0] = 10'd304 + 10'b0 + {8'b0, pipe4_counter_16[3:2]}; //16'h0020인 공백으로 고정
+    end
+
+    //커스텀 타일 BRAM 주소. 
+    if((pipe4_UTF16[15:0] >= 16'hE000) &&(pipe4_UTF16[15:0] <= 16'hE053)) begin //BRAM 5
+        custom_tile_bram_ad[9:0] = 10'd688 + {pipe4_UTF16[7:0], 2'b00} + {8'b0, pipe4_counter_16[3:2]}; //어차피 상위 8비트는 E0으로 고정이고 16'hE000에서 시작하므로 문제없음.
+    end
+    else if((pipe4_UTF16[15:0] >= 16'hE054) &&(pipe4_UTF16[15:0] <= 16'hE0AB)) begin //BRAM 6
+        custom_tile_bram_ad[9:0] = 10'd672 + {(pipe4_UTF16[7:0] - 8'h54), 2'b00} + {8'b0, pipe4_counter_16[3:2]};
+    end
+
+    case(cho_sung_set)
+        1: begin //BRAM 4
+            cho_sung_bram_ad[9:0] = 10'd0 + {2'b00, cho_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]}; 
+        end
+        2: begin //BRAM 4
+            cho_sung_bram_ad[9:0] = 10'd152 + {2'b00, cho_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        3: begin //BRAM 4
+            cho_sung_bram_ad[9:0] = 10'd304 + {2'b00, cho_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        4: begin //BRAM 4
+            cho_sung_bram_ad[9:0] = 10'd456 + {2'b00, cho_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        5: begin //BRAM 4
+            cho_sung_bram_ad[9:0] = 10'd608 + {2'b00, cho_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        6: begin //BRAM 4
+            cho_sung_bram_ad[9:0] = 10'd760 + {2'b00, cho_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        7: begin //BRAM 5
+            cho_sung_bram_ad[9:0] = 10'd0 + {2'b00, cho_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        8: begin //BRAM 5
+            cho_sung_bram_ad[9:0] = 10'd152 + {2'b00, cho_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        default: begin
+        end
+    endcase
+
+    case(jung_sung_set)
+        1: begin //BRAM 6
+            jung_sung_bram_ad[9:0] = 10'd0 + {2'b00, jung_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        2: begin //BRAM 6
+            jung_sung_bram_ad[9:0] = 10'd168 + {2'b00, jung_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        3: begin //BRAM 6
+            jung_sung_bram_ad[9:0] = 10'd336 + {2'b00, jung_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        4: begin //BRAM 6
+            jung_sung_bram_ad[9:0] = 10'd504 + {2'b00, jung_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        default: begin
+        end
+    endcase
+
+    case(chong_sung_set)
+        1: begin //BRAM 13
+            chong_sung_bram_ad[9:0] = 10'd0 + {2'b00, chong_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        2: begin //BRAM 13
+            chong_sung_bram_ad[9:0] = 10'd224 + {2'b00, chong_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        3: begin //BRAM 13
+            chong_sung_bram_ad[9:0] = 10'd448 + {2'b00, chong_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        4: begin //BRAM 13
+            chong_sung_bram_ad[9:0] = 10'd672 + {2'b00, chong_sung[4:0], 3'b000} + {7'b0, pipe4_counter_16[3:1]};
+        end
+        default: begin
         end
     endcase
 end
