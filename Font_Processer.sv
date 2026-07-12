@@ -209,14 +209,17 @@ address 1: {UTF-16_3[15:0], UTF-16_2[15:0]}
 ....
 
 */
-reg [15:0] fontmap_shadow_data; //skid buffer. 파이프라인이 불규칙적으로 정지하므로 BRAM의 출력을 일시 저장하고 다시 전진할때 데이터를 보내줌.
-reg fontmap_shadow_valid;
+reg [15:0] fontmap_skid_data; //skid buffer. 파이프라인이 불규칙적으로 정지하므로 BRAM의 출력을 일시 저장하고 다시 전진할때 데이터를 보내줌.
+reg fontmap_skid_valid;
 
-reg [15:0] korea_bitmap_shadow_data;
-reg korea_bitmap_shadow_valid;
+reg [15:0] korea_bitmap_skid_data;
+reg korea_bitmap_skid_valid;
 
-reg [7:0] ascii_bitmap_shadow_data;
-reg ascii_bitmap_shadow_valid;
+reg [7:0] ascii_bitmap_skid_data;
+reg ascii_bitmap_skid_valid;
+
+reg [7:0] custom_tile_bitmap_skid_data;
+reg custom_tile_bitmap_skid_valid;
 
 reg [3:0] fifo_state; //PPU_pixel_RGB를 BRAM으로 구현된 FIFO에 저장하는 FSM
 reg [3:0] fifo_state_next;
@@ -227,49 +230,48 @@ parameter IDLE = 0, START = 1;
 reg [8:0] pixel_counter_x; //FIFO에서 픽셀을 꺼낼 때마다 증가시킴.
 reg [8:0] pixel_counter_y; //한 줄인 320 픽셀을 다 꺼내면 1씩 증가시킴.
 
-reg pipeline_move;
+reg pipeline_move; //이 신호로 파이프라인을 제어함. 
+wire bram_font_read_ena = pipe4_valid && pipeline_move; //이 신호가 1이면 즉시 해당하는 BRAM 인터페이스에 읽기 제어신호, 주소를 보냄.
+reg bram_font_read_ena_reg; //1 클럭전 bram_font_read_ena 신호를 나타내는 레지스터.
+wire bram_map_read_ena = pipe1_valid && pipeline_move; //이 신호가 1이면 즉시 pipe1_font_x, pipe1_font_y값을 토대로 BARAM주소 계산해서 제어신호를 보냄.
+reg bram_map_read_ena_reg; ////1 클럭전 bram_map_read_ena 신호를 나타내는 레지스터
 
 reg pipe1_valid; //버블을 삽입할때는 pipe1_valid에 0을 저장시키면 됨. pipe3_is_korea에 저장하기 직전의 값에 의해서 +8, +16 씩 카운터를 증가시키고 마지막에 버블 삽입해서 더 읽을지 다음줄로 갈지 결정함.
-reg [9:0] pipe1_fontmap_ad;
 reg [3:0] pipe1_counter_16; //0~15의 값을 가지고 16*16, 8*16 비트맵에서 몇번째줄을 읽어야 하는지 알려줌. 
 reg [5:0] pipe1_font_x; //0~39의 값을 가짐. 기본적으로 1씩 증가시키고, 줄을 바꿔야 한다 판단되면 0으로 초기화시키고 pipe1_counter_16을 1 증가시킴. 이후 pipe1_counter_16이 15이면 y를 1 증가시킴.
 reg [5:0] pipe1_font_y; //0~14의 값을 가짐.
 
 reg pipe2_valid; //클럭에지때 BRAM에서 값이 나오면서 pipe2_valid에 값이 저장됨. 이때 
-reg [9:0] pipe2_fontmap_ad;
+reg [3:0] pipe2_mask; //8비트 단위로 어디 위치의 값을 pipe3에 저장해야 할지 지정함. 4'b1100(상위 16비트 저장), 4'b0011(하위 16비트 저장) 둘 중 하나여야 함. 
 reg [5:0] pipe2_font_x;
 reg [5:0] pipe2_font_y;
 reg [3:0] pipe2_counter_16;
 
 reg pipe3_valid;
 reg [15:0] pipe3_UTF16; //읽은 32비트 중 16비트만 저장함. 이 값이 0을 포함한 정의되지 않은 값이라면 공백이라고 가정.
-reg pipe3_is_korea; //3개의 is 신호들중에 반드시 한개만 1이 되어야 함!!!!
-reg pipe3_is_ascii; //UTF16값이 정의되지 않은 값이면 ASCII 16'h0020(공백) 이라고 가정하고 이 값이 1로 설정할 예정.
-reg pipe3_is_custom;
 reg [5:0] pipe3_font_x;
 reg [5:0] pipe3_font_y;
 reg [3:0] pipe3_counter_16;
 
 reg pipe4_valid;
 reg [15:0] pipe4_UTF16;
-reg pipe4_is_korea; //1이면 한글임.
-reg pipe4_is_ascii;
+reg pipe4_is_korea; //3개의 is 신호들중에 반드시 한개만 1이 되어야 함!!!!
+reg pipe4_is_ascii; //UTF16값이 정의되지 않은 값이면 ASCII 16'h0020(공백) 이라고 가정하고 이 값이 1로 설정할 예정.
 reg pipe4_is_custom;
 reg [4:0] pipe4_jung_sung_index; //중성 index. mid_quot_28 - (first_index * 21)
 reg [4:0] pipe4_chong_sung_index; //종성 index. base - (mid_quot_28 * 28)
 reg [4:0] pipe4_cho_sung_index; //초성 index. mid_quot를 21로 나눈 몫.
-reg [9:0] pipe4_ascii_ad; //pipe4_is_korea가 0일때만 유효. pipe3_UTF16이 0을 포함한 정의되지 않은 값이면 비트맵이 8'b0이 들어있는 BRAM 주소가 들어가 있어야 함!!!!
 reg [5:0] pipe4_font_x;
 reg [5:0] pipe4_font_y;
 reg [3:0] pipe4_counter_16;
 
 reg pipe5_valid;
+reg [3:0] pipe5_mask; //8비트 단위로 어디 위치의 값을 pipe6에 저장해야 할지 지정함. 한글폰트라면 4'b1100(상위 16비트 저장), 4'b0011(하위 16비트 저장)둘중 하나여야 함.
+reg pipe5_cho_sung_what_bram; //0이면 BRAM4, 1이면 BRAM5 
+reg pipe5_custom_what_bram; //0이면 BRAM5, 1이면 BRAM6
 reg pipe5_is_korea;
 reg pipe5_is_ascii;
 reg pipe5_is_custom;
-reg [4:0] pipe5_jung_sung_index; 
-reg [4:0] pipe5_chong_sung_index; 
-reg [4:0] pipe5_cho_sung_index;
 reg [5:0] pipe5_font_x;
 reg [5:0] pipe5_font_y;
 reg [3:0] pipe5_counter_16;
@@ -484,15 +486,333 @@ always@(*) begin //나중에 pipe4_UTF16 범위에 따라서(한글인지, ASCII
     endcase
 end
 
+always @(*) begin
+    BRAM4_en_a = 0; //초성 1~6벌
+    BRAM4_wstrb_a[3:0] = 4'b0; //4'b0000이면 읽기임. 기본으로 읽기모드로 설정.
+    BRAM4_addr_a[9:0] = 0;
+    BRAM4_din_a[31:0] = 0;
+
+    BRAM5_en_a = 0; //초성 7~8벌, ASCII, 커스텀 타일
+    BRAM5_wstrb_a[3:0] = 4'b0; //4'b0000이면 읽기임. 기본으로 읽기모드로 설정.
+    BRAM5_addr_a[9:0] = 0;
+    BRAM5_din_a[31:0] = 0;
+
+    BRAM6_en_a = 0; //중성 1~4벌, 커스텀 타일
+    BRAM6_wstrb_a[3:0] = 4'b0; //4'b0000이면 읽기임. 기본으로 읽기모드로 설정.
+    BRAM6_addr_a[9:0] = 0;
+    BRAM6_din_a[31:0] = 0;
+
+    BRAM13_en_a = 0; //종성 1~4벌
+    BRAM13_wstrb_a[3:0] = 4'b0; //4'b0000이면 읽기임. 기본으로 읽기모드로 설정.
+    BRAM13_addr_a[9:0] = 0;
+    BRAM13_din_a[31:0] = 0;
+
+    BRAM14_en_a = 0; //BRAM14는 폰트맵 저장.
+    BRAM14_wstrb_a[3:0] = 4'b0; //4'b0000이면 읽기임. 기본으로 읽기모드로 설정.
+    BRAM14_addr_a[9:0] = 0;
+    BRAM14_din_a[31:0] = 0;
+
+    if(bram_font_read_ena) begin //이 신호가 1이면 즉시 BRAM 인터페이스에 제어신호를 보냄. pipe4_valid && pipeline_move이 1이면 bram_font_read_ena 인가됨.
+        case(1'b1)
+            ((pipe4_UTF16[15:0] >= 16'h0020) && (pipe4_UTF16[15:0] <= 16'h007F)): begin //ASCII 읽기.
+                BRAM5_en_a = 1;
+                BRAM5_wstrb_a[3:0] = 4'b0;
+                BRAM5_addr_a[9:0] = ascii_bram_ad[9:0];
+                BRAM5_din_a[31:0] = 0;
+            end
+            ((pipe4_UTF16[15:0] >= 16'hE000) &&(pipe4_UTF16[15:0] <= 16'hE0AB)): begin //커스텀 타일 읽기.
+                if(pipe4_UTF16[15:0] <= 16'hE053) begin //BRAM 5
+                    BRAM5_en_a = 1;
+                    BRAM5_wstrb_a[3:0] = 4'b0;
+                    BRAM5_addr_a[9:0] = custom_tile_bram_ad[9:0];;
+                    BRAM5_din_a[31:0] = 0;
+                end
+                else begin //BRAM 6
+                    BRAM6_en_a = 1;
+                    BRAM6_wstrb_a[3:0] = 4'b0;
+                    BRAM6_addr_a[9:0] = custom_tile_bram_ad[9:0];;
+                    BRAM6_din_a[31:0] = 0;
+                end
+            end
+            (((pipe4_UTF16[15:0] >= 16'hA300) &&(pipe4_UTF16[15:0]  <= 16'hD7A3))): begin //한글 읽기.
+                if(cho_sung_set < 7) begin //BRAM 4
+                    BRAM4_en_a = 1; 
+                    BRAM4_wstrb_a[3:0] = 4'b0;
+                    BRAM4_addr_a[9:0] = cho_sung_bram_ad[9:0];
+                    BRAM4_din_a[31:0] = 0;
+                end
+                else begin //BRAM 5.
+                    BRAM5_en_a = 1; 
+                    BRAM5_wstrb_a[3:0] = 4'b0;
+                    BRAM5_addr_a[9:0] = cho_sung_bram_ad[9:0];
+                    BRAM5_din_a[31:0] = 0;
+                end
+                BRAM6_en_a = 1; 
+                BRAM6_wstrb_a[3:0] = 4'b0;
+                BRAM6_addr_a[9:0] = jung_sung_bram_ad[9:0];
+                BRAM6_din_a[31:0] = 0;
+
+                BRAM13_en_a = 1; 
+                BRAM13_wstrb_a[3:0] = 4'b0;
+                BRAM13_addr_a[9:0] = chong_sung_bram_ad[9:0];
+                BRAM13_din_a[31:0] = 0;
+            end
+            default: begin //16'h0020인 ASCII 코드 공백이라고 가정.
+                BRAM5_en_a = 1;
+                BRAM5_wstrb_a[3:0] = 4'b0;
+                BRAM5_addr_a[9:0] = ascii_bram_ad[9:0]; //ascii_bram_ad는 알아서 공백을 가리키고 있어야 함. 
+                BRAM5_din_a[31:0] = 0;
+            end
+        endcase
+    end
+
+    if(bram_map_read_ena) begin //pipe1_valid && pipeline_move이 1이면 bram_map_read_ena가 1이 됨.
+        BRAM14_en_a = 1; //BRAM14는 폰트맵 저장.
+        BRAM14_wstrb_a[3:0] = 4'b0;
+        BRAM14_addr_a[9:0] = ((pipe1_font_y[5:0] << 4) + (pipe1_font_y[5:0] << 2)) + {5'b0, pipe1_font_x[5:1]}; //font_y * 20 + font_x/2 계산.
+        BRAM14_din_a[31:0] = 0;
+    end
+end
+
 always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
         fifo_state[3:0] <= IDLE;
+        font_state[3:0] <= IDLE;
         pixel_counter_x[8:0] <= 0;
         pixel_counter_y[8:0] <= 0;
+
+        bram_font_read_ena_reg <= 0;
+        bram_map_read_ena_reg <= 0;
+
+        fontmap_skid_data[15:0] <= 0;
+        fontmap_skid_valid <= 0;
+        ascii_bitmap_skid_data[7:0] <= 0;
+        ascii_bitmap_skid_valid <= 0;
+        korea_bitmap_skid_data[15:0] <= 0;
+        korea_bitmap_skid_valid <= 0;
+        custom_tile_bitmap_skid_data[7:0] <= 0;
+        custom_tile_bitmap_skid_valid <= 0;
+
     end
     else begin
         fifo_state[3:0] <= fifo_state_next;
         font_state[3:0] <= font_state_next;
+
+        bram_font_read_ena_reg <= bram_font_read_ena; //1클럭전 값을 저장함.
+        bram_map_read_ena_reg <= bram_map_read_ena; //1클럭전 값을 저장함.
+
+        if(bram_map_read_ena_reg == 1 && pipeline_move == 0) begin //이때 skid buffer에 값을 임시로 저장함.
+            fontmap_skid_data[15:0] <= (pipe2_mask[3:0] == 4'b1100) ? BRAM14_dout_a[31:16] : BRAM14_dout_a[15:0];
+            fontmap_skid_valid <= 1; //valid를 1로 설정.
+        end
+        else if(fontmap_skid_valid == 1 && pipeline_move == 1)begin //이때는 정상적으로 pipe3 레지스터에 데이터가 잘 들어갈 예정임.
+            fontmap_skid_data[15:0] <= 0;
+            fontmap_skid_valid <= 0; //valid를 0으로 설정.
+        end
+        else begin //기존값 유지.
+            fontmap_skid_data[15:0] <= fontmap_skid_data[15:0];
+            fontmap_skid_valid <= fontmap_skid_valid; 
+        end
+
+        if(bram_font_read_ena_reg == 1 && pipeline_move == 0) begin
+            case(1'b1)
+                (pipe5_is_korea): begin
+                    if(pipe5_mask[3:0] == 4'b1100) begin
+                        korea_bitmap_skid_data[15:0] <= (pipe5_cho_sung_what_bram == 0) ? (BRAM4_dout_a[31:16] | BRAM6_dout_a[31:16] | BRAM13_dout_a[31:16]) : (BRAM5_dout_a[31:16] | BRAM6_dout_a[31:16] | BRAM13_dout_a[31:16]);
+                        korea_bitmap_skid_valid <= 1;
+                    end
+                    else if(pipe5_mask[3:0] == 4'b0011) begin
+                        korea_bitmap_skid_data[15:0] <= (pipe5_cho_sung_what_bram == 0) ? (BRAM4_dout_a[15:0] | BRAM6_dout_a[15:0] | BRAM13_dout_a[15:0]) : (BRAM5_dout_a[15:0] | BRAM6_dout_a[15:0] | BRAM13_dout_a[15:0]);
+                        korea_bitmap_skid_valid <= 1;
+                    end
+                    else begin //오류. 무엇가 잘못된 상황임.
+                    end
+                end
+                (pipe5_is_ascii): begin
+                    ascii_bitmap_skid_valid <= 1;
+                    if(pipe5_mask[0]) ascii_bitmap_skid_data[7:0] <= BRAM5_dout_a[7:0];
+                    if(pipe5_mask[1]) ascii_bitmap_skid_data[7:0] <= BRAM5_dout_a[15:8];
+                    if(pipe5_mask[2]) ascii_bitmap_skid_data[7:0] <= BRAM5_dout_a[23:16];
+                    if(pipe5_mask[3]) ascii_bitmap_skid_data[7:0] <= BRAM5_dout_a[31:24];
+                end
+                (pipe5_is_custom): begin
+                    custom_tile_bitmap_skid_valid <= 1;
+                    if(pipe5_custom_what_bram == 0) begin //BRAM5
+                        if(pipe5_mask[0]) custom_tile_bitmap_skid_data[7:0] <= BRAM5_dout_a[7:0];
+                        if(pipe5_mask[1]) custom_tile_bitmap_skid_data[7:0] <= BRAM5_dout_a[15:8];
+                        if(pipe5_mask[2]) custom_tile_bitmap_skid_data[7:0] <= BRAM5_dout_a[23:16];
+                        if(pipe5_mask[3]) custom_tile_bitmap_skid_data[7:0] <= BRAM5_dout_a[31:24];
+                    end
+                    else begin //BRAM6
+                        if(pipe5_mask[0]) custom_tile_bitmap_skid_data[7:0] <= BRAM6_dout_a[7:0];
+                        if(pipe5_mask[1]) custom_tile_bitmap_skid_data[7:0] <= BRAM6_dout_a[15:8];
+                        if(pipe5_mask[2]) custom_tile_bitmap_skid_data[7:0] <= BRAM6_dout_a[23:16];
+                        if(pipe5_mask[3]) custom_tile_bitmap_skid_data[7:0] <= BRAM6_dout_a[31:24];
+                    end
+                end
+                default: begin //오류. 무엇가 잘못된 상황임.
+                end
+            endcase
+        end
+        else if(fontmap_skid_valid == 1 && pipeline_move == 1) begin //이때는 정상적으로 pipe6 레지스터에 데이터가 잘 들어갈 예정임.
+            ascii_bitmap_skid_data[7:0] <= 0;
+            ascii_bitmap_skid_valid <= 0;
+            korea_bitmap_skid_data[15:0] <= 0;
+            korea_bitmap_skid_valid <= 0;
+            custom_tile_bitmap_skid_data[7:0] <= 0;
+            custom_tile_bitmap_skid_valid <= 0;
+        end
+        else begin //기존값 유지.
+            ascii_bitmap_skid_data[7:0] <= ascii_bitmap_skid_data[7:0];
+            ascii_bitmap_skid_valid <= ascii_bitmap_skid_valid;
+            korea_bitmap_skid_data[15:0] <= korea_bitmap_skid_data[15:0];
+            korea_bitmap_skid_valid <= korea_bitmap_skid_valid;
+            custom_tile_bitmap_skid_data[7:0] <= custom_tile_bitmap_skid_data[7:0];
+            custom_tile_bitmap_skid_valid <= custom_tile_bitmap_skid_valid;
+        end
+
+
+        if(pipeline_move) begin
+            pipe1_valid <= ;
+            pipe1_counter_16[3:0] <= ; //0~15의 값을 가지고 16*16, 8*16 비트맵에서 몇번째줄을 읽어야 하는지 알려줌. 
+            pipe1_font_x[5:0] <= ; //0~39의 값을 가짐. 
+            pipe1_font_y[5:0] <= ; //0~14의 값을 가짐.
+
+            pipe2_valid <= pipe1_valid;
+            pipe2_mask[3:0] <= (pipe1_font_x[0] == 1'b1) ? 4'b1100 : 4'b0011; //4'b1100(상위 16비트 pipe3에 저장), 4'b0011(하위 16비트 pipe3에 저장)
+            pipe2_font_x[5:0] <= pipe1_font_x[5:0];
+            pipe2_font_y[5:0] <= pipe1_font_y[5:0];
+            pipe2_counter_16[3:0] <= pipe1_counter_16[3:0];
+
+            pipe3_valid <= pipe2_valid;
+            pipe3_UTF16[15:0] <= (fontmap_skid_valid == 1) ? fontmap_skid_data[15:0] : (pipe2_mask[3:0] == 4'b1100) ? BRAM14_dout_a[31:16] : BRAM14_dout_a[15:0];
+            pipe3_font_x[5:0] <= pipe2_font_x[5:0];
+            pipe3_font_y[5:0] <= pipe2_font_y[5:0];
+            pipe3_counter_16[3:0] <= pipe2_counter_16[3:0];
+
+            pipe4_valid <= pipe3_valid;
+            pipe4_UTF16[15:0] <= pipe3_UTF16[15:0];
+            if(pipe3_UTF16[15:0] >= 16'hAC00 && pipe3_UTF16[15:0] <= 16'hD7A3) begin //한글 범위
+                pipe4_is_korea <= 1;
+                pipe4_is_ascii <= 0;
+                pipe4_is_custom <= 0;
+            end
+            else if(pipe3_UTF16[15:0] >= 16'h0020 && pipe3_UTF16[15:0] <= 16'h007F) begin //ASCII 범위
+                pipe4_is_korea <= 0;
+                pipe4_is_ascii <= 1;
+                pipe4_is_custom <= 0;
+            end
+            else if(pipe3_UTF16[15:0] >= 16'hE000 && pipe3_UTF16[15:0] <= 16'hE0AB) begin //커스텀 타일 범위
+                pipe4_is_korea <= 0;
+                pipe4_is_ascii <= 0;
+                pipe4_is_custom <= 1;
+            end
+            else begin //그 외의 값은 ASCII 공백으로 처리.
+                pipe4_is_korea <= 0;
+                pipe4_is_ascii <= 1;
+                pipe4_is_custom <= 0;
+            end
+            pipe4_jung_sung_index[4:0] <= jung_sung_index[4:0];
+            pipe4_chong_sung_index[4:0] <= chong_sung_index[4:0]; 
+            pipe4_cho_sung_index[4:0] <= cho_sung_index[4:0];  
+            pipe4_font_x[5:0] <= pipe3_font_x[5:0];
+            pipe4_font_y[5:0] <= pipe3_font_y[5:0];
+            pipe4_counter_16[3:0] <= pipe3_counter_16[3:0];
+
+            pipe5_valid <= pipe4_valid;
+            pipe5_mask[3:0] <= ; 
+            if(pipe4_is_korea) begin
+                if(pipe4_cho_sung_index[4:0] < 5'd7) begin //초성 1~6벌
+                    pipe5_cho_sung_what_bram <= 0; //BRAM4
+                end
+                else begin //초성 7~8벌
+                    pipe5_cho_sung_what_bram <= 1; //BRAM5
+                end
+                pipe5_mask[3:0] <= (pipe4_counter_16[0] == 1'b1) ? 4'b1100 : 4'b0011; //4'b1100(상위 16비트 pipe6에 저장), 4'b0011(하위 16비트 pipe6에 저장)
+            end
+            if(pipe4_is_ascii) begin
+                case(pipe4_counter_16[1:0])
+                    2'b00: pipe5_mask[3:0] <= 4'b0001;
+                    2'b01: pipe5_mask[3:0] <= 4'b0010;
+                    2'b10: pipe5_mask[3:0] <= 4'b0100;
+                    2'b11: pipe5_mask[3:0] <= 4'b1000;
+                endcase
+            end
+            if(pipe4_is_custom) begin
+                if(pipe4_UTF16[15:0] <= 16'hE053) begin //BRAM5
+                    pipe5_custom_what_bram <= 0; //BRAM5
+                end
+                else begin //BRAM6
+                    pipe5_custom_what_bram <= 1; //BRAM6
+                end
+
+                case(pipe4_counter_16[1:0])
+                    2'b00: pipe5_mask[3:0] <= 4'b0001;
+                    2'b01: pipe5_mask[3:0] <= 4'b0010;
+                    2'b10: pipe5_mask[3:0] <= 4'b0100;
+                    2'b11: pipe5_mask[3:0] <= 4'b1000;
+                endcase
+            end
+            pipe5_is_korea <= pipe4_is_korea;
+            pipe5_is_ascii <= pipe4_is_ascii;
+            pipe5_is_custom <= pipe4_is_custom;
+            pipe5_font_x[5:0] <= pipe4_font_x[5:0];
+            pipe5_font_y[5:0] <= pipe4_font_y[5:0];
+            pipe5_counter_16[3:0] <= pipe4_counter_16[3:0];
+
+            pipe6_valid <= pipe5_valid; 
+            pipe6_is_korea <= pipe5_is_korea; 
+            pipe6_is_ascii <= pipe5_is_ascii; 
+            pipe6_is_custom <= pipe5_is_custom; 
+            if(pipe5_is_korea) begin
+                if(korea_bitmap_skid_valid == 1) begin
+                    pipe6_korea_font_bitmap[15:0] <= korea_bitmap_skid_data[15:0];
+                end
+                else begin
+                    if(pipe5_cho_sung_what_bram == 0) begin //BRAM4
+                        pipe6_korea_font_bitmap[15:0] <= (pipe5_mask[3:0] == 4'b1100) ? (BRAM4_dout_a[31:16] | BRAM6_dout_a[31:16] | BRAM13_dout_a[31:16]) : (BRAM4_dout_a[15:0] | BRAM6_dout_a[15:0] | BRAM13_dout_a[15:0]);
+                    end
+                    else begin //BRAM5
+                        pipe6_korea_font_bitmap[15:0] <= (pipe5_mask[3:0] == 4'b1100) ? (BRAM5_dout_a[31:16] | BRAM6_dout_a[31:16] | BRAM13_dout_a[31:16]) : (BRAM5_dout_a[15:0] | BRAM6_dout_a[15:0] | BRAM13_dout_a[15:0]);
+                    end
+                end
+            end
+            if(pipe5_is_ascii) begin
+                if(ascii_bitmap_skid_valid == 1) begin
+                    pipe6_ascii_font_bitmap[7:0] <= ascii_bitmap_skid_data[7:0];
+                end
+                else begin
+                    if(pipe5_mask[0]) pipe6_ascii_font_bitmap[7:0] <= BRAM5_dout_a[7:0];
+                    if(pipe5_mask[1]) pipe6_ascii_font_bitmap[7:0] <= BRAM5_dout_a[15:8];
+                    if(pipe5_mask[2]) pipe6_ascii_font_bitmap[7:0] <= BRAM5_dout_a[23:16];
+                    if(pipe5_mask[3]) pipe6_ascii_font_bitmap[7:0] <= BRAM5_dout_a[31:24];
+                end
+            end
+            if(pipe5_is_custom) begin
+                if(custom_tile_bitmap_skid_valid == 1) begin
+                    pipe6_custom_tile_bitmap[7:0] <= custom_tile_bitmap_skid_data[7:0];
+                end
+                else begin
+                    if(pipe5_custom_what_bram == 0) begin //BRAM5
+                        if(pipe5_mask[0]) pipe6_custom_tile_bitmap[7:0] <= BRAM5_dout_a[7:0];
+                        if(pipe5_mask[1]) pipe6_custom_tile_bitmap[7:0] <= BRAM5_dout_a[15:8];
+                        if(pipe5_mask[2]) pipe6_custom_tile_bitmap[7:0] <= BRAM5_dout_a[23:16];
+                        if(pipe5_mask[3]) pipe6_custom_tile_bitmap[7:0] <= BRAM5_dout_a[31:24];
+                    end
+                    else begin //BRAM6
+                        if(pipe5_mask[0]) pipe6_custom_tile_bitmap[7:0] <= BRAM6_dout_a[7:0];
+                        if(pipe5_mask[1]) pipe6_custom_tile_bitmap[7:0] <= BRAM6_dout_a[15:8];
+                        if(pipe5_mask[2]) pipe6_custom_tile_bitmap[7:0] <= BRAM6_dout_a[23:16];
+                        if(pipe5_mask[3]) pipe6_custom_tile_bitmap[7:0] <= BRAM6_dout_a[31:24];
+                    end
+                end
+            end
+            pipe6_font_x[5:0] <= pipe5_font_x[5:0]; 
+            pipe6_font_y[5:0] <= pipe5_font_y[5:0];
+            pipe6_counter_16[3:0] <= pipe5_counter_16[3:0];
+        end
+
+
         case(fifo_state[3:0])
             IDLE: begin
                 if(PPU_start) begin
@@ -509,16 +829,15 @@ always @(posedge clk or negedge resetn) begin
         case(font_state[3:0])
             IDLE: begin
                 if(PPU_start) begin
-                    fifo_state[3:0] <= START;
+                    font_state[3:0] <= START;
                 end
                 else begin
-                    fifo_state[3:0] <= IDLE;
+                    font_state[3:0] <= IDLE;
                 end
             end
             START: begin
             end
         endcase
-
     end
 end
 
