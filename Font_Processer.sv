@@ -483,7 +483,7 @@ reg [9:0] custom_tile_bram_ad;
 wire [13:0] base_index = pipe3_UTF16 - 16'hAC00;
 
 // 1. 28로 나누고 종성 빼기 (한 클럭 내 진행)
-wire [13:0] mid_quot   = (base_index * 32'd2341) >> 16;
+wire [13:0] mid_quot   = (base_index * 32'd9363) >> 18;
 wire [4:0]  chong_sung_index = base_index - ((mid_quot << 4) + (mid_quot << 3) + (mid_quot << 2)); //종성 인덱스
 
 // 2. 이어서 21로 나누고 중성 빼기 (동일 클럭 내 진행)
