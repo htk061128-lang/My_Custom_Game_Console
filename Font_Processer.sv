@@ -4,10 +4,10 @@ module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트
 
     input PPU_start,
 
-    output [17:0] Font_Mixed_Pixel_RGB, //최종 출력 픽셀.
-    output Font_Mixed_Pixel_valid,
-    output Line_End, // 매 줄의 320번째 픽셀을 출력할떄 같이 1을 출력함.
-    output Frame_End, //320 * 240 픽셀의 마지막 픽셀을 출력할때 같이 1을 출력함.
+    output reg [17:0] Font_Mixed_Pixel_RGB, //최종 출력 픽셀.
+    output reg Font_Mixed_Pixel_valid,
+    output reg Line_End, // 매 줄의 320번째 픽셀을 출력할떄 같이 1을 출력함.
+    output reg Frame_End, //320 * 240 픽셀의 마지막 픽셀을 출력할때 같이 1을 출력함.
 
     input PPU_pixel_valid,
     input [17:0] PPU_pixel_RGB, //PPU가 1차 완성한 Pixel. 6bit * 3 = 18bit
@@ -134,7 +134,7 @@ module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트
     output reg [3:0]  BRAM14_wstrb_b,    // Port B Write Enable
     output reg [9:0]  BRAM14_addr_b,  // Port B Address (10-bit for 1024 depth)
     output reg [31:0] BRAM14_din_b,   // Port B Data Input
-    input      [31:0] BRAM14_dout_b,   // Port B Data Output
+    input      [31:0] BRAM14_dout_b   // Port B Data Output
 );
 /*
 UTF-16을 사용할 예정이고 한글, 영어, 숫자, 특수문자 다 16비트임.
@@ -340,7 +340,7 @@ reg [3:0] output_state; //mixed 된 최종 픽셀을 출력하는 FSM
 reg [3:0] output_state_next;
 reg [3:0] font_state; //pipe1에 값을 넣어주고, pipeline_move를 제어하는 FSM
 reg [3:0] font_state_next; 
-parameter IDLE = 0, START = 1, BUBBLE_1 = 2, BUBBLE_2 = 3, BUBBLE_3 = 4, FIRST_CASE_1 = 5, FIRST_CASE_2 = 6, SECOND_CASE = 7, THIRD_CASE = 8;
+parameter IDLE = 0, START = 1, BUBBLE_1 = 2, BUBBLE_2 = 3, BUBBLE_3 = 4, FIRST_CASE_1 = 5, FIRST_CASE_2 = 6, SECOND_CASE = 7, THIRD_CASE = 8, NOT_MIX = 9;
 
 reg [5:0] counter_0_39; //0에서 39까지 증가하는 카운터. pipeline_move가 1일때마다 혹은 counter_0_39_reset이 1일때 1씩 증가함. 38 -> 39 -> 0 -> 1.... 혹은 18 -> 19(reset 신호) -> 0 -> 1
 reg [3:0] counter_0_15; //0에서 15까지 증가하는 카운터. counter_0_39가 0으로 갈 때 1씩 증가함. 14 -> 15 -> 0 -> 1.... 
@@ -391,6 +391,7 @@ reg mixed_RGB_shift;
 
 reg [8:0] output_pixel_x; //최종 출력 픽셀 카운터. 이 카운터들의 값에 따라서 output인 line_end, frame_end가 출력됨. 
 reg [8:0] output_pixel_y;
+reg output_pixel_inc; //이 신호로 output_state가 output_pixel_x, output_pixel_y를 제어함.
 
 reg RGB_reg_shift; //이 신호가 1이면 클럭에지때 RGB_x_reg 들이 오른쪽으로 값이 옮겨짐.
 wire RGB_reg_all_full = RGB_1_reg_valid && RGB_2_reg_valid && RGB_3_reg_valid && RGB_4_reg_valid && RGB_5_reg_valid && RGB_6_reg_valid && RGB_7_reg_valid && RGB_8_reg_valid;
@@ -404,6 +405,7 @@ reg pipe1_valid_next; //font_state의 출력들. pipeline_move가 1이면 클럭
 reg [3:0] pipe1_counter_16_next;
 reg [5:0] pipe1_font_x_next;
 reg [5:0] pipe1_font_y_next;
+reg pipe1_next_line_next;
 
 wire bram_font_read_ena = pipe4_valid && pipeline_move; //이 신호가 1이면 즉시 해당하는 BRAM 인터페이스에 읽기 제어신호, 주소를 보냄.
 reg bram_font_read_ena_reg; //1 클럭전 bram_font_read_ena 신호를 나타내는 레지스터.
@@ -414,18 +416,21 @@ reg pipe1_valid; //버블을 삽입할때는 pipe1_valid에 0을 저장시키면
 reg [3:0] pipe1_counter_16; //0~15의 값을 가지고 16*16, 8*16 비트맵에서 몇번째줄을 읽어야 하는지 알려줌. 
 reg [5:0] pipe1_font_x; //0~39의 값을 가짐. 기본적으로 1씩 증가시키고, 줄을 바꿔야 한다 판단되면 0으로 초기화시키고 pipe1_counter_16을 1 증가시킴. 이후 pipe1_counter_16이 15이면 y를 1 증가시킴.
 reg [5:0] pipe1_font_y; //0~14의 값을 가짐.
+reg pipe1_next_line; //이 값이 1이면 8개 픽셀을 폰트 합성없이 넘기고 다음 8개 픽셀을 합성하라는 의미임. 이 값은 이후 파이프라인을 지나면서 달라질 수 있음(counter_font_x가 38인 경우)
 
 reg pipe2_valid; //클럭에지때 BRAM에서 값이 나오면서 pipe2_valid에 값이 저장됨. 이때 
 reg [3:0] pipe2_mask; //8비트 단위로 어디 위치의 값을 pipe3에 저장해야 할지 지정함. 4'b1100(상위 16비트 저장), 4'b0011(하위 16비트 저장) 둘 중 하나여야 함. 
 reg [5:0] pipe2_font_x;
 reg [5:0] pipe2_font_y;
 reg [3:0] pipe2_counter_16;
+reg pipe2_next_line;
 
 reg pipe3_valid;
 reg [15:0] pipe3_UTF16; //읽은 32비트 중 16비트만 저장함. 이 값이 0을 포함한 정의되지 않은 값이라면 공백이라고 가정.
 reg [5:0] pipe3_font_x;
 reg [5:0] pipe3_font_y;
 reg [3:0] pipe3_counter_16;
+reg pipe3_next_line;
 
 reg pipe4_valid;
 reg [15:0] pipe4_UTF16;
@@ -438,6 +443,7 @@ reg [4:0] pipe4_cho_sung_index; //초성 index. mid_quot를 21로 나눈 몫.
 reg [5:0] pipe4_font_x;
 reg [5:0] pipe4_font_y;
 reg [3:0] pipe4_counter_16;
+reg pipe4_next_line;
 
 reg pipe5_valid;
 reg [3:0] pipe5_mask; //8비트 단위로 어디 위치의 값을 pipe6에 저장해야 할지 지정함. 한글폰트라면 4'b1100(상위 16비트 저장), 4'b0011(하위 16비트 저장)둘중 하나여야 함.
@@ -449,6 +455,7 @@ reg pipe5_is_custom;
 reg [5:0] pipe5_font_x;
 reg [5:0] pipe5_font_y;
 reg [3:0] pipe5_counter_16;
+reg pipe5_next_line;
 
 reg pipe6_valid; //이 값이 0이면 절대 bitmap을 합성해서는 안됨. 파이프라인을 전진시켜서 valid가 나올때까지 전진시켜야 함. 버블이 들어있을 수 있음.
 reg pipe6_is_korea; //이 값이 1이면 pipe6_korea_font_bitmap이 유효함.
@@ -460,6 +467,7 @@ reg [7:0] pipe6_custom_tile_bitmap;
 reg [5:0] pipe6_font_x; //이 값을 이용해서 LineX_visible_number와 대조해서 합성할지 말지 판단함.
 reg [5:0] pipe6_font_y; //이 값을 이용해서 Line1_visible_number ~ Line15_visible_number 중 하나를 선택함.
 reg [3:0] pipe6_counter_16; //이 값을 이용해서 x, y에 해당하는 폰트의 몇번째 줄 비트맵인지(0-15) 판단함.
+reg pipe6_next_line;
 
 reg [3:0] cho_sung_set; //초성 벌 수. 조합논리로 계산.
 reg [3:0] jung_sung_set; //중성 벌 수
@@ -496,12 +504,18 @@ always @(*) begin
         IDLE: begin
         end
         START: begin
-            if() begin //프레임이 모두 출력되었다면 IDLE 상태로 돌아가야 함.
+            if(Frame_End) begin //프레임이 모두 출력되었다면 IDLE 상태로 돌아가야 함.
+                pixel_state_next = IDLE;
             end
-            else if(RGB_reg_all_full) begin //8개가 다 저장되었다면 이때 반드시 pipe6가 유효해야 하며, 절대 다음 PPU_pixel_valid가 와서는 안됨!!
+            else if(RGB_reg_all_full && (pipe6_next_line == 0) && pipe6_valid) begin //8개가 다 저장되었다면 이때 반드시 pipe6가 유효해야 하며, 절대 다음 PPU_pixel_valid가 와서는 안됨!!
                 pixel_state_next = (pipe6_is_korea == 1) ? KOREA: START; //pipe6에 한글폰트가 들어있으면 font_mix_end를 한번 더 기다린후 올려줘야 함. 
                 font_mix_end = (pipe6_is_korea == 1) ? 0: 1; //한글폰트가 아니면 파이프라인 전진을 유도함.
                 mixed_RGB_w_ena = 1; //동시에 PPU_pixel_valid가 오는 상황이어도 알아서 RGB_1_reg에 저장되고 나머지들은 초기화 됨..
+            end
+            else if(RGB_reg_all_full && (pipe6_next_line == 1) && pipe6_valid) begin //RGB_reg_x에 있는것 그대로 mixed_RGB_x로 보내고 다음 RGB_reg_all_full이 왔을때 정상적으로 처리해야 함.
+                pixel_state_next = NOT_MIX;
+                font_mix_end = 0; //파이프라인 전진시키면 안됨!!!
+                mixed_RGB_w_ena = 1; //알아서 폰트 합성 안시키게 구현할 예정임. 그리고 동시에 PPU_pixel_valid 와도 알아서 RGB_1_reg에 저장됨. else if라고 걱정할 필요 없음.
             end
             else if(PPU_pixel_valid) begin //pixel이 오면 한칸씩 쉬프트 하면서 8개를 저장함.
                 pixel_state_next = START;
@@ -512,7 +526,8 @@ always @(*) begin
             end
         end
         KOREA: begin
-            if() begin //프레임이 모두 출력되었다면 IDLE 상태로 돌아가야 함.
+            if(Frame_End) begin //프레임이 모두 출력되었다면 IDLE 상태로 돌아가야 함.
+                pixel_state_next = IDLE;
             end
             else if(RGB_reg_all_full) begin 
                 pixel_state_next = START; //이제 다시 START로 이동함.
@@ -527,22 +542,72 @@ always @(*) begin
                 pixel_state_next = KOREA;
             end
         end
+        NOT_MIX: begin
+            if(Frame_End) begin //프레임이 모두 출력되었다면 IDLE 상태로 돌아가야 함.
+                pixel_state_next = IDLE;
+            end
+            else if(RGB_reg_all_full) begin 
+                pixel_state_next = (pipe6_is_korea == 1) ? KOREA: START; //KOREA갔다가 START가거나 바로 START감. 
+                font_mix_end = (pipe6_is_korea == 1) ? 0: 1; //한글폰트가 아니면 파이프라인 전진을 유도함.
+                mixed_RGB_w_ena = 1; //동시에 PPU_pixel_valid가 오는 상황이어도 알아서 RGB_1_reg에 저장되고 나머지들은 초기화 됨..
+            end
+            else if(PPU_pixel_valid) begin //pixel이 오면 한칸씩 쉬프트 하면서 8개를 저장함.
+                pixel_state_next = NOT_MIX;
+                RGB_reg_shift = 1;
+            end
+            else begin
+                pixel_state_next = NOT_MIX;
+            end
+        end
     endcase
 end
 
-always @(*) begin
+always @(*) begin //output인 Font_Mixed_Pixel_RGB, Font_Mixed_Pixel_valid, Line_End, Frame_End를 출력하는 FSM
     output_state_next = output_state;
     mixed_RGB_shift = 0;
+
+    Font_Mixed_Pixel_RGB[17:0] = 0;
+    Font_Mixed_Pixel_valid = 0;
+    Line_End = 0;
+    Frame_End = 0; //이 신호가 1이면 모든 FSM을 IDLE로 초기화 함!!!
+
+    output_pixel_inc = 0; //output_pixel_x, output_pixel_y를 제어하는 신호.
+
+    if(mixed_RGB_8_valid) begin
+        Font_Mixed_Pixel_RGB[17:0] = mixed_RGB_8;
+        Font_Mixed_Pixel_valid = 1;
+    end
+
+    if((output_pixel_x[8:0] == 9'd319) && mixed_RGB_8_valid) begin
+        Line_End = 1;
+    end
+
+    if((output_pixel_x[8:0] == 9'd319) && (output_pixel_y[8:0] == 9'd239) && mixed_RGB_8_valid) begin
+        Frame_End = 1;
+    end
+
 
     case(output_state[3:0])
         IDLE: begin
         end
-        START: begin
+        START: begin //IDLE -> START로 올때 output_pixel_x, output_pixel_y 초기화된 상황이어야 함!!!
+            if(Frame_End) begin //모든 픽셀을 출력하면 IDLE로 돌아감.
+                output_state_next = IDLE;
+            end
+            else if(mixed_RGB_8_valid) begin
+                output_state_next = START;
+                mixed_RGB_shift = 1; //동시에 mixed_RGB_w_ena가 1이 되면 우선순위가 낮아서 반영되지 않아서 문제 없음.
+                output_pixel_inc = 1;
+            end
+            else begin //mixed_RGB_8_valid가 올때까지 대기함.
+                output_state_next = 0;
+                mixed_RGB_shift = 0;
+            end
         end
     endcase
 end
 
-always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 몇개 더 넣고 다음줄 값을 넣은 후 다음줄 값이 Pipe2에 저장되었을때 reset을 줘야 함!!!!!
+always @(*) begin 
     font_state_next = font_state;
     pipeline_move = 0; //font_state가 pipeline_move 제어.
     counter_0_39_reset = 0; //font_state가 counter_0_39_reset 제어. 
@@ -553,12 +618,13 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
     pipe1_counter_16_next[3:0] = 0; // 0 ~ 15
     pipe1_font_x_next[5:0] = 0; //0 ~ 39
     pipe1_font_y_next[5:0] = 0; //0 ~ 14
+    pipe1_next_line_next = 0;
 
     case(font_state[3:0])
         IDLE: begin
         end
         START: begin 
-            if() begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+            if(Frame_End) begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
                 font_state_next = IDLE;
             end
             else if((font_mix_end == 0) && pipe6_valid) begin //파이프라인 정지.
@@ -582,7 +648,8 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
             end
         end
         BUBBLE_1: begin
-            if() begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+            if(Frame_End) begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+                font_state_next = IDLE;
             end
             else if((font_mix_end == 0) && pipe6_valid) begin //파이프라인 정지.
                 font_state_next = BUBBLE_1;
@@ -595,7 +662,8 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
             end
         end
         BUBBLE_2: begin
-            if() begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+            if(Frame_End) begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+                font_state_next = IDLE;
             end
             else if((font_mix_end == 0) && pipe6_valid) begin //파이프라인 정지.
                 font_state_next = BUBBLE_2;
@@ -608,13 +676,14 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
             end
         end
         BUBBLE_3: begin
-            if() begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+            if(Frame_End) begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+                font_state_next = IDLE;
             end
             else if((font_mix_end == 0) && pipe6_valid) begin //파이프라인 정지.
                 font_state_next = BUBBLE_3;
                 pipeline_move = 0;
             end
-            else begin //파이프라인 전진.
+            else begin //파이프라인 전진. 최대 가장 오른쪽 ascii 1개가 출력되지 않을 수 있음.
                 case(counter_font_x[5:0])
                     6'd36: begin //값 2개 더 넣고 버블 3개 넣고 counter_font_x가 38이면 한개 더 넣고 다음줄, 39, 40이면 바로 다음줄.
                         font_state_next = FIRST_CASE_1; //FIRST_CASE_1로 이동
@@ -649,6 +718,7 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
                         pipe1_counter_16_next[3:0] = (counter_0_15[3:0] == 4'd15) ? 4'd0 : counter_0_15[3:0] + 1;
                         pipe1_font_x_next[5:0] = 0;
                         pipe1_font_y_next[5:0] = (counter_0_15[3:0] == 4'd15) ? counter_0_14[5:0] + 1 : counter_0_14[5:0];
+                        pipe1_next_line_next = 1; //8개 픽셀에 폰트를 합성없이 넘겨야 하므로 pipe1_next_line을 1로 설정함. 1이면 픽셀 8개 폰트합성 없이 넘겨야 함.!!!
                     end
                     6'd40: begin //바로 다음줄 값 넣기.
                         font_state_next = START;
@@ -659,6 +729,7 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
                         pipe1_counter_16_next[3:0] = (counter_0_15[3:0] == 4'd15) ? 4'd0 : counter_0_15[3:0] + 1;
                         pipe1_font_x_next[5:0] = 0;
                         pipe1_font_y_next[5:0] = (counter_0_15[3:0] == 4'd15) ? counter_0_14[5:0] + 1 : counter_0_14[5:0];
+                        pipe1_next_line_next = 0; //어차피 바로 자연스럽게 픽셀을 그냥 넘기는 것 없이 다음줄로 가므로 0으로 설정함.
                     end
                     default: begin //그냥 다음줄 값 넣기.
                         font_state_next = START;
@@ -669,12 +740,14 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
                         pipe1_counter_16_next[3:0] = (counter_0_15[3:0] == 4'd15) ? 4'd0 : counter_0_15[3:0] + 1;
                         pipe1_font_x_next[5:0] = 0;
                         pipe1_font_y_next[5:0] = (counter_0_15[3:0] == 4'd15) ? counter_0_14[5:0] + 1 : counter_0_14[5:0];
+                        pipe1_next_line_next = 1; //pipe1_next_line을 1로 설정함!
                     end
                 endcase
             end
         end
         FIRST_CASE_1: begin //counter_font_x가 36일떄(1)
-            if() begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+            if(Frame_End) begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+                font_state_next = IDLE;
             end
             else if((font_mix_end == 0) && pipe6_valid) begin //파이프라인 정지.
                 font_state_next = FIRST_CASE_1;
@@ -690,7 +763,8 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
             end
         end
         FIRST_CASE_2: begin //counter_font_x가 36일떄(2)
-            if() begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+            if(Frame_End) begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+                font_state_next = IDLE;
             end
             else if((font_mix_end == 0) && pipe6_valid) begin //파이프라인 정지.
                 font_state_next = FIRST_CASE_2;
@@ -703,7 +777,8 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
             end
         end
         SECOND_CASE: begin //counter_font_x가 37인 경우. 
-            if() begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+            if(Frame_End) begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+                font_state_next = IDLE;
             end
             else if((font_mix_end == 0) && pipe6_valid) begin //파이프라인 정지.
                 font_state_next = SECOND_CASE;
@@ -715,8 +790,9 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
                 pipe1_valid_next = 0; //버블 삽입.
             end
         end
-        THIRD_CASE: begin //counter_font_x가 38인 경우.
-            if() begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+        THIRD_CASE: begin //counter_font_x가 38인 경우. 이때 앞 파이프라인 레지스터의 값에 따라서 pipe3_next_line이 0이나(한글) 1(ASCII, 커스텀 타일)로 설정됨.
+            if(Frame_End) begin //모든 작업이 완료되었을때 다시 IDLE로 바꿔줄 예정.
+                font_state_next = IDLE;
             end
             else if((font_mix_end == 0) && pipe6_valid) begin //파이프라인 정지.
                 font_state_next = THIRD_CASE;
@@ -731,6 +807,7 @@ always @(*) begin //counter_font_x_reset 주의해야 함!!!! 버블 삽입후 �
                 pipe1_counter_16_next[3:0] = (counter_0_15[3:0] == 4'd15) ? 4'd0 : counter_0_15[3:0] + 1;
                 pipe1_font_x_next[5:0] = 0;
                 pipe1_font_y_next[5:0] = (counter_0_15[3:0] == 4'd15) ? counter_0_14[5:0] + 1 : counter_0_14[5:0];
+                pipe1_next_line_next = 1; //pipe1_next_line을 일단 1로 설정하고 앞 파이프라인 레지스터가 valid가 1이고, 한글이냐, 아니냐에 따라서 다시 1, 0이 결점됨.
             end
         end
     endcase
@@ -993,7 +1070,7 @@ always @(*) begin
 
     case(pipe6_font_y)
         0: begin
-            if(Line0_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line0_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line0_a[2:0];
                 organized_RGB[17:0] = line0_rgb;
@@ -1003,7 +1080,7 @@ always @(*) begin
             end
         end
         1: begin
-            if(Line1_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line1_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line1_a[2:0];
                 organized_RGB[17:0] = line1_rgb;
@@ -1013,7 +1090,7 @@ always @(*) begin
             end
         end
         2: begin
-            if(Line2_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line2_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line2_a[2:0];
                 organized_RGB[17:0] = line2_rgb;
@@ -1023,7 +1100,7 @@ always @(*) begin
             end
         end
         3: begin
-            if(Line3_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line3_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line3_a[2:0];
                 organized_RGB[17:0] = line3_rgb;
@@ -1033,7 +1110,7 @@ always @(*) begin
             end
         end
         4: begin
-            if(Line4_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line4_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line4_a[2:0];
                 organized_RGB[17:0] = line4_rgb;
@@ -1043,7 +1120,7 @@ always @(*) begin
             end
         end
         5: begin
-            if(Line5_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line5_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line5_a[2:0];
                 organized_RGB[17:0] = line5_rgb;
@@ -1053,7 +1130,7 @@ always @(*) begin
             end
         end
         6: begin
-            if(Line6_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line6_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line6_a[2:0];
                 organized_RGB[17:0] = line6_rgb;
@@ -1063,7 +1140,7 @@ always @(*) begin
             end
         end
         7: begin
-            if(Line7_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line7_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line7_a[2:0];
                 organized_RGB[17:0] = line7_rgb;
@@ -1073,7 +1150,7 @@ always @(*) begin
             end
         end
         8: begin
-            if(Line8_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line8_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line8_a[2:0];
                 organized_RGB[17:0] = line8_rgb;
@@ -1083,7 +1160,7 @@ always @(*) begin
             end
         end
         9: begin
-            if(Line9_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line9_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line9_a[2:0];
                 organized_RGB[17:0] = line9_rgb;
@@ -1093,7 +1170,7 @@ always @(*) begin
             end
         end
         10: begin
-            if(Line10_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line10_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line10_a[2:0];
                 organized_RGB[17:0] = line10_rgb;
@@ -1103,7 +1180,7 @@ always @(*) begin
             end
         end
         11: begin
-            if(Line11_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line11_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line11_a[2:0];
                 organized_RGB[17:0] = line11_rgb;
@@ -1113,7 +1190,7 @@ always @(*) begin
             end
         end
         12: begin
-            if(Line12_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line12_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line12_a[2:0];
                 organized_RGB[17:0] = line12_rgb;
@@ -1123,7 +1200,7 @@ always @(*) begin
             end
         end
         13: begin
-            if(Line13_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line13_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line13_a[2:0];
                 organized_RGB[17:0] = line13_rgb;
@@ -1133,7 +1210,7 @@ always @(*) begin
             end
         end
         14: begin
-            if(Line14_visible_number >= pipe6_font_x) begin //폰트 합성.
+            if((Line14_visible_number >= pipe6_font_x) && ~(pipe6_next_line && pixel_state == START)) begin //폰트 합성.
                 do_not_need_mix = 0;
                 organized_alpha_0_4[2:0] = Line14_a[2:0];
                 organized_RGB[17:0] = line14_rgb;
@@ -1211,16 +1288,19 @@ always @(posedge clk or negedge resetn) begin
         pipe1_counter_16[3:0] <= 0;
         pipe1_font_x[5:0] <= 0;
         pipe1_font_y[5:0] <= 0;
+        pipe1_next_line <= 0;
         pipe2_valid <= 0;
         pipe2_mask[3:0] <= 0;
         pipe2_font_x[5:0] <= 0;
         pipe2_font_y[5:0] <= 0;
         pipe2_counter_16[3:0] <= 0;
+        pipe2_next_line <= 0;
         pipe3_valid <= 0;
         pipe3_UTF16[15:0] <= 0;
         pipe3_font_x[5:0] <= 0;
         pipe3_font_y[5:0] <= 0;
         pipe3_counter_16[3:0] <= 0;
+        pipe3_next_line <= 0;
         pipe4_valid <= 0;   
         pipe4_UTF16[15:0] <= 0;
         pipe4_is_korea <= 0;
@@ -1232,6 +1312,7 @@ always @(posedge clk or negedge resetn) begin
         pipe4_font_x[5:0] <= 0;
         pipe4_font_y[5:0] <= 0;
         pipe4_counter_16[3:0] <= 0;
+        pipe4_next_line <= 0;
         pipe5_valid <= 0;
         pipe5_mask[3:0] <= 0;
         pipe5_cho_sung_what_bram <= 0;
@@ -1242,6 +1323,7 @@ always @(posedge clk or negedge resetn) begin
         pipe5_font_x[5:0] <= 0;
         pipe5_font_y[5:0] <= 0;
         pipe5_counter_16[3:0] <= 0;
+        pipe5_next_line <= 0;
         pipe6_valid <= 0;
         pipe6_is_korea <= 0;
         pipe6_is_ascii <= 0;
@@ -1252,6 +1334,7 @@ always @(posedge clk or negedge resetn) begin
         pipe6_font_x[5:0] <= 0;
         pipe6_font_y[5:0] <= 0;
         pipe6_counter_16[3:0] <= 0;
+        pipe6_next_line <= 0;
 
     end
     else begin
@@ -1333,7 +1416,7 @@ always @(posedge clk or negedge resetn) begin
         end
 
         if(mixed_RGB_w_ena) begin //mixed_RGB_x 설정.
-            if(do_not_need_mix) begin
+            if(do_not_need_mix) begin //이때 (pipe6_next_line && pixel_state == START)가 1 이면 do_not_need_mix가 활성화 되는 구조임.
                 mixed_RGB_1 <= RGB_1_reg;
                 mixed_RGB_1_valid <= 1;
                 mixed_RGB_2 <= RGB_2_reg;
@@ -1352,7 +1435,7 @@ always @(posedge clk or negedge resetn) begin
                 mixed_RGB_8_valid <= 1;
             end
             else begin
-                        if ((pipe6_is_ascii && pipe6_ascii_font_bitmap[7]) || (pipe6_is_custom && pipe6_custom_font_bitmap[7]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[7]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[15])) begin
+                        if ((pipe6_is_ascii && pipe6_ascii_font_bitmap[7]) || (pipe6_is_custom && pipe6_custom_font_bitmap[7]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[7]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[15]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[15])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_1       <= RGB_1_reg;
@@ -1391,7 +1474,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_1_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[6]) || (pipe6_is_custom && pipe6_custom_font_bitmap[6]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[6]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[14])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[6]) || (pipe6_is_custom && pipe6_custom_font_bitmap[6]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[6]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[14]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[14])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_2       <= RGB_2_reg;
@@ -1430,7 +1513,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_2_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[5]) || (pipe6_is_custom && pipe6_custom_font_bitmap[5]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[5]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[13])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[5]) || (pipe6_is_custom && pipe6_custom_font_bitmap[5]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[5]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[13]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[13])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_3       <= RGB_3_reg;
@@ -1469,7 +1552,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_3_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[4]) || (pipe6_is_custom && pipe6_custom_font_bitmap[4]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[4]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[12])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[4]) || (pipe6_is_custom && pipe6_custom_font_bitmap[4]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[4]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[12]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[12])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_4       <= RGB_4_reg;
@@ -1508,7 +1591,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_4_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[3]) || (pipe6_is_custom && pipe6_custom_font_bitmap[3]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[3]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[11])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[3]) || (pipe6_is_custom && pipe6_custom_font_bitmap[3]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[3]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[11]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[11])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_5       <= RGB_5_reg;
@@ -1547,7 +1630,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_5_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[2]) || (pipe6_is_custom && pipe6_custom_font_bitmap[2]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[2]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[10])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[2]) || (pipe6_is_custom && pipe6_custom_font_bitmap[2]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[2]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[10]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[10])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_6       <= RGB_6_reg;
@@ -1586,7 +1669,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_6_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[1]) || (pipe6_is_custom && pipe6_custom_font_bitmap[1]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[1]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[9])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[1]) || (pipe6_is_custom && pipe6_custom_font_bitmap[1]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[1]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[9]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[9])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_7       <= RGB_7_reg;
@@ -1625,7 +1708,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_7_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[0]) || (pipe6_is_custom && pipe6_custom_font_bitmap[0]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[0]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[8])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[0]) || (pipe6_is_custom && pipe6_custom_font_bitmap[0]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[0]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[8]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[8])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_8       <= RGB_8_reg;
@@ -1767,23 +1850,63 @@ always @(posedge clk or negedge resetn) begin
             counter_font_x[5:0] <= counter_font_x[5:0] + 1;
         end
 
+        if(output_pixel_inc) begin
+            if(output_pixel_x[8:0] == 9'd319) begin // output_pixel_x는 318 -> 319 -> 0 -> 1 로 증가함.
+                output_pixel_x[8:0] <= 0;
+                output_pixel_y[8:0] <= output_pixel_y[8:0] + 1;
+            end
+            else begin
+                output_pixel_x[8:0] <= output_pixel_x[8:0] + 1;
+            end
+        end
+
+        if(mixed_RGB_shift && ~mixed_RGB_w_ena) begin //동시에 mixed_RGB_shift와 mixed_RGB_w_ena가 들어오면 mixed_RGB_w_ena가 적용되야 함. 
+            mixed_RGB_1[17:0] <= 0;
+            mixed_RGB_1_valid <= 0;
+            mixed_RGB_2[17:0] <= mixed_RGB_1[17:0];
+            mixed_RGB_2_valid <= mixed_RGB_1_valid;
+            mixed_RGB_3[17:0] <= mixed_RGB_2[17:0];
+            mixed_RGB_3_valid <= mixed_RGB_2_valid;
+            mixed_RGB_4[17:0] <= mixed_RGB_3[17:0];
+            mixed_RGB_4_valid <= mixed_RGB_3_valid;
+            mixed_RGB_5[17:0] <= mixed_RGB_4[17:0];
+            mixed_RGB_5_valid <= mixed_RGB_4_valid;
+            mixed_RGB_6[17:0] <= mixed_RGB_5[17:0];
+            mixed_RGB_6_valid <= mixed_RGB_5_valid;
+            mixed_RGB_7[17:0] <= mixed_RGB_6[17:0];
+            mixed_RGB_7_valid <= mixed_RGB_6_valid;
+            mixed_RGB_8[17:0] <= mixed_RGB_7[17:0];
+            mixed_RGB_8_valid <= mixed_RGB_7_valid;
+        end
+        else if(mixed_RGB_shift && mixed_RGB_w_ena) begin //이때는 우선순위가 높은 mixed_RGB_w_ena가 mixed_RGB_x를 설정해야 하므로 비워두었음.
+
+        end
+
         if(pipeline_move) begin
             pipe1_valid <= pipe1_valid_next;
             pipe1_counter_16[3:0] <= pipe1_counter_16_next; //0~15의 값을 가지고 16*16, 8*16 비트맵에서 몇번째줄을 읽어야 하는지 알려줌. 
             pipe1_font_x[5:0] <= pipe1_font_x_next; //0~39의 값을 가짐. 
             pipe1_font_y[5:0] <= pipe1_font_y_next; //0~14의 값을 가짐.
+            pipe1_next_line <= pipe1_next_line_next;
 
             pipe2_valid <= pipe1_valid;
             pipe2_mask[3:0] <= (pipe1_font_x[0] == 1'b1) ? 4'b1100 : 4'b0011; //4'b1100(상위 16비트 pipe3에 저장), 4'b0011(하위 16비트 pipe3에 저장)
             pipe2_font_x[5:0] <= pipe1_font_x[5:0];
             pipe2_font_y[5:0] <= pipe1_font_y[5:0];
             pipe2_counter_16[3:0] <= pipe1_counter_16[3:0];
+            pipe2_next_line <= pipe1_next_line;
 
             pipe3_valid <= pipe2_valid;
             pipe3_UTF16[15:0] <= (fontmap_skid_valid == 1) ? fontmap_skid_data[15:0] : (pipe2_mask[3:0] == 4'b1100) ? BRAM14_dout_a[31:16] : BRAM14_dout_a[15:0];
             pipe3_font_x[5:0] <= pipe2_font_x[5:0];
             pipe3_font_y[5:0] <= pipe2_font_y[5:0];
             pipe3_counter_16[3:0] <= pipe2_counter_16[3:0];
+            if((pipe2_next_line == 1) && pipe3_valid && is_korea_wire) begin //앞 파이프라인 레지스터가 버블이 아니고 pipe2_next_line이 1이라는 것은 counter_font_x가 38일떄 값 하나 더 넣고 다음줄 넣는 경우임.
+                pipe3_next_line <= 0;
+            end
+            else begin //일반적인 경우. 
+                pipe3_next_line <= pipe2_next_line;
+            end
 
             pipe4_valid <= pipe3_valid;
             pipe4_UTF16[15:0] <= pipe3_UTF16[15:0];
@@ -1813,6 +1936,7 @@ always @(posedge clk or negedge resetn) begin
             pipe4_font_x[5:0] <= pipe3_font_x[5:0];
             pipe4_font_y[5:0] <= pipe3_font_y[5:0];
             pipe4_counter_16[3:0] <= pipe3_counter_16[3:0];
+            pipe4_next_line <= pipe3_next_line;
 
             pipe5_valid <= pipe4_valid;
             if(pipe4_is_korea) begin
@@ -1853,6 +1977,7 @@ always @(posedge clk or negedge resetn) begin
             pipe5_font_x[5:0] <= pipe4_font_x[5:0];
             pipe5_font_y[5:0] <= pipe4_font_y[5:0];
             pipe5_counter_16[3:0] <= pipe4_counter_16[3:0];
+            pipe5_next_line <= pipe4_next_line;
 
             pipe6_valid <= pipe5_valid; 
             pipe6_is_korea <= pipe5_is_korea; 
@@ -1904,6 +2029,7 @@ always @(posedge clk or negedge resetn) begin
             pipe6_font_x[5:0] <= pipe5_font_x[5:0]; 
             pipe6_font_y[5:0] <= pipe5_font_y[5:0];
             pipe6_counter_16[3:0] <= pipe5_counter_16[3:0];
+            pipe6_next_line <= pipe5_next_line;
         end
 
 
@@ -1991,16 +2117,19 @@ always @(posedge clk or negedge resetn) begin
                     pipe1_counter_16[3:0] <= 0;
                     pipe1_font_x[5:0] <= 0;
                     pipe1_font_y[5:0] <= 0;
+                    pipe1_next_line <= 0;
                     pipe2_valid <= 0;
                     pipe2_mask[3:0] <= 0;
                     pipe2_font_x[5:0] <= 0;
                     pipe2_font_y[5:0] <= 0;
                     pipe2_counter_16[3:0] <= 0;
+                    pipe2_next_line <= 0;
                     pipe3_valid <= 0;
                     pipe3_UTF16[15:0] <= 0;
                     pipe3_font_x[5:0] <= 0;
                     pipe3_font_y[5:0] <= 0;
                     pipe3_counter_16[3:0] <= 0;
+                    pipe3_next_line <= 0;
                     pipe4_valid <= 0;
                     pipe4_UTF16[15:0] <= 0;
                     pipe4_is_korea <= 0;
@@ -2012,6 +2141,7 @@ always @(posedge clk or negedge resetn) begin
                     pipe4_font_x[5:0] <= 0;
                     pipe4_font_y[5:0] <= 0;
                     pipe4_counter_16[3:0] <= 0;
+                    pipe4_next_line <= 0;
                     pipe5_valid <= 0;
                     pipe5_mask[3:0] <= 0;
                     pipe5_cho_sung_what_bram <= 0;
@@ -2022,6 +2152,7 @@ always @(posedge clk or negedge resetn) begin
                     pipe5_font_x[5:0] <= 0;
                     pipe5_font_y[5:0] <= 0;
                     pipe5_counter_16[3:0] <= 0;
+                    pipe5_next_line <= 0;
                     pipe6_valid <= 0;
                     pipe6_is_korea <= 0;
                     pipe6_is_ascii <= 0;
@@ -2032,6 +2163,7 @@ always @(posedge clk or negedge resetn) begin
                     pipe6_font_x[5:0] <= 0;
                     pipe6_font_y[5:0] <= 0;
                     pipe6_counter_16[3:0] <= 0;
+                    pipe6_next_line <= 0;
                 end
                 else begin
                     font_state[3:0] <= IDLE;
