@@ -63,9 +63,40 @@ module PPU_TOP(
     input  [15:0] Universal1_WX, input [15:0] Universal1_WY, input [15:0] Universal1_SCX, input [15:0] Universal1_SCY, input [7:0] Universal1_a, input [7:0] Universal1_z,
     input  [15:0] Universal2_WX, input [15:0] Universal2_WY, input [15:0] Universal2_SCX, input [15:0] Universal2_SCY, input [7:0] Universal2_a, input [7:0] Universal2_z,
 
+    // Font processor control inputs
+    input [7:0] Line0_visible_number, input [7:0] Line1_visible_number, input [7:0] Line2_visible_number,
+    input [7:0] Line3_visible_number, input [7:0] Line4_visible_number, input [7:0] Line5_visible_number,
+    input [7:0] Line6_visible_number, input [7:0] Line7_visible_number, input [7:0] Line8_visible_number,
+    input [7:0] Line9_visible_number, input [7:0] Line10_visible_number, input [7:0] Line11_visible_number,
+    input [7:0] Line12_visible_number, input [7:0] Line13_visible_number, input [7:0] Line14_visible_number,
+
+    input [8:0] Line0_font_RGB_9bit, input [8:0] Line1_font_RGB_9bit, input [8:0] Line2_font_RGB_9bit,
+    input [8:0] Line3_font_RGB_9bit, input [8:0] Line4_font_RGB_9bit, input [8:0] Line5_font_RGB_9bit,
+    input [8:0] Line6_font_RGB_9bit, input [8:0] Line7_font_RGB_9bit, input [8:0] Line8_font_RGB_9bit,
+    input [8:0] Line9_font_RGB_9bit, input [8:0] Line10_font_RGB_9bit, input [8:0] Line11_font_RGB_9bit,
+    input [8:0] Line12_font_RGB_9bit, input [8:0] Line13_font_RGB_9bit, input [8:0] Line14_font_RGB_9bit,
+
+    input [2:0] Line0_a, input [2:0] Line1_a, input [2:0] Line2_a, input [2:0] Line3_a, input [2:0] Line4_a,
+    input [2:0] Line5_a, input [2:0] Line6_a, input [2:0] Line7_a, input [2:0] Line8_a, input [2:0] Line9_a,
+    input [2:0] Line10_a, input [2:0] Line11_a, input [2:0] Line12_a, input [2:0] Line13_a, input [2:0] Line14_a,
+
     // Final pixel output
     output Final_pixel_valid,
-    output [17:0] Final_pixel_RGB
+    output [17:0] Final_pixel_RGB,
+    output Font_Line_End,
+    output Font_Frame_End,
+
+    // Font processor BRAM interfaces
+    output BRAM4_en_a, output [3:0] BRAM4_wstrb_a, output [9:0] BRAM4_addr_a, output [31:0] BRAM4_din_a, input [31:0] BRAM4_dout_a,
+    output BRAM4_en_b, output [3:0] BRAM4_wstrb_b, output [9:0] BRAM4_addr_b, output [31:0] BRAM4_din_b, input [31:0] BRAM4_dout_b,
+    output BRAM5_en_a, output [3:0] BRAM5_wstrb_a, output [9:0] BRAM5_addr_a, output [31:0] BRAM5_din_a, input [31:0] BRAM5_dout_a,
+    output BRAM5_en_b, output [3:0] BRAM5_wstrb_b, output [9:0] BRAM5_addr_b, output [31:0] BRAM5_din_b, input [31:0] BRAM5_dout_b,
+    output BRAM6_en_a, output [3:0] BRAM6_wstrb_a, output [9:0] BRAM6_addr_a, output [31:0] BRAM6_din_a, input [31:0] BRAM6_dout_a,
+    output BRAM6_en_b, output [3:0] BRAM6_wstrb_b, output [9:0] BRAM6_addr_b, output [31:0] BRAM6_din_b, input [31:0] BRAM6_dout_b,
+    output BRAM13_en_a, output [3:0] BRAM13_wstrb_a, output [9:0] BRAM13_addr_a, output [31:0] BRAM13_din_a, input [31:0] BRAM13_dout_a,
+    output BRAM13_en_b, output [3:0] BRAM13_wstrb_b, output [9:0] BRAM13_addr_b, output [31:0] BRAM13_din_b, input [31:0] BRAM13_dout_b,
+    output BRAM14_en_a, output [3:0] BRAM14_wstrb_a, output [9:0] BRAM14_addr_a, output [31:0] BRAM14_din_a, input [31:0] BRAM14_dout_a,
+    output BRAM14_en_b, output [3:0] BRAM14_wstrb_b, output [9:0] BRAM14_addr_b, output [31:0] BRAM14_din_b, input [31:0] BRAM14_dout_b
 );
 
 // -----------------------------------------------------------------------------
@@ -317,6 +348,13 @@ Pixel_Reader u_un2 (
 // -----------------------------------------------------------------------------
 // Instantiate Pixel_Processer and connect layer pixel signals
 // -----------------------------------------------------------------------------
+wire [17:0] proc_final_pixel_RGB;
+wire proc_final_pixel_valid;
+wire [17:0] font_mixed_pixel_RGB;
+wire font_mixed_pixel_valid;
+wire font_line_end;
+wire font_frame_end;
+
 Pixel_Processer u_proc (
     .clk(clk), .resetn(resetn), .PPU_start(PPU_start),
 
@@ -350,7 +388,45 @@ Pixel_Processer u_proc (
     .Universal2_a(Universal2_a), .Universal2_z(Universal2_z),
     .Universal2_pixel_valid(UN2_Pixel_valid), .Universal2_pixel_RGB(UN2_Pixel_RGB), .Universal2_pixel_is_trans(UN2_Pixel_is_trans), .Universal2_pixel_ready(UN2_Pixel_ready),
 
-    .Final_pixel_valid(Final_pixel_valid), .Final_pixel_RGB(Final_pixel_RGB)
+    .Final_pixel_valid(proc_final_pixel_valid), .Final_pixel_RGB(proc_final_pixel_RGB)
 );
+
+Font_Processer u_font (
+    .clk(clk), .resetn(resetn), .PPU_start(PPU_start),
+    .Font_Mixed_Pixel_RGB(font_mixed_pixel_RGB),
+    .Font_Mixed_Pixel_valid(font_mixed_pixel_valid),
+    .Line_End(font_line_end),
+    .Frame_End(font_frame_end),
+    .PPU_pixel_valid(proc_final_pixel_valid),
+    .PPU_pixel_RGB(proc_final_pixel_RGB),
+    .Line0_visible_number(Line0_visible_number), .Line1_visible_number(Line1_visible_number), .Line2_visible_number(Line2_visible_number),
+    .Line3_visible_number(Line3_visible_number), .Line4_visible_number(Line4_visible_number), .Line5_visible_number(Line5_visible_number),
+    .Line6_visible_number(Line6_visible_number), .Line7_visible_number(Line7_visible_number), .Line8_visible_number(Line8_visible_number),
+    .Line9_visible_number(Line9_visible_number), .Line10_visible_number(Line10_visible_number), .Line11_visible_number(Line11_visible_number),
+    .Line12_visible_number(Line12_visible_number), .Line13_visible_number(Line13_visible_number), .Line14_visible_number(Line14_visible_number),
+    .Line0_font_RGB_9bit(Line0_font_RGB_9bit), .Line1_font_RGB_9bit(Line1_font_RGB_9bit), .Line2_font_RGB_9bit(Line2_font_RGB_9bit),
+    .Line3_font_RGB_9bit(Line3_font_RGB_9bit), .Line4_font_RGB_9bit(Line4_font_RGB_9bit), .Line5_font_RGB_9bit(Line5_font_RGB_9bit),
+    .Line6_font_RGB_9bit(Line6_font_RGB_9bit), .Line7_font_RGB_9bit(Line7_font_RGB_9bit), .Line8_font_RGB_9bit(Line8_font_RGB_9bit),
+    .Line9_font_RGB_9bit(Line9_font_RGB_9bit), .Line10_font_RGB_9bit(Line10_font_RGB_9bit), .Line11_font_RGB_9bit(Line11_font_RGB_9bit),
+    .Line12_font_RGB_9bit(Line12_font_RGB_9bit), .Line13_font_RGB_9bit(Line13_font_RGB_9bit), .Line14_font_RGB_9bit(Line14_font_RGB_9bit),
+    .Line0_a(Line0_a), .Line1_a(Line1_a), .Line2_a(Line2_a), .Line3_a(Line3_a), .Line4_a(Line4_a),
+    .Line5_a(Line5_a), .Line6_a(Line6_a), .Line7_a(Line7_a), .Line8_a(Line8_a), .Line9_a(Line9_a),
+    .Line10_a(Line10_a), .Line11_a(Line11_a), .Line12_a(Line12_a), .Line13_a(Line13_a), .Line14_a(Line14_a),
+    .BRAM4_en_a(BRAM4_en_a), .BRAM4_wstrb_a(BRAM4_wstrb_a), .BRAM4_addr_a(BRAM4_addr_a), .BRAM4_din_a(BRAM4_din_a), .BRAM4_dout_a(BRAM4_dout_a),
+    .BRAM4_en_b(BRAM4_en_b), .BRAM4_wstrb_b(BRAM4_wstrb_b), .BRAM4_addr_b(BRAM4_addr_b), .BRAM4_din_b(BRAM4_din_b), .BRAM4_dout_b(BRAM4_dout_b),
+    .BRAM5_en_a(BRAM5_en_a), .BRAM5_wstrb_a(BRAM5_wstrb_a), .BRAM5_addr_a(BRAM5_addr_a), .BRAM5_din_a(BRAM5_din_a), .BRAM5_dout_a(BRAM5_dout_a),
+    .BRAM5_en_b(BRAM5_en_b), .BRAM5_wstrb_b(BRAM5_wstrb_b), .BRAM5_addr_b(BRAM5_addr_b), .BRAM5_din_b(BRAM5_din_b), .BRAM5_dout_b(BRAM5_dout_b),
+    .BRAM6_en_a(BRAM6_en_a), .BRAM6_wstrb_a(BRAM6_wstrb_a), .BRAM6_addr_a(BRAM6_addr_a), .BRAM6_din_a(BRAM6_din_a), .BRAM6_dout_a(BRAM6_dout_a),
+    .BRAM6_en_b(BRAM6_en_b), .BRAM6_wstrb_b(BRAM6_wstrb_b), .BRAM6_addr_b(BRAM6_addr_b), .BRAM6_din_b(BRAM6_din_b), .BRAM6_dout_b(BRAM6_dout_b),
+    .BRAM13_en_a(BRAM13_en_a), .BRAM13_wstrb_a(BRAM13_wstrb_a), .BRAM13_addr_a(BRAM13_addr_a), .BRAM13_din_a(BRAM13_din_a), .BRAM13_dout_a(BRAM13_dout_a),
+    .BRAM13_en_b(BRAM13_en_b), .BRAM13_wstrb_b(BRAM13_wstrb_b), .BRAM13_addr_b(BRAM13_addr_b), .BRAM13_din_b(BRAM13_din_b), .BRAM13_dout_b(BRAM13_dout_b),
+    .BRAM14_en_a(BRAM14_en_a), .BRAM14_wstrb_a(BRAM14_wstrb_a), .BRAM14_addr_a(BRAM14_addr_a), .BRAM14_din_a(BRAM14_din_a), .BRAM14_dout_a(BRAM14_dout_a),
+    .BRAM14_en_b(BRAM14_en_b), .BRAM14_wstrb_b(BRAM14_wstrb_b), .BRAM14_addr_b(BRAM14_addr_b), .BRAM14_din_b(BRAM14_din_b), .BRAM14_dout_b(BRAM14_dout_b)
+);
+
+assign Final_pixel_valid = font_mixed_pixel_valid;
+assign Final_pixel_RGB = font_mixed_pixel_RGB;
+assign Font_Line_End = font_line_end;
+assign Font_Frame_End = font_frame_end;
 
 endmodule

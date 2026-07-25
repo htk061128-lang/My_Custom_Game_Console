@@ -24,6 +24,7 @@ VM_TRACE_FST_WRITER_THREAD = 0
 # Generated module classes, fast-path, compile with highest optimization
 VM_CLASSES_FAST += \
 	VPPU_TOP \
+	VPPU_TOP__1 \
 	VPPU_TOP_Pixel_Reader \
 	VPPU_TOP_Pixel_Reader__1 \
 	VPPU_TOP_Decompresser \

@@ -12,146 +12,6 @@
 // verilator -Wall -Wno-fatal --trace -cc PPU_TOP.sv --exe PPU_TOP_tb.cpp --build && ./obj_dir/VPPU_TOP
 // 이걸로 실행: verilator -Wall -Wno-fatal --trace -cc --top-module PPU_TOP PPU_TOP.sv --exe PPU_TOP_tb.cpp -CFLAGS "$(sdl2-config --cflags)" -LDFLAGS "$(sdl2-config --libs)" --build -j $(nproc) && ./obj_dir/VPPU_TOP
 
-// =======================================================================
-// 2. 배경 레이어 생성 (400 * 320)
-//    - 위쪽은 하늘색(16), 중간은 바다(17), 아래쪽은 잔디(18)로 구성된 배경
-// =======================================================================
-std::vector<uint8_t> generate_background_layer()
-{
-    const int width = 400;
-    const int height = 320;
-    std::vector<uint8_t> bg;
-    bg.reserve(width * height);
-
-    for (int y = 0; y < height; ++y)
-    {
-        for (int x = 0; x < width; ++x)
-        {
-            if (y < 5)
-            {
-                bg.push_back(6);
-            }
-            else if (y < 10)
-            {
-                bg.push_back(7);
-            }
-            else if (y < 15)
-            {
-                bg.push_back(8);
-            }
-            if (y < 140)
-            {
-                bg.push_back(16); // 0 ~ 139 라인은 하늘색
-            }
-            else if (y < 240)
-            {
-                bg.push_back(17); // 140 ~ 239 라인은 바다색
-            }
-            else
-            {
-                bg.push_back(18); // 240 ~ 319 라인은 잔디색
-            }
-        }
-    }
-    return bg;
-}
-
-// =======================================================================
-// 3. 비주얼 노벨 캐릭터 레이어 생성 (160 * 240)
-//    - 0번(투명) 배경 위에 갈색 머리(12)와 교복(13)을 입은 캐릭터 배치
-// =======================================================================
-std::vector<uint8_t> generate_character_layer()
-{
-    const int width = 160;
-    const int height = 240;
-    std::vector<uint8_t> ch;
-    ch.reserve(width * height);
-
-    // 미소녀/미소년 형태의 대략적인 실루엣을 수학적 좌표 조건으로 생성합니다.
-    for (int y = 0; y < height; ++y)
-    {
-        for (int x = 0; x < width; ++x)
-        {
-
-            // 캐릭터를 화면 중앙(X: 50 ~ 110) 부근에 배치하기 위한 중심점과의 거리
-            int dist_from_center = std::abs(x - 80);
-
-            // 1. 머리카락 및 얼굴 영역 (상단)
-            if (y >= 40 && y < 100)
-            {
-                if (dist_from_center < 25)
-                {
-                    // 얼굴 내부 (피부색)
-                    if (y >= 60 && y < 90 && dist_from_center < 20)
-                    {
-                        // 눈 위치에 눈동자색(15) 찍기
-                        if (y >= 70 && y < 75 && (x == 70 || x == 90))
-                        {
-                            ch.push_back(15);
-                        }
-                        else
-                        {
-                            ch.push_back(11); // 피부색
-                        }
-                    }
-                    else
-                    {
-                        ch.push_back(12); // 머리카락색
-                    }
-                }
-                else if (dist_from_center < 30 && y < 85)
-                {
-                    ch.push_back(12); // 머리카락 옆부분
-                }
-                else
-                {
-                    ch.push_back(0); // 외곽은 투명
-                }
-            }
-            // 2. 목 영역
-            else if (y >= 100 && y < 115)
-            {
-                if (dist_from_center < 10)
-                {
-                    ch.push_back(11); // 목 (피부색)
-                }
-                else
-                {
-                    ch.push_back(0); // 투명
-                }
-            }
-            // 3. 몸통 및 교복 영역 (하단)
-            else if (y >= 115 && y < 240)
-            {
-                // 아래로 갈수록 어깨가 벌어지는 삼각 실루엣
-                int shoulder_width = 25 + (y - 115) * 0.35;
-                if (dist_from_center < shoulder_width)
-                {
-                    // 가운뎃줄 깃 부분은 흰색 셔츠(9), 나머지는 네이비 교복(13)
-                    if (y < 140 && dist_from_center < 6)
-                    {
-                        ch.push_back(9); // 셔츠 브이넥
-                    }
-                    else
-                    {
-                        ch.push_back(13); // 교복 자켓
-                    }
-                }
-                else
-                {
-                    ch.push_back(0); // 투명
-                }
-            }
-            // 4. 그 외 상단 허공
-            else
-            {
-                ch.push_back(0); // 완벽한 투명
-            }
-        }
-    }
-    return ch;
-}
-
 int main(int argc, char **argv)
 {
     Verilated::commandArgs(argc, argv);
@@ -170,6 +30,12 @@ int main(int argc, char **argv)
     uint64_t bram10[512] = {0};
     uint64_t bram11[512] = {0};
     uint64_t bram12[512] = {0};
+
+    uint32_t bram4[1024] = {0}; //폰트 저장.
+    uint32_t bram5[1024] = {0}; //폰트 저장.
+    uint32_t bram6[1024] = {0}; //폰트 저장.
+    uint32_t bram13[1024] = {0}; //폰트 저장.
+    uint32_t bram14[1024] = {0}; //폰트맵 
 
     std::vector<uint32_t> ddr3_memory(262144, 0);
     std::vector<uint32_t> lut(256, 0);
@@ -303,9 +169,6 @@ int main(int argc, char **argv)
         return rle_layer;
     };
 
-    std::vector<uint8_t> background1 = generate_background_layer();
-    std::vector<uint8_t> character1 = generate_character_layer();
-
     constexpr uint32_t BACKGROUND1_ADDR = 0x00000;
     constexpr uint32_t BACKGROUND2_ADDR = 0x02000;
     constexpr uint32_t CHARACTER1_ADDR = 0x04000;
@@ -317,13 +180,9 @@ int main(int argc, char **argv)
     constexpr uint32_t UNIVERSAL1_ADDR = 0x10000;
     constexpr uint32_t UNIVERSAL2_ADDR = 0x12000;
 
-    // RLE 변환 후 저장
-    std::vector<uint8_t> bg1_rle = rle_convert(background1);
-    // write_stream(BACKGROUND1_ADDR, bg1_rle);
 
     load_layer(BACKGROUND1_ADDR, 0, 0);
     load_layer(BACKGROUND2_ADDR, 0, 0);
-    // write_stream(CHARACTER1_ADDR, rle_convert(character1));
     load_layer(CHARACTER1_ADDR, 0, 0);
     load_layer(CHARACTER2_ADDR, 0, 0);
     load_layer(CHARACTER3_ADDR, 0, 0);
@@ -416,24 +275,6 @@ int main(int argc, char **argv)
         }
     }
 
-    // Dump first few words of BACKGROUND1 to verify RLE packing / endianness
-    /*std::cout << "\n=== BACKGROUND1 RLE DATA ===\n";
-    std::cout << "RLE 바이트 개수: " << bg1_rle.size() << std::endl;
-    std::cout << "첫 20 바이트: ";
-    for (int i = 0; i < 20 && i < (int)bg1_rle.size(); ++i)
-    {
-        printf("%02X ", bg1_rle[i]);
-    }
-    std::cout << "\n\nDDR3[BACKGROUND1] 워드 (16진수):\n";
-    for (int i = 0; i < 1000; ++i)
-    {
-        uint32_t w = ddr3_memory[(BACKGROUND1_ADDR / 4) + i];
-        printf("ddr3_memory[%d] = 0x%08X", i, w);
-        printf("  (bytes: %02X %02X %02X %02X)\n",
-               (w & 0xFF), (w >> 8) & 0xFF, (w >> 16) & 0xFF, (w >> 24) & 0xFF);
-    }
-    std::cout << std::endl;*/
-
     lut[0] = 0x00000;  // 투명 픽셀 (Transparent)
     lut[1] = 0x3F000;  // Red
     lut[2] = 0x00FC0;  // Green
@@ -459,6 +300,8 @@ int main(int argc, char **argv)
     lut[18] = 0x0B840; // 나무/잔디색 (Soft Green)
     lut[19] = 0x37A20; // 모래/흙색 (Sand Yellow)
     lut[20] = 0x028A5; // 먼 산/배경 음영 (Muted Blue-Green)
+
+    
 
     int emem_state = 0;
     uint32_t emem_burst_counter = 0;
