@@ -600,7 +600,8 @@ always @(*) begin //output인 Font_Mixed_Pixel_RGB, Font_Mixed_Pixel_valid, Line
                 output_pixel_inc = 1;
             end
             else begin //mixed_RGB_8_valid가 올때까지 대기함.
-                output_state_next = 0;
+                output_state_next = START;
+                output_pixel_inc = 0;
                 mixed_RGB_shift = 0;
             end
         end
@@ -869,16 +870,16 @@ always @(*) begin //pipe4 레지스터 값에 의해서 조합회로로 cho_sung
     endcase
     
     case(1'b1)
-        ((chong_sung == 0) || (chong_sung == 2) || (chong_sung == 9)): begin //종성 1벌
+        ((jung_sung == 0) || (jung_sung == 2) || (jung_sung == 9)): begin //종성 1벌
             chong_sung_set = 1;
         end
-        ((chong_sung == 4) || (chong_sung == 6) || (chong_sung == 11) || (chong_sung == 14) || (chong_sung == 16) || (chong_sung == 19 || (chong_sung == 20))): begin //종성 2벌
+        ((jung_sung == 4) || (jung_sung == 6) || (jung_sung == 11) || (jung_sung == 14) || (jung_sung == 16) || (jung_sung == 19 || (jung_sung == 20))): begin //종성 2벌
             chong_sung_set = 2;
         end
-        ((chong_sung == 1) || (chong_sung == 3) || (chong_sung == 5) || (chong_sung == 7) || (chong_sung == 10) || (chong_sung == 15)): begin //종성 3벌
+        ((jung_sung == 1) || (jung_sung == 3) || (jung_sung == 5) || (jung_sung == 7) || (jung_sung == 10) || (jung_sung == 15)): begin //종성 3벌
             chong_sung_set = 3;
         end
-        ((chong_sung == 8) || (chong_sung == 12) || (chong_sung == 13) || (chong_sung == 17) || (chong_sung == 18)): begin //종성 4벌
+        ((jung_sung == 8) || (jung_sung == 12) || (jung_sung == 13) || (jung_sung == 17) || (jung_sung == 18)): begin //종성 4벌
             chong_sung_set = 4;
         end
     endcase
@@ -1435,7 +1436,7 @@ always @(posedge clk or negedge resetn) begin
                 mixed_RGB_8_valid <= 1;
             end
             else begin
-                        if ((pipe6_is_ascii && pipe6_ascii_font_bitmap[7]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[7]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[7]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[15]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[15])) begin
+                        if ((pipe6_is_ascii && pipe6_ascii_font_bitmap[0]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[0]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[0]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[8]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[8])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_1       <= RGB_1_reg;
@@ -1474,7 +1475,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_1_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[6]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[6]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[6]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[14]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[14])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[1]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[1]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[1]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[9]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[9])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_2       <= RGB_2_reg;
@@ -1513,7 +1514,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_2_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[5]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[5]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[5]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[13]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[13])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[2]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[2]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[2]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[10]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[10])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_3       <= RGB_3_reg;
@@ -1552,7 +1553,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_3_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[4]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[4]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[4]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[12]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[12])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[3]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[3]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[3]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[11]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[11])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_4       <= RGB_4_reg;
@@ -1591,7 +1592,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_4_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[3]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[3]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[3]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[11]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[11])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[4]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[4]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[4]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[12]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[12])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_5       <= RGB_5_reg;
@@ -1630,7 +1631,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_5_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[2]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[2]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[2]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[10]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[10])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[5]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[5]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[5]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[13]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[13])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_6       <= RGB_6_reg;
@@ -1669,7 +1670,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_6_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[1]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[1]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[1]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[9]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[9])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[6]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[6]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[6]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[14]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[14])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_7       <= RGB_7_reg;
@@ -1708,7 +1709,7 @@ always @(posedge clk or negedge resetn) begin
                             mixed_RGB_7_valid <= 1;
                         end
 
-                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[0]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[0]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[0]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[8]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[8])) begin
+                        if((pipe6_is_ascii && pipe6_ascii_font_bitmap[7]) || (pipe6_is_custom && pipe6_custom_tile_bitmap[7]) || (pipe6_is_korea && pixel_state == KOREA && pipe6_korea_font_bitmap[7]) || (pipe6_is_korea && pixel_state == START && pipe6_korea_font_bitmap[15]) || (pipe6_is_korea && pixel_state == NOT_MIX && pipe6_korea_font_bitmap[15])) begin
                             case (organized_alpha_0_4)
                                 3'd0: begin // 폰트 투명도 100% (폰트 안 보임, 배경 100%)
                                     mixed_RGB_8       <= RGB_8_reg;
@@ -1785,7 +1786,7 @@ always @(posedge clk or negedge resetn) begin
             RGB_8_reg[17:0] <= 0;
             RGB_8_reg_valid <= 0;
         end
-       else if(RGB_reg_shift) begin
+        else if(RGB_reg_shift) begin
             RGB_1_reg[17:0] <= PPU_pixel_RGB[17:0];
             RGB_1_reg_valid <= PPU_pixel_valid;
             RGB_2_reg[17:0] <= RGB_1_reg[17:0];
@@ -1940,7 +1941,7 @@ always @(posedge clk or negedge resetn) begin
 
             pipe5_valid <= pipe4_valid;
             if(pipe4_is_korea) begin
-                if(pipe4_cho_sung_index[4:0] < 5'd7) begin //초성 1~6벌
+                if(cho_sung_set < 4'd7) begin //초성 1~6벌. cho_sung_set은 pipe4 값에 의해서 조합논리로 결정됨.
                     pipe5_cho_sung_what_bram <= 0; //BRAM4
                 end
                 else begin //초성 7~8벌

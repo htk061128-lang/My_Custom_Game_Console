@@ -1602,21 +1602,19 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                 vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_8_valid = 1U;
             } else {
                 if (((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_ascii) 
-                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap) 
-                            >> 7U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
-                                       & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_custom_tile_bitmap) 
-                                          >> 7U))) 
+                         & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap)) 
+                        | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
+                           & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_custom_tile_bitmap))) 
                        | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                            & (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
-                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                             >> 7U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
-                                          & (1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
-                                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                                            >> 0xfU))) 
-                     | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
-                         & (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
-                        & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                           >> 0xfU)))) {
+                          & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap))) 
+                      | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
+                          & (1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
+                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
+                            >> 8U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
+                                         & (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
+                                        & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
+                                           >> 8U)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
@@ -1760,20 +1758,20 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                 }
                 if (((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_ascii) 
                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap) 
-                            >> 6U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
+                            >> 1U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
                                        & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_custom_tile_bitmap) 
-                                          >> 6U))) 
+                                          >> 1U))) 
                        | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                            & (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                           & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                             >> 6U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
+                             >> 1U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                                           & (1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                                            >> 0xeU))) 
+                                            >> 9U))) 
                      | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                          & (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                           >> 0xeU)))) {
+                           >> 9U)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
@@ -1917,20 +1915,20 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                 }
                 if (((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_ascii) 
                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap) 
-                            >> 5U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
+                            >> 2U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
                                        & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_custom_tile_bitmap) 
-                                          >> 5U))) 
+                                          >> 2U))) 
                        | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                            & (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                           & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                             >> 5U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
+                             >> 2U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                                           & (1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                                            >> 0xdU))) 
+                                            >> 0xaU))) 
                      | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                          & (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                           >> 0xdU)))) {
+                           >> 0xaU)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
@@ -2074,20 +2072,20 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                 }
                 if (((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_ascii) 
                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap) 
-                            >> 4U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
+                            >> 3U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
                                        & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_custom_tile_bitmap) 
-                                          >> 4U))) 
+                                          >> 3U))) 
                        | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                            & (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                           & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                             >> 4U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
+                             >> 3U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                                           & (1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                                            >> 0xcU))) 
+                                            >> 0xbU))) 
                      | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                          & (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                           >> 0xcU)))) {
+                           >> 0xbU)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4 
@@ -2231,20 +2229,20 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                 }
                 if (((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_ascii) 
                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap) 
-                            >> 3U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
+                            >> 4U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
                                        & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_custom_tile_bitmap) 
-                                          >> 3U))) 
+                                          >> 4U))) 
                        | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                            & (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                           & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                             >> 3U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
+                             >> 4U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                                           & (1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                                            >> 0xbU))) 
+                                            >> 0xcU))) 
                      | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                          & (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                           >> 0xbU)))) {
+                           >> 0xcU)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_5 
@@ -2388,20 +2386,20 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                 }
                 if (((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_ascii) 
                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap) 
-                            >> 2U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
+                            >> 5U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
                                        & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_custom_tile_bitmap) 
-                                          >> 2U))) 
+                                          >> 5U))) 
                        | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                            & (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                           & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                             >> 2U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
+                             >> 5U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                                           & (1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                                            >> 0xaU))) 
+                                            >> 0xdU))) 
                      | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                          & (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                           >> 0xaU)))) {
+                           >> 0xdU)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_6 
@@ -2545,20 +2543,20 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                 }
                 if (((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_ascii) 
                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap) 
-                            >> 1U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
+                            >> 6U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
                                        & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_custom_tile_bitmap) 
-                                          >> 1U))) 
+                                          >> 6U))) 
                        | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                            & (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                           & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                             >> 1U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
+                             >> 6U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                                           & (1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                                            >> 9U))) 
+                                            >> 0xeU))) 
                      | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                          & (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                           >> 9U)))) {
+                           >> 0xeU)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_7 
@@ -2701,19 +2699,21 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                     vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_7_valid = 1U;
                 }
                 if (((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_ascii) 
-                         & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap)) 
-                        | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
-                           & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_custom_tile_bitmap))) 
+                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap) 
+                            >> 7U)) | ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_custom) 
+                                       & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_custom_tile_bitmap) 
+                                          >> 7U))) 
                        | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
                            & (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
-                          & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap))) 
-                      | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
-                          & (1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
-                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                            >> 8U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
-                                         & (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
-                                        & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
-                                           >> 8U)))) {
+                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
+                             >> 7U))) | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
+                                          & (1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
+                                         & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
+                                            >> 0xfU))) 
+                     | (((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea) 
+                         & (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) 
+                        & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_korea_font_bitmap) 
+                           >> 0xfU)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_8 
@@ -4449,7 +4449,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__5(VPPU_TOP__Syms* __restrict vlSymsp
                     vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_shift = 1U;
                     vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_inc = 1U;
                 } else {
-                    vlTOPp->PPU_TOP__DOT__u_font__DOT__output_state_next = 0U;
+                    vlTOPp->PPU_TOP__DOT__u_font__DOT__output_state_next = 1U;
+                    vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_inc = 0U;
                     vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_shift = 0U;
                 }
             }
@@ -4643,6 +4644,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__5(VPPU_TOP__Syms* __restrict vlSymsp
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__jung_sung_index;
             vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index 
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_index;
+            vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_cho_sung_index 
+                = vlTOPp->PPU_TOP__DOT__u_font__DOT__cho_sung_index;
             vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_valid 
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe5_valid;
             vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_korea 
@@ -4771,7 +4774,7 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__5(VPPU_TOP__Syms* __restrict vlSymsp
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe3_next_line;
             if (vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_is_korea) {
                 vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe5_cho_sung_what_bram 
-                    = (7U <= (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_cho_sung_index));
+                    = (7U <= (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__cho_sung_set));
                 vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe5_mask 
                     = ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_counter_16))
                         ? 0xcU : 3U);
@@ -4803,8 +4806,6 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__5(VPPU_TOP__Syms* __restrict vlSymsp
                             ? 8U : 4U) : ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_counter_16))
                                            ? 2U : 1U));
             }
-            vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_cho_sung_index 
-                = vlTOPp->PPU_TOP__DOT__u_font__DOT__cho_sung_index;
             vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe5_is_korea 
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_is_korea;
             vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe2_font_y 
@@ -5752,33 +5753,33 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__5(VPPU_TOP__Syms* __restrict vlSymsp
     vlTOPp->PPU_TOP__DOT__u_font__DOT__bram_map_read_ena_reg 
         = ((IData)(vlTOPp->resetn) & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__bram_map_read_ena));
     vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_set = 0U;
-    if ((((0U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)) 
-          | (2U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-         | (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)))) {
+    if ((((0U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)) 
+          | (2U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+         | (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)))) {
         vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_set = 1U;
     } else {
-        if (((((((4U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)) 
-                 | (6U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                | (0xbU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-               | (0xeU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-              | (0x10U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-             | ((0x13U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)) 
-                | (0x14U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))))) {
+        if (((((((4U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)) 
+                 | (6U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                | (0xbU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+               | (0xeU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+              | (0x10U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+             | ((0x13U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)) 
+                | (0x14U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))))) {
             vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_set = 2U;
         } else {
-            if (((((((1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)) 
-                     | (3U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                    | (5U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                   | (7U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                  | (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                 | (0xfU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)))) {
+            if (((((((1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)) 
+                     | (3U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                    | (5U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                   | (7U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                  | (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                 | (0xfU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)))) {
                 vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_set = 3U;
             } else {
-                if ((((((8U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)) 
-                        | (0xcU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                       | (0xdU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                      | (0x11U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                     | (0x12U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)))) {
+                if ((((((8U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)) 
+                        | (0xcU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                       | (0xdU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                      | (0x11U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                     | (0x12U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)))) {
                     vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_set = 4U;
                 }
             }

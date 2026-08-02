@@ -1175,7 +1175,8 @@ void VPPU_TOP::_settle__TOP__1(VPPU_TOP__Syms* __restrict vlSymsp) {
                     vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_shift = 1U;
                     vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_inc = 1U;
                 } else {
-                    vlTOPp->PPU_TOP__DOT__u_font__DOT__output_state_next = 0U;
+                    vlTOPp->PPU_TOP__DOT__u_font__DOT__output_state_next = 1U;
+                    vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_inc = 0U;
                     vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_shift = 0U;
                 }
             }
@@ -2138,33 +2139,33 @@ void VPPU_TOP::_settle__TOP__1(VPPU_TOP__Syms* __restrict vlSymsp) {
         }
     }
     vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_set = 0U;
-    if ((((0U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)) 
-          | (2U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-         | (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)))) {
+    if ((((0U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)) 
+          | (2U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+         | (9U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)))) {
         vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_set = 1U;
     } else {
-        if (((((((4U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)) 
-                 | (6U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                | (0xbU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-               | (0xeU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-              | (0x10U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-             | ((0x13U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)) 
-                | (0x14U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))))) {
+        if (((((((4U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)) 
+                 | (6U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                | (0xbU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+               | (0xeU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+              | (0x10U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+             | ((0x13U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)) 
+                | (0x14U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))))) {
             vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_set = 2U;
         } else {
-            if (((((((1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)) 
-                     | (3U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                    | (5U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                   | (7U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                  | (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                 | (0xfU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)))) {
+            if (((((((1U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)) 
+                     | (3U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                    | (5U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                   | (7U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                  | (0xaU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                 | (0xfU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)))) {
                 vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_set = 3U;
             } else {
-                if ((((((8U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)) 
-                        | (0xcU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                       | (0xdU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                      | (0x11U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index))) 
-                     | (0x12U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_chong_sung_index)))) {
+                if ((((((8U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)) 
+                        | (0xcU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                       | (0xdU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                      | (0x11U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index))) 
+                     | (0x12U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe4_jung_sung_index)))) {
                     vlTOPp->PPU_TOP__DOT__u_font__DOT__chong_sung_set = 4U;
                 }
             }
