@@ -339,8 +339,9 @@ int main(int argc, char **argv)
         {
             ddr3_memory[(2 * i) + (SCRIPT_ADDR / 4)] = 0x00d000d0; // 투명색 1줄.
             ddr3_memory[(2 * i) + 1 + (SCRIPT_ADDR / 4)] = 0x00d000d0;
-            if (i == 119)
+            if (i == 119) {
                 ddr3_memory[(2 * i) + 2 + (SCRIPT_ADDR / 4)] = 0x00000000; // 끝났다는것 표시
+            }
         }
     }
 
@@ -687,17 +688,17 @@ int main(int argc, char **argv)
     trace->dump(main_time++);
 
     // 🚀 [추가] 메인 루프 진입 전, 다음 클럭에 출력될 BRAM 데이터를 담아둘 버퍼 선언
-    uint64_t next_bram4_dout_a = 0; //BRAM 4, 5, 6, 13, 14는 포트 a를 사용함. CPU가 포트 b를 사용함.
-    uint64_t next_bram5_dout_a = 0;
-    uint64_t next_bram6_dout_a = 0;
+    uint32_t next_bram4_dout_a = 0; //BRAM 4, 5, 6, 13, 14는 포트 a를 사용함. CPU가 포트 b를 사용함.
+    uint32_t next_bram5_dout_a = 0;
+    uint32_t next_bram6_dout_a = 0;
     uint64_t next_bram7_dout_b = 0;
     uint64_t next_bram8_dout_b = 0;
     uint64_t next_bram9_dout_b = 0;
     uint64_t next_bram10_dout_b = 0;
     uint64_t next_bram11_dout_b = 0;
     uint64_t next_bram12_dout_b = 0;
-    uint64_t next_bram13_dout_a = 0;
-    uint64_t next_bram14_dout_a = 0;
+    uint32_t next_bram13_dout_a = 0;
+    uint32_t next_bram14_dout_a = 0;
 
     int z1 = 0;
     int z2 = 0;
@@ -730,7 +731,7 @@ int main(int argc, char **argv)
         dut->LUT_data_out1 = lut[dut->LUT_addr_r1]; // lut 배열의 하위 18비트만 dut->LUT_data_out1에 들어가게 됨.
         dut->LUT_data_out2 = lut[dut->LUT_addr_r2];
         dut->eval();
-        if (main_time > 300000 && main_time < 310000) // 딱 10000 클럭만 확인할 예정.
+        if (main_time > 250000 && main_time < 400000 && dut->PPU_TOP__DOT__u_font__DOT__output_pixel_y > 145) // 딱 10000 클럭만 확인할 예정.
         {
             trace->dump(main_time);
         }
@@ -874,7 +875,7 @@ int main(int argc, char **argv)
             next_bram14_dout_a = bram14[dut->BRAM14_addr_a];
 
         dut->eval();
-        if (main_time > 300000 && main_time < 310000) // 딱 10000클럭만 확인할 예정.
+        if (main_time > 250000 && main_time < 400000 && dut->PPU_TOP__DOT__u_font__DOT__output_pixel_y > 145) // 딱 10000클럭만 확인할 예정.
         {
             trace->dump(main_time); // 반 클럭 진행 완료 기록
         }
@@ -920,6 +921,11 @@ int main(int argc, char **argv)
     std::cout << "z1 pixel: " << z1 << std::endl;
     std::cout << "z2 pixel: " << z2 << std::endl;
     std::cout << "z3 pixel: " << z3 << std::endl;
+
+    for (int i = 0; i < 128; i++)
+    {
+        printf("BRAM 7 주소 %d: %d\n", 256 + i, bram7[256 + i]);
+    }
 
     // --- SDL2: display captured frame at 2x scale (640x480) ---
     if (final_pixels.size() >= 320 * 240)
