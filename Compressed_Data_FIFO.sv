@@ -626,7 +626,7 @@ always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
         //clk_counter[1:0] <= 0;
         main_state <= IDLE;
-        uni1_next_ad <= Universal_Layer1_count;
+        uni1_next_ad <= Universal_Layer1_Address;
         uni2_next_ad <= Universal_Layer2_Address;
         status_next_ad <= Status_Layer_Address;
         script_next_ad <= Script_Layer_Address;
@@ -708,28 +708,37 @@ always @(posedge clk or negedge resetn) begin
         //BRAM8: addr 0-127: character layer1, 128-255: character layer2, 256-383: character layer3, 384-511: character layer4
         //BRAM9: addr 0-255: background layer1, 256-511: background layer2
 
-        case(1'b1) //fifo_count가 1 증가하려면 클럭에지때 BRAM에 쓰기만 일어나야 함. 마찬가지로 fifo_count가 1 감소하려면 클럭에지때 BRAM에 읽기만 일어나야 함. front와 rear은 그냥 독립적으로 동시에 갱신해도 상관없음.
-            (back1_fifo_inc_want & ~back1_fifo_dec_want): back1_fifo_count[8:0] <= back1_fifo_count[8:0] + 1; 
-            (~back1_fifo_inc_want & back1_fifo_dec_want): back1_fifo_count[8:0] <= back1_fifo_count[8:0] - 1;
-            (back2_fifo_inc_want & ~back2_fifo_dec_want): back2_fifo_count[8:0] <= back2_fifo_count[8:0] + 1;
-            (~back2_fifo_inc_want & back2_fifo_dec_want): back2_fifo_count[8:0] <= back2_fifo_count[8:0] - 1;
-            (char1_fifo_inc_want & ~char1_fifo_dec_want): char1_fifo_count[7:0] <= char1_fifo_count[7:0] + 1;
-            (~char1_fifo_inc_want & char1_fifo_dec_want): char1_fifo_count[7:0] <= char1_fifo_count[7:0] - 1;
-            (char2_fifo_inc_want & ~char2_fifo_dec_want): char2_fifo_count[7:0] <= char2_fifo_count[7:0] + 1;
-            (~char2_fifo_inc_want & char2_fifo_dec_want): char2_fifo_count[7:0] <= char2_fifo_count[7:0] - 1;
-            (char3_fifo_inc_want & ~char3_fifo_dec_want): char3_fifo_count[7:0] <= char3_fifo_count[7:0] + 1;
-            (~char3_fifo_inc_want & char3_fifo_dec_want): char3_fifo_count[7:0] <= char3_fifo_count[7:0] - 1;
-            (char4_fifo_inc_want & ~char4_fifo_dec_want): char4_fifo_count[7:0] <= char4_fifo_count[7:0] + 1;
-            (~char4_fifo_inc_want & char4_fifo_dec_want): char4_fifo_count[7:0] <= char4_fifo_count[7:0] - 1;
-            (script_fifo_inc_want & ~script_fifo_dec_want): script_fifo_count[7:0] <= script_fifo_count[7:0] + 1;
-            (~script_fifo_inc_want & script_fifo_dec_want): script_fifo_count[7:0] <= script_fifo_count[7:0] - 1;
-            (status_fifo_inc_want & ~status_fifo_dec_want): status_fifo_count[7:0] <= status_fifo_count[7:0] + 1;
-            (~status_fifo_inc_want & status_fifo_dec_want): status_fifo_count[7:0] <= status_fifo_count[7:0] - 1;
-            (uni1_fifo_inc_want & ~uni1_fifo_dec_want): uni1_fifo_count[7:0] <= uni1_fifo_count[7:0] + 1;
-            (~uni1_fifo_inc_want & uni1_fifo_dec_want): uni1_fifo_count[7:0] <= uni1_fifo_count[7:0] - 1;
-            (uni2_fifo_inc_want & ~uni2_fifo_dec_want): uni2_fifo_count[7:0] <= uni2_fifo_count[7:0] + 1;
-            (~uni2_fifo_inc_want & uni2_fifo_dec_want): uni2_fifo_count[7:0] <= uni2_fifo_count[7:0] - 1;
-        endcase
+         //fifo_count가 1 증가하려면 클럭에지때 BRAM에 쓰기만 일어나야 함. 마찬가지로 fifo_count가 1 감소하려면 클럭에지때 BRAM에 읽기만 일어나야 함. front와 rear은 그냥 독립적으로 동시에 갱신해도 상관없음.
+         
+        if(back1_fifo_inc_want & ~back1_fifo_dec_want) back1_fifo_count[8:0] <= back1_fifo_count[8:0] + 1; 
+        else if(~back1_fifo_inc_want & back1_fifo_dec_want) back1_fifo_count[8:0] <= back1_fifo_count[8:0] - 1;
+
+        if(back2_fifo_inc_want & ~back2_fifo_dec_want) back2_fifo_count[8:0] <= back2_fifo_count[8:0] + 1;
+        else if(~back2_fifo_inc_want & back2_fifo_dec_want) back2_fifo_count[8:0] <= back2_fifo_count[8:0] - 1;
+
+        if(char1_fifo_inc_want & ~char1_fifo_dec_want) char1_fifo_count[7:0] <= char1_fifo_count[7:0] + 1;
+        else if(~char1_fifo_inc_want & char1_fifo_dec_want) char1_fifo_count[7:0] <= char1_fifo_count[7:0] - 1;
+
+        if(char2_fifo_inc_want & ~char2_fifo_dec_want) char2_fifo_count[7:0] <= char2_fifo_count[7:0] + 1;
+        else if(~char2_fifo_inc_want & char2_fifo_dec_want) char2_fifo_count[7:0] <= char2_fifo_count[7:0] - 1;
+
+        if(char3_fifo_inc_want & ~char3_fifo_dec_want) char3_fifo_count[7:0] <= char3_fifo_count[7:0] + 1;
+        else if(~char3_fifo_inc_want & char3_fifo_dec_want) char3_fifo_count[7:0] <= char3_fifo_count[7:0] - 1;
+
+        if(char4_fifo_inc_want & ~char4_fifo_dec_want) char4_fifo_count[7:0] <= char4_fifo_count[7:0] + 1;
+        else if(~char4_fifo_inc_want & char4_fifo_dec_want) char4_fifo_count[7:0] <= char4_fifo_count[7:0] - 1;
+
+        if(script_fifo_inc_want & ~script_fifo_dec_want) script_fifo_count[7:0] <= script_fifo_count[7:0] + 1;
+        else if(~script_fifo_inc_want & script_fifo_dec_want) script_fifo_count[7:0] <= script_fifo_count[7:0] - 1;
+
+        if(status_fifo_inc_want & ~status_fifo_dec_want) status_fifo_count[7:0] <= status_fifo_count[7:0] + 1;
+        else if(~status_fifo_inc_want & status_fifo_dec_want) status_fifo_count[7:0] <= status_fifo_count[7:0] - 1;
+
+        if(uni1_fifo_inc_want & ~uni1_fifo_dec_want) uni1_fifo_count[7:0] <= uni1_fifo_count[7:0] + 1;
+        else if(~uni1_fifo_inc_want & uni1_fifo_dec_want) uni1_fifo_count[7:0] <= uni1_fifo_count[7:0] - 1;
+        
+        if(uni2_fifo_inc_want & ~uni2_fifo_dec_want) uni2_fifo_count[7:0] <= uni2_fifo_count[7:0] + 1;
+        else if(~uni2_fifo_inc_want & uni2_fifo_dec_want) uni2_fifo_count[7:0] <= uni2_fifo_count[7:0] - 1;
 
         if(back1_fifo_dec_want) back1_fifo_front[8:0] <= back1_fifo_front[8:0] + 1;
         if(back2_fifo_dec_want) back2_fifo_front[8:0] <= back2_fifo_front[8:0] + 1;

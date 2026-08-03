@@ -218,28 +218,21 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_bg1__11(
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_counter_next 
-                                    = (vlTOPp->PPU_TOP__DOT__Req_end
-                                       [0U] ? 9U : 8U);
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_counter_next = 0xaU;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_counter_next = 0xcU;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_counter_next = 0xeU;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_counter_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_counter_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? (vlTOPp->PPU_TOP__DOT__Req_end
+                                       [0U] ? 9U : 8U)
+                                    : ((0x20U & (IData)(this->__PVT__valid_pixel_check))
+                                        ? 0xaU : ((0x40U 
+                                                   & (IData)(this->__PVT__valid_pixel_check))
+                                                   ? 0xcU
+                                                   : 
+                                                  ((0x80U 
+                                                    & (IData)(this->__PVT__valid_pixel_check))
+                                                    ? 0xeU
+                                                    : 0U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? ((IData)(this->__PVT__RGB_reg_ready)
                                         ? 0xaU : 9U)
                                     : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
@@ -283,8 +276,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_bg1__11(
                                                   : 
                                                  ((IData)(this->__PVT__RGB_reg_ready)
                                                    ? 0U
-                                                   : 0xfU)))))));
-                        }
+                                                   : 0xfU))))))));
                     }
                 }
             }
@@ -749,8 +741,14 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_bg1__31(V
                 } else {
                     if ((2U == (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((0U == (IData)(this->__PVT__valid_pixel_check))) {
-                            this->__PVT__fifo_r_state_counter_next = 0U;
-                            this->__PVT__fifo_r_state_next = 1U;
+                            if (((0x31U == (IData)(this->__PVT__read_pixel_x)) 
+                                 & (0x13fU == (IData)(this->__PVT__read_pixel_y)))) {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 0U;
+                            } else {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 1U;
+                            }
                         } else {
                             this->__PVT__rgb_convert_req = 1U;
                             this->__PVT__fifo_r_state_counter_next = 3U;
@@ -872,7 +870,22 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_bg1__31(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U != (IData)(this->__PVT__rgb_r_state_counter))) {
+                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
+                            if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                          >> 4U)))) {
+                                if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                              >> 5U)))) {
+                                    if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                                  >> 6U)))) {
+                                        if ((1U & (~ 
+                                                   ((IData)(this->__PVT__valid_pixel_check) 
+                                                    >> 7U)))) {
+                                            this->__PVT__rgb_convert_end = 1U;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
                             if ((9U != (IData)(this->__PVT__rgb_r_state_counter))) {
                                 if ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))) {
                                     if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
@@ -970,26 +983,20 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_bg1__31(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_next = 4U;
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_next = 4U;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_next = 4U;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_next = 4U;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? 4U : ((0x20U 
+                                             & (IData)(this->__PVT__valid_pixel_check))
+                                             ? 4U : 
+                                            ((0x40U 
+                                              & (IData)(this->__PVT__valid_pixel_check))
+                                              ? 4U : 
+                                             ((0x80U 
+                                               & (IData)(this->__PVT__valid_pixel_check))
+                                               ? 4U
+                                               : 3U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? 4U : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
                                              ? ((0x20U 
                                                  & (IData)(this->__PVT__valid_pixel_check))
@@ -1021,8 +1028,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_bg1__31(V
                                                     : 
                                                    ((IData)(this->__PVT__RGB_reg_ready)
                                                      ? 3U
-                                                     : 4U)))))));
-                        }
+                                                     : 4U))))))));
                     }
                 }
             }
@@ -1457,28 +1463,21 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_bg2__12(
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_counter_next 
-                                    = (vlTOPp->PPU_TOP__DOT__Req_end
-                                       [1U] ? 9U : 8U);
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_counter_next = 0xaU;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_counter_next = 0xcU;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_counter_next = 0xeU;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_counter_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_counter_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? (vlTOPp->PPU_TOP__DOT__Req_end
+                                       [1U] ? 9U : 8U)
+                                    : ((0x20U & (IData)(this->__PVT__valid_pixel_check))
+                                        ? 0xaU : ((0x40U 
+                                                   & (IData)(this->__PVT__valid_pixel_check))
+                                                   ? 0xcU
+                                                   : 
+                                                  ((0x80U 
+                                                    & (IData)(this->__PVT__valid_pixel_check))
+                                                    ? 0xeU
+                                                    : 0U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? ((IData)(this->__PVT__RGB_reg_ready)
                                         ? 0xaU : 9U)
                                     : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
@@ -1522,8 +1521,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_bg2__12(
                                                   : 
                                                  ((IData)(this->__PVT__RGB_reg_ready)
                                                    ? 0U
-                                                   : 0xfU)))))));
-                        }
+                                                   : 0xfU))))))));
                     }
                 }
             }
@@ -1988,8 +1986,14 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_bg2__32(V
                 } else {
                     if ((2U == (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((0U == (IData)(this->__PVT__valid_pixel_check))) {
-                            this->__PVT__fifo_r_state_counter_next = 0U;
-                            this->__PVT__fifo_r_state_next = 1U;
+                            if (((0x31U == (IData)(this->__PVT__read_pixel_x)) 
+                                 & (0x13fU == (IData)(this->__PVT__read_pixel_y)))) {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 0U;
+                            } else {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 1U;
+                            }
                         } else {
                             this->__PVT__rgb_convert_req = 1U;
                             this->__PVT__fifo_r_state_counter_next = 3U;
@@ -2111,7 +2115,22 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_bg2__32(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U != (IData)(this->__PVT__rgb_r_state_counter))) {
+                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
+                            if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                          >> 4U)))) {
+                                if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                              >> 5U)))) {
+                                    if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                                  >> 6U)))) {
+                                        if ((1U & (~ 
+                                                   ((IData)(this->__PVT__valid_pixel_check) 
+                                                    >> 7U)))) {
+                                            this->__PVT__rgb_convert_end = 1U;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
                             if ((9U != (IData)(this->__PVT__rgb_r_state_counter))) {
                                 if ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))) {
                                     if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
@@ -2209,26 +2228,20 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_bg2__32(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_next = 4U;
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_next = 4U;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_next = 4U;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_next = 4U;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? 4U : ((0x20U 
+                                             & (IData)(this->__PVT__valid_pixel_check))
+                                             ? 4U : 
+                                            ((0x40U 
+                                              & (IData)(this->__PVT__valid_pixel_check))
+                                              ? 4U : 
+                                             ((0x80U 
+                                               & (IData)(this->__PVT__valid_pixel_check))
+                                               ? 4U
+                                               : 3U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? 4U : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
                                              ? ((0x20U 
                                                  & (IData)(this->__PVT__valid_pixel_check))
@@ -2260,8 +2273,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_bg2__32(V
                                                     : 
                                                    ((IData)(this->__PVT__RGB_reg_ready)
                                                      ? 3U
-                                                     : 4U)))))));
-                        }
+                                                     : 4U))))))));
                     }
                 }
             }
@@ -2696,28 +2708,21 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch1__13(
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_counter_next 
-                                    = (vlTOPp->PPU_TOP__DOT__Req_end
-                                       [2U] ? 9U : 8U);
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_counter_next = 0xaU;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_counter_next = 0xcU;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_counter_next = 0xeU;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_counter_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_counter_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? (vlTOPp->PPU_TOP__DOT__Req_end
+                                       [2U] ? 9U : 8U)
+                                    : ((0x20U & (IData)(this->__PVT__valid_pixel_check))
+                                        ? 0xaU : ((0x40U 
+                                                   & (IData)(this->__PVT__valid_pixel_check))
+                                                   ? 0xcU
+                                                   : 
+                                                  ((0x80U 
+                                                    & (IData)(this->__PVT__valid_pixel_check))
+                                                    ? 0xeU
+                                                    : 0U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? ((IData)(this->__PVT__RGB_reg_ready)
                                         ? 0xaU : 9U)
                                     : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
@@ -2761,8 +2766,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch1__13(
                                                   : 
                                                  ((IData)(this->__PVT__RGB_reg_ready)
                                                    ? 0U
-                                                   : 0xfU)))))));
-                        }
+                                                   : 0xfU))))))));
                     }
                 }
             }
@@ -3390,8 +3394,14 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch1__33(V
                 } else {
                     if ((2U == (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((0U == (IData)(this->__PVT__valid_pixel_check))) {
-                            this->__PVT__fifo_r_state_counter_next = 0U;
-                            this->__PVT__fifo_r_state_next = 1U;
+                            if (((0x31U == (IData)(this->__PVT__read_pixel_x)) 
+                                 & (0x13fU == (IData)(this->__PVT__read_pixel_y)))) {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 0U;
+                            } else {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 1U;
+                            }
                         } else {
                             this->__PVT__rgb_convert_req = 1U;
                             this->__PVT__fifo_r_state_counter_next = 3U;
@@ -3435,8 +3445,14 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch1__33(V
                     } else {
                         if ((2U == (IData)(this->__PVT__fifo_r_state_counter))) {
                             if ((0U == (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__fifo_r_state_counter_next = 0U;
-                                this->__PVT__fifo_r_state_next = 2U;
+                                if (((0x13U == (IData)(this->__PVT__read_pixel_x)) 
+                                     & (0xefU == (IData)(this->__PVT__read_pixel_y)))) {
+                                    this->__PVT__fifo_r_state_counter_next = 0U;
+                                    this->__PVT__fifo_r_state_next = 0U;
+                                } else {
+                                    this->__PVT__fifo_r_state_counter_next = 0U;
+                                    this->__PVT__fifo_r_state_next = 2U;
+                                }
                             } else {
                                 this->__PVT__rgb_convert_req = 1U;
                                 this->__PVT__fifo_r_state_counter_next = 3U;
@@ -3519,7 +3535,22 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch1__33(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U != (IData)(this->__PVT__rgb_r_state_counter))) {
+                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
+                            if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                          >> 4U)))) {
+                                if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                              >> 5U)))) {
+                                    if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                                  >> 6U)))) {
+                                        if ((1U & (~ 
+                                                   ((IData)(this->__PVT__valid_pixel_check) 
+                                                    >> 7U)))) {
+                                            this->__PVT__rgb_convert_end = 1U;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
                             if ((9U != (IData)(this->__PVT__rgb_r_state_counter))) {
                                 if ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))) {
                                     if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
@@ -3617,26 +3648,20 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch1__33(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_next = 4U;
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_next = 4U;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_next = 4U;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_next = 4U;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? 4U : ((0x20U 
+                                             & (IData)(this->__PVT__valid_pixel_check))
+                                             ? 4U : 
+                                            ((0x40U 
+                                              & (IData)(this->__PVT__valid_pixel_check))
+                                              ? 4U : 
+                                             ((0x80U 
+                                               & (IData)(this->__PVT__valid_pixel_check))
+                                               ? 4U
+                                               : 3U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? 4U : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
                                              ? ((0x20U 
                                                  & (IData)(this->__PVT__valid_pixel_check))
@@ -3668,8 +3693,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch1__33(V
                                                     : 
                                                    ((IData)(this->__PVT__RGB_reg_ready)
                                                      ? 3U
-                                                     : 4U)))))));
-                        }
+                                                     : 4U))))))));
                     }
                 }
             }
@@ -4104,28 +4128,21 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch2__14(
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_counter_next 
-                                    = (vlTOPp->PPU_TOP__DOT__Req_end
-                                       [3U] ? 9U : 8U);
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_counter_next = 0xaU;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_counter_next = 0xcU;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_counter_next = 0xeU;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_counter_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_counter_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? (vlTOPp->PPU_TOP__DOT__Req_end
+                                       [3U] ? 9U : 8U)
+                                    : ((0x20U & (IData)(this->__PVT__valid_pixel_check))
+                                        ? 0xaU : ((0x40U 
+                                                   & (IData)(this->__PVT__valid_pixel_check))
+                                                   ? 0xcU
+                                                   : 
+                                                  ((0x80U 
+                                                    & (IData)(this->__PVT__valid_pixel_check))
+                                                    ? 0xeU
+                                                    : 0U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? ((IData)(this->__PVT__RGB_reg_ready)
                                         ? 0xaU : 9U)
                                     : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
@@ -4169,8 +4186,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch2__14(
                                                   : 
                                                  ((IData)(this->__PVT__RGB_reg_ready)
                                                    ? 0U
-                                                   : 0xfU)))))));
-                        }
+                                                   : 0xfU))))))));
                     }
                 }
             }
@@ -4798,8 +4814,14 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch2__34(V
                 } else {
                     if ((2U == (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((0U == (IData)(this->__PVT__valid_pixel_check))) {
-                            this->__PVT__fifo_r_state_counter_next = 0U;
-                            this->__PVT__fifo_r_state_next = 1U;
+                            if (((0x31U == (IData)(this->__PVT__read_pixel_x)) 
+                                 & (0x13fU == (IData)(this->__PVT__read_pixel_y)))) {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 0U;
+                            } else {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 1U;
+                            }
                         } else {
                             this->__PVT__rgb_convert_req = 1U;
                             this->__PVT__fifo_r_state_counter_next = 3U;
@@ -4843,8 +4865,14 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch2__34(V
                     } else {
                         if ((2U == (IData)(this->__PVT__fifo_r_state_counter))) {
                             if ((0U == (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__fifo_r_state_counter_next = 0U;
-                                this->__PVT__fifo_r_state_next = 2U;
+                                if (((0x13U == (IData)(this->__PVT__read_pixel_x)) 
+                                     & (0xefU == (IData)(this->__PVT__read_pixel_y)))) {
+                                    this->__PVT__fifo_r_state_counter_next = 0U;
+                                    this->__PVT__fifo_r_state_next = 0U;
+                                } else {
+                                    this->__PVT__fifo_r_state_counter_next = 0U;
+                                    this->__PVT__fifo_r_state_next = 2U;
+                                }
                             } else {
                                 this->__PVT__rgb_convert_req = 1U;
                                 this->__PVT__fifo_r_state_counter_next = 3U;
@@ -4927,7 +4955,22 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch2__34(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U != (IData)(this->__PVT__rgb_r_state_counter))) {
+                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
+                            if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                          >> 4U)))) {
+                                if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                              >> 5U)))) {
+                                    if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                                  >> 6U)))) {
+                                        if ((1U & (~ 
+                                                   ((IData)(this->__PVT__valid_pixel_check) 
+                                                    >> 7U)))) {
+                                            this->__PVT__rgb_convert_end = 1U;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
                             if ((9U != (IData)(this->__PVT__rgb_r_state_counter))) {
                                 if ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))) {
                                     if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
@@ -5025,26 +5068,20 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch2__34(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_next = 4U;
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_next = 4U;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_next = 4U;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_next = 4U;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? 4U : ((0x20U 
+                                             & (IData)(this->__PVT__valid_pixel_check))
+                                             ? 4U : 
+                                            ((0x40U 
+                                              & (IData)(this->__PVT__valid_pixel_check))
+                                              ? 4U : 
+                                             ((0x80U 
+                                               & (IData)(this->__PVT__valid_pixel_check))
+                                               ? 4U
+                                               : 3U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? 4U : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
                                              ? ((0x20U 
                                                  & (IData)(this->__PVT__valid_pixel_check))
@@ -5076,8 +5113,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch2__34(V
                                                     : 
                                                    ((IData)(this->__PVT__RGB_reg_ready)
                                                      ? 3U
-                                                     : 4U)))))));
-                        }
+                                                     : 4U))))))));
                     }
                 }
             }
@@ -5512,28 +5548,21 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch3__15(
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_counter_next 
-                                    = (vlTOPp->PPU_TOP__DOT__Req_end
-                                       [4U] ? 9U : 8U);
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_counter_next = 0xaU;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_counter_next = 0xcU;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_counter_next = 0xeU;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_counter_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_counter_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? (vlTOPp->PPU_TOP__DOT__Req_end
+                                       [4U] ? 9U : 8U)
+                                    : ((0x20U & (IData)(this->__PVT__valid_pixel_check))
+                                        ? 0xaU : ((0x40U 
+                                                   & (IData)(this->__PVT__valid_pixel_check))
+                                                   ? 0xcU
+                                                   : 
+                                                  ((0x80U 
+                                                    & (IData)(this->__PVT__valid_pixel_check))
+                                                    ? 0xeU
+                                                    : 0U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? ((IData)(this->__PVT__RGB_reg_ready)
                                         ? 0xaU : 9U)
                                     : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
@@ -5577,8 +5606,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch3__15(
                                                   : 
                                                  ((IData)(this->__PVT__RGB_reg_ready)
                                                    ? 0U
-                                                   : 0xfU)))))));
-                        }
+                                                   : 0xfU))))))));
                     }
                 }
             }
@@ -6206,8 +6234,14 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch3__35(V
                 } else {
                     if ((2U == (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((0U == (IData)(this->__PVT__valid_pixel_check))) {
-                            this->__PVT__fifo_r_state_counter_next = 0U;
-                            this->__PVT__fifo_r_state_next = 1U;
+                            if (((0x31U == (IData)(this->__PVT__read_pixel_x)) 
+                                 & (0x13fU == (IData)(this->__PVT__read_pixel_y)))) {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 0U;
+                            } else {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 1U;
+                            }
                         } else {
                             this->__PVT__rgb_convert_req = 1U;
                             this->__PVT__fifo_r_state_counter_next = 3U;
@@ -6251,8 +6285,14 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch3__35(V
                     } else {
                         if ((2U == (IData)(this->__PVT__fifo_r_state_counter))) {
                             if ((0U == (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__fifo_r_state_counter_next = 0U;
-                                this->__PVT__fifo_r_state_next = 2U;
+                                if (((0x13U == (IData)(this->__PVT__read_pixel_x)) 
+                                     & (0xefU == (IData)(this->__PVT__read_pixel_y)))) {
+                                    this->__PVT__fifo_r_state_counter_next = 0U;
+                                    this->__PVT__fifo_r_state_next = 0U;
+                                } else {
+                                    this->__PVT__fifo_r_state_counter_next = 0U;
+                                    this->__PVT__fifo_r_state_next = 2U;
+                                }
                             } else {
                                 this->__PVT__rgb_convert_req = 1U;
                                 this->__PVT__fifo_r_state_counter_next = 3U;
@@ -6335,7 +6375,22 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch3__35(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U != (IData)(this->__PVT__rgb_r_state_counter))) {
+                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
+                            if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                          >> 4U)))) {
+                                if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                              >> 5U)))) {
+                                    if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                                  >> 6U)))) {
+                                        if ((1U & (~ 
+                                                   ((IData)(this->__PVT__valid_pixel_check) 
+                                                    >> 7U)))) {
+                                            this->__PVT__rgb_convert_end = 1U;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
                             if ((9U != (IData)(this->__PVT__rgb_r_state_counter))) {
                                 if ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))) {
                                     if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
@@ -6433,26 +6488,20 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch3__35(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_next = 4U;
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_next = 4U;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_next = 4U;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_next = 4U;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? 4U : ((0x20U 
+                                             & (IData)(this->__PVT__valid_pixel_check))
+                                             ? 4U : 
+                                            ((0x40U 
+                                              & (IData)(this->__PVT__valid_pixel_check))
+                                              ? 4U : 
+                                             ((0x80U 
+                                               & (IData)(this->__PVT__valid_pixel_check))
+                                               ? 4U
+                                               : 3U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? 4U : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
                                              ? ((0x20U 
                                                  & (IData)(this->__PVT__valid_pixel_check))
@@ -6484,8 +6533,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch3__35(V
                                                     : 
                                                    ((IData)(this->__PVT__RGB_reg_ready)
                                                      ? 3U
-                                                     : 4U)))))));
-                        }
+                                                     : 4U))))))));
                     }
                 }
             }
@@ -6920,28 +6968,21 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch4__16(
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_counter_next 
-                                    = (vlTOPp->PPU_TOP__DOT__Req_end
-                                       [5U] ? 9U : 8U);
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_counter_next = 0xaU;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_counter_next = 0xcU;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_counter_next = 0xeU;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_counter_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_counter_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? (vlTOPp->PPU_TOP__DOT__Req_end
+                                       [5U] ? 9U : 8U)
+                                    : ((0x20U & (IData)(this->__PVT__valid_pixel_check))
+                                        ? 0xaU : ((0x40U 
+                                                   & (IData)(this->__PVT__valid_pixel_check))
+                                                   ? 0xcU
+                                                   : 
+                                                  ((0x80U 
+                                                    & (IData)(this->__PVT__valid_pixel_check))
+                                                    ? 0xeU
+                                                    : 0U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? ((IData)(this->__PVT__RGB_reg_ready)
                                         ? 0xaU : 9U)
                                     : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
@@ -6985,8 +7026,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_ch4__16(
                                                   : 
                                                  ((IData)(this->__PVT__RGB_reg_ready)
                                                    ? 0U
-                                                   : 0xfU)))))));
-                        }
+                                                   : 0xfU))))))));
                     }
                 }
             }
@@ -7614,8 +7654,14 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch4__36(V
                 } else {
                     if ((2U == (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((0U == (IData)(this->__PVT__valid_pixel_check))) {
-                            this->__PVT__fifo_r_state_counter_next = 0U;
-                            this->__PVT__fifo_r_state_next = 1U;
+                            if (((0x31U == (IData)(this->__PVT__read_pixel_x)) 
+                                 & (0x13fU == (IData)(this->__PVT__read_pixel_y)))) {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 0U;
+                            } else {
+                                this->__PVT__fifo_r_state_counter_next = 0U;
+                                this->__PVT__fifo_r_state_next = 1U;
+                            }
                         } else {
                             this->__PVT__rgb_convert_req = 1U;
                             this->__PVT__fifo_r_state_counter_next = 3U;
@@ -7659,8 +7705,14 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch4__36(V
                     } else {
                         if ((2U == (IData)(this->__PVT__fifo_r_state_counter))) {
                             if ((0U == (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__fifo_r_state_counter_next = 0U;
-                                this->__PVT__fifo_r_state_next = 2U;
+                                if (((0x13U == (IData)(this->__PVT__read_pixel_x)) 
+                                     & (0xefU == (IData)(this->__PVT__read_pixel_y)))) {
+                                    this->__PVT__fifo_r_state_counter_next = 0U;
+                                    this->__PVT__fifo_r_state_next = 0U;
+                                } else {
+                                    this->__PVT__fifo_r_state_counter_next = 0U;
+                                    this->__PVT__fifo_r_state_next = 2U;
+                                }
                             } else {
                                 this->__PVT__rgb_convert_req = 1U;
                                 this->__PVT__fifo_r_state_counter_next = 3U;
@@ -7743,7 +7795,22 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch4__36(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U != (IData)(this->__PVT__rgb_r_state_counter))) {
+                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
+                            if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                          >> 4U)))) {
+                                if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                              >> 5U)))) {
+                                    if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
+                                                  >> 6U)))) {
+                                        if ((1U & (~ 
+                                                   ((IData)(this->__PVT__valid_pixel_check) 
+                                                    >> 7U)))) {
+                                            this->__PVT__rgb_convert_end = 1U;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
                             if ((9U != (IData)(this->__PVT__rgb_r_state_counter))) {
                                 if ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))) {
                                     if ((1U & (~ ((IData)(this->__PVT__valid_pixel_check) 
@@ -7841,26 +7908,20 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch4__36(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_next = 4U;
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_next = 4U;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_next = 4U;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_next = 4U;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? 4U : ((0x20U 
+                                             & (IData)(this->__PVT__valid_pixel_check))
+                                             ? 4U : 
+                                            ((0x40U 
+                                              & (IData)(this->__PVT__valid_pixel_check))
+                                              ? 4U : 
+                                             ((0x80U 
+                                               & (IData)(this->__PVT__valid_pixel_check))
+                                               ? 4U
+                                               : 3U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? 4U : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
                                              ? ((0x20U 
                                                  & (IData)(this->__PVT__valid_pixel_check))
@@ -7892,8 +7953,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_combo__TOP__PPU_TOP__DOT__u_ch4__36(V
                                                     : 
                                                    ((IData)(this->__PVT__RGB_reg_ready)
                                                      ? 3U
-                                                     : 4U)))))));
-                        }
+                                                     : 4U))))))));
                     }
                 }
             }
@@ -8328,28 +8388,21 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_sc__17(V
                            | (0xdU == (IData)(this->__PVT__rgb_r_state_counter))) 
                           | (0xeU == (IData)(this->__PVT__rgb_r_state_counter))) 
                          | (0xfU == (IData)(this->__PVT__rgb_r_state_counter)))) {
-                        if ((8U == (IData)(this->__PVT__rgb_r_state_counter))) {
-                            if ((0x10U & (IData)(this->__PVT__valid_pixel_check))) {
-                                this->__PVT__rgb_r_state_counter_next 
-                                    = (vlTOPp->PPU_TOP__DOT__Req_end
-                                       [6U] ? 9U : 8U);
-                            } else {
-                                if ((0x20U & (IData)(this->__PVT__valid_pixel_check))) {
-                                    this->__PVT__rgb_r_state_counter_next = 0xaU;
-                                } else {
-                                    if ((0x40U & (IData)(this->__PVT__valid_pixel_check))) {
-                                        this->__PVT__rgb_r_state_counter_next = 0xcU;
-                                    } else {
-                                        if ((0x80U 
-                                             & (IData)(this->__PVT__valid_pixel_check))) {
-                                            this->__PVT__rgb_r_state_counter_next = 0xeU;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            this->__PVT__rgb_r_state_counter_next 
-                                = ((9U == (IData)(this->__PVT__rgb_r_state_counter))
+                        this->__PVT__rgb_r_state_counter_next 
+                            = ((8U == (IData)(this->__PVT__rgb_r_state_counter))
+                                ? ((0x10U & (IData)(this->__PVT__valid_pixel_check))
+                                    ? (vlTOPp->PPU_TOP__DOT__Req_end
+                                       [6U] ? 9U : 8U)
+                                    : ((0x20U & (IData)(this->__PVT__valid_pixel_check))
+                                        ? 0xaU : ((0x40U 
+                                                   & (IData)(this->__PVT__valid_pixel_check))
+                                                   ? 0xcU
+                                                   : 
+                                                  ((0x80U 
+                                                    & (IData)(this->__PVT__valid_pixel_check))
+                                                    ? 0xeU
+                                                    : 0U))))
+                                : ((9U == (IData)(this->__PVT__rgb_r_state_counter))
                                     ? ((IData)(this->__PVT__RGB_reg_ready)
                                         ? 0xaU : 9U)
                                     : ((0xaU == (IData)(this->__PVT__rgb_r_state_counter))
@@ -8393,8 +8446,7 @@ VL_INLINE_OPT void VPPU_TOP_Pixel_Reader::_settle__TOP__PPU_TOP__DOT__u_sc__17(V
                                                   : 
                                                  ((IData)(this->__PVT__RGB_reg_ready)
                                                    ? 0U
-                                                   : 0xfU)))))));
-                        }
+                                                   : 0xfU))))))));
                     }
                 }
             }

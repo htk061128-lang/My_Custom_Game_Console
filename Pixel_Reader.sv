@@ -175,8 +175,14 @@ always @(*) begin
                 end
                 2: begin //
                     if(valid_pixel_check[7:0] == 8'b00000000) begin
-                        fifo_r_state_counter_next = 0; //다시 Decompressed FIFO에서 값을 읽음.
-                        fifo_r_state_next = BG_START;
+                        if(read_pixel_x == 49 && read_pixel_y == 319) begin //다 읽었을 때 IDLE로 이동.
+                            fifo_r_state_counter_next = 0;
+                            fifo_r_state_next = IDLE;
+                        end 
+                        else begin
+                            fifo_r_state_counter_next = 0; //다시 Decompressed FIFO에서 값을 읽음.
+                            fifo_r_state_next = BG_START;
+                        end
                     end
                     else begin
                         rgb_convert_req = 1;
@@ -222,8 +228,24 @@ always @(*) begin
                 end
                 2: begin
                     if(valid_pixel_check[7:0] == 8'b00000000) begin
-                        fifo_r_state_counter_next = 0; //다시 Decompressed FIFO에서 값을 읽음.
-                        fifo_r_state_next = NO_BG_START;
+                        case(1'b1)
+                            (is_character || is_status) && (read_pixel_x == 19 && read_pixel_y == 239): begin // 160 * 240
+                                fifo_r_state_counter_next = 0; //전부 읽었으므로 IDLE로 이동.
+                                fifo_r_state_next = IDLE;
+                            end
+                            (is_script) && (read_pixel_x == 39 && read_pixel_y == 119): begin // 320 * 120
+                                fifo_r_state_counter_next = 0; //전부 읽었으므로 IDLE로 이동.
+                                fifo_r_state_next = IDLE;
+                            end
+                            (is_universal) && (read_pixel_x == 39 && read_pixel_y == 239): begin // 320 * 240
+                                fifo_r_state_counter_next = 0; //전부 읽었으므로 IDLE로 이동.
+                                fifo_r_state_next = IDLE;
+                            end
+                            default: begin
+                                fifo_r_state_counter_next = 0; //Decompressed FIFO에서 새로운 값을 읽기를 시작함.
+                                fifo_r_state_next = NO_BG_START;
+                            end
+                        endcase
                     end
                     else begin
                         rgb_convert_req = 1;
@@ -437,7 +459,10 @@ always @(*) begin
                         rgb_r_state_counter_next = 14;
                         rgb_r_state_next = READ;
                     end
-                    else begin //valid_pixel_check가 8'b00000000인 경우는 애초에 fifo_r_state에서 rgb_convert_req를 주지를 않으므로 고려하지 않음.
+                    else begin
+                        rgb_r_state_counter_next = 0;
+                        rgb_r_state_next = START;
+                        rgb_convert_end = 1;
                     end
                 end
                 9: begin

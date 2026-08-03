@@ -257,7 +257,13 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
     VPPU_TOP* const __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
     // Variables
     CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count;
+    CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count;
     CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count;
+    CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count;
+    CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count;
+    CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count;
+    CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
+    CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count;
     CData/*3:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__main_state;
     CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_rear;
     CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_rear;
@@ -268,11 +274,15 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
     CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_rear;
     CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_rear;
     CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__emem_r_counter;
+    CData/*3:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__output_state;
+    CData/*0:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid;
+    CData/*0:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid;
     SData/*8:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count;
     SData/*8:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count;
     SData/*8:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_rear;
     SData/*8:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_rear;
     SData/*9:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__should_read_layer;
+    SData/*8:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x;
     IData/*31:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_next_ad;
     IData/*31:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_next_ad;
     IData/*31:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_next_ad;
@@ -283,6 +293,9 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
     IData/*31:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_next_ad;
     IData/*31:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_next_ad;
     IData/*31:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_next_ad;
+    IData/*17:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1;
+    IData/*17:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2;
+    IData/*17:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3;
     // Body
     __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_next_ad 
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_next_ad;
@@ -334,18 +347,22 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count;
     __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count 
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count 
+    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count 
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count 
+    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
+        = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
+    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count 
+        = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count;
+    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count 
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count 
+    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count 
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count;
     __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count 
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count;
+    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count 
+        = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count;
     __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count 
         = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
-        = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
     vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__custom_tile_bitmap_skid_data 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__custom_tile_bitmap_skid_data;
     vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__custom_tile_bitmap_skid_valid 
@@ -370,9 +387,9 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__counter_font_x;
     vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__font_state 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__font_state;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_state 
+    __Vdly__PPU_TOP__DOT__u_font__DOT__output_state 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__output_state;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x 
+    __Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_x;
     vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__RGB_7_reg 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_7_reg;
@@ -406,15 +423,15 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_4;
     vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_3;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid 
+    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_2;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid 
+    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid;
-    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_1;
     vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__pixel_state 
         = vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state;
@@ -441,17 +458,17 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
             = vlTOPp->PPU_TOP__DOT__u_proc__DOT__main_state_counter_x_next;
         vlTOPp->PPU_TOP__DOT__u_proc__DOT__main_state_counter_y 
             = vlTOPp->PPU_TOP__DOT__u_proc__DOT__main_state_counter_y_next;
-        vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state 
-            = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state_next;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM8_read_state 
             = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM8_read_state_next;
+        vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state 
+            = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state_next;
     } else {
         vlTOPp->PPU_TOP__DOT__u_rgb__DOT__random_counter_0_3 = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM9_read_state = 0U;
         vlTOPp->PPU_TOP__DOT__u_proc__DOT__main_state_counter_x = 0U;
         vlTOPp->PPU_TOP__DOT__u_proc__DOT__main_state_counter_y = 0U;
-        vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM8_read_state = 0U;
+        vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state = 0U;
     }
     if (vlTOPp->resetn) {
         if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__is_urgent_mode) 
@@ -462,169 +479,124 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
              & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__round_end))) {
             vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__last_read_basic = 0U;
         }
-        if ((((((((((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_inc_want) 
-                    & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_dec_want))) 
-                   | ((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_inc_want)) 
-                      & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_dec_want))) 
-                  | ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_inc_want) 
-                     & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_dec_want)))) 
-                 | ((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_inc_want)) 
-                    & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_dec_want))) 
-                | ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_inc_want) 
-                   & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_dec_want)))) 
-               | ((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_inc_want)) 
-                  & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_dec_want))) 
-              | ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_inc_want) 
-                 & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_dec_want)))) 
-             | ((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_inc_want)) 
-                & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_dec_want)))) {
-            if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_inc_want) 
-                 & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_dec_want)))) {
-                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count 
-                    = (0x1ffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count)));
-            } else {
-                if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_inc_want)) 
-                     & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_dec_want))) {
-                    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count 
-                        = (0x1ffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count) 
-                                     - (IData)(1U)));
-                } else {
-                    if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_inc_want) 
-                         & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_dec_want)))) {
-                        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count 
-                            = (0x1ffU & ((IData)(1U) 
-                                         + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count)));
-                    } else {
-                        if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_inc_want)) 
-                             & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_dec_want))) {
-                            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count 
-                                = (0x1ffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count) 
-                                             - (IData)(1U)));
-                        } else {
-                            if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_inc_want) 
-                                 & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_dec_want)))) {
-                                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count 
-                                    = (0xffU & ((IData)(1U) 
-                                                + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count)));
-                            } else {
-                                if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_inc_want)) 
-                                     & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_dec_want))) {
-                                    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count 
-                                        = (0xffU & 
-                                           ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count) 
-                                            - (IData)(1U)));
-                                } else {
-                                    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count 
-                                        = (0xffU & 
-                                           (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_inc_want) 
-                                             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_dec_want)))
-                                             ? ((IData)(1U) 
-                                                + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count))
-                                             : ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count) 
-                                                - (IData)(1U))));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_inc_want) 
+             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_dec_want)))) {
+            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count 
+                = (0x1ffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count)));
         } else {
-            if ((((((((((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_inc_want) 
-                        & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_dec_want))) 
-                       | ((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_inc_want)) 
-                          & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_dec_want))) 
-                      | ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_inc_want) 
-                         & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_dec_want)))) 
-                     | ((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_inc_want)) 
-                        & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_dec_want))) 
-                    | ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_inc_want) 
-                       & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_dec_want)))) 
-                   | ((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_inc_want)) 
-                      & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_dec_want))) 
-                  | ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_inc_want) 
-                     & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_dec_want)))) 
-                 | ((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_inc_want)) 
-                    & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_dec_want)))) {
-                if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_inc_want) 
-                     & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_dec_want)))) {
-                    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count 
-                        = (0xffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count)));
-                } else {
-                    if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_inc_want)) 
-                         & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_dec_want))) {
-                        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count 
-                            = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count) 
-                                        - (IData)(1U)));
-                    } else {
-                        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_inc_want) 
-                             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_dec_want)))) {
-                            vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count 
-                                = (0xffU & ((IData)(1U) 
-                                            + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count)));
-                        } else {
-                            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_inc_want)) 
-                                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_dec_want))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count 
-                                    = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count) 
-                                                - (IData)(1U)));
-                            } else {
-                                if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_inc_want) 
-                                     & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_dec_want)))) {
-                                    vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count 
-                                        = (0xffU & 
-                                           ((IData)(1U) 
-                                            + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count)));
-                                } else {
-                                    if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_inc_want)) 
-                                         & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_dec_want))) {
-                                        vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count 
-                                            = (0xffU 
-                                               & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count) 
-                                                  - (IData)(1U)));
-                                    } else {
-                                        vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count 
-                                            = (0xffU 
-                                               & (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_inc_want) 
-                                                   & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_dec_want)))
-                                                   ? 
-                                                  ((IData)(1U) 
-                                                   + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count))
-                                                   : 
-                                                  ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count) 
-                                                   - (IData)(1U))));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_inc_want) 
-                     & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_dec_want)))) {
-                    vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
-                        = (0xffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count)));
-                } else {
-                    if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_inc_want)) 
-                         & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_dec_want))) {
-                        vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
-                            = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count) 
-                                        - (IData)(1U)));
-                    } else {
-                        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_inc_want) 
-                             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_dec_want)))) {
-                            vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count 
-                                = (0xffU & ((IData)(1U) 
-                                            + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count)));
-                        } else {
-                            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_inc_want)) 
-                                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_dec_want))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count 
-                                    = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count) 
-                                                - (IData)(1U)));
-                            }
-                        }
-                    }
-                }
+            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_inc_want)) 
+                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_dec_want))) {
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count 
+                    = (0x1ffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count) 
+                                 - (IData)(1U)));
+            }
+        }
+        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_inc_want) 
+             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_dec_want)))) {
+            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count 
+                = (0x1ffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count)));
+        } else {
+            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_inc_want)) 
+                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_dec_want))) {
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count 
+                    = (0x1ffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count) 
+                                 - (IData)(1U)));
+            }
+        }
+        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_inc_want) 
+             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_dec_want)))) {
+            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count 
+                = (0xffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count)));
+        } else {
+            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_inc_want)) 
+                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_dec_want))) {
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count 
+                    = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count) 
+                                - (IData)(1U)));
+            }
+        }
+        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_inc_want) 
+             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_dec_want)))) {
+            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count 
+                = (0xffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count)));
+        } else {
+            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_inc_want)) 
+                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_dec_want))) {
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count 
+                    = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count) 
+                                - (IData)(1U)));
+            }
+        }
+        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_inc_want) 
+             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_dec_want)))) {
+            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count 
+                = (0xffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count)));
+        } else {
+            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_inc_want)) 
+                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_dec_want))) {
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count 
+                    = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count) 
+                                - (IData)(1U)));
+            }
+        }
+        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_inc_want) 
+             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_dec_want)))) {
+            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count 
+                = (0xffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count)));
+        } else {
+            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_inc_want)) 
+                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_dec_want))) {
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count 
+                    = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count) 
+                                - (IData)(1U)));
+            }
+        }
+        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_inc_want) 
+             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_dec_want)))) {
+            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count 
+                = (0xffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count)));
+        } else {
+            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_inc_want)) 
+                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_dec_want))) {
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count 
+                    = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count) 
+                                - (IData)(1U)));
+            }
+        }
+        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_inc_want) 
+             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_dec_want)))) {
+            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count 
+                = (0xffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count)));
+        } else {
+            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_inc_want)) 
+                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_dec_want))) {
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count 
+                    = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count) 
+                                - (IData)(1U)));
+            }
+        }
+        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_inc_want) 
+             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_dec_want)))) {
+            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
+                = (0xffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count)));
+        } else {
+            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_inc_want)) 
+                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_dec_want))) {
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
+                    = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count) 
+                                - (IData)(1U)));
+            }
+        }
+        if (((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_inc_want) 
+             & (~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_dec_want)))) {
+            __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count 
+                = (0xffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count)));
+        } else {
+            if (((~ (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_inc_want)) 
+                 & (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_dec_want))) {
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count 
+                    = (0xffU & ((IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count) 
+                                - (IData)(1U)));
             }
         }
         if (vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_dec_want) {
@@ -692,28 +664,28 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                     = vlTOPp->Background_Layer2_Address;
                 vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_front = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_rear = 0U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count = 0U;
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count = 0U;
                 vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_front = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_rear = 0U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count = 0U;
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count = 0U;
                 vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_front = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_rear = 0U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count = 0U;
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count = 0U;
                 vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_front = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_rear = 0U;
-                vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count = 0U;
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count = 0U;
                 vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_front = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_rear = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count = 0U;
                 vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_front = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_rear = 0U;
-                vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count = 0U;
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count = 0U;
                 vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_front = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_rear = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count = 0U;
                 vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_front = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_rear = 0U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count = 0U;
+                __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count = 0U;
                 vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_front = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_rear = 0U;
                 __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count = 0U;
@@ -1221,7 +1193,7 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
     } else {
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__main_state = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_next_ad 
-            = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_count;
+            = vlTOPp->Universal_Layer1_Address;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_next_ad 
             = vlTOPp->Universal_Layer2_Address;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_next_ad 
@@ -1248,28 +1220,28 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         vlTOPp->EMEM_burst_len = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_front = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_rear = 0U;
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count = 0U;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_front = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_rear = 0U;
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count = 0U;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_front = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_rear = 0U;
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count = 0U;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_front = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_rear = 0U;
-        vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count = 0U;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_front = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_rear = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_front = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_rear = 0U;
-        vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count = 0U;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_front = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_rear = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_front = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_rear = 0U;
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count = 0U;
+        __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count = 0U;
         vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_front = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_rear = 0U;
         __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count = 0U;
@@ -1475,31 +1447,31 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         vlTOPp->PPU_TOP__DOT__u_rgb__DOT__cache1_RGB = 0U;
     }
     if (vlTOPp->resetn) {
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_state 
+        __Vdly__PPU_TOP__DOT__u_font__DOT__output_state 
             = vlTOPp->PPU_TOP__DOT__u_font__DOT__output_state_next;
         if (vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_inc) {
             if ((0x13fU == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_x))) {
                 vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_y 
                     = (0x1ffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_y)));
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x = 0U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x = 0U;
             } else {
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x 
+                __Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x 
                     = (0x1ffU & ((IData)(1U) + (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_x)));
             }
         }
         if ((0U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__output_state))) {
             if (vlTOPp->PPU_start) {
                 vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_y = 0U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_state = 1U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x = 0U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__output_state = 1U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x = 0U;
             } else {
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_state = 0U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__output_state = 0U;
             }
         }
     } else {
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_state = 0U;
+        __Vdly__PPU_TOP__DOT__u_font__DOT__output_state = 0U;
         vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_y = 0U;
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x = 0U;
+        __Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x = 0U;
     }
     if (vlTOPp->resetn) {
         if (vlTOPp->PPU_TOP__DOT__u_rgb__DOT__req10_w_ena) {
@@ -1576,13 +1548,13 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
             = vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state_next;
         if (vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_w_ena) {
             if (vlTOPp->PPU_TOP__DOT__u_font__DOT__do_not_need_mix) {
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_3_reg;
                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 1U;
                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4 
@@ -1617,25 +1589,25 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                            >> 8U)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                            vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                            __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
                                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg;
-                            vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
+                            __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
                         } else {
                             if ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
                                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
                             } else {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
                                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
                             }
                         }
                     } else {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             if ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
-                                    = ((0xfffU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                    = ((0xfffU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
                                        | (0x3f000U 
                                           & ((((vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
                                                 >> 0xcU) 
@@ -1646,9 +1618,9 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                  & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg 
                                                     >> 0xeU))) 
                                              << 0xcU)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
-                                    = ((0x3f03fU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                    = ((0x3f03fU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
                                        | (0xfc0U & 
                                           ((((vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
                                               >> 6U) 
@@ -1659,8 +1631,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg 
                                                   >> 8U))) 
                                            << 6U)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
-                                    = ((0x3ffc0U & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                    = ((0x3ffc0U & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
                                        | (0x3fU & (
                                                    (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
                                                     - 
@@ -1672,8 +1644,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                     & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg 
                                                        >> 2U)))));
                             } else {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
-                                    = ((0xfffU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                    = ((0xfffU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
                                        | (0x3f000U 
                                           & (((0x1fU 
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1682,9 +1654,9 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                  & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg 
                                                     >> 0xdU))) 
                                              << 0xcU)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
-                                    = ((0x3f03fU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                    = ((0x3f03fU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
                                        | (0xfc0U & 
                                           (((0x1fU 
                                              & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1693,8 +1665,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg 
                                                   >> 7U))) 
                                            << 6U)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
-                                    = ((0x3ffc0U & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                    = ((0x3ffc0U & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
                                        | (0x3fU & (
                                                    (0x1fU 
                                                     & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1706,8 +1678,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                             }
                         } else {
                             if ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
-                                    = ((0xfffU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                    = ((0xfffU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
                                        | (0x3f000U 
                                           & (((0xfU 
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1719,9 +1691,9 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                   & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg 
                                                      >> 0xeU)))) 
                                              << 0xcU)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
-                                    = ((0x3f03fU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                    = ((0x3f03fU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
                                        | (0xfc0U & 
                                           (((0xfU & 
                                              (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1732,8 +1704,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                   & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg 
                                                      >> 8U)))) 
                                            << 6U)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
-                                    = ((0x3ffc0U & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                    = ((0x3ffc0U & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1) 
                                        | (0x3fU & (
                                                    (0xfU 
                                                     & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1745,16 +1717,16 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                      & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg 
                                                         >> 2U))))));
                             } else {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
                                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
                             }
                         }
                     }
                 } else {
-                    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+                    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
                         = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg;
-                    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
+                    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 1U;
                 }
                 if (((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_ascii) 
                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap) 
@@ -1774,25 +1746,25 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                            >> 9U)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                            vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                            __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
                                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg;
-                            vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
+                            __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
                         } else {
                             if ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
                                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
                             } else {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
                                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
                             }
                         }
                     } else {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             if ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
-                                    = ((0xfffU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                    = ((0xfffU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
                                        | (0x3f000U 
                                           & ((((vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
                                                 >> 0xcU) 
@@ -1803,9 +1775,9 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                  & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg 
                                                     >> 0xeU))) 
                                              << 0xcU)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
-                                    = ((0x3f03fU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                    = ((0x3f03fU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
                                        | (0xfc0U & 
                                           ((((vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
                                               >> 6U) 
@@ -1816,8 +1788,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg 
                                                   >> 8U))) 
                                            << 6U)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
-                                    = ((0x3ffc0U & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                    = ((0x3ffc0U & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
                                        | (0x3fU & (
                                                    (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
                                                     - 
@@ -1829,8 +1801,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                     & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg 
                                                        >> 2U)))));
                             } else {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
-                                    = ((0xfffU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                    = ((0xfffU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
                                        | (0x3f000U 
                                           & (((0x1fU 
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1839,9 +1811,9 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                  & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg 
                                                     >> 0xdU))) 
                                              << 0xcU)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
-                                    = ((0x3f03fU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                    = ((0x3f03fU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
                                        | (0xfc0U & 
                                           (((0x1fU 
                                              & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1850,8 +1822,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg 
                                                   >> 7U))) 
                                            << 6U)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
-                                    = ((0x3ffc0U & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                    = ((0x3ffc0U & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
                                        | (0x3fU & (
                                                    (0x1fU 
                                                     & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1863,8 +1835,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                             }
                         } else {
                             if ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
-                                    = ((0xfffU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                    = ((0xfffU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
                                        | (0x3f000U 
                                           & (((0xfU 
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1876,9 +1848,9 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                   & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg 
                                                      >> 0xeU)))) 
                                              << 0xcU)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
-                                    = ((0x3f03fU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                    = ((0x3f03fU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
                                        | (0xfc0U & 
                                           (((0xfU & 
                                              (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1889,8 +1861,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                   & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg 
                                                      >> 8U)))) 
                                            << 6U)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
-                                    = ((0x3ffc0U & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                    = ((0x3ffc0U & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2) 
                                        | (0x3fU & (
                                                    (0xfU 
                                                     & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1902,16 +1874,16 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                      & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg 
                                                         >> 2U))))));
                             } else {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
                                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
                             }
                         }
                     }
                 } else {
-                    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+                    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
                         = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg;
-                    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
+                    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 1U;
                 }
                 if (((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_is_ascii) 
                          & ((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pipe6_ascii_font_bitmap) 
@@ -1931,16 +1903,16 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                            >> 0xaU)))) {
                     if ((4U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                            vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                            __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
                                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_3_reg;
                             vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 1U;
                         } else {
                             if ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
                                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_3_reg;
                                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 1U;
                             } else {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
                                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB;
                                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 1U;
                             }
@@ -1948,8 +1920,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                     } else {
                         if ((2U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
                             if ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
-                                    = ((0xfffU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                    = ((0xfffU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
                                        | (0x3f000U 
                                           & ((((vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
                                                 >> 0xcU) 
@@ -1961,8 +1933,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                     >> 0xeU))) 
                                              << 0xcU)));
                                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 1U;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
-                                    = ((0x3f03fU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                    = ((0x3f03fU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
                                        | (0xfc0U & 
                                           ((((vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
                                               >> 6U) 
@@ -1973,8 +1945,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_3_reg 
                                                   >> 8U))) 
                                            << 6U)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
-                                    = ((0x3ffc0U & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                    = ((0x3ffc0U & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
                                        | (0x3fU & (
                                                    (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
                                                     - 
@@ -1986,8 +1958,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                     & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_3_reg 
                                                        >> 2U)))));
                             } else {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
-                                    = ((0xfffU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                    = ((0xfffU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
                                        | (0x3f000U 
                                           & (((0x1fU 
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -1997,8 +1969,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                     >> 0xdU))) 
                                              << 0xcU)));
                                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 1U;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
-                                    = ((0x3f03fU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                    = ((0x3f03fU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
                                        | (0xfc0U & 
                                           (((0x1fU 
                                              & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -2007,8 +1979,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_3_reg 
                                                   >> 7U))) 
                                            << 6U)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
-                                    = ((0x3ffc0U & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                    = ((0x3ffc0U & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
                                        | (0x3fU & (
                                                    (0x1fU 
                                                     & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -2020,8 +1992,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                             }
                         } else {
                             if ((1U & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4))) {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
-                                    = ((0xfffU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                    = ((0xfffU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
                                        | (0x3f000U 
                                           & (((0xfU 
                                                & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -2034,8 +2006,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                      >> 0xeU)))) 
                                              << 0xcU)));
                                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 1U;
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
-                                    = ((0x3f03fU & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                    = ((0x3f03fU & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
                                        | (0xfc0U & 
                                           (((0xfU & 
                                              (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -2046,8 +2018,8 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                   & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_3_reg 
                                                      >> 8U)))) 
                                            << 6U)));
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
-                                    = ((0x3ffc0U & vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                    = ((0x3ffc0U & __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3) 
                                        | (0x3fU & (
                                                    (0xfU 
                                                     & (vlTOPp->PPU_TOP__DOT__u_font__DOT__organized_RGB 
@@ -2059,14 +2031,14 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                                                      & (vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_3_reg 
                                                         >> 2U))))));
                             } else {
-                                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
                                     = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_3_reg;
                                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 1U;
                             }
                         }
                     }
                 } else {
-                    vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+                    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
                         = vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_3_reg;
                     vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 1U;
                 }
@@ -2955,16 +2927,16 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_3;
             vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4_valid 
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid;
-            vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+            __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_2;
             vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid 
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid;
-            vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+            __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_1;
-            vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid 
+            __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid 
                 = vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid;
-            vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 = 0U;
-            vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 0U;
+            __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 = 0U;
+            __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 0U;
         }
         if ((0U == (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__pixel_state))) {
             if (vlTOPp->PPU_start) {
@@ -2985,11 +2957,11 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__RGB_7_reg_valid = 0U;
                 vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_8_reg = 0U;
                 vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_8_reg_valid = 0U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 = 0U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 0U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 = 0U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 0U;
-                vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 = 0U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 = 0U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 0U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 = 0U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 0U;
+                __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 = 0U;
                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 0U;
                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4 = 0U;
                 vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4_valid = 0U;
@@ -3006,11 +2978,11 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
             }
         }
     } else {
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 = 0U;
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 0U;
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 = 0U;
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 0U;
-        vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 = 0U;
+        __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 = 0U;
+        __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = 0U;
+        __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 = 0U;
+        __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = 0U;
+        __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 = 0U;
         vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = 0U;
         vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4 = 0U;
         vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4_valid = 0U;
@@ -4333,36 +4305,40 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__4(VPPU_TOP__Syms* __restrict vlSymsp
         = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count;
     vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count 
         = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count;
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count 
+        = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count;
     vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count 
         = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count;
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count 
+        = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count;
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count 
+        = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count;
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count 
+        = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count;
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
+        = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count 
+        = __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count;
+    vlTOPp->PPU_TOP__DOT__u_font__DOT__output_state 
+        = __Vdly__PPU_TOP__DOT__u_font__DOT__output_state;
+    vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_x 
+        = __Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x;
+    vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
+        = __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1;
+    vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid 
+        = __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid;
+    vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
+        = __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2;
+    vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid 
+        = __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid;
+    vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
+        = __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3;
 }
 
 VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__5(VPPU_TOP__Syms* __restrict vlSymsp) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VPPU_TOP::_sequent__TOP__5\n"); );
     VPPU_TOP* const __restrict vlTOPp VL_ATTR_UNUSED = vlSymsp->TOPp;
     // Body
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count;
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count;
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count;
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
-    vlTOPp->PPU_TOP__DOT__u_font__DOT__output_state 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_state;
-    vlTOPp->PPU_TOP__DOT__u_font__DOT__output_pixel_x 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x;
-    vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1;
-    vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid;
-    vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2;
-    vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid;
-    vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 
-        = vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3;
     vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid 
         = vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid;
     vlTOPp->PPU_TOP__DOT__u_font__DOT__mixed_RGB_4 
@@ -4404,8 +4380,6 @@ VL_INLINE_OPT void VPPU_TOP::_sequent__TOP__5(VPPU_TOP__Syms* __restrict vlSymsp
         = vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__RGB_6_reg_valid;
     vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_7_reg_valid 
         = vlTOPp->__Vdly__PPU_TOP__DOT__u_font__DOT__RGB_7_reg_valid;
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_count 
-        = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
     vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_reg_all_full 
         = ((((((((IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_1_reg_valid) 
                  & (IData)(vlTOPp->PPU_TOP__DOT__u_font__DOT__RGB_2_reg_valid)) 
@@ -8208,46 +8182,6 @@ VL_INLINE_OPT void VPPU_TOP::_combo__TOP__8(VPPU_TOP__Syms* __restrict vlSymsp) 
                 = vlTOPp->BRAM9_dout_b;
         }
     }
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni2_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-        if ((1U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-            if ((2U == (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni2_comp_data 
-                    = vlTOPp->BRAM7_dout_b;
-            }
-        }
-    }
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-        if ((1U == (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-            vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_data 
-                = vlTOPp->BRAM7_dout_b;
-        }
-    }
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__st_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-        if ((1U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-            if ((2U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                if ((3U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                    if ((4U == (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                        vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__st_comp_data 
-                            = vlTOPp->BRAM7_dout_b;
-                    }
-                }
-            }
-        }
-    }
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__sc_comp_data = 0ULL;
-    if ((0U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-        if ((1U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-            if ((2U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                if ((3U == (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
-                    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__sc_comp_data 
-                        = vlTOPp->BRAM7_dout_b;
-                }
-            }
-        }
-    }
     vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__ch4_comp_data = 0ULL;
     if ((0U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
         if ((1U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
@@ -8286,6 +8220,46 @@ VL_INLINE_OPT void VPPU_TOP::_combo__TOP__8(VPPU_TOP__Syms* __restrict vlSymsp) 
         if ((1U == (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM8_read_state))) {
             vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__ch1_comp_data 
                 = vlTOPp->BRAM8_dout_b;
+        }
+    }
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni2_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+        if ((1U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+            if ((2U == (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni2_comp_data 
+                    = vlTOPp->BRAM7_dout_b;
+            }
+        }
+    }
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+        if ((1U == (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+            vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_data 
+                = vlTOPp->BRAM7_dout_b;
+        }
+    }
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__st_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+        if ((1U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+            if ((2U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                if ((3U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                    if ((4U == (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                        vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__st_comp_data 
+                            = vlTOPp->BRAM7_dout_b;
+                    }
+                }
+            }
+        }
+    }
+    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__sc_comp_data = 0ULL;
+    if ((0U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+        if ((1U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+            if ((2U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                if ((3U == (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__BRAM7_read_state))) {
+                    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__sc_comp_data 
+                        = vlTOPp->BRAM7_dout_b;
+                }
+            }
         }
     }
     vlTOPp->BRAM9_we_a = 0U;

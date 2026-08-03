@@ -32,37 +32,43 @@ int main(int argc, char **argv)
     uint64_t bram11[512] = {0};
     uint64_t bram12[512] = {0};
 
-    uint32_t bram4[1024] = {0}; //폰트 저장.
-    uint32_t bram5[1024] = {0}; //폰트 저장.
-    uint32_t bram6[1024] = {0}; //폰트 저장.
-    uint32_t bram13[1024] = {0}; //폰트 저장.
-    uint32_t bram14[1024] = {0}; //폰트맵 
+    uint32_t bram4[1024] = {0};  // 폰트 저장.
+    uint32_t bram5[1024] = {0};  // 폰트 저장.
+    uint32_t bram6[1024] = {0};  // 폰트 저장.
+    uint32_t bram13[1024] = {0}; // 폰트 저장.
+    uint32_t bram14[1024] = {0}; // 폰트맵
 
     // ==============================================================================
     // [추가된 부분] C++ 테스트벤치 내 BRAM 초기화 로직
     // ==============================================================================
     // 16x16 폰트(16줄)를 BRAM 형식(32비트 * 8개)으로 패킹하는 람다 함수
-    auto pack_font_16x16 = [](const uint16_t lines[16], uint32_t* target_bram, uint32_t base_addr) {
-        for (int i = 0; i < 8; ++i) {
+    auto pack_font_16x16 = [](const uint16_t lines[16], uint32_t *target_bram, uint32_t base_addr)
+    {
+        for (int i = 0; i < 8; ++i)
+        {
             // address i: {line(2i+1)[15:0], line(2i)[15:0]}
-            uint32_t line_even = lines[i * 2];       // 하위 16비트
-            uint32_t line_odd  = lines[i * 2 + 1];   // 상위 16비트
+            uint32_t line_even = lines[i * 2];    // 하위 16비트
+            uint32_t line_odd = lines[i * 2 + 1]; // 상위 16비트
             target_bram[base_addr + i] = (line_odd << 16) | line_even;
         }
     };
 
     // 1. BRAM4 초기화 (초성 1벌 ~ 6벌)
     uint32_t cho_base_bram4[6] = {0, 152, 304, 456, 608, 760};
-    for (int set = 0; set < 6; ++set) {
-        for (int idx = 0; idx < 19; ++idx) {
+    for (int set = 0; set < 6; ++set)
+    {
+        for (int idx = 0; idx < 19; ++idx)
+        {
             pack_font_16x16(CHO_SUNG[set][idx], bram4, cho_base_bram4[set] + (idx * 8));
         }
     }
 
     // 2. BRAM5 초기화 (초성 7벌 ~ 8벌)
     uint32_t cho_base_bram5[2] = {0, 152};
-    for (int set = 0; set < 2; ++set) {
-        for (int idx = 0; idx < 19; ++idx) {
+    for (int set = 0; set < 2; ++set)
+    {
+        for (int idx = 0; idx < 19; ++idx)
+        {
             // CHO_SUNG 배열에서 7벌(인덱스 6), 8벌(인덱스 7)을 가져옴
             pack_font_16x16(CHO_SUNG[set + 6][idx], bram5, cho_base_bram5[set] + (idx * 8));
         }
@@ -70,29 +76,35 @@ int main(int argc, char **argv)
 
     // 3. BRAM6 초기화 (중성 1벌 ~ 4벌)
     uint32_t jung_base_bram6[4] = {0, 168, 336, 504};
-    for (int set = 0; set < 4; ++set) {
-        for (int idx = 0; idx < 21; ++idx) {
+    for (int set = 0; set < 4; ++set)
+    {
+        for (int idx = 0; idx < 21; ++idx)
+        {
             pack_font_16x16(JUNG_SUNG[set][idx], bram6, jung_base_bram6[set] + (idx * 8));
         }
     }
 
     // 4. BRAM13 초기화 (종성 1벌 ~ 4벌)
     uint32_t chong_base_bram13[4] = {0, 224, 448, 672};
-    for (int set = 0; set < 4; ++set) {
-        for (int idx = 0; idx < 28; ++idx) {
+    for (int set = 0; set < 4; ++set)
+    {
+        for (int idx = 0; idx < 28; ++idx)
+        {
             pack_font_16x16(CHONG_SUNG[set][idx], bram13, chong_base_bram13[set] + (idx * 8));
         }
     }
 
     // 5. BRAM14 초기화 (폰트맵 - 테스트용)
     // 기본적으로 전체를 ASCII 공백(0x0020)으로 꽉 채움. address 한 칸당 {0x0020, 0x0020} = 0x00200020
-    for (int i = 0; i < 1024; ++i) {
+    for (int i = 0; i < 1024; ++i)
+    {
         bram14[i] = 0x00200020;
     }
-    
+
     //---------------------폰트 테스트--------------------------
     // 먼저 전체 화면을 공백(0x0020)으로 초기화
-    for (int i = 0; i < 1024; ++i) {
+    for (int i = 0; i < 1024; ++i)
+    {
         bram14[i] = 0x00200020;
     }
     // ----------------------------------------------------------------------
@@ -125,7 +137,7 @@ int main(int argc, char **argv)
     bram14[264] = (uint32_t(0xC6A9) << 16) | uint32_t(0x0020); // addr 264 (칸 8~9):   {용, 공백}
     bram14[265] = (uint32_t(0xC5EC) << 16) | uint32_t(0xC0AC); // addr 265 (칸 10~11): {여, 사}
     bram14[266] = (uint32_t(0x0020) << 16) | uint32_t(0x0021); // addr 266 (칸 12~13): {공백, !}
-    
+
     // ----------------------------------------------------------------------
     // [4] 계속 진행 버튼 느낌표시 (Line 14 끝쪽)
     // Line 14 base: 280. ">" (0x003E)
@@ -275,7 +287,6 @@ int main(int argc, char **argv)
     constexpr uint32_t UNIVERSAL1_ADDR = 0x10000;
     constexpr uint32_t UNIVERSAL2_ADDR = 0x12000;
 
-
     load_layer(BACKGROUND1_ADDR, 0, 0);
     load_layer(BACKGROUND2_ADDR, 0, 0);
     load_layer(CHARACTER1_ADDR, 0, 0);
@@ -291,7 +302,7 @@ int main(int argc, char **argv)
     {
         if (i < 20)
         {
-            ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x02d001d0; //Red 80개, Green 80개, Blue 80개, Yellow 80개
+            ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x02d001d0; // Red 80개, Green 80개, Blue 80개, Yellow 80개
             ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x04d003d0;
         }
         else if (i < 60)
@@ -304,12 +315,12 @@ int main(int argc, char **argv)
             ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x12d012d0; // 초록색 1줄.
             ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x12d012d0;
         }
-        else if (i == 235) //236번째 줄
+        else if (i == 235) // 236번째 줄
         {
             ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x08d008d0; // 회색 1줄.
             ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x08d008d0;
         }
-        else if (i == 236) //237번째 줄
+        else if (i == 236) // 237번째 줄
         {
             ddr3_memory[(2 * i) + (UNIVERSAL1_ADDR / 4)] = 0x09d009d0; // 흰색 1줄.
             ddr3_memory[(2 * i) + 1 + (UNIVERSAL1_ADDR / 4)] = 0x09d009d0;
@@ -327,7 +338,7 @@ int main(int argc, char **argv)
     {
         if (i < 10)
         {
-            ddr3_memory[(2 * i) + (SCRIPT_ADDR / 4)] = 0x00d000d0; //투명색 1줄
+            ddr3_memory[(2 * i) + (SCRIPT_ADDR / 4)] = 0x00d000d0; // 투명색 1줄
             ddr3_memory[(2 * i) + 1 + (SCRIPT_ADDR / 4)] = 0x00d000d0;
         }
         else if (i < 90)
@@ -339,8 +350,9 @@ int main(int argc, char **argv)
         {
             ddr3_memory[(2 * i) + (SCRIPT_ADDR / 4)] = 0x00d000d0; // 투명색 1줄.
             ddr3_memory[(2 * i) + 1 + (SCRIPT_ADDR / 4)] = 0x00d000d0;
-            if (i == 119) {
-                ddr3_memory[(2 * i) + 2 + (SCRIPT_ADDR / 4)] = 0x00000000; // 끝났다는것 표시
+            if (i == 119)
+            {
+                ddr3_memory[(2 * i) + 2 + (SCRIPT_ADDR / 4)] = 0x00000000; // 마지막에 덮어써봄.
             }
         }
     }
@@ -349,13 +361,13 @@ int main(int argc, char **argv)
     {
         if (i < 100)
         {
-            ddr3_memory[(2 * i) + (CHARACTER1_ADDR / 4)] = 0x00d00bd0; //피부색 0.5줄 + 투명색 0.5줄
-            ddr3_memory[(2 * i) + 1 + (CHARACTER1_ADDR / 4)] = 0x00d00bd0; //피부색 0.5줄 + 투명색 0.5줄
+            ddr3_memory[(2 * i) + (CHARACTER1_ADDR / 4)] = 0x00d00bd0;     // 피부색 0.5줄 + 투명색 0.5줄
+            ddr3_memory[(2 * i) + 1 + (CHARACTER1_ADDR / 4)] = 0x00d00bd0; // 피부색 0.5줄 + 투명색 0.5줄
         }
         else
         {
-            ddr3_memory[(2 * i) + (CHARACTER1_ADDR / 4)] = 0x00d000d0; // 투명색 1줄.
-            ddr3_memory[(2 * i) + 1 + (CHARACTER1_ADDR / 4)] = 0x00d000d0; //투명색 1줄
+            ddr3_memory[(2 * i) + (CHARACTER1_ADDR / 4)] = 0x00d000d0;     // 투명색 1줄.
+            ddr3_memory[(2 * i) + 1 + (CHARACTER1_ADDR / 4)] = 0x00d000d0; // 투명색 1줄
             if (i == 119)
                 ddr3_memory[(2 * i) + 2 + (CHARACTER1_ADDR / 4)] = 0x00000000; // 끝났다는것 표시
         }
@@ -433,8 +445,6 @@ int main(int argc, char **argv)
     lut[18] = 0x0B840; // 나무/잔디색 (Soft Green)
     lut[19] = 0x37A20; // 모래/흙색 (Sand Yellow)
     lut[20] = 0x028A5; // 먼 산/배경 음영 (Muted Blue-Green)
-
-    
 
     int emem_state = 0;
     uint32_t emem_burst_counter = 0;
@@ -555,12 +565,12 @@ int main(int argc, char **argv)
     dut->Line9_font_RGB_9bit = 511;
     dut->Line9_a = 4;
     dut->Line10_visible_number = 40;
-    dut->Line10_font_RGB_9bit = 0; //검정색
+    dut->Line10_font_RGB_9bit = 0; // 검정색
     dut->Line10_a = 3;
     dut->Line11_visible_number = 40;
-    dut->Line11_font_RGB_9bit = 511; //하얀색
+    dut->Line11_font_RGB_9bit = 511; // 하얀색
     dut->Line11_a = 3;
-    dut->Line12_visible_number = 40; //좌측부터 최대 표시 글자수.
+    dut->Line12_visible_number = 40; // 좌측부터 최대 표시 글자수.
     dut->Line12_font_RGB_9bit = 511;
     dut->Line12_a = 3;
     dut->Line13_visible_number = 40;
@@ -622,15 +632,15 @@ int main(int argc, char **argv)
     dut->Background1_SCX = 0;
     dut->Background1_SCY = 0;
     dut->Background1_a = 16;
-    dut->Background1_z = 1;
+    dut->Background1_z = 0;
 
     dut->Background2_SCX = 0;
     dut->Background2_SCY = 0;
     dut->Background2_a = 16;
-    dut->Background2_z = 0;
+    dut->Background2_z = 1;
 
-    dut->Character1_WX = 160;
-    dut->Character1_WY = 0;
+    dut->Character1_WX = 100;
+    dut->Character1_WY = 10;
     dut->Character1_a = 16;
     dut->Character1_z = 3;
 
@@ -688,7 +698,7 @@ int main(int argc, char **argv)
     trace->dump(main_time++);
 
     // 🚀 [추가] 메인 루프 진입 전, 다음 클럭에 출력될 BRAM 데이터를 담아둘 버퍼 선언
-    uint32_t next_bram4_dout_a = 0; //BRAM 4, 5, 6, 13, 14는 포트 a를 사용함. CPU가 포트 b를 사용함.
+    uint32_t next_bram4_dout_a = 0; // BRAM 4, 5, 6, 13, 14는 포트 a를 사용함. CPU가 포트 b를 사용함.
     uint32_t next_bram5_dout_a = 0;
     uint32_t next_bram6_dout_a = 0;
     uint64_t next_bram7_dout_b = 0;
@@ -699,10 +709,6 @@ int main(int argc, char **argv)
     uint64_t next_bram12_dout_b = 0;
     uint32_t next_bram13_dout_a = 0;
     uint32_t next_bram14_dout_a = 0;
-
-    int z1 = 0;
-    int z2 = 0;
-    int z3 = 0;
 
     while (!Verilated::gotFinish() && main_time < 2000000)
     {
@@ -731,7 +737,7 @@ int main(int argc, char **argv)
         dut->LUT_data_out1 = lut[dut->LUT_addr_r1]; // lut 배열의 하위 18비트만 dut->LUT_data_out1에 들어가게 됨.
         dut->LUT_data_out2 = lut[dut->LUT_addr_r2];
         dut->eval();
-        if (main_time > 250000 && main_time < 400000 && dut->PPU_TOP__DOT__u_font__DOT__output_pixel_y > 145) // 딱 10000 클럭만 확인할 예정.
+        if (main_time > 470000 && main_time < 480000 && dut->PPU_TOP__DOT__u_font__DOT__output_pixel_y > 145) // 딱 10000 클럭만 확인할 예정.
         {
             trace->dump(main_time);
         }
@@ -741,32 +747,6 @@ int main(int argc, char **argv)
         {
             lut[dut->LUT_addr_w] = dut->LUT_data_in;
         } // 지금은 LUT에 쓰기는 사용되지 않음.
-
-        if(dut->PPU_TOP__DOT__u_proc__DOT__Z3_valid && dut->PPU_TOP__DOT__u_proc__DOT__Z3_ready) 
-        {
-            z3++;
-            if(z3 == 75200) //235줄의 마지막 픽셀
-            {
-                std::cout << std::hex << dut->PPU_TOP__DOT__u_proc__DOT__Z3_RGB << std::dec  << "  main_time: " << main_time << std::endl;
-            }
-            if(z3 == 75520) //236줄의 마지막 픽셀
-            {
-                std::cout << std::hex << dut->PPU_TOP__DOT__u_proc__DOT__Z3_RGB << std::dec << std::endl;
-            }
-            if(z3 == 75840) //237줄의 마지막 픽셀
-            {
-                std::cout << std::hex << dut->PPU_TOP__DOT__u_proc__DOT__Z3_RGB << std::dec << std::endl;
-            }
-        }
-        if(dut->PPU_TOP__DOT__u_proc__DOT__Z2_valid && dut->PPU_TOP__DOT__u_proc__DOT__Z2_ready) 
-        {
-            z2++;
-        }
-        if(dut->PPU_TOP__DOT__u_proc__DOT__Z1_valid && dut->PPU_TOP__DOT__u_proc__DOT__Z1_ready) 
-        {
-            z1++;
-        }
-
         // ----------------------------------------------------
         // [2단계] 클럭 하강 에지 (입력 신호 주입)
         // ----------------------------------------------------
@@ -781,23 +761,7 @@ int main(int argc, char **argv)
                 dut->EMEM_ready = 1;
                 emem_current_addr = dut->EMEM_addr >> 2;
                 dut->EMEM_rdata = ddr3_memory[emem_current_addr];
-                /*
-                if(ddr3_memory[emem_current_addr] == 0x10FF10FF)
-                {
-                    printf("EMEM READ: addr=0x%08X rdata=0x%08X (Transparent Pixel) main_time: %lu\n", emem_current_addr, dut->EMEM_rdata, main_time);
-                }
-                if(ddr3_memory[emem_current_addr] == 0x11FF11FF)
-                {
-                    printf("EMEM READ: addr=0x%08X rdata=0x%08X (Transparent Pixel) main_time: %lu\n", emem_current_addr, dut->EMEM_rdata, main_time);
-                }*/
-                if (dut->EMEM_addr == 0x00000 || dut->EMEM_addr == 0x02000 || dut->EMEM_addr == 0x04000 || dut->EMEM_addr == 0x06000 || dut->EMEM_addr == 0x08000 || dut->EMEM_addr == 0x0A000 || dut->EMEM_addr == 0x0C000 || dut->EMEM_addr == 0x0E000 || dut->EMEM_addr == 0x10000 || dut->EMEM_addr == 0x12000)
-                {
-                    printf("EMEM READ: addr=0x%08X rdata=0x%08X (Background1 RLE Data) main_time: %lu\n", dut->EMEM_addr, dut->EMEM_rdata, main_time);
-                }
-
                 emem_burst_counter = dut->EMEM_burst_en ? dut->EMEM_burst_len : 0;
-                // std::cout << "EMEM_REQ addr=0x" << std::hex << dut->EMEM_addr << std::dec
-                //            << " idx=" << emem_current_addr << " rdata=0x" << std::hex << dut->EMEM_rdata << std::dec << std::endl;
                 if (dut->EMEM_burst_en && emem_burst_counter > 0)
                 {
                     emem_state = 1;
@@ -817,17 +781,6 @@ int main(int argc, char **argv)
             }
             dut->EMEM_ready = 1;
             dut->EMEM_rdata = ddr3_memory[emem_current_addr];
-            /*
-            if(ddr3_memory[emem_current_addr] == 0x10FF10FF)
-                {
-                    printf("EMEM READ: addr=0x%08X rdata=0x%08X (Transparent Pixel) main_time: %lu\n", emem_current_addr, dut->EMEM_rdata, main_time);
-                }
-            if(ddr3_memory[emem_current_addr] == 0x11FF11FF)
-                {
-                    printf("EMEM READ: addr=0x%08X rdata=0x%08X (Transparent Pixel) main_time: %lu\n", emem_current_addr, dut->EMEM_rdata, main_time);
-                }
-            */
-            // std::cout << "EMEM_BURST idx=" << emem_current_addr << " rdata=0x" << std::hex << dut->EMEM_rdata << std::dec << std::endl;
             if (emem_burst_counter == 0)
             {
                 emem_state = 0;
@@ -875,7 +828,7 @@ int main(int argc, char **argv)
             next_bram14_dout_a = bram14[dut->BRAM14_addr_a];
 
         dut->eval();
-        if (main_time > 250000 && main_time < 400000 && dut->PPU_TOP__DOT__u_font__DOT__output_pixel_y > 145) // 딱 10000클럭만 확인할 예정.
+        if (main_time > 470000 && main_time < 480000 && dut->PPU_TOP__DOT__u_font__DOT__output_pixel_y > 145) // 딱 10000클럭만 확인할 예정.
         {
             trace->dump(main_time); // 반 클럭 진행 완료 기록
         }
@@ -884,48 +837,15 @@ int main(int argc, char **argv)
         if (dut->Final_pixel_valid)
         {
             final_pixels.push_back(dut->Final_pixel_RGB);
-            /*if (final_pixels.size() <= 32)
-            {
-                std::cout << "DEBUG: pix[" << final_pixels.size() - 1 << "]=0x" << std::hex << dut->Final_pixel_RGB
-                          << std::dec << std::endl;
-            }*/
         }
-
-        /*if (main_time < 100)
-        {
-            std::cout << "time=" << main_time
-                      << " final_count=" << final_pixels.size()
-                      << " EMEM_valid=" << (int)(dut->EMEM_valid)
-                      << " EMEM_ready=" << (int)(dut->EMEM_ready)
-                      << " Final_valid=" << (int)(dut->Final_pixel_valid)
-                      << " Final_RGB=0x" << std::hex << (uint32_t)(dut->Final_pixel_RGB) << std::dec
-                      << std::endl;
-        }*/
-
         if (final_pixels.size() >= 320 * 240)
         {
             std::cout << "Captured full frame: " << final_pixels.size() << " pixels" << "main_time : " << main_time << std::endl;
             break;
         }
-
-        /*if (main_time > 10000)
-        {
-            dut->final();
-            trace->close();
-            std::cerr << "main_time is 10000" << std::endl;
-            return 1;
-        }*/
     }
 
     std::cout << "Captured " << final_pixels.size() << " final pixels." << std::endl; // 총 76800개의 픽셀을 캡쳐해야 함. 이것보다 작으면 문제 있는거임.
-    std::cout << "z1 pixel: " << z1 << std::endl;
-    std::cout << "z2 pixel: " << z2 << std::endl;
-    std::cout << "z3 pixel: " << z3 << std::endl;
-
-    for (int i = 0; i < 128; i++)
-    {
-        printf("BRAM 7 주소 %d: %d\n", 256 + i, bram7[256 + i]);
-    }
 
     // --- SDL2: display captured frame at 2x scale (640x480) ---
     if (final_pixels.size() >= 320 * 240)

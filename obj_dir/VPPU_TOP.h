@@ -293,7 +293,6 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ PPU_TOP__DOT__font_line_end;
         CData/*0:0*/ PPU_TOP__DOT__font_frame_end;
         CData/*0:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__All_Decompresser_is_IDLE;
-        CData/*7:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_count;
         CData/*7:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
         CData/*7:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_front;
         CData/*7:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_rear;
@@ -351,9 +350,9 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__is_urgent_mode;
         CData/*7:0*/ PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__emem_r_counter;
         CData/*7:0*/ PPU_TOP__DOT__u_rgb__DOT__cache1_pixel;
+        CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__cache1_valid;
     };
     struct {
-        CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__cache1_valid;
         CData/*7:0*/ PPU_TOP__DOT__u_rgb__DOT__cache2_pixel;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__cache2_valid;
         CData/*7:0*/ PPU_TOP__DOT__u_rgb__DOT__cache3_pixel;
@@ -417,9 +416,9 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req6_hit1;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req6_hit2;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req6_hit3;
+        CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req6_hit4;
     };
     struct {
-        CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req6_hit4;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req7_hit1;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req7_hit2;
         CData/*0:0*/ PPU_TOP__DOT__u_rgb__DOT__req7_hit3;
@@ -483,9 +482,9 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z5_valid;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z5_ready;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z6_is_trans;
+        CData/*7:0*/ PPU_TOP__DOT__u_proc__DOT__Z6_a;
     };
     struct {
-        CData/*7:0*/ PPU_TOP__DOT__u_proc__DOT__Z6_a;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z6_valid;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z6_ready;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT__Z7_is_trans;
@@ -549,9 +548,9 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ PPU_TOP__DOT__u_font__DOT__fontmap_skid_valid;
         CData/*0:0*/ PPU_TOP__DOT__u_font__DOT__korea_bitmap_skid_valid;
         CData/*7:0*/ PPU_TOP__DOT__u_font__DOT__ascii_bitmap_skid_data;
+        CData/*0:0*/ PPU_TOP__DOT__u_font__DOT__ascii_bitmap_skid_valid;
     };
     struct {
-        CData/*0:0*/ PPU_TOP__DOT__u_font__DOT__ascii_bitmap_skid_valid;
         CData/*7:0*/ PPU_TOP__DOT__u_font__DOT__custom_tile_bitmap_skid_data;
         CData/*0:0*/ PPU_TOP__DOT__u_font__DOT__custom_tile_bitmap_skid_valid;
         CData/*3:0*/ PPU_TOP__DOT__u_font__DOT__pixel_state;
@@ -615,9 +614,9 @@ VL_MODULE(VPPU_TOP) {
         CData/*5:0*/ PPU_TOP__DOT__u_font__DOT__pipe3_font_x;
         CData/*5:0*/ PPU_TOP__DOT__u_font__DOT__pipe3_font_y;
         CData/*3:0*/ PPU_TOP__DOT__u_font__DOT__pipe3_counter_16;
+        CData/*0:0*/ PPU_TOP__DOT__u_font__DOT__pipe3_next_line;
     };
     struct {
-        CData/*0:0*/ PPU_TOP__DOT__u_font__DOT__pipe3_next_line;
         CData/*0:0*/ PPU_TOP__DOT__u_font__DOT__pipe4_valid;
         CData/*0:0*/ PPU_TOP__DOT__u_font__DOT__pipe4_is_korea;
         CData/*0:0*/ PPU_TOP__DOT__u_font__DOT__pipe4_is_ascii;
@@ -681,9 +680,9 @@ VL_MODULE(VPPU_TOP) {
         SData/*14:0*/ PPU_TOP__DOT__u_proc__DOT__Pipe1_B;
         SData/*14:0*/ PPU_TOP__DOT__u_proc__DOT__Pipe2_R;
         SData/*14:0*/ PPU_TOP__DOT__u_proc__DOT__Pipe2_G;
+        SData/*14:0*/ PPU_TOP__DOT__u_proc__DOT__Pipe2_B;
     };
     struct {
-        SData/*14:0*/ PPU_TOP__DOT__u_proc__DOT__Pipe2_B;
         SData/*14:0*/ PPU_TOP__DOT__u_proc__DOT__Pipe3_R;
         SData/*14:0*/ PPU_TOP__DOT__u_proc__DOT__Pipe3_G;
         SData/*14:0*/ PPU_TOP__DOT__u_proc__DOT__Pipe3_B;
@@ -747,9 +746,9 @@ VL_MODULE(VPPU_TOP) {
         IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req7_exclusive_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req8_exclusive_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req9_exclusive_RGB;
+        IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req10_exclusive_RGB;
     };
     struct {
-        IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req10_exclusive_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req11_exclusive_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_rgb__DOT__req12_exclusive_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_proc__DOT__Z1_RGB;
@@ -846,14 +845,7 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT____Vlvbound14;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT____Vlvbound15;
         CData/*0:0*/ PPU_TOP__DOT__u_proc__DOT____Vlvbound16;
-        CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count;
-        CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count;
-        CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
-        CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count;
-        CData/*3:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__output_state;
         CData/*3:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__pixel_state;
-        CData/*0:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid;
-        CData/*0:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid;
         CData/*0:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid;
         CData/*0:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4_valid;
         CData/*0:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_5_valid;
@@ -874,8 +866,6 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__custom_tile_bitmap_skid_valid;
         CData/*7:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__custom_tile_bitmap_skid_data;
         CData/*5:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__counter_0_39;
-    };
-    struct {
         CData/*3:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__counter_0_15;
         CData/*5:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__counter_font_x;
         CData/*0:0*/ __Vclklast__TOP__clk;
@@ -883,6 +873,8 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ __Vchglast__TOP__PPU_TOP__DOT__u_bg1__rgb_convert_end;
         CData/*0:0*/ __Vchglast__TOP__PPU_TOP__DOT__u_bg2__rgb_convert_end;
         CData/*0:0*/ __Vchglast__TOP__PPU_TOP__DOT__u_ch1__rgb_convert_end;
+    };
+    struct {
         CData/*0:0*/ __Vchglast__TOP__PPU_TOP__DOT__u_ch2__rgb_convert_end;
         CData/*0:0*/ __Vchglast__TOP__PPU_TOP__DOT__u_ch3__rgb_convert_end;
         CData/*0:0*/ __Vchglast__TOP__PPU_TOP__DOT__u_ch4__rgb_convert_end;
@@ -890,7 +882,6 @@ VL_MODULE(VPPU_TOP) {
         CData/*0:0*/ __Vchglast__TOP__PPU_TOP__DOT__u_st__rgb_convert_end;
         CData/*0:0*/ __Vchglast__TOP__PPU_TOP__DOT__u_un1__rgb_convert_end;
         CData/*0:0*/ __Vchglast__TOP__PPU_TOP__DOT__u_un2__rgb_convert_end;
-        SData/*8:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x;
         SData/*15:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__fontmap_skid_data;
         SData/*15:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__korea_bitmap_skid_data;
         IData/*17:0*/ PPU_TOP__DOT____Vcellout__u_rgb__Req12_RGB;
@@ -906,9 +897,6 @@ VL_MODULE(VPPU_TOP) {
         IData/*17:0*/ PPU_TOP__DOT____Vcellout__u_rgb__Req2_RGB;
         IData/*17:0*/ PPU_TOP__DOT____Vcellout__u_rgb__Req1_RGB;
         IData/*17:0*/ PPU_TOP__DOT__u_proc__DOT____Vlvbound3;
-        IData/*17:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1;
-        IData/*17:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2;
-        IData/*17:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3;
         IData/*17:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4;
         IData/*17:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_5;
         IData/*17:0*/ __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_6;

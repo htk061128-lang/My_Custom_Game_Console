@@ -99,8 +99,6 @@ void VPPU_TOP::_settle__TOP__1(VPPU_TOP__Syms* __restrict vlSymsp) {
         = vlTOPp->Universal2_z;
     vlTOPp->PPU_TOP__DOT__Req_trans[0xbU] = 0U;
     vlTOPp->PPU_TOP__DOT__Req_trans[0xaU] = 0U;
-    vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_count 
-        = vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count;
     vlTOPp->BRAM9_we_a = 0U;
     if ((0U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__main_state))) {
         if ((1U != (IData)(vlTOPp->PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__main_state))) {
@@ -6833,7 +6831,6 @@ void VPPU_TOP::_ctor_var_reset() {
     PPU_TOP__DOT__u_pixel_fifo__DOT__ch3_comp_data = VL_RAND_RESET_Q(64);
     PPU_TOP__DOT__u_pixel_fifo__DOT__ch4_comp_data = VL_RAND_RESET_Q(64);
     PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_data = VL_RAND_RESET_Q(64);
-    PPU_TOP__DOT__u_pixel_fifo__DOT__uni1_comp_count = VL_RAND_RESET_I(8);
     PPU_TOP__DOT__u_pixel_fifo__DOT__uni2_comp_data = VL_RAND_RESET_Q(64);
     PPU_TOP__DOT__u_pixel_fifo__DOT__sc_comp_data = VL_RAND_RESET_Q(64);
     PPU_TOP__DOT__u_pixel_fifo__DOT__st_comp_data = VL_RAND_RESET_Q(64);
@@ -7357,18 +7354,7 @@ void VPPU_TOP::_ctor_var_reset() {
     PPU_TOP__DOT__u_font__DOT__do_not_need_mix = VL_RAND_RESET_I(1);
     PPU_TOP__DOT__u_font__DOT__organized_alpha_0_4 = VL_RAND_RESET_I(3);
     PPU_TOP__DOT__u_font__DOT__organized_RGB = VL_RAND_RESET_I(18);
-    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_count = VL_RAND_RESET_I(8);
-    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count = VL_RAND_RESET_I(8);
-    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count = VL_RAND_RESET_I(8);
-    __Vdly__PPU_TOP__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count = VL_RAND_RESET_I(8);
-    __Vdly__PPU_TOP__DOT__u_font__DOT__output_state = VL_RAND_RESET_I(4);
-    __Vdly__PPU_TOP__DOT__u_font__DOT__output_pixel_x = VL_RAND_RESET_I(9);
     __Vdly__PPU_TOP__DOT__u_font__DOT__pixel_state = VL_RAND_RESET_I(4);
-    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1 = VL_RAND_RESET_I(18);
-    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_1_valid = VL_RAND_RESET_I(1);
-    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2 = VL_RAND_RESET_I(18);
-    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_2_valid = VL_RAND_RESET_I(1);
-    __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3 = VL_RAND_RESET_I(18);
     __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_3_valid = VL_RAND_RESET_I(1);
     __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4 = VL_RAND_RESET_I(18);
     __Vdly__PPU_TOP__DOT__u_font__DOT__mixed_RGB_4_valid = VL_RAND_RESET_I(1);
