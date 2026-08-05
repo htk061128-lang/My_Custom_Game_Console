@@ -1,0 +1,34 @@
+---------------Compressed_Data_FIFO.sv next_should_read_layer 조합논리 그래프 --------------------
+graph TD
+    subgraph Mode_Selection ["1단계 : 모드 결정 및 요청 신호 선택"]
+        In_U["urgent_req[9:0]"]
+        In_B["basic_req[9:0]"]
+        
+        Check_U{urgent_req == 0 ?}
+        In_U --> Check_U
+        
+        Check_U -- "Yes (Urgent 없음)" --> Sel_B[valid_req = basic_req<br/>Mode: BASIC]
+        Check_U -- "No (Urgent 존재)" --> Sel_U[valid_req = urgent_req<br/>Mode: URGENT]
+        In_B --> Sel_B
+    end
+
+    subgraph Masking_Logic ["2단계 : 이전 읽기 기록 마스킹"]
+        Hist_B["last_read_basic[9:0]"]
+        Hist_U["last_read_urgent[9:0]"]
+        
+        Sel_B ---> Apply_MB[masked_req = valid_req & ~last_read_basic]
+        Hist_B --> Apply_MB
+        
+        Sel_U --> Apply_MU[masked_req = valid_req & ~last_read_urgent]
+        Hist_U --> Apply_MU
+    end
+
+    subgraph Priority_Encoder ["3단계 : LSB 우선순위 인코더"]
+        Apply_MB --> Merge_Mask[masked_req 10-bit]
+        Apply_MU --> Merge_Mask
+        
+        Find_LSB[Find First Set Bit from LSB<br/>가장 하위비트 1 검출]
+        Merge_Mask --> Find_LSB
+    end
+    Find_LSB --> Out["next_should_read_layer[9:0]<br/>10비트중 하나만 1로 설정"]
+----------------------------------------------------------------------------------------------
