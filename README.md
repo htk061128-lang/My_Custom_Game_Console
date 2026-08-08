@@ -238,6 +238,9 @@ Line14_a
 **Note**: Burst Mode를 사용할 경우 내부적인 Counter를 이용해서 EMEM_ready가 1클럭 활성화 되는 순간을 카운트 해야함. EMEM_valid는 하나의 EMEM_ready가 온 순간 바로 Low로 꺼줘야 함. 
 
 #### 외부 메모리 읽기 알고리즘(Round-Robin)
+
+![next_should_read_layer 구조](./imagefile/Com_FIFO_shouldread.png)
+
 | Signal Name | Bit Width | Type | Description |
 | :--- | :---: | :---: | :--- |
 | `urgent_req` | 10-bit (`[9:0]`) | **Combinational** | 긴급(Urgent) 읽기 요청 신호. 해당 레이어의 Compressed Data FIFO의 데이터가 25%이하인 경우 해당 레이어의 비트가 1로 설정됨.|
@@ -249,8 +252,6 @@ Line14_a
 | `next_should_read_layer` | 10-bit (`[9:0]`) | **Combinational** | `masked_req`에서 LSB(가장 하위 비트)부터 검출한 첫 번째 `1`의 위치를 One-hot 형태로 출력하는 최종 선택 신호 (10비트 중 1개 비트만 `1`로 설정). |
 
 **Note**: `(valid_req[9:0] != 10'b0 ) && (masked_req[9:0] == 10'b0)`이면 `last_read_urgent`, `last_read_basic`은 초기화 됨.
-
-![next_should_read_layer 구조](./imagefile/Com_FIFO_shouldread.png)
 
 #### BRAM 시분할 공유 구조
 * 10개의 레이어 FIFO는 **BRAM 3개**에 분할하여 저장됩니다.
@@ -296,7 +297,7 @@ Line14_a
 ### RGB_Converter.sv
 최대 12개의 입력 포트로부터 8 bits pixel 데이터를 입력받아 미리 저장된 Lookup Table과 캐시 데이터를 이용하여 18 bits RGB 값으로 변환해주는 모듈입니다. 총 255가지의 RGB 변환 데이터는 FPGA 내부의 LUT으로 구성된 Asynchronous Distributed RAM에 저장되고 요청에 따라 접근하게 됩니다. CPU는 프레임 생성 전 사전에 4개의 범용 캐시의 내용을 지정할 수 있습니다. 또한 각각의 Request에 대응하는 하나의 Exclusive Cache는 연속된 픽셀의 RGB 변환 요청을 효율적으로 처리하기 위해 생성했습니다.
 
-![RGB_Converter_diagram](./imagefile/RGB_Converter_diagram.png)
+![RGB_Converter_diagram2](./imagefile/RGB_Converter_diagram.png)
 
 #### Pixel-to-RGB Handshake Interface Specification (Request 1 기준 예시)
 
