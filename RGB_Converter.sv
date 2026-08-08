@@ -11,8 +11,6 @@ module RGB_Converter(
     input [7:0] Cache3_pixel, //또한 이 값은 절대 0(투명) 이어서는 안됨.
     input [7:0] Cache4_pixel,
 
-    //pixel값이 0이면 투명을 말하는것으로 이 모듈에 RGB값을 요청해서는 안됨!!!
-
     //256 * 18 bit, 쓰기포트 1개, 읽기포트 2개인 Distribute RAM 인터페이스. 비동기 메모리이므로 주소를 주면 즉시 데이터가 나옴.
     // [포트 A] 쓰기 전용 포트 (Write Port) //쓰기 포트는 CPU가 사용할 수 있게 해야하고 여기서는 사용하지는 않지만 일단 적어둠.
     output  wire        LUT_we,         // 쓰기 활성화 (Write Enable)
