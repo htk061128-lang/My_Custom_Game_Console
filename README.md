@@ -297,7 +297,7 @@ Line14_a
 ### RGB_Converter.sv
 최대 12개의 입력 포트로부터 8 bits pixel 데이터를 입력받아 미리 저장된 Lookup Table과 캐시 데이터를 이용하여 18 bits RGB 값으로 변환해주는 모듈입니다. 총 255가지의 RGB 변환 데이터는 FPGA 내부의 LUT으로 구성된 Asynchronous Distributed RAM에 저장되고 요청에 따라 접근하게 됩니다. CPU는 프레임 생성 전 사전에 4개의 범용 캐시의 내용을 지정할 수 있습니다. 또한 각각의 Request에 대응하는 하나의 Exclusive Cache는 연속된 픽셀의 RGB 변환 요청을 효율적으로 처리하기 위해 생성했습니다.
 
-![RGB_Converter_diagram2](./imagefile/RGB_Converter_diagram.png)
+![RGB_Converter_diagram2](./imagefile/RGB_Converter_diagram2.png)
 
 #### Pixel-to-RGB Handshake Interface Specification (Request 1 기준 예시)
 
