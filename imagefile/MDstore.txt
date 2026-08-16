@@ -32,3 +32,50 @@ graph TD
     end
     Find_LSB --> Out["next_should_read_layer[9:0]<br/>10비트중 하나만 1로 설정"]
 ----------------------------------------------------------------------------------------------
+
+flowchart TD
+    %% Start Process
+    Start("[Request N 인입 (Req_N_ena=1)]") --> CheckZero{"Req_N_pixel == 0?"}
+
+    %% Zero Pixel Logic
+    CheckZero -- Yes --> IsZero["투명 픽셀 처리<br>Req_N_trans = 1<br>Req_N_RGB = 0"]
+    IsZero --> Finish([Req_N_end = 1])
+
+    %% Cache Hit Logic
+    CheckZero -- No --> CheckExclusive{"전용 캐시(Exclusive)<br>Hit?"}
+    CheckExclusive -- Yes --> ExHit[Req_N_RGB = 전용 캐시 데이터] --> Finish
+    CheckExclusive -- No --> CheckShared{"범용 캐시(Cache 1~4)<br>Hit?"}
+    CheckShared -- Yes --> ShHit[Req_N_RGB = 범용 캐시 데이터] --> Finish
+
+    %% Cache Miss & total_req
+    CheckShared -- No --> CacheMiss[Cache Miss 판정<br>total_req의 해당 비트 = 1]
+
+    %% Arbitration Subgraph
+    subgraph RAM_Arbitration [Distribute RAM 읽기 권한 중재]
+        CacheMiss --> WaitClock((매 클럭마다<br>카운터 갱신))
+        WaitClock --> CheckGroup{"random_counter_0_1<br>(TDM 그룹 선택)"}
+        
+        CheckGroup -- 0 --> GroupA[포트1: Req 1, 2, 3<br>포트2: Req 7, 8, 9]
+        CheckGroup -- 1 --> GroupB[포트1: Req 4, 5, 6<br>포트2: Req 10, 11, 12]
+
+        GroupA --> CheckPriority{"random_counter_0_2<br>(라운드 로빈)<br>포트당 3개의 Req를 우선순위 순서대로 확인함. "}
+        GroupB --> CheckPriority
+
+        CheckPriority -- 0 --> Pri0[우선순위: 1번 ➡ 2번 ➡ 3번]
+        CheckPriority -- 1 --> Pri1[우선순위: 2번 ➡ 3번 ➡ 1번]
+        CheckPriority -- 2 --> Pri2[우선순위: 3번 ➡ 1번 ➡ 2번]
+
+        Pri0 --> ArbitrateWin{"우선순위 1,2,3번 중 최소<br> 한개는<br>유효한 Req인가?"}
+        Pri1 --> ArbitrateWin
+        Pri2 --> ArbitrateWin
+    end
+
+    %% Result of Arbitration
+    ArbitrateWin -- No --> WaitNext[권한 획득 실패<br>다음 클럭 대기] -.-> WaitClock
+    ArbitrateWin -- Yes --> ReadRAM[Distribute RAM 읽기 수행<br>LUT_addr = Req_N_pixel]
+
+    ReadRAM --> UpdateExclusive["해당 Req의 전용 캐시 갱신<br>(w_ena = 1)"]
+    UpdateExclusive --> OutRAM[Req_N_RGB = LUT_data_out]
+    OutRAM --> Finish
+
+---------------------------------------------------------------------------------------

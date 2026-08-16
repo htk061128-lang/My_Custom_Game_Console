@@ -323,6 +323,15 @@ Line14_a
 
 #### Distribute RAM Arbiter 알고리즘
 
+![RGB_Converter_diagram2](./imagefile/RGB_Converter_roundrobin.png)
+
+| Signal Name | Bit Width | Type | Description |
+| :--- | :---: | :---: | :--- |
+| `total_req` | 12-bit (`[11:0]`) | **Combinational** | 12개의 읽기 요청(Req1~Req12)에 대한 **Cache Miss 상태**를 나타내는 신호. 요청이 활성화(`Req_ena`)되었고, 투명 픽셀(`Req_pixel == 0`)이 아니며, 범용 캐시 4개와 전용 독점 캐시 모두에서 매칭되지 않았을 때 해당 비트가 `1`로 설정됨. (RAM 읽기 접근이 필요한 최종 유효 요청을 의미) |
+| `random_counter_0_3` | 2-bit (`[1:0]`) | **Sequential (FF)** | 매 클럭마다 `0 -> 1 -> 2 -> 3` 순서로 반복 순환하는 카운터. 어느 범용 캐시에 새로운 RGB 값과 픽셀 값을 갱신할지 타겟을 결정하기 위한 용도로 사용됨. |
+| `random_counter_0_1` | 1-bit | **Sequential (FF)** | 매 클럭마다 `0 -> 1 -> 0`으로 토글(Toggle)되는 카운터. 읽기 포트를 공유하기 위해 포트당 6개의 요청을 3개씩 두 그룹으로 나누는 **시분할(TDM) 선택 신호**. (예: `0`일 때는 Req1~3 그룹 선택, `1`일 때는 Req4~6 그룹 선택) |
+| `random_counter_0_2` | 2-bit (`[1:0]`) | **Sequential (FF)** | 매 클럭마다 `0 -> 1 -> 2` 순서로 반복 순환하는 카운터. `random_counter_0_1`에 의해 선택된 3개의 요청 그룹 내에서, 어떤 요청을 먼저 RAM에서 읽어올지 **라운드 로빈 형태의 우선순위를 결정**함. |
+
 ---
 ### Pixel_Reader.sv
 ---
