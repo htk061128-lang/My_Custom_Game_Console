@@ -1,5 +1,5 @@
 module I_Cache_Controller (
-    input clk, //50MHz로 CPU와 동기화할 예정.
+    input clk, //CPU와 동기화할 예정.
     input resetn, //그냥 negedge reset으로 통일. 1->0으로 가면 리셋됨.
     //cpu와 상호작용하는 신호들.
     input CPU_valid,
@@ -11,7 +11,7 @@ module I_Cache_Controller (
     input [3:0] CPU_wstrb, ////이게 4'b0000이면 읽기이고 4'b1111이면 4바이트 전체 쓰기임. 
     output reg [31:0] CPU_rdata,
 
-    //EXternal Memory Interface. axi4로 변환한 뒤 DDR3 IP와 연결해야 함.
+    //EXternal Memory Interface. axi4로 변환한 뒤 DDR3 IP와 연결해야 함. 추가) 이 신호는 Addr_Decoder로 가게 됨. 그 이후 DDR3 IP랑 연결될 듯.
     output reg EMEM_valid,
     input EMEM_ready,
 

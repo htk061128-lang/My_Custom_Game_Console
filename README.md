@@ -14,106 +14,142 @@
 * 커스텀 8 * 16 단색 타일 지원
 * RLC(Run Length Coding) 압축 지원
 
-## Resister Map
-Background_Layer1_Address 
-Background_Layer2_Address 
-Character_Layer1_Address 
-Character_Layer2_Address 
-Character_Layer3_Address 
-Character_Layer4_Address
-Script_Layer_Address
-Status_Layer_Address
-Universal_Layer1_Address
-Universal_Layer2_Address
-CPU_LUT_Cache1_pixel
-CPU_LUT_Cache2_pixel
-CPU_LUT_Cache3_pixel
-CPU_LUT_Cache4_pixel
-Background1_SCX 
-Background1_SCY 
-Background1_a
-Background1_z 
-Background2_SCX 
-Background2_SCY 
-Background2_a
-Background2_z 
-Character1_WX
-Character1_WY 
-Character1_a 
-Character1_z 
-Character2_WX
-Character2_WY 
-Character2_a 
-Character2_z 
-Character3_WX
-Character3_WY 
-Character3_a 
-Character3_z 
-Character4_WX
-Character4_WY 
-Character4_a 
-Character4_z 
-Script_WX 
-Script_WY 
-Script_a 
-Script_z
-Status_WX 
-Status_WY 
-Status_a 
-Status_z 
-Universal1_WX 
-Universal1_WY 
-Universal1_a 
-Universal1_z 
-Universal2_WX 
-Universal2_WY 
-Universal2_a 
-Universal2_z 
-Line0_visible_number 
-Line0_font_RGB_9bit
-Line0_a
-Line1_visible_number 
-Line1_font_RGB_9bit
-Line1_a
-Line2_visible_number 
-Line2_font_RGB_9bit
-Line2_a
-Line3_visible_number 
-Line3_font_RGB_9bit
-Line3_a
-Line4_visible_number 
-Line4_font_RGB_9bit
-Line4_a
-Line5_visible_number 
-Line5_font_RGB_9bit
-Line5_a
-Line6_visible_number 
-Line6_font_RGB_9bit
-Line6_a
-Line7_visible_number 
-Line7_font_RGB_9bit
-Line7_a
-Line8_visible_number 
-Line8_font_RGB_9bit
-Line8_a
-Line9_visible_number 
-Line9_font_RGB_9bit
-Line9_a
-Line10_visible_number 
-Line10_font_RGB_9bit
-Line10_a
-Line11_visible_number 
-Line11_font_RGB_9bit
-Line11_a
-Line12_visible_number 
-Line12_font_RGB_9bit
-Line12_a
-Line13_visible_number 
-Line13_font_RGB_9bit
-Line13_a
-Line14_visible_number 
-Line14_font_RGB_9bit
-Line14_a
+## 256 MiB Memory Map
+- **Total Address Space**: 256 MiB (`0x0000_0000` ~ `0x0FFF_FFFF`)
+- **CPU Interface**: PicoRV32 (32-bit Word Aligned)
+- **Top 4-bit Address**: Fixed to `4'b0000` (`ADDR[31:28] = 0x0`)
+
+| Start Address | End Address | Allocated Size | Target Device | HW Type | Description |
+| :--- | :--- | :---: | :--- | :--- | :--- |
+| `0x0000_0000` | `0x0FEF_FFFF` | 255 MiB | DDR3 MEMORY | - | 외부에 연결된 256 MiB DDR3 메인 메모리 |
+| `0x0FF0_0000` | `0x0FF0_03FF` | 1 KiB | PPU Control Regs | Register File | PPU 제어/좌표 레지스터 (최대 256개 32-bit 레지스터 수용) |
+| `0x0FF0_0400` | `0x0FF0_07FF` | 1 KiB | RGB Lookup Table | Distribute RAM | 256 × 18-bit Color Palette Write Port |
+| `0x0FF0_0800` | `0x0FF0_0FFF` | 2 KiB | *Reserved* | - | - |
+| `0x0FF0_1000` | `0x0FF0_1FFF` | 4 KiB | Font Map (BRAM 14) | True Dual BRAM | 화면 텍스트 타일 배치 맵 (1024 × 32-bit) |
+| `0x0FF0_2000` | `0x0FF0_2FFF` | 4 KiB | Font BRAM 4 | True Dual BRAM | 한글 초성 1~6벌 글리프 비트맵 (1024 × 32-bit) |
+| `0x0FF0_3000` | `0x0FF0_3FFF` | 4 KiB | Font BRAM 5 | True Dual BRAM | 한글 초성 7~8벌 및 ASCII 글리프 (1024 × 32-bit) |
+| `0x0FF0_4000` | `0x0FF0_4FFF` | 4 KiB | Font BRAM 6 | True Dual BRAM | 한글 중성 1~4벌 글리프 비트맵 (1024 × 32-bit) |
+| `0x0FF0_5000` | `0x0FF0_5FFF` | 4 KiB | Font BRAM 13 | True Dual BRAM | 한글 종성 1~4벌 글리프 비트맵 (1024 × 32-bit) |
+| `0x0FF0_6000` | `0x0FFF_FFFF` | 1000 KiB | *Reserved* | - | - |
+
+## PPU Control Register Map Specification
+
+- **CPU Bus Interface**: 32-bit Word Aligned
+- **Address Space Size**: 164 Bytes (`0x000` ~ `0x0A0`)
+- **Total Registers**: 41 Words (32-bit × 41)
+- **Registers Base Address**: 
+- **Base Offset Range**: `0x000` ~ `0x0A0`
+
+### Register Memory Map Summary
+
+| Offset | Register Name | Description | Access | Reset Value |
+| :--- | :--- | :--- | :---: | :---: |
+| `0x000` | `BG1_ADDR` | Background Layer 1 Base Address | R/W | `0x0000_0000` |
+| `0x004` | `BG2_ADDR` | Background Layer 2 Base Address | R/W | `0x0000_0000` |
+| `0x008` | `CHR1_ADDR` | Character Layer 1 Base Address | R/W | `0x0000_0000` |
+| `0x00C` | `CHR2_ADDR` | Character Layer 2 Base Address | R/W | `0x0000_0000` |
+| `0x010` | `CHR3_ADDR` | Character Layer 3 Base Address | R/W | `0x0000_0000` |
+| `0x014` | `CHR4_ADDR` | Character Layer 4 Base Address | R/W | `0x0000_0000` |
+| `0x018` | `SCR_ADDR` | Script Layer Base Address | R/W | `0x0000_0000` |
+| `0x01C` | `STAT_ADDR` | Status Layer Base Address | R/W | `0x0000_0000` |
+| `0x020` | `UNI1_ADDR` | Universal Layer 1 Base Address | R/W | `0x0000_0000` |
+| `0x024` | `UNI2_ADDR` | Universal Layer 2 Base Address | R/W | `0x0000_0000` |
+| `0x028` | `LUT_CACHE_PIX` | General LUT Cache Pixels (1~4) | R/W | `0x0000_0000` |
+| `0x02C` | `BG1_POS` | Background 1 SCX / SCY | R/W | `0x0000_0000` |
+| `0x030` | `BG1_ATTR` | Background 1 Alpha / Z-order | R/W | `0x0000_0000` |
+| `0x034` | `BG2_POS` | Background 2 SCX / SCY | R/W | `0x0000_0000` |
+| `0x038` | `BG2_ATTR` | Background 2 Alpha / Z-order | R/W | `0x0000_0000` |
+| `0x03C` | `CHR1_POS` | Character 1 WX / WY | R/W | `0x0000_0000` |
+| `0x040` | `CHR1_ATTR` | Character 1 Alpha / Z-order | R/W | `0x0000_0000` |
+| `0x044` | `CHR2_POS` | Character 2 WX / WY | R/W | `0x0000_0000` |
+| `0x048` | `CHR2_ATTR` | Character 2 Alpha / Z-order | R/W | `0x0000_0000` |
+| `0x04C` | `CHR3_POS` | Character 3 WX / WY | R/W | `0x0000_0000` |
+| `0x050` | `CHR3_ATTR` | Character 3 Alpha / Z-order | R/W | `0x0000_0000` |
+| `0x054` | `CHR4_POS` | Character 4 WX / WY | R/W | `0x0000_0000` |
+| `0x058` | `CHR4_ATTR` | Character 4 Alpha / Z-order | R/W | `0x0000_0000` |
+| `0x05C` | `SCR_POS` | Script Layer WX / WY | R/W | `0x0000_0000` |
+| `0x060` | `SCR_ATTR` | Script Layer Alpha / Z-order | R/W | `0x0000_0000` |
+| `0x064` | `STAT_POS` | Status Layer WX / WY | R/W | `0x0000_0000` |
+| `0x068` | `STAT_ATTR` | Status Layer Alpha / Z-order | R/W | `0x0000_0000` |
+| `0x06C` | `UNI1_POS` | Universal Layer 1 WX / WY | R/W | `0x0000_0000` |
+| `0x070` | `UNI1_ATTR` | Universal Layer 1 Alpha / Z-order | R/W | `0x0000_0000` |
+| `0x074` | `UNI2_POS` | Universal Layer 2 WX / WY | R/W | `0x0000_0000` |
+| `0x078` | `UNI2_ATTR` | Universal Layer 2 Alpha / Z-order | R/W | `0x0000_0000` |
+| `0x07C` | `LINE_CFG_0_1` | Line 0 & 1 Config (16b + 16b) | R/W | `0x0000_0000` |
+| `0x080` | `LINE_CFG_2_3` | Line 2 & 3 Config (16b + 16b) | R/W | `0x0000_0000` |
+| `0x084` | `LINE_CFG_4_5` | Line 4 & 5 Config (16b + 16b) | R/W | `0x0000_0000` |
+| `0x088` | `LINE_CFG_6_7` | Line 6 & 7 Config (16b + 16b) | R/W | `0x0000_0000` |
+| `0x08C` | `LINE_CFG_8_9` | Line 8 & 9 Config (16b + 16b) | R/W | `0x0000_0000` |
+| `0x090` | `LINE_CFG_10_11` | Line 10 & 11 Config (16b + 16b) | R/W | `0x0000_0000` |
+| `0x094` | `LINE_CFG_12_13` | Line 12 & 13 Config (16b + 16b) | R/W | `0x0000_0000` |
+| `0x098` | `LINE_CFG_14` | Line 14 Config (16b + Reserved) | R/W | `0x0000_0000` |
+| `0x09C` | `LINE_ALPHA_0_7` | Line 0 ~ 7 Alpha (4b × 8) | R/W | `0x0000_0000` |
+| `0x0A0` | `LINE_ALPHA_8_14` | Line 8 ~ 14 Alpha (4b × 7) | R/W | `0x0000_0000` |
+
+---
+
+### Register Bit Fields
+
+#### Group 1: Layer Base Addresses (`0x000` ~ `0x024`)
+- **`[31:0]` DDR3_ADDR**: 레이어 프레임 버퍼의 DDR3 메모리 시작 주소 (32-bit). 
+
+*Note*: 32비트 주소의 상위 4비트는 절대 사용해서는 안됩니다. 하위 28바이트만 주소에 사용됩니다(256MiB).
+
+#### Group 2: LUT Cache Pixel (`0x028`)
+- **`[31:24]` CACHE4_PIXEL**: General RGB Cache 4 (8-bit)
+- **`[23:16]` CACHE3_PIXEL**: General RGB Cache 3 (8-bit)
+- **`[15:8]` CACHE2_PIXEL**: General RGB Cache 2 (8-bit)
+- **`[7:0]` CACHE1_PIXEL**: General RGB Cache 1 (8-bit)
+
+#### Group 3: Layer Coordinates & Attributes (`0x02C` ~ `0x078`)
+- **`*_POS` Registers (`0x02C`, `0x034`, ...)**:
+  - **`[31:16]` Y_POS**: SCY / WY (16-bit Signed Integer)
+  - **`[15:0]` X_POS**: SCX / WX (16-bit Signed Integer)
+- **`*_ATTR` Registers (`0x030`, `0x038`, ...)**:
+  - **`[31:16]` Reserved**: Read as 0
+  - **`[15:8]` ALPHA**: Layer Alpha Blending value (8-bit, 0~10)
+  - **`[7:0]` Z_ORDER**: Layer Priority / Z-depth (8-bit, 0~10)
+
+#### Group 4: Font Line Configuration (`0x07C` ~ `0x098`)
+각 라인은 **16비트** 구조(`[15]` Reserved 1b + `[14:9]` VisNum 6b + `[8:0]` RGB 9b)로 정렬됩니다.
+- **`LINE_CFG_2N_2N+1` (`0x07C` ~ `0x094`)**:
+  - **`[31:16]` Line (2N+1) Config (홀수 라인)**:
+    - `[31]` Reserved (0)
+    - `[30:25]` LINE_(2N+1)_VIS_NUM (6-bit, 0~40)
+    - `[24:16]` LINE_(2N+1)_RGB (9-bit: R3 G3 B3)
+  - **`[15:0]` Line (2N) Config (짝수 라인)**:
+    - `[15]` Reserved (0)
+    - `[14:9]` LINE_(2N)_VIS_NUM (6-bit, 0~40)
+    - `[8:0]` LINE_(2N)_RGB (9-bit: R3 G3 B3)
+- **`LINE_CFG_14` (`0x098`)**:
+  - **`[31:16]` Reserved**: Read as 0
+  - **`[15:0]` Line 14 Config**:
+    - `[15]` Reserved (0)
+    - `[14:9]` LINE_14_VIS_NUM (6-bit, 0~40)
+    - `[8:0]` LINE_14_RGB (9-bit: R3 G3 B3)
+
+*Note*: 각 Line의 Visible_Number값은 0~40사이의 값만 저장해야 합니다.
+
+#### Group 5: Font Line Alpha Registers (`0x09C`, `0x0A0`)
+각 라인의 Alpha 값을 **4비트(0~15)** 단위로 저장합니다. 그렇지만 각 Line의 Alpha값은 0 ~ 3 값만 저장해야 합니다.
+- **`LINE_ALPHA_0_7` (`0x09C`)**:
+  - `[31:28]` L7_ALPHA (4-bit, 0~3)
+  - `[27:24]` L6_ALPHA (4-bit, 0~3)
+  - `[23:20]` L5_ALPHA (4-bit, 0~3)
+  - `[19:16]` L4_ALPHA (4-bit, 0~3)
+  - `[15:12]` L3_ALPHA (4-bit, 0~3)
+  - `[11:8]` L2_ALPHA (4-bit, 0~3)
+  - `[7:4]` L1_ALPHA (4-bit, 0~3)
+  - `[3:0]` L0_ALPHA (4-bit, 0~3)
+- **`LINE_ALPHA_8_14` (`0x0A0`)**:
+  - `[31:28]` Reserved (0)
+  - `[27:24]` L14_ALPHA (4-bit, 0~3)
+  - `[23:20]` L13_ALPHA (4-bit, 0~3)
+  - `[19:16]` L12_ALPHA (4-bit, 0~3)
+  - `[15:12]` L11_ALPHA (4-bit, 0~3)
+  - `[11:8]` L10_ALPHA (4-bit, 0~3)
+  - `[7:4]` L9_ALPHA (4-bit, 0~3)
+  - `[3:0]` L8_ALPHA (4-bit, 0~3)
 
 ## BRAM overview
 ### BRAM 4 (True Dual-Port)
@@ -328,8 +364,7 @@ Line14_a
 | Signal Name | Bit Width | Type | Description |
 | :--- | :---: | :---: | :--- |
 | `total_req` | 12-bit (`[11:0]`) | **Combinational** | 12개의 읽기 요청(Req1~Req12)에 대한 **Cache Miss 상태**를 나타내는 신호. 요청이 활성화(`Req_ena`)되었고, 투명 픽셀(`Req_pixel == 0`)이 아니며, 범용 캐시 4개와 전용 독점 캐시 모두에서 매칭되지 않았을 때 해당 비트가 `1`로 설정됨. (RAM 읽기 접근이 필요한 최종 유효 요청을 의미) |
-| `random_counter_0_3` | 2-bit (`[1:0]`) | **Sequential (FF)** | 매 클럭마다 `0 -> 1 -> 2 -> 3` 순서로 반복 순환하는 카운터. 어느 범용 캐시에 새로운 RGB 값과 픽셀 값을 갱신할지 타겟을 결정하기 위한 용도로 사용됨. |
-| `random_counter_0_1` | 1-bit | **Sequential (FF)** | 매 클럭마다 `0 -> 1 -> 0`으로 토글(Toggle)되는 카운터. 읽기 포트를 공유하기 위해 포트당 6개의 요청을 3개씩 두 그룹으로 나누는 **시분할(TDM) 선택 신호**. (예: `0`일 때는 Req1~3 그룹 선택, `1`일 때는 Req4~6 그룹 선택) |
+| `random_counter_0_1` | 1-bit | **Sequential (FF)** | 매 클럭마다 `0 -> 1 -> 0`으로 토글(Toggle)되는 카운터. 읽기 포트를 공유하기 위해 포트당 6개의 요청을 3개씩 두 그룹으로 나누는 **시분할(TDM) 선택 신호**. (예: `0`일 때는 Req1 ~ 3 그룹 선택, `1`일 때는 Req4 ~ 6 그룹 선택) |
 | `random_counter_0_2` | 2-bit (`[1:0]`) | **Sequential (FF)** | 매 클럭마다 `0 -> 1 -> 2` 순서로 반복 순환하는 카운터. `random_counter_0_1`에 의해 선택된 3개의 요청 그룹 내에서, 어떤 요청을 먼저 RAM에서 읽어올지 **라운드 로빈 형태의 우선순위를 결정**함. |
 
 ---
