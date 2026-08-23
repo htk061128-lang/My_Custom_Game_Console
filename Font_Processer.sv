@@ -71,12 +71,12 @@ module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트
     output reg [31:0] BRAM4_din_a,   // Port A Data Input
     input      [31:0] BRAM4_dout_a,  // Port A Data Output
 
-    // BRAM4 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 폰트를 수정할 수 있게 하려고 함.
+    /*// BRAM4 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 폰트를 수정할 수 있게 하려고 함.
     output reg        BRAM4_en_b,    // Port B Enable
     output reg [3:0]  BRAM4_wstrb_b,    // Port B Write Enable
     output reg [9:0]  BRAM4_addr_b,  // Port B Address (10-bit for 1024 depth)
     output reg [31:0] BRAM4_din_b,   // Port B Data Input
-    input      [31:0] BRAM4_dout_b,   // Port B Data Output
+    input      [31:0] BRAM4_dout_b,   // Port B Data Output*/
 
 
     // BRAM5 (폰트 저장용) 인터페이스 - True Dual Port //초성 7~8벌, ASCII 저장. 
@@ -86,12 +86,12 @@ module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트
     output reg [9:0]  BRAM5_addr_a,  // Port A Address (10-bit for 1024 depth)
     output reg [31:0] BRAM5_din_a,   // Port A Data Input
     input      [31:0] BRAM5_dout_a,  // Port A Data Output
-    // BRAM5 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 폰트를 수정할 수 있게 하려고 함.
+    /*// BRAM5 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 폰트를 수정할 수 있게 하려고 함.
     output reg        BRAM5_en_b,    // Port B Enable
     output reg [3:0]  BRAM5_wstrb_b,    // Port B Write Enable
     output reg [9:0]  BRAM5_addr_b,  // Port B Address (10-bit for 1024 depth)
     output reg [31:0] BRAM5_din_b,   // Port B Data Input
-    input      [31:0] BRAM5_dout_b,   // Port B Data Output
+    input      [31:0] BRAM5_dout_b,   // Port B Data Output*/
 
 
     // BRAM6 (폰트 저장용) 인터페이스 - True Dual Port //중성 1~4벌 저장.
@@ -101,12 +101,12 @@ module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트
     output reg [9:0]  BRAM6_addr_a,  // Port A Address (10-bit for 1024 depth)
     output reg [31:0] BRAM6_din_a,   // Port A Data Input
     input      [31:0] BRAM6_dout_a,  // Port A Data Output
-    // BRAM6 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 폰트를 수정할 수 있게 하려고 함.
+    /*// BRAM6 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 폰트를 수정할 수 있게 하려고 함.
     output reg        BRAM6_en_b,    // Port B Enable
     output reg [3:0]  BRAM6_wstrb_b,    // Port B Write Enable
     output reg [9:0]  BRAM6_addr_b,  // Port B Address (10-bit for 1024 depth)
     output reg [31:0] BRAM6_din_b,   // Port B Data Input
-    input      [31:0] BRAM6_dout_b,   // Port B Data Output
+    input      [31:0] BRAM6_dout_b,   // Port B Data Output*/
 
     //BRAM13 (폰트 저장용) - True Dual Port //종성 1~4벌 저장.
     // BRAM13 Port A (32-bit Interface)
@@ -115,12 +115,12 @@ module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트
     output reg [9:0]  BRAM13_addr_a,  // Port A Address (10-bit for 1024 depth)
     output reg [31:0] BRAM13_din_a,   // Port A Data Input
     input      [31:0] BRAM13_dout_a,  // Port A Data Output
-    // BRAM13 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 폰트를 수정할 수 있게 하려고 함.
+    /*// BRAM13 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 폰트를 수정할 수 있게 하려고 함.
     output reg        BRAM13_en_b,    // Port B Enable
     output reg [3:0]  BRAM13_wstrb_b,    // Port B Write Enable
     output reg [9:0]  BRAM13_addr_b,  // Port B Address (10-bit for 1024 depth)
     output reg [31:0] BRAM13_din_b,   // Port B Data Input
-    input      [31:0] BRAM13_dout_b,   // Port B Data Output
+    input      [31:0] BRAM13_dout_b,   // Port B Data Output*/
 
     //BRAM14 (80 * 15 = 1200바이트) 폰트 맵. 320 * 240 화면에서 한줄에 최대 40글자가 들어가고 총 15줄이 존재할 수 있음. 포트 하나는 반드시 CPU에 할당해야 함.
     // BRAM14 Port A (32-bit Interface)
@@ -128,13 +128,13 @@ module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트
     output reg [3:0]  BRAM14_wstrb_a,    // Port A Write Enable (Byte-wide strobe: 32비트 = 8비트 x 4)
     output reg [9:0]  BRAM14_addr_a,  // Port A Address (10-bit for 1024 depth)
     output reg [31:0] BRAM14_din_a,   // Port A Data Input
-    input      [31:0] BRAM14_dout_a,  // Port A Data Output
-    // BRAM14 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 직접 폰트 맵을 수정해야 함. 
+    input      [31:0] BRAM14_dout_a   // Port A Data Output
+    /*// BRAM14 Port B (32-bit Interface) - 이 포트는 CPU에 할당. CPU가 직접 폰트 맵을 수정해야 함. 
     output reg        BRAM14_en_b,    // Port B Enable
     output reg [3:0]  BRAM14_wstrb_b,    // Port B Write Enable
     output reg [9:0]  BRAM14_addr_b,  // Port B Address (10-bit for 1024 depth)
     output reg [31:0] BRAM14_din_b,   // Port B Data Input
-    input      [31:0] BRAM14_dout_b   // Port B Data Output
+    input      [31:0] BRAM14_dout_b   // Port B Data Output*/
 );
 /*
 UTF-16을 사용할 예정이고 한글, 영어, 숫자, 특수문자 다 16비트임.

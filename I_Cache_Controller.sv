@@ -137,7 +137,7 @@ always @(*) begin
     BRAM3_ren = 0;
     BRAM3_raddr[8:0] = 0; //주소는 9비트임. width = 72bit, height = 512.
 
-    main_next = main_next;
+    main_next = main_state; //기본값은 그대로 유지.
 
     cpu_tag_save = 0; //이 값이 1이면 cpu_I_tag에 CPU_addr[27:13]이 저장됨.
 

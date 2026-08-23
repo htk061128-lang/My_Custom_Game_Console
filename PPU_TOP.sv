@@ -42,10 +42,7 @@ module PPU_TOP(
     output BRAM12_en_a, output [0:0] BRAM12_we_a, output [8:0] BRAM12_addr_a, output [63:0] BRAM12_din_a,
     output BRAM12_en_b, output [8:0] BRAM12_addr_b, input  [63:0] BRAM12_dout_b,
 
-    // Distribute RAM (LUT) interface (exposed)
-    output wire LUT_we,
-    output wire [7:0] LUT_addr_w,
-    output wire [17:0] LUT_data_in,
+    // Distribute RAM (LUT) read interface (owned by the PPU)
     output wire [7:0] LUT_addr_r1,
     input  wire [17:0] LUT_data_out1,
     output wire [7:0] LUT_addr_r2,
@@ -88,15 +85,10 @@ module PPU_TOP(
 
     // Font processor BRAM interfaces
     output BRAM4_en_a, output [3:0] BRAM4_wstrb_a, output [9:0] BRAM4_addr_a, output [31:0] BRAM4_din_a, input [31:0] BRAM4_dout_a,
-    output BRAM4_en_b, output [3:0] BRAM4_wstrb_b, output [9:0] BRAM4_addr_b, output [31:0] BRAM4_din_b, input [31:0] BRAM4_dout_b,
     output BRAM5_en_a, output [3:0] BRAM5_wstrb_a, output [9:0] BRAM5_addr_a, output [31:0] BRAM5_din_a, input [31:0] BRAM5_dout_a,
-    output BRAM5_en_b, output [3:0] BRAM5_wstrb_b, output [9:0] BRAM5_addr_b, output [31:0] BRAM5_din_b, input [31:0] BRAM5_dout_b,
     output BRAM6_en_a, output [3:0] BRAM6_wstrb_a, output [9:0] BRAM6_addr_a, output [31:0] BRAM6_din_a, input [31:0] BRAM6_dout_a,
-    output BRAM6_en_b, output [3:0] BRAM6_wstrb_b, output [9:0] BRAM6_addr_b, output [31:0] BRAM6_din_b, input [31:0] BRAM6_dout_b,
     output BRAM13_en_a, output [3:0] BRAM13_wstrb_a, output [9:0] BRAM13_addr_a, output [31:0] BRAM13_din_a, input [31:0] BRAM13_dout_a,
-    output BRAM13_en_b, output [3:0] BRAM13_wstrb_b, output [9:0] BRAM13_addr_b, output [31:0] BRAM13_din_b, input [31:0] BRAM13_dout_b,
-    output BRAM14_en_a, output [3:0] BRAM14_wstrb_a, output [9:0] BRAM14_addr_a, output [31:0] BRAM14_din_a, input [31:0] BRAM14_dout_a,
-    output BRAM14_en_b, output [3:0] BRAM14_wstrb_b, output [9:0] BRAM14_addr_b, output [31:0] BRAM14_din_b, input [31:0] BRAM14_dout_b
+    output BRAM14_en_a, output [3:0] BRAM14_wstrb_a, output [9:0] BRAM14_addr_a, output [31:0] BRAM14_din_a, input [31:0] BRAM14_dout_a
 );
 
 // -----------------------------------------------------------------------------
@@ -196,7 +188,6 @@ RGB_Converter u_rgb (
     .Cache1_pixel(CPU_LUT_Cache1_pixel), .Cache2_pixel(CPU_LUT_Cache2_pixel), .Cache3_pixel(CPU_LUT_Cache3_pixel), .Cache4_pixel(CPU_LUT_Cache4_pixel),
 
     // small LUT write inputs (exposed)
-    .LUT_we(LUT_we), .LUT_addr_w(LUT_addr_w), .LUT_data_in(LUT_data_in),
     .LUT_addr_r1(LUT_addr_r1), .LUT_data_out1(LUT_data_out1), .LUT_addr_r2(LUT_addr_r2), .LUT_data_out2(LUT_data_out2),
 
     // Requests (connect below)
@@ -413,15 +404,10 @@ Font_Processer u_font (
     .Line5_a(Line5_a), .Line6_a(Line6_a), .Line7_a(Line7_a), .Line8_a(Line8_a), .Line9_a(Line9_a),
     .Line10_a(Line10_a), .Line11_a(Line11_a), .Line12_a(Line12_a), .Line13_a(Line13_a), .Line14_a(Line14_a),
     .BRAM4_en_a(BRAM4_en_a), .BRAM4_wstrb_a(BRAM4_wstrb_a), .BRAM4_addr_a(BRAM4_addr_a), .BRAM4_din_a(BRAM4_din_a), .BRAM4_dout_a(BRAM4_dout_a),
-    .BRAM4_en_b(BRAM4_en_b), .BRAM4_wstrb_b(BRAM4_wstrb_b), .BRAM4_addr_b(BRAM4_addr_b), .BRAM4_din_b(BRAM4_din_b), .BRAM4_dout_b(BRAM4_dout_b),
     .BRAM5_en_a(BRAM5_en_a), .BRAM5_wstrb_a(BRAM5_wstrb_a), .BRAM5_addr_a(BRAM5_addr_a), .BRAM5_din_a(BRAM5_din_a), .BRAM5_dout_a(BRAM5_dout_a),
-    .BRAM5_en_b(BRAM5_en_b), .BRAM5_wstrb_b(BRAM5_wstrb_b), .BRAM5_addr_b(BRAM5_addr_b), .BRAM5_din_b(BRAM5_din_b), .BRAM5_dout_b(BRAM5_dout_b),
     .BRAM6_en_a(BRAM6_en_a), .BRAM6_wstrb_a(BRAM6_wstrb_a), .BRAM6_addr_a(BRAM6_addr_a), .BRAM6_din_a(BRAM6_din_a), .BRAM6_dout_a(BRAM6_dout_a),
-    .BRAM6_en_b(BRAM6_en_b), .BRAM6_wstrb_b(BRAM6_wstrb_b), .BRAM6_addr_b(BRAM6_addr_b), .BRAM6_din_b(BRAM6_din_b), .BRAM6_dout_b(BRAM6_dout_b),
     .BRAM13_en_a(BRAM13_en_a), .BRAM13_wstrb_a(BRAM13_wstrb_a), .BRAM13_addr_a(BRAM13_addr_a), .BRAM13_din_a(BRAM13_din_a), .BRAM13_dout_a(BRAM13_dout_a),
-    .BRAM13_en_b(BRAM13_en_b), .BRAM13_wstrb_b(BRAM13_wstrb_b), .BRAM13_addr_b(BRAM13_addr_b), .BRAM13_din_b(BRAM13_din_b), .BRAM13_dout_b(BRAM13_dout_b),
-    .BRAM14_en_a(BRAM14_en_a), .BRAM14_wstrb_a(BRAM14_wstrb_a), .BRAM14_addr_a(BRAM14_addr_a), .BRAM14_din_a(BRAM14_din_a), .BRAM14_dout_a(BRAM14_dout_a),
-    .BRAM14_en_b(BRAM14_en_b), .BRAM14_wstrb_b(BRAM14_wstrb_b), .BRAM14_addr_b(BRAM14_addr_b), .BRAM14_din_b(BRAM14_din_b), .BRAM14_dout_b(BRAM14_dout_b)
+    .BRAM14_en_a(BRAM14_en_a), .BRAM14_wstrb_a(BRAM14_wstrb_a), .BRAM14_addr_a(BRAM14_addr_a), .BRAM14_din_a(BRAM14_din_a), .BRAM14_dout_a(BRAM14_dout_a)
 );
 
 assign Final_pixel_valid = font_mixed_pixel_valid;
