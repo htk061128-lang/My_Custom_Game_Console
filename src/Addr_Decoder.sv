@@ -68,6 +68,9 @@ module Addr_Decoder(
 
 
     //각종 PPU 제어 레지스터들
+    input wire [7:0] joypad_state,
+    output wire joypad_irq,
+    output wire PPU_start,
     output wire [31:0] o_bg1_addr,    output wire [31:0] o_bg2_addr,
     output wire [31:0] o_chr1_addr,   output wire [31:0] o_chr2_addr,
     output wire [31:0] o_chr3_addr,   output wire [31:0] o_chr4_addr,
@@ -93,7 +96,8 @@ module Addr_Decoder(
     output wire [31:0] o_line_cfg_12_13,
     output wire [31:0] o_line_cfg_14,
     output wire [31:0] o_line_alpha_0_7,
-    output wire [31:0] o_line_alpha_8_14
+    output wire [31:0] o_line_alpha_8_14,
+    output wire [31:0] o_ppu_start
 );
 //CPU가 설정해야 하는 정보들 정리
 //Font Map(BRAM 14)
@@ -136,11 +140,13 @@ reg sampling_font_map_w;
 reg sampling_lut_w;
 reg sampling_ppu_reg_r;
 reg sampling_ppu_reg_w;
+reg joypad_irq_pending;
+reg [7:0] joypad_state_latched;
 
 
 // --- PPU 제어 레지스터들 구현 ---
 // 배열 형태로 관리하여 Wire로 할당
-reg [31:0] ppu_regs [41:0]; //일단 41개의 레지스터를 선언함.
+reg [31:0] ppu_regs [42:0]; // 0 ~ 42까지 총 43개의 레지스터.
 integer i;
 
 // Output Wire에 매핑 (Word 단위 Offset에 따라 매칭)
@@ -170,6 +176,9 @@ assign o_line_cfg_12_13 = ppu_regs[37];
 assign o_line_cfg_14 = ppu_regs[38];
 assign o_line_alpha_0_7 = ppu_regs[39];
 assign o_line_alpha_8_14 = ppu_regs[40];
+assign o_ppu_start = ppu_regs[41];
+assign PPU_start = ppu_regs[41][0];
+assign joypad_irq = joypad_irq_pending;
 
 always @(*) begin
     main_state_next = main_state;
@@ -249,14 +258,20 @@ always @(*) begin
         else if (sampling_bram6_r)    EMEM_rdata = BRAM6_dout_b;
         else if (sampling_bram13_r)   EMEM_rdata = BRAM13_dout_b;
         else if (sampling_font_map_r) EMEM_rdata = BRAM14_dout_b;
-        else if (sampling_ppu_reg_r) EMEM_rdata = (EMEM_addr[9:2] < 41) ? ppu_regs[EMEM_addr[9:2]]: 32'b0; //범위 이외의 값에 접근하면 0을 반환.
+        else if (sampling_ppu_reg_r) begin
+            if (EMEM_addr[9:2] == 42) begin
+                EMEM_rdata = {23'd0, joypad_irq_pending, joypad_state};
+            end
+            else if (EMEM_addr[9:2] <= 41) EMEM_rdata = ppu_regs[EMEM_addr[9:2]];
+            else EMEM_rdata = 32'b0;
+        end
     end
 
 end
 
 always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
-        for (i = 0; i < 41; i = i + 1) begin
+        for (i = 0; i <= 42; i = i + 1) begin
             ppu_regs[i] <= 32'd0;
         end
         main_state <= IDLE;
@@ -275,15 +290,26 @@ always @(posedge clk or negedge resetn) begin
         sampling_lut_w <= 0;
         sampling_ppu_reg_r <= 0;
         sampling_ppu_reg_w <= 0;
+        joypad_irq_pending <= 1'b0;
+        joypad_state_latched <= 8'd0;
     end
     else begin
         main_state <= main_state_next;
+        // 0 -> 1로 변한 비트가 하나라도 있는지 감지 (Rising Edge만 감지)
+        if ((joypad_state & ~joypad_state_latched) != 8'd0) begin
+            joypad_irq_pending <= 1'b1;
+        end
+        joypad_state_latched <= joypad_state;
 
         // PPU Register Write Logic (쓰기 스트로브 확인)
         if (EMEM_valid && sel_ppu_reg && (EMEM_wstrb != 4'b0000) && (main_state == IDLE)) begin
             // 주소의 하위 비트 [7:2]를 사용하여 워드 오프셋 계산
-            if(EMEM_addr[9:2] < 41) ppu_regs[EMEM_addr[9:2]] <= EMEM_wdata; //범위 안에 들어갈때만 쓰기가 일어나야 함. 없는 레지스터에 쓸수는 없음.
+            if(EMEM_addr[9:2] <= 41) ppu_regs[EMEM_addr[9:2]] <= EMEM_wdata; //범위 안에 들어갈때만 쓰기가 일어나야 함. 없는 레지스터에 쓸수는 없음.
             else ;
+        end
+
+        if (EMEM_valid && sel_ppu_reg && (EMEM_wstrb == 4'b0000) && (main_state == IDLE) && (EMEM_addr[9:2] == 42)) begin
+            joypad_irq_pending <= 1'b0;
         end
 
         if (EMEM_valid && (EMEM_wstrb == 4'b0000) && main_state == IDLE) begin //읽기 신호 샘플링

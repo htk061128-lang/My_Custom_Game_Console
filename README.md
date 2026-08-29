@@ -23,7 +23,7 @@
 | :--- | :--- | :---: | :--- | :--- | :--- |
 | `0x0000_0000` | `0x0FEF_FFFF` | 255 MiB | DDR3 MEMORY | - | 외부에 연결된 256 MiB DDR3 메인 메모리 |
 | `0x0FF0_0000` | `0x0FF0_03FF` | 1 KiB | PPU Control Regs | Register File | PPU 제어/좌표 레지스터 (최대 256개 32-bit 레지스터 수용) |
-| `0x0FF0_0400` | `0x0FF0_07FF` | 1 KiB | RGB Lookup Table | Distribute RAM | 256 × 18-bit Color Palette Write Port |
+| `0x0FF0_0400` | `0x0FF0_07FF` | 1 KiB | RGB Lookup Table | Distribute RAM | 256 × 18-bit Color Palette Write Port(Write Only) |
 | `0x0FF0_0800` | `0x0FF0_0FFF` | 2 KiB | *Reserved* | - | - |
 | `0x0FF0_1000` | `0x0FF0_1FFF` | 4 KiB | Font Map (BRAM 14) | True Dual BRAM | 화면 텍스트 타일 배치 맵 (1024 × 32-bit) |
 | `0x0FF0_2000` | `0x0FF0_2FFF` | 4 KiB | Font BRAM 4 | True Dual BRAM | 한글 초성 1~6벌 글리프 비트맵 (1024 × 32-bit) |
@@ -36,9 +36,9 @@
 
 - **CPU Bus Interface**: 32-bit Word Aligned
 - **Address Space Size**: 164 Bytes (`0x000` ~ `0x0A0`)
-- **Total Registers**: 41 Words (32-bit × 41)
-- **Registers Base Address**: 
-- **Base Offset Range**: `0x000` ~ `0x0A0`
+- **Total Registers**: 43 Words (32-bit × 43)
+- **Registers Base Address**: `0x0FF0_0000`
+- **Base Offset Range**: `0x000` ~ `0x0A8`
 
 ### Register Memory Map Summary
 
@@ -85,6 +85,8 @@
 | `0x098` | `LINE_CFG_14` | Line 14 Config (16b + Reserved) | R/W | `0x0000_0000` |
 | `0x09C` | `LINE_ALPHA_0_7` | Line 0 ~ 7 Alpha (4b × 8) | R/W | `0x0000_0000` |
 | `0x0A0` | `LINE_ALPHA_8_14` | Line 8 ~ 14 Alpha (4b × 7) | R/W | `0x0000_0000` |
+| `0x0A4` | `PPU_START` | PPU_start | R/W | `0x0000_0000` | 
+| `0x0A8` | `JOYPAD` | joypad register | R only | `0x0000_0000` | 
 
 ---
 
@@ -151,7 +153,74 @@
   - `[7:4]` L9_ALPHA (4-bit, 0~3)
   - `[3:0]` L8_ALPHA (4-bit, 0~3)
 
+#### PPU_START (`0x0A4`)
+PPU가 프레임을 구성하는것을 시작하게 하는 레지스터입니다. 0번 비트를 1로 설정하면 PPU는 1프레임을 생성하는 것을 시작하고, 이후 PPU가 동작을 완료하기 전까지 반드시 0으로 내려줘야 합니다. 이후 여러 PPU Control Register들을 조작하고 필요한 작업을 마친 뒤 다음 프레임을 생성해야 할때 다시 0번 비트를 1로 올려줍니다.  
+
+- **`[31:1]` Reserved (0)**
+- **`[0]` PPU_start**
+
+#### JOYPAD (`0x0A8`)
+외부 JOYPAD INPUT과 연결되는 레지스터이며, 버튼의 현재 눌림 상태 확인 및 인터럽트 클리어(Clear) 기능을 담당합니다. 버튼의 눌림이 감지되면 CPU로 IRQ 신호를 보냅니다. CPU가 이 레지스터를 읽어가는(Read) 순간 내부 IRQ 신호는 자동으로 0으로 클리어됩니다. 
+
+*Note*: 버튼이 눌리는 순간에만 IRQ 신호를 보내며 때는 순간에는 IRQ가 발생하지 않습니다. 
+
+- **`[31:9]` Reserved (0)**
+- **`[8]` IRQ_PENDING (Read Only)**
+  - `1`: 조이패드 상태 변경으로 인한 인터럽트 대기 중
+  - `0`: 대기 중인 인터럽트 없음
+- **`[7:0]` JOYPAD_STATE (Read Only)**
+  - `[7]` Start (1: 눌림, 0: 안 눌림)
+  - `[6]` Select
+  - `[5]` Button B (Cancel / X)
+  - `[4]` Button A (Confirm / Z)
+  - `[3]` Right (우)
+  - `[2]` Left (좌)
+  - `[1]` Down (하)
+  - `[0]` Up (상)
+
 ## BRAM overview
+### BRAM 0 (Simple Dual-Port, RAMB36E1)
+* **목적**: CPU Instruction Cache (Way 0 Low Data & Tag Lower)
+* **구조**: 512 Depth × 72-bit Width (Simple Dual-Port: Port A Write / Port B Read)
+
+| 비트 범위 | 데이터 크기 | 데이터 필드 | 설명 |
+| :--- | :---: | :--- | :--- |
+| `[71:40]` | 32 bits | `Way0_Word1` | Way 0의 1번째 Instruction Word (32-bit) |
+| `[39:8]` | 32 bits | `Way0_Word0` | Way 0의 0번째 Instruction Word (32-bit) |
+| `[7:0]` | 8 bits | `Way0_Tag_Lower` | Way 0 Tag 필드의 하위 8비트 (`Tag[7:0]`) |
+
+### BRAM 1 (Simple Dual-Port, RAMB36E1)
+* **목적**: CPU Instruction Cache (Way 0 High Data & Tag Upper + Valid)
+* **구조**: 512 Depth × 72-bit Width (Simple Dual-Port: Port A Write / Port B Read)
+
+| 비트 범위 | 데이터 크기 | 데이터 필드 | 설명 |
+| :--- | :---: | :--- | :--- |
+| `[71:40]` | 32 bits | `Way0_Word3` | Way 0의 3번째 Instruction Word (32-bit) |
+| `[39:8]` | 32 bits | `Way0_Word2` | Way 0의 2번째 Instruction Word (32-bit) |
+| `[7]` | 1 bit | `Way0_Valid` | Way 0 Cache Line Valid 비트 (1: Valid, 0: Invalid) |
+| `[6:0]` | 7 bits | `Way0_Tag_Upper` | Way 0 Tag 필드의 상위 7비트 (`Tag[14:8]`) |
+
+### BRAM 2 (Simple Dual-Port, RAMB36E1)
+* **목적**: CPU Instruction Cache (Way 1 Low Data & Tag Lower)
+* **구조**: 512 Depth × 72-bit Width (Simple Dual-Port: Port A Write / Port B Read)
+
+| 비트 범위 | 데이터 크기 | 데이터 필드 | 설명 |
+| :--- | :---: | :--- | :--- |
+| `[71:40]` | 32 bits | `Way1_Word1` | Way 1의 1번째 Instruction Word (32-bit) |
+| `[39:8]` | 32 bits | `Way1_Word0` | Way 1의 0번째 Instruction Word (32-bit) |
+| `[7:0]` | 8 bits | `Way1_Tag_Lower` | Way 1 Tag 필드의 하위 8비트 (`Tag[7:0]`) |
+
+### BRAM 3 (Simple Dual-Port, RAMB36E1)
+* **목적**: CPU Instruction Cache (Way 1 High Data & Tag Upper + Valid)
+* **구조**: 512 Depth × 72-bit Width (Simple Dual-Port: Port A Write / Port B Read)
+
+| 비트 범위 | 데이터 크기 | 데이터 필드 | 설명 |
+| :--- | :---: | :--- | :--- |
+| `[71:40]` | 32 bits | `Way1_Word3` | Way 1의 3번째 Instruction Word (32-bit) |
+| `[39:8]` | 32 bits | `Way1_Word2` | Way 1의 2번째 Instruction Word (32-bit) |
+| `[7]` | 1 bit | `Way1_Valid` | Way 1 Cache Line Valid 비트 (1: Valid, 0: Invalid) |
+| `[6:0]` | 7 bits | `Way1_Tag_Upper` | Way 1 Tag 필드의 상위 7비트 (`Tag[14:8]`) |
+
 ### BRAM 4 (True Dual-Port)
 |주소 범위(십진수)  |데이터 크기|데이터 항목       |비고|
 | :--- | :--- | :--- | :--- |

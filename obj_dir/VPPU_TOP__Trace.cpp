@@ -2105,173 +2105,145 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
         tracep->chgBit(oldp+1998,(vlTOPp->BRAM12_en_b));
         tracep->chgSData(oldp+1999,(vlTOPp->BRAM12_addr_b),9);
         tracep->chgQData(oldp+2000,(vlTOPp->BRAM12_dout_b),64);
-        tracep->chgBit(oldp+2002,(vlTOPp->LUT_we));
-        tracep->chgCData(oldp+2003,(vlTOPp->LUT_addr_w),8);
-        tracep->chgIData(oldp+2004,(vlTOPp->LUT_data_in),18);
-        tracep->chgCData(oldp+2005,(vlTOPp->LUT_addr_r1),8);
-        tracep->chgIData(oldp+2006,(vlTOPp->LUT_data_out1),18);
-        tracep->chgCData(oldp+2007,(vlTOPp->LUT_addr_r2),8);
-        tracep->chgIData(oldp+2008,(vlTOPp->LUT_data_out2),18);
-        tracep->chgSData(oldp+2009,(vlTOPp->Background1_WX),16);
-        tracep->chgSData(oldp+2010,(vlTOPp->Background1_WY),16);
-        tracep->chgSData(oldp+2011,(vlTOPp->Background1_SCX),16);
-        tracep->chgSData(oldp+2012,(vlTOPp->Background1_SCY),16);
-        tracep->chgCData(oldp+2013,(vlTOPp->Background1_a),8);
-        tracep->chgCData(oldp+2014,(vlTOPp->Background1_z),8);
-        tracep->chgSData(oldp+2015,(vlTOPp->Background2_WX),16);
-        tracep->chgSData(oldp+2016,(vlTOPp->Background2_WY),16);
-        tracep->chgSData(oldp+2017,(vlTOPp->Background2_SCX),16);
-        tracep->chgSData(oldp+2018,(vlTOPp->Background2_SCY),16);
-        tracep->chgCData(oldp+2019,(vlTOPp->Background2_a),8);
-        tracep->chgCData(oldp+2020,(vlTOPp->Background2_z),8);
-        tracep->chgSData(oldp+2021,(vlTOPp->Character1_WX),16);
-        tracep->chgSData(oldp+2022,(vlTOPp->Character1_WY),16);
-        tracep->chgSData(oldp+2023,(vlTOPp->Character1_SCX),16);
-        tracep->chgSData(oldp+2024,(vlTOPp->Character1_SCY),16);
-        tracep->chgCData(oldp+2025,(vlTOPp->Character1_a),8);
-        tracep->chgCData(oldp+2026,(vlTOPp->Character1_z),8);
-        tracep->chgSData(oldp+2027,(vlTOPp->Character2_WX),16);
-        tracep->chgSData(oldp+2028,(vlTOPp->Character2_WY),16);
-        tracep->chgSData(oldp+2029,(vlTOPp->Character2_SCX),16);
-        tracep->chgSData(oldp+2030,(vlTOPp->Character2_SCY),16);
-        tracep->chgCData(oldp+2031,(vlTOPp->Character2_a),8);
-        tracep->chgCData(oldp+2032,(vlTOPp->Character2_z),8);
-        tracep->chgSData(oldp+2033,(vlTOPp->Character3_WX),16);
-        tracep->chgSData(oldp+2034,(vlTOPp->Character3_WY),16);
-        tracep->chgSData(oldp+2035,(vlTOPp->Character3_SCX),16);
-        tracep->chgSData(oldp+2036,(vlTOPp->Character3_SCY),16);
-        tracep->chgCData(oldp+2037,(vlTOPp->Character3_a),8);
-        tracep->chgCData(oldp+2038,(vlTOPp->Character3_z),8);
-        tracep->chgSData(oldp+2039,(vlTOPp->Character4_WX),16);
-        tracep->chgSData(oldp+2040,(vlTOPp->Character4_WY),16);
-        tracep->chgSData(oldp+2041,(vlTOPp->Character4_SCX),16);
-        tracep->chgSData(oldp+2042,(vlTOPp->Character4_SCY),16);
-        tracep->chgCData(oldp+2043,(vlTOPp->Character4_a),8);
-        tracep->chgCData(oldp+2044,(vlTOPp->Character4_z),8);
-        tracep->chgSData(oldp+2045,(vlTOPp->Script_WX),16);
-        tracep->chgSData(oldp+2046,(vlTOPp->Script_WY),16);
-        tracep->chgSData(oldp+2047,(vlTOPp->Script_SCX),16);
-        tracep->chgSData(oldp+2048,(vlTOPp->Script_SCY),16);
-        tracep->chgCData(oldp+2049,(vlTOPp->Script_a),8);
-        tracep->chgCData(oldp+2050,(vlTOPp->Script_z),8);
-        tracep->chgSData(oldp+2051,(vlTOPp->Status_WX),16);
-        tracep->chgSData(oldp+2052,(vlTOPp->Status_WY),16);
-        tracep->chgSData(oldp+2053,(vlTOPp->Status_SCX),16);
-        tracep->chgSData(oldp+2054,(vlTOPp->Status_SCY),16);
-        tracep->chgCData(oldp+2055,(vlTOPp->Status_a),8);
-        tracep->chgCData(oldp+2056,(vlTOPp->Status_z),8);
-        tracep->chgSData(oldp+2057,(vlTOPp->Universal1_WX),16);
-        tracep->chgSData(oldp+2058,(vlTOPp->Universal1_WY),16);
-        tracep->chgSData(oldp+2059,(vlTOPp->Universal1_SCX),16);
-        tracep->chgSData(oldp+2060,(vlTOPp->Universal1_SCY),16);
-        tracep->chgCData(oldp+2061,(vlTOPp->Universal1_a),8);
-        tracep->chgCData(oldp+2062,(vlTOPp->Universal1_z),8);
-        tracep->chgSData(oldp+2063,(vlTOPp->Universal2_WX),16);
-        tracep->chgSData(oldp+2064,(vlTOPp->Universal2_WY),16);
-        tracep->chgSData(oldp+2065,(vlTOPp->Universal2_SCX),16);
-        tracep->chgSData(oldp+2066,(vlTOPp->Universal2_SCY),16);
-        tracep->chgCData(oldp+2067,(vlTOPp->Universal2_a),8);
-        tracep->chgCData(oldp+2068,(vlTOPp->Universal2_z),8);
-        tracep->chgCData(oldp+2069,(vlTOPp->Line0_visible_number),8);
-        tracep->chgCData(oldp+2070,(vlTOPp->Line1_visible_number),8);
-        tracep->chgCData(oldp+2071,(vlTOPp->Line2_visible_number),8);
-        tracep->chgCData(oldp+2072,(vlTOPp->Line3_visible_number),8);
-        tracep->chgCData(oldp+2073,(vlTOPp->Line4_visible_number),8);
-        tracep->chgCData(oldp+2074,(vlTOPp->Line5_visible_number),8);
-        tracep->chgCData(oldp+2075,(vlTOPp->Line6_visible_number),8);
-        tracep->chgCData(oldp+2076,(vlTOPp->Line7_visible_number),8);
-        tracep->chgCData(oldp+2077,(vlTOPp->Line8_visible_number),8);
-        tracep->chgCData(oldp+2078,(vlTOPp->Line9_visible_number),8);
-        tracep->chgCData(oldp+2079,(vlTOPp->Line10_visible_number),8);
-        tracep->chgCData(oldp+2080,(vlTOPp->Line11_visible_number),8);
-        tracep->chgCData(oldp+2081,(vlTOPp->Line12_visible_number),8);
-        tracep->chgCData(oldp+2082,(vlTOPp->Line13_visible_number),8);
-        tracep->chgCData(oldp+2083,(vlTOPp->Line14_visible_number),8);
-        tracep->chgSData(oldp+2084,(vlTOPp->Line0_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2085,(vlTOPp->Line1_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2086,(vlTOPp->Line2_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2087,(vlTOPp->Line3_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2088,(vlTOPp->Line4_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2089,(vlTOPp->Line5_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2090,(vlTOPp->Line6_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2091,(vlTOPp->Line7_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2092,(vlTOPp->Line8_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2093,(vlTOPp->Line9_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2094,(vlTOPp->Line10_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2095,(vlTOPp->Line11_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2096,(vlTOPp->Line12_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2097,(vlTOPp->Line13_font_RGB_9bit),9);
-        tracep->chgSData(oldp+2098,(vlTOPp->Line14_font_RGB_9bit),9);
-        tracep->chgCData(oldp+2099,(vlTOPp->Line0_a),3);
-        tracep->chgCData(oldp+2100,(vlTOPp->Line1_a),3);
-        tracep->chgCData(oldp+2101,(vlTOPp->Line2_a),3);
-        tracep->chgCData(oldp+2102,(vlTOPp->Line3_a),3);
-        tracep->chgCData(oldp+2103,(vlTOPp->Line4_a),3);
-        tracep->chgCData(oldp+2104,(vlTOPp->Line5_a),3);
-        tracep->chgCData(oldp+2105,(vlTOPp->Line6_a),3);
-        tracep->chgCData(oldp+2106,(vlTOPp->Line7_a),3);
-        tracep->chgCData(oldp+2107,(vlTOPp->Line8_a),3);
-        tracep->chgCData(oldp+2108,(vlTOPp->Line9_a),3);
-        tracep->chgCData(oldp+2109,(vlTOPp->Line10_a),3);
-        tracep->chgCData(oldp+2110,(vlTOPp->Line11_a),3);
-        tracep->chgCData(oldp+2111,(vlTOPp->Line12_a),3);
-        tracep->chgCData(oldp+2112,(vlTOPp->Line13_a),3);
-        tracep->chgCData(oldp+2113,(vlTOPp->Line14_a),3);
-        tracep->chgBit(oldp+2114,(vlTOPp->Final_pixel_valid));
-        tracep->chgIData(oldp+2115,(vlTOPp->Final_pixel_RGB),18);
-        tracep->chgBit(oldp+2116,(vlTOPp->Font_Line_End));
-        tracep->chgBit(oldp+2117,(vlTOPp->Font_Frame_End));
-        tracep->chgBit(oldp+2118,(vlTOPp->BRAM4_en_a));
-        tracep->chgCData(oldp+2119,(vlTOPp->BRAM4_wstrb_a),4);
-        tracep->chgSData(oldp+2120,(vlTOPp->BRAM4_addr_a),10);
-        tracep->chgIData(oldp+2121,(vlTOPp->BRAM4_din_a),32);
-        tracep->chgIData(oldp+2122,(vlTOPp->BRAM4_dout_a),32);
-        tracep->chgBit(oldp+2123,(vlTOPp->BRAM4_en_b));
-        tracep->chgCData(oldp+2124,(vlTOPp->BRAM4_wstrb_b),4);
-        tracep->chgSData(oldp+2125,(vlTOPp->BRAM4_addr_b),10);
-        tracep->chgIData(oldp+2126,(vlTOPp->BRAM4_din_b),32);
-        tracep->chgIData(oldp+2127,(vlTOPp->BRAM4_dout_b),32);
-        tracep->chgBit(oldp+2128,(vlTOPp->BRAM5_en_a));
-        tracep->chgCData(oldp+2129,(vlTOPp->BRAM5_wstrb_a),4);
-        tracep->chgSData(oldp+2130,(vlTOPp->BRAM5_addr_a),10);
-        tracep->chgIData(oldp+2131,(vlTOPp->BRAM5_din_a),32);
-        tracep->chgIData(oldp+2132,(vlTOPp->BRAM5_dout_a),32);
-        tracep->chgBit(oldp+2133,(vlTOPp->BRAM5_en_b));
-        tracep->chgCData(oldp+2134,(vlTOPp->BRAM5_wstrb_b),4);
-        tracep->chgSData(oldp+2135,(vlTOPp->BRAM5_addr_b),10);
-        tracep->chgIData(oldp+2136,(vlTOPp->BRAM5_din_b),32);
-        tracep->chgIData(oldp+2137,(vlTOPp->BRAM5_dout_b),32);
-        tracep->chgBit(oldp+2138,(vlTOPp->BRAM6_en_a));
-        tracep->chgCData(oldp+2139,(vlTOPp->BRAM6_wstrb_a),4);
-        tracep->chgSData(oldp+2140,(vlTOPp->BRAM6_addr_a),10);
-        tracep->chgIData(oldp+2141,(vlTOPp->BRAM6_din_a),32);
-        tracep->chgIData(oldp+2142,(vlTOPp->BRAM6_dout_a),32);
-        tracep->chgBit(oldp+2143,(vlTOPp->BRAM6_en_b));
-        tracep->chgCData(oldp+2144,(vlTOPp->BRAM6_wstrb_b),4);
-        tracep->chgSData(oldp+2145,(vlTOPp->BRAM6_addr_b),10);
-        tracep->chgIData(oldp+2146,(vlTOPp->BRAM6_din_b),32);
-        tracep->chgIData(oldp+2147,(vlTOPp->BRAM6_dout_b),32);
-        tracep->chgBit(oldp+2148,(vlTOPp->BRAM13_en_a));
-        tracep->chgCData(oldp+2149,(vlTOPp->BRAM13_wstrb_a),4);
-        tracep->chgSData(oldp+2150,(vlTOPp->BRAM13_addr_a),10);
-        tracep->chgIData(oldp+2151,(vlTOPp->BRAM13_din_a),32);
-        tracep->chgIData(oldp+2152,(vlTOPp->BRAM13_dout_a),32);
-        tracep->chgBit(oldp+2153,(vlTOPp->BRAM13_en_b));
-        tracep->chgCData(oldp+2154,(vlTOPp->BRAM13_wstrb_b),4);
-        tracep->chgSData(oldp+2155,(vlTOPp->BRAM13_addr_b),10);
-        tracep->chgIData(oldp+2156,(vlTOPp->BRAM13_din_b),32);
-        tracep->chgIData(oldp+2157,(vlTOPp->BRAM13_dout_b),32);
-        tracep->chgBit(oldp+2158,(vlTOPp->BRAM14_en_a));
-        tracep->chgCData(oldp+2159,(vlTOPp->BRAM14_wstrb_a),4);
-        tracep->chgSData(oldp+2160,(vlTOPp->BRAM14_addr_a),10);
-        tracep->chgIData(oldp+2161,(vlTOPp->BRAM14_din_a),32);
-        tracep->chgIData(oldp+2162,(vlTOPp->BRAM14_dout_a),32);
-        tracep->chgBit(oldp+2163,(vlTOPp->BRAM14_en_b));
-        tracep->chgCData(oldp+2164,(vlTOPp->BRAM14_wstrb_b),4);
-        tracep->chgSData(oldp+2165,(vlTOPp->BRAM14_addr_b),10);
-        tracep->chgIData(oldp+2166,(vlTOPp->BRAM14_din_b),32);
-        tracep->chgIData(oldp+2167,(vlTOPp->BRAM14_dout_b),32);
-        tracep->chgIData(oldp+2168,(((0x38000U & ((IData)(vlTOPp->Line0_font_RGB_9bit) 
+        tracep->chgCData(oldp+2002,(vlTOPp->LUT_addr_r1),8);
+        tracep->chgIData(oldp+2003,(vlTOPp->LUT_data_out1),18);
+        tracep->chgCData(oldp+2004,(vlTOPp->LUT_addr_r2),8);
+        tracep->chgIData(oldp+2005,(vlTOPp->LUT_data_out2),18);
+        tracep->chgSData(oldp+2006,(vlTOPp->Background1_WX),16);
+        tracep->chgSData(oldp+2007,(vlTOPp->Background1_WY),16);
+        tracep->chgSData(oldp+2008,(vlTOPp->Background1_SCX),16);
+        tracep->chgSData(oldp+2009,(vlTOPp->Background1_SCY),16);
+        tracep->chgCData(oldp+2010,(vlTOPp->Background1_a),8);
+        tracep->chgCData(oldp+2011,(vlTOPp->Background1_z),8);
+        tracep->chgSData(oldp+2012,(vlTOPp->Background2_WX),16);
+        tracep->chgSData(oldp+2013,(vlTOPp->Background2_WY),16);
+        tracep->chgSData(oldp+2014,(vlTOPp->Background2_SCX),16);
+        tracep->chgSData(oldp+2015,(vlTOPp->Background2_SCY),16);
+        tracep->chgCData(oldp+2016,(vlTOPp->Background2_a),8);
+        tracep->chgCData(oldp+2017,(vlTOPp->Background2_z),8);
+        tracep->chgSData(oldp+2018,(vlTOPp->Character1_WX),16);
+        tracep->chgSData(oldp+2019,(vlTOPp->Character1_WY),16);
+        tracep->chgSData(oldp+2020,(vlTOPp->Character1_SCX),16);
+        tracep->chgSData(oldp+2021,(vlTOPp->Character1_SCY),16);
+        tracep->chgCData(oldp+2022,(vlTOPp->Character1_a),8);
+        tracep->chgCData(oldp+2023,(vlTOPp->Character1_z),8);
+        tracep->chgSData(oldp+2024,(vlTOPp->Character2_WX),16);
+        tracep->chgSData(oldp+2025,(vlTOPp->Character2_WY),16);
+        tracep->chgSData(oldp+2026,(vlTOPp->Character2_SCX),16);
+        tracep->chgSData(oldp+2027,(vlTOPp->Character2_SCY),16);
+        tracep->chgCData(oldp+2028,(vlTOPp->Character2_a),8);
+        tracep->chgCData(oldp+2029,(vlTOPp->Character2_z),8);
+        tracep->chgSData(oldp+2030,(vlTOPp->Character3_WX),16);
+        tracep->chgSData(oldp+2031,(vlTOPp->Character3_WY),16);
+        tracep->chgSData(oldp+2032,(vlTOPp->Character3_SCX),16);
+        tracep->chgSData(oldp+2033,(vlTOPp->Character3_SCY),16);
+        tracep->chgCData(oldp+2034,(vlTOPp->Character3_a),8);
+        tracep->chgCData(oldp+2035,(vlTOPp->Character3_z),8);
+        tracep->chgSData(oldp+2036,(vlTOPp->Character4_WX),16);
+        tracep->chgSData(oldp+2037,(vlTOPp->Character4_WY),16);
+        tracep->chgSData(oldp+2038,(vlTOPp->Character4_SCX),16);
+        tracep->chgSData(oldp+2039,(vlTOPp->Character4_SCY),16);
+        tracep->chgCData(oldp+2040,(vlTOPp->Character4_a),8);
+        tracep->chgCData(oldp+2041,(vlTOPp->Character4_z),8);
+        tracep->chgSData(oldp+2042,(vlTOPp->Script_WX),16);
+        tracep->chgSData(oldp+2043,(vlTOPp->Script_WY),16);
+        tracep->chgSData(oldp+2044,(vlTOPp->Script_SCX),16);
+        tracep->chgSData(oldp+2045,(vlTOPp->Script_SCY),16);
+        tracep->chgCData(oldp+2046,(vlTOPp->Script_a),8);
+        tracep->chgCData(oldp+2047,(vlTOPp->Script_z),8);
+        tracep->chgSData(oldp+2048,(vlTOPp->Status_WX),16);
+        tracep->chgSData(oldp+2049,(vlTOPp->Status_WY),16);
+        tracep->chgSData(oldp+2050,(vlTOPp->Status_SCX),16);
+        tracep->chgSData(oldp+2051,(vlTOPp->Status_SCY),16);
+        tracep->chgCData(oldp+2052,(vlTOPp->Status_a),8);
+        tracep->chgCData(oldp+2053,(vlTOPp->Status_z),8);
+        tracep->chgSData(oldp+2054,(vlTOPp->Universal1_WX),16);
+        tracep->chgSData(oldp+2055,(vlTOPp->Universal1_WY),16);
+        tracep->chgSData(oldp+2056,(vlTOPp->Universal1_SCX),16);
+        tracep->chgSData(oldp+2057,(vlTOPp->Universal1_SCY),16);
+        tracep->chgCData(oldp+2058,(vlTOPp->Universal1_a),8);
+        tracep->chgCData(oldp+2059,(vlTOPp->Universal1_z),8);
+        tracep->chgSData(oldp+2060,(vlTOPp->Universal2_WX),16);
+        tracep->chgSData(oldp+2061,(vlTOPp->Universal2_WY),16);
+        tracep->chgSData(oldp+2062,(vlTOPp->Universal2_SCX),16);
+        tracep->chgSData(oldp+2063,(vlTOPp->Universal2_SCY),16);
+        tracep->chgCData(oldp+2064,(vlTOPp->Universal2_a),8);
+        tracep->chgCData(oldp+2065,(vlTOPp->Universal2_z),8);
+        tracep->chgCData(oldp+2066,(vlTOPp->Line0_visible_number),8);
+        tracep->chgCData(oldp+2067,(vlTOPp->Line1_visible_number),8);
+        tracep->chgCData(oldp+2068,(vlTOPp->Line2_visible_number),8);
+        tracep->chgCData(oldp+2069,(vlTOPp->Line3_visible_number),8);
+        tracep->chgCData(oldp+2070,(vlTOPp->Line4_visible_number),8);
+        tracep->chgCData(oldp+2071,(vlTOPp->Line5_visible_number),8);
+        tracep->chgCData(oldp+2072,(vlTOPp->Line6_visible_number),8);
+        tracep->chgCData(oldp+2073,(vlTOPp->Line7_visible_number),8);
+        tracep->chgCData(oldp+2074,(vlTOPp->Line8_visible_number),8);
+        tracep->chgCData(oldp+2075,(vlTOPp->Line9_visible_number),8);
+        tracep->chgCData(oldp+2076,(vlTOPp->Line10_visible_number),8);
+        tracep->chgCData(oldp+2077,(vlTOPp->Line11_visible_number),8);
+        tracep->chgCData(oldp+2078,(vlTOPp->Line12_visible_number),8);
+        tracep->chgCData(oldp+2079,(vlTOPp->Line13_visible_number),8);
+        tracep->chgCData(oldp+2080,(vlTOPp->Line14_visible_number),8);
+        tracep->chgSData(oldp+2081,(vlTOPp->Line0_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2082,(vlTOPp->Line1_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2083,(vlTOPp->Line2_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2084,(vlTOPp->Line3_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2085,(vlTOPp->Line4_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2086,(vlTOPp->Line5_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2087,(vlTOPp->Line6_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2088,(vlTOPp->Line7_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2089,(vlTOPp->Line8_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2090,(vlTOPp->Line9_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2091,(vlTOPp->Line10_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2092,(vlTOPp->Line11_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2093,(vlTOPp->Line12_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2094,(vlTOPp->Line13_font_RGB_9bit),9);
+        tracep->chgSData(oldp+2095,(vlTOPp->Line14_font_RGB_9bit),9);
+        tracep->chgCData(oldp+2096,(vlTOPp->Line0_a),3);
+        tracep->chgCData(oldp+2097,(vlTOPp->Line1_a),3);
+        tracep->chgCData(oldp+2098,(vlTOPp->Line2_a),3);
+        tracep->chgCData(oldp+2099,(vlTOPp->Line3_a),3);
+        tracep->chgCData(oldp+2100,(vlTOPp->Line4_a),3);
+        tracep->chgCData(oldp+2101,(vlTOPp->Line5_a),3);
+        tracep->chgCData(oldp+2102,(vlTOPp->Line6_a),3);
+        tracep->chgCData(oldp+2103,(vlTOPp->Line7_a),3);
+        tracep->chgCData(oldp+2104,(vlTOPp->Line8_a),3);
+        tracep->chgCData(oldp+2105,(vlTOPp->Line9_a),3);
+        tracep->chgCData(oldp+2106,(vlTOPp->Line10_a),3);
+        tracep->chgCData(oldp+2107,(vlTOPp->Line11_a),3);
+        tracep->chgCData(oldp+2108,(vlTOPp->Line12_a),3);
+        tracep->chgCData(oldp+2109,(vlTOPp->Line13_a),3);
+        tracep->chgCData(oldp+2110,(vlTOPp->Line14_a),3);
+        tracep->chgBit(oldp+2111,(vlTOPp->Final_pixel_valid));
+        tracep->chgIData(oldp+2112,(vlTOPp->Final_pixel_RGB),18);
+        tracep->chgBit(oldp+2113,(vlTOPp->Font_Line_End));
+        tracep->chgBit(oldp+2114,(vlTOPp->Font_Frame_End));
+        tracep->chgBit(oldp+2115,(vlTOPp->BRAM4_en_a));
+        tracep->chgCData(oldp+2116,(vlTOPp->BRAM4_wstrb_a),4);
+        tracep->chgSData(oldp+2117,(vlTOPp->BRAM4_addr_a),10);
+        tracep->chgIData(oldp+2118,(vlTOPp->BRAM4_din_a),32);
+        tracep->chgIData(oldp+2119,(vlTOPp->BRAM4_dout_a),32);
+        tracep->chgBit(oldp+2120,(vlTOPp->BRAM5_en_a));
+        tracep->chgCData(oldp+2121,(vlTOPp->BRAM5_wstrb_a),4);
+        tracep->chgSData(oldp+2122,(vlTOPp->BRAM5_addr_a),10);
+        tracep->chgIData(oldp+2123,(vlTOPp->BRAM5_din_a),32);
+        tracep->chgIData(oldp+2124,(vlTOPp->BRAM5_dout_a),32);
+        tracep->chgBit(oldp+2125,(vlTOPp->BRAM6_en_a));
+        tracep->chgCData(oldp+2126,(vlTOPp->BRAM6_wstrb_a),4);
+        tracep->chgSData(oldp+2127,(vlTOPp->BRAM6_addr_a),10);
+        tracep->chgIData(oldp+2128,(vlTOPp->BRAM6_din_a),32);
+        tracep->chgIData(oldp+2129,(vlTOPp->BRAM6_dout_a),32);
+        tracep->chgBit(oldp+2130,(vlTOPp->BRAM13_en_a));
+        tracep->chgCData(oldp+2131,(vlTOPp->BRAM13_wstrb_a),4);
+        tracep->chgSData(oldp+2132,(vlTOPp->BRAM13_addr_a),10);
+        tracep->chgIData(oldp+2133,(vlTOPp->BRAM13_din_a),32);
+        tracep->chgIData(oldp+2134,(vlTOPp->BRAM13_dout_a),32);
+        tracep->chgBit(oldp+2135,(vlTOPp->BRAM14_en_a));
+        tracep->chgCData(oldp+2136,(vlTOPp->BRAM14_wstrb_a),4);
+        tracep->chgSData(oldp+2137,(vlTOPp->BRAM14_addr_a),10);
+        tracep->chgIData(oldp+2138,(vlTOPp->BRAM14_din_a),32);
+        tracep->chgIData(oldp+2139,(vlTOPp->BRAM14_dout_a),32);
+        tracep->chgIData(oldp+2140,(((0x38000U & ((IData)(vlTOPp->Line0_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line0_font_RGB_9bit) 
@@ -2287,7 +2259,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line0_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2169,(((0x38000U & ((IData)(vlTOPp->Line1_font_RGB_9bit) 
+        tracep->chgIData(oldp+2141,(((0x38000U & ((IData)(vlTOPp->Line1_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line1_font_RGB_9bit) 
@@ -2303,7 +2275,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line1_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2170,(((0x38000U & ((IData)(vlTOPp->Line2_font_RGB_9bit) 
+        tracep->chgIData(oldp+2142,(((0x38000U & ((IData)(vlTOPp->Line2_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line2_font_RGB_9bit) 
@@ -2319,7 +2291,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line2_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2171,(((0x38000U & ((IData)(vlTOPp->Line3_font_RGB_9bit) 
+        tracep->chgIData(oldp+2143,(((0x38000U & ((IData)(vlTOPp->Line3_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line3_font_RGB_9bit) 
@@ -2335,7 +2307,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line3_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2172,(((0x38000U & ((IData)(vlTOPp->Line4_font_RGB_9bit) 
+        tracep->chgIData(oldp+2144,(((0x38000U & ((IData)(vlTOPp->Line4_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line4_font_RGB_9bit) 
@@ -2351,7 +2323,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line4_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2173,(((0x38000U & ((IData)(vlTOPp->Line5_font_RGB_9bit) 
+        tracep->chgIData(oldp+2145,(((0x38000U & ((IData)(vlTOPp->Line5_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line5_font_RGB_9bit) 
@@ -2367,7 +2339,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line5_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2174,(((0x38000U & ((IData)(vlTOPp->Line6_font_RGB_9bit) 
+        tracep->chgIData(oldp+2146,(((0x38000U & ((IData)(vlTOPp->Line6_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line6_font_RGB_9bit) 
@@ -2383,7 +2355,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line6_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2175,(((0x38000U & ((IData)(vlTOPp->Line7_font_RGB_9bit) 
+        tracep->chgIData(oldp+2147,(((0x38000U & ((IData)(vlTOPp->Line7_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line7_font_RGB_9bit) 
@@ -2399,7 +2371,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line7_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2176,(((0x38000U & ((IData)(vlTOPp->Line8_font_RGB_9bit) 
+        tracep->chgIData(oldp+2148,(((0x38000U & ((IData)(vlTOPp->Line8_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line8_font_RGB_9bit) 
@@ -2415,7 +2387,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line8_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2177,(((0x38000U & ((IData)(vlTOPp->Line9_font_RGB_9bit) 
+        tracep->chgIData(oldp+2149,(((0x38000U & ((IData)(vlTOPp->Line9_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line9_font_RGB_9bit) 
@@ -2431,7 +2403,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line9_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2178,(((0x38000U & ((IData)(vlTOPp->Line10_font_RGB_9bit) 
+        tracep->chgIData(oldp+2150,(((0x38000U & ((IData)(vlTOPp->Line10_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line10_font_RGB_9bit) 
@@ -2447,7 +2419,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line10_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2179,(((0x38000U & ((IData)(vlTOPp->Line11_font_RGB_9bit) 
+        tracep->chgIData(oldp+2151,(((0x38000U & ((IData)(vlTOPp->Line11_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line11_font_RGB_9bit) 
@@ -2463,7 +2435,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line11_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2180,(((0x38000U & ((IData)(vlTOPp->Line12_font_RGB_9bit) 
+        tracep->chgIData(oldp+2152,(((0x38000U & ((IData)(vlTOPp->Line12_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line12_font_RGB_9bit) 
@@ -2479,7 +2451,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line12_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2181,(((0x38000U & ((IData)(vlTOPp->Line13_font_RGB_9bit) 
+        tracep->chgIData(oldp+2153,(((0x38000U & ((IData)(vlTOPp->Line13_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line13_font_RGB_9bit) 
@@ -2495,7 +2467,7 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line13_font_RGB_9bit)))))))),18);
-        tracep->chgIData(oldp+2182,(((0x38000U & ((IData)(vlTOPp->Line14_font_RGB_9bit) 
+        tracep->chgIData(oldp+2154,(((0x38000U & ((IData)(vlTOPp->Line14_font_RGB_9bit) 
                                                   << 9U)) 
                                      | ((0x7000U & 
                                          ((IData)(vlTOPp->Line14_font_RGB_9bit) 
@@ -2511,16 +2483,16 @@ void VPPU_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                    << 3U)) 
                                                | (7U 
                                                   & (IData)(vlTOPp->Line14_font_RGB_9bit)))))))),18);
-        tracep->chgBit(oldp+2183,((0U != (IData)(vlTOPp->Background1_z))));
-        tracep->chgBit(oldp+2184,((0U != (IData)(vlTOPp->Background2_z))));
-        tracep->chgBit(oldp+2185,((0U != (IData)(vlTOPp->Character1_z))));
-        tracep->chgBit(oldp+2186,((0U != (IData)(vlTOPp->Character2_z))));
-        tracep->chgBit(oldp+2187,((0U != (IData)(vlTOPp->Character3_z))));
-        tracep->chgBit(oldp+2188,((0U != (IData)(vlTOPp->Character4_z))));
-        tracep->chgBit(oldp+2189,((0U != (IData)(vlTOPp->Script_z))));
-        tracep->chgBit(oldp+2190,((0U != (IData)(vlTOPp->Status_z))));
-        tracep->chgBit(oldp+2191,((0U != (IData)(vlTOPp->Universal1_z))));
-        tracep->chgBit(oldp+2192,((0U != (IData)(vlTOPp->Universal2_z))));
+        tracep->chgBit(oldp+2155,((0U != (IData)(vlTOPp->Background1_z))));
+        tracep->chgBit(oldp+2156,((0U != (IData)(vlTOPp->Background2_z))));
+        tracep->chgBit(oldp+2157,((0U != (IData)(vlTOPp->Character1_z))));
+        tracep->chgBit(oldp+2158,((0U != (IData)(vlTOPp->Character2_z))));
+        tracep->chgBit(oldp+2159,((0U != (IData)(vlTOPp->Character3_z))));
+        tracep->chgBit(oldp+2160,((0U != (IData)(vlTOPp->Character4_z))));
+        tracep->chgBit(oldp+2161,((0U != (IData)(vlTOPp->Script_z))));
+        tracep->chgBit(oldp+2162,((0U != (IData)(vlTOPp->Status_z))));
+        tracep->chgBit(oldp+2163,((0U != (IData)(vlTOPp->Universal1_z))));
+        tracep->chgBit(oldp+2164,((0U != (IData)(vlTOPp->Universal2_z))));
     }
 }
 

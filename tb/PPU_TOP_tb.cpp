@@ -39,110 +39,77 @@ int main(int argc, char **argv)
     uint32_t bram14[1024] = {0}; // 폰트맵
 
     // ==============================================================================
-    // [추가된 부분] C++ 테스트벤치 내 BRAM 초기화 로직
+    // 폰트 BRAM 초기화: 실상위 모듈의 레이아웃과 동일하게, 16x16 한글폰트 데이터를
+    // BRAM4/5/6/13에 패킹하고 BRAM14 폰트맵을 테스트 문장으로 채운다.
     // ==============================================================================
-    // 16x16 폰트(16줄)를 BRAM 형식(32비트 * 8개)으로 패킹하는 람다 함수
     auto pack_font_16x16 = [](const uint16_t lines[16], uint32_t *target_bram, uint32_t base_addr)
     {
         for (int i = 0; i < 8; ++i)
         {
-            // address i: {line(2i+1)[15:0], line(2i)[15:0]}
-            uint32_t line_even = lines[i * 2];    // 하위 16비트
-            uint32_t line_odd = lines[i * 2 + 1]; // 상위 16비트
+            uint32_t line_even = lines[i * 2];
+            uint32_t line_odd  = lines[i * 2 + 1];
             target_bram[base_addr + i] = (line_odd << 16) | line_even;
         }
     };
 
-    // 1. BRAM4 초기화 (초성 1벌 ~ 6벌)
-    uint32_t cho_base_bram4[6] = {0, 152, 304, 456, 608, 760};
-    for (int set = 0; set < 6; ++set)
+    auto init_korean_font_bram = [&](uint32_t *bram4_, uint32_t *bram5_, uint32_t *bram6_, uint32_t *bram13_, uint32_t *bram14_)
     {
-        for (int idx = 0; idx < 19; ++idx)
+        uint32_t cho_base_bram4[6] = {0, 152, 304, 456, 608, 760};
+        for (int set = 0; set < 6; ++set)
         {
-            pack_font_16x16(CHO_SUNG[set][idx], bram4, cho_base_bram4[set] + (idx * 8));
+            for (int idx = 0; idx < 19; ++idx)
+            {
+                pack_font_16x16(CHO_SUNG[set][idx], bram4_, cho_base_bram4[set] + (idx * 8));
+            }
         }
-    }
 
-    // 2. BRAM5 초기화 (초성 7벌 ~ 8벌)
-    uint32_t cho_base_bram5[2] = {0, 152};
-    for (int set = 0; set < 2; ++set)
-    {
-        for (int idx = 0; idx < 19; ++idx)
+        uint32_t cho_base_bram5[2] = {0, 152};
+        for (int set = 0; set < 2; ++set)
         {
-            // CHO_SUNG 배열에서 7벌(인덱스 6), 8벌(인덱스 7)을 가져옴
-            pack_font_16x16(CHO_SUNG[set + 6][idx], bram5, cho_base_bram5[set] + (idx * 8));
+            for (int idx = 0; idx < 19; ++idx)
+            {
+                pack_font_16x16(CHO_SUNG[set + 6][idx], bram5_, cho_base_bram5[set] + (idx * 8));
+            }
         }
-    }
 
-    // 3. BRAM6 초기화 (중성 1벌 ~ 4벌)
-    uint32_t jung_base_bram6[4] = {0, 168, 336, 504};
-    for (int set = 0; set < 4; ++set)
-    {
-        for (int idx = 0; idx < 21; ++idx)
+        uint32_t jung_base_bram6[4] = {0, 168, 336, 504};
+        for (int set = 0; set < 4; ++set)
         {
-            pack_font_16x16(JUNG_SUNG[set][idx], bram6, jung_base_bram6[set] + (idx * 8));
+            for (int idx = 0; idx < 21; ++idx)
+            {
+                pack_font_16x16(JUNG_SUNG[set][idx], bram6_, jung_base_bram6[set] + (idx * 8));
+            }
         }
-    }
 
-    // 4. BRAM13 초기화 (종성 1벌 ~ 4벌)
-    uint32_t chong_base_bram13[4] = {0, 224, 448, 672};
-    for (int set = 0; set < 4; ++set)
-    {
-        for (int idx = 0; idx < 28; ++idx)
+        uint32_t chong_base_bram13[4] = {0, 224, 448, 672};
+        for (int set = 0; set < 4; ++set)
         {
-            pack_font_16x16(CHONG_SUNG[set][idx], bram13, chong_base_bram13[set] + (idx * 8));
+            for (int idx = 0; idx < 28; ++idx)
+            {
+                pack_font_16x16(CHONG_SUNG[set][idx], bram13_, chong_base_bram13[set] + (idx * 8));
+            }
         }
-    }
 
-    // 5. BRAM14 초기화 (폰트맵 - 테스트용)
-    // 기본적으로 전체를 ASCII 공백(0x0020)으로 꽉 채움. address 한 칸당 {0x0020, 0x0020} = 0x00200020
-    for (int i = 0; i < 1024; ++i)
-    {
-        bram14[i] = 0x00200020;
-    }
+        for (int i = 0; i < 1024; ++i)
+        {
+            bram14_[i] = 0x00200020;
+        }
 
-    //---------------------폰트 테스트--------------------------
-    // 먼저 전체 화면을 공백(0x0020)으로 초기화
-    for (int i = 0; i < 1024; ++i)
-    {
-        bram14[i] = 0x00200020;
-    }
-    // ----------------------------------------------------------------------
-    // [1] 캐릭터 이름표 (Line 10, 약간 들여쓰기)
-    // Line 10 base: 200. "마왕" 출력 (【 】 기호는 제외하고 한글만 사용)
-    // 마(0xB9C8), 왕(0xC655)
-    // ----------------------------------------------------------------------
-    bram14[201] = (uint32_t(0xC655) << 16) | uint32_t(0xB9C8); // addr 201 (칸 2~3): {왕, 마}
+        bram14_[201] = (uint32_t(0xC655) << 16) | uint32_t(0xB9C8);
+        bram14_[242] = (uint32_t(0xAE30) << 16) | uint32_t(0xC5EC);
+        bram14_[243] = (uint32_t(0xC9C0) << 16) | uint32_t(0xAE4C);
+        bram14_[244] = (uint32_t(0xC624) << 16) | uint32_t(0x0020);
+        bram14_[245] = (uint32_t(0xB2C8) << 16) | uint32_t(0xB2E4);
+        bram14_[246] = (uint32_t(0x0020) << 16) | uint32_t(0x002E);
+        bram14_[262] = (uint32_t(0xBC95) << 16) | uint32_t(0xC81C);
+        bram14_[263] = (uint32_t(0xAD70) << 16) | uint32_t(0xC774);
+        bram14_[264] = (uint32_t(0xC6A9) << 16) | uint32_t(0x0020);
+        bram14_[265] = (uint32_t(0xC5EC) << 16) | uint32_t(0xC0AC);
+        bram14_[266] = (uint32_t(0x0020) << 16) | uint32_t(0x0021);
+        bram14_[298] = (uint32_t(0x0020) << 16) | uint32_t(0x003E);
+    };
 
-    // ----------------------------------------------------------------------
-    // [2] 대사 첫 번째 줄 (Line 12, 이름표보다 안쪽으로 들여쓰기)
-    // Line 12 base: 240. "여기까지 오다니." (여,기,까,지,공백,오,다,니,.)
-    // 여(0xC5EC), 기(0xAE30), 까(0xAE4C), 지(0xC9C0)
-    // 오(0xC624), 다(0xB2E4), 니(0xB2C8), .(0x002E)
-    // ----------------------------------------------------------------------
-    bram14[242] = (uint32_t(0xAE30) << 16) | uint32_t(0xC5EC); // addr 242 (칸 4~5):   {기, 여}
-    bram14[243] = (uint32_t(0xC9C0) << 16) | uint32_t(0xAE4C); // addr 243 (칸 6~7):   {지, 까}
-    bram14[244] = (uint32_t(0xC624) << 16) | uint32_t(0x0020); // addr 244 (칸 8~9):   {오, 공백}
-    bram14[245] = (uint32_t(0xB2C8) << 16) | uint32_t(0xB2E4); // addr 245 (칸 10~11): {니, 다}
-    bram14[246] = (uint32_t(0x0020) << 16) | uint32_t(0x002E); // addr 246 (칸 12~13): {공백, .}
-
-    // ----------------------------------------------------------------------
-    // [3] 대사 두 번째 줄 (Line 13)
-    // Line 13 base: 260. "제법이군 용사여!" (제,법,이,군,공백,용,사,여,!)
-    // 제(0xC81C), 법(0xBC95), 이(0xC774), 군(0xAD70)
-    // 용(0xC6A9), 사(0xC0AC), 여(0xC5EC), !(0x0021)
-    // ----------------------------------------------------------------------
-    bram14[262] = (uint32_t(0xBC95) << 16) | uint32_t(0xC81C); // addr 262 (칸 4~5):   {법, 제}
-    bram14[263] = (uint32_t(0xAD70) << 16) | uint32_t(0xC774); // addr 263 (칸 6~7):   {군, 이}
-    bram14[264] = (uint32_t(0xC6A9) << 16) | uint32_t(0x0020); // addr 264 (칸 8~9):   {용, 공백}
-    bram14[265] = (uint32_t(0xC5EC) << 16) | uint32_t(0xC0AC); // addr 265 (칸 10~11): {여, 사}
-    bram14[266] = (uint32_t(0x0020) << 16) | uint32_t(0x0021); // addr 266 (칸 12~13): {공백, !}
-
-    // ----------------------------------------------------------------------
-    // [4] 계속 진행 버튼 느낌표시 (Line 14 끝쪽)
-    // Line 14 base: 280. ">" (0x003E)
-    // ----------------------------------------------------------------------
-    bram14[298] = (uint32_t(0x0020) << 16) | uint32_t(0x003E); // addr 298 (칸 36~37)
+    init_korean_font_bram(bram4, bram5, bram6, bram13, bram14);
 
     std::vector<uint32_t> ddr3_memory(262144, 0);
     std::vector<uint32_t> lut(256, 0);
@@ -742,11 +709,6 @@ int main(int argc, char **argv)
             trace->dump(main_time);
         }
         main_time++;
-
-        if (dut->LUT_we)
-        {
-            lut[dut->LUT_addr_w] = dut->LUT_data_in;
-        } // 지금은 LUT에 쓰기는 사용되지 않음.
         // ----------------------------------------------------
         // [2단계] 클럭 하강 에지 (입력 신호 주입)
         // ----------------------------------------------------

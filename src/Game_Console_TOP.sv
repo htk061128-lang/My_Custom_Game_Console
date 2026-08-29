@@ -1,4 +1,3 @@
-`timescale 1 ns / 1 ps
 
 module Game_Console_TOP #(
     parameter [31:0] CONTROL_REG_BASE = 32'h0FF0_0000,
@@ -9,7 +8,8 @@ module Game_Console_TOP #(
 ) (
     input clk,
     input resetn,
-    input PPU_start,
+    input [7:0] joypad_state_in,
+    output joypad_irq,
 
     output DDR3_CPU_valid,
     input DDR3_CPU_ready,
@@ -89,7 +89,8 @@ wire [3:0] cpu_la_wstrb;
 wire cpu_trap;
 wire cpu_pcpi_wr, cpu_pcpi_wait, cpu_pcpi_ready;
 wire [31:0] cpu_pcpi_rd;
-wire [31:0] cpu_irq = 32'b0;
+wire [31:0] cpu_irq;
+assign cpu_irq = {31'b0, joypad_irq};
 assign cpu_pcpi_wr = 1'b0;
 assign cpu_pcpi_wait = 1'b0;
 assign cpu_pcpi_ready = 1'b0;
@@ -104,6 +105,7 @@ wire [3:0] cache_emem_wstrb;
 wire [7:0] cache_emem_burst_len;
 wire cache_emem_burst_en;
 wire cache_hit;
+wire PPU_start;
 
 picorv32 #(
     .STACKADDR(STACKADDR)
@@ -163,11 +165,13 @@ Addr_Decoder #(
     .FONT_DATA_BASE(FONT_DATA_BASE), .LOOKUP_TABLE_BASE(LOOKUP_TABLE_BASE)
 ) u_addr_decoder (
     .clk(clk), .resetn(resetn),
+    .joypad_state(joypad_state_in), .joypad_irq(joypad_irq),
     .EMEM_valid(cache_emem_valid), .EMEM_ready(dec_emem_ready), .EMEM_addr(cache_emem_addr),
     .EMEM_wdata(cache_emem_wdata), .EMEM_wstrb(cache_emem_wstrb), .EMEM_rdata(dec_emem_rdata),
     .EMEM_burst_len(cache_emem_burst_len), .EMEM_burst_en(cache_emem_burst_en),
     .DDR3_valid(dec_ddr3_valid), .DDR3_ready(DDR3_CPU_ready), .DDR3_addr(dec_ddr3_addr), .DDR3_wdata(dec_ddr3_wdata),
     .DDR3_wstrb(dec_ddr3_wstrb), .DDR3_rdata(DDR3_CPU_rdata), .DDR3_burst_len(dec_ddr3_burst_len), .DDR3_burst_en(dec_ddr3_burst_en),
+    .PPU_start(PPU_start),
     .LUT_we(dec_lut_we), .LUT_addr_w(dec_lut_addr_w), .LUT_data_in(dec_lut_data_in),
     .BRAM4_en_b(dec_bram4_en_b), .BRAM4_wstrb_b(dec_bram4_wstrb_b), .BRAM4_addr_b(dec_bram4_addr_b), .BRAM4_din_b(dec_bram4_din_b), .BRAM4_dout_b(BRAM4_dout_b),
     .BRAM5_en_b(dec_bram5_en_b), .BRAM5_wstrb_b(dec_bram5_wstrb_b), .BRAM5_addr_b(dec_bram5_addr_b), .BRAM5_din_b(dec_bram5_din_b), .BRAM5_dout_b(BRAM5_dout_b),
@@ -185,7 +189,7 @@ Addr_Decoder #(
     .o_line_cfg_0_1(line_cfg_0_1), .o_line_cfg_2_3(line_cfg_2_3), .o_line_cfg_4_5(line_cfg_4_5),
     .o_line_cfg_6_7(line_cfg_6_7), .o_line_cfg_8_9(line_cfg_8_9), .o_line_cfg_10_11(line_cfg_10_11),
     .o_line_cfg_12_13(line_cfg_12_13), .o_line_cfg_14(line_cfg_14), .o_line_alpha_0_7(line_alpha_0_7),
-    .o_line_alpha_8_14(line_alpha_8_14)
+    .o_line_alpha_8_14(line_alpha_8_14), .o_ppu_start(PPU_start)
 );
 
 assign cache_emem_ready = dec_emem_ready;
