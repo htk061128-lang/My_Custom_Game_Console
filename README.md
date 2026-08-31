@@ -446,5 +446,35 @@ PPU가 프레임을 구성하는것을 시작하게 하는 레지스터입니다
 ## Test
 ---
 
+## Third-Party Notices & Licenses
 
+본 프로젝트는 다음의 오픈소스 IP 및 폰트 에셋을 포함하고 있습니다.
+
+### 1. PicoRV32 (RISC-V CPU Core)
+* **저작권자**: Claire Wolf (YosysHQ)
+* **소스코드 저장소**: [https://github.com/YosysHQ/picorv32](https://github.com/YosysHQ/picorv32)
+* **라이선스**: ISC License
+
+```text
+ISC License
+
+Copyright (c) 2015-2020 Claire Wolf <claire@symbioticeda.com>
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+```
+
+### 2. Hangul Johab Font Sprite
+* **저작권자**: TandyRum1024
+* **레포지토리**: [https://github.com/TandyRum1024/hangul-johab-render-gms](https://github.com/TandyRum1024/hangul-johab-render-gms)
+* **사용 에셋**: 도깨비 8×4×4 한글 16 * 16 픽셀 조합형 폰트 비트맵 이미지 (`template/DKB844_TEMPLATE_16.png`)
 
