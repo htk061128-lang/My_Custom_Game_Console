@@ -87,6 +87,7 @@
 | `0x0A0` | `LINE_ALPHA_8_14` | Line 8 ~ 14 Alpha (4b × 7) | R/W | `0x0000_0000` |
 | `0x0A4` | `PPU_START` | PPU_start | R/W | `0x0000_0000` | 
 | `0x0A8` | `JOYPAD` | joypad register | R only | `0x0000_0000` | 
+| `0x0AC` | `PPU_STAT` | PPU Status Register | R only | `0x0000_0000` |
 
 ---
 
@@ -109,7 +110,7 @@
   - **`[15:0]` X_POS**: SCX / WX (16-bit Signed Integer)
 - **`*_ATTR` Registers (`0x030`, `0x038`, ...)**:
   - **`[31:16]` Reserved**: Read as 0
-  - **`[15:8]` ALPHA**: Layer Alpha Blending value (8-bit, 0~10)
+  - **`[15:8]` ALPHA**: Layer Alpha Blending value (8-bit, 0~16)
   - **`[7:0]` Z_ORDER**: Layer Priority / Z-depth (8-bit, 0~10)
 
 #### Group 4: Font Line Configuration (`0x07C` ~ `0x098`)
@@ -177,6 +178,17 @@ PPU가 프레임을 구성하는것을 시작하게 하는 레지스터입니다
   - `[2]` Left (좌)
   - `[1]` Down (하)
   - `[0]` Up (상)
+
+#### PPU_STAT
+PPU의 현재 동작 상태를 나타내는 읽기 전용(Read Only) 레지스터입니다. PPU가 프레임 생성을 마치면(Idle) CPU에 인터럽트 신호를 보냅니다. CPU는 새로운 프레임을 렌더링하기 위해 PPU_START를 1로 설정하기 전에, 반드시 이 레지스터를 읽어서 PPU가 유휴(Idle) 상태인지 확인해야 화면 깨짐이나 오작동을 방지할 수 있습니다. 또한 PPU_BUSY 비트가 1인 동안에는 RGB Lookup Table 이나 Font Map, PPU Control Register(0x000 ~ 0x0A0)를 수정해서는 안됩니다. 
+
+- **`[31:0]` Reserved (0)**
+- **`[1]` FRAME_IRQ_PENDING**
+  - `1`: 프레임 렌더링이 완료되어 CPU에 인터럽트를 요청한 상태
+  - `0`: 대기 중인 프레임 완료 인터럽트 없음
+- **`[0]` PPU_BUSY**
+  - `1`: Busy (렌더링 중). PPU가 현재 프레임을 화면에 그리고 있는 상태입니다. 이때 PPU_START를 조작해서는 안 됩니다.
+  - `0`: Idle (대기 중). 프레임 렌더링이 완료되었거나 대기 중인 상태입니다. 새로운 프레임 렌더링을 위해 PPU_START를 조작해도 안전합니다.
 
 ## BRAM overview
 ### BRAM 0 (Simple Dual-Port, RAMB36E1)

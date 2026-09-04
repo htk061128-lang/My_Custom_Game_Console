@@ -85,7 +85,7 @@ module picorv32 #(
 	parameter [31:0] LATCHED_IRQ = 32'h ffff_ffff,
 	parameter [31:0] PROGADDR_RESET = 32'h 0000_0000, //프로그램 시작주소
 	parameter [31:0] PROGADDR_IRQ = 32'h 0000_0010, //인터럽트 handler 시작주소
-	parameter [31:0] STACKADDR = 32'h ffff_ffff //스택 주소. 나는 256MiB만 사용하므로 바꿔줘야함 !!
+	parameter [31:0] STACKADDR = 32'h 0fef_ffff //스택 주소. 나는 256MiB만 사용하므로 상위 4비트는 0으로 설정했고 이후 주소는 BRAM, 하드웨어 레지스터 등으로 사용됨. (Memory Map 참고).
 ) (
 	input clk, resetn, //resetn 신호가 1->0으로 가는 시점에 리셋됨. 주의!. clk은 50MHz로 사용할 예정임.
 	output reg trap,

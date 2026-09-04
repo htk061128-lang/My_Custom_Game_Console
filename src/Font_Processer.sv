@@ -2033,252 +2033,226 @@ always @(posedge clk or negedge resetn) begin
             pipe6_next_line <= pipe5_next_line;
         end
 
+        if (PPU_start) begin
+            pixel_state[3:0]  <= START;
+            output_state[3:0] <= START;
+            font_state[3:0]   <= START;
 
-        case(pixel_state[3:0])
-            IDLE: begin
-                if(PPU_start) begin
-                    pixel_state[3:0] <= START;
+            //pixel_state
+            RGB_1_reg[17:0] <= 0;
+            RGB_1_reg_valid <= 0;
+            RGB_2_reg[17:0] <= 0;
+            RGB_2_reg_valid <= 0;
+            RGB_3_reg[17:0] <= 0;
+            RGB_3_reg_valid <= 0;
+            RGB_4_reg[17:0] <= 0;
+            RGB_4_reg_valid <= 0;
+            RGB_5_reg[17:0] <= 0;
+            RGB_5_reg_valid <= 0;
+            RGB_6_reg[17:0] <= 0;
+            RGB_6_reg_valid <= 0;
+            RGB_7_reg[17:0] <= 0;
+            RGB_7_reg_valid <= 0;
+            RGB_8_reg[17:0] <= 0;
+            RGB_8_reg_valid <= 0;
+            mixed_RGB_1[17:0] <= 0;
+            mixed_RGB_1_valid <= 0;
+            mixed_RGB_2[17:0] <= 0;
+            mixed_RGB_2_valid <= 0;
+            mixed_RGB_3[17:0] <= 0;
+            mixed_RGB_3_valid <= 0;
+            mixed_RGB_4[17:0] <= 0;
+            mixed_RGB_4_valid <= 0;
+            mixed_RGB_5[17:0] <= 0;
+            mixed_RGB_5_valid <= 0;
+            mixed_RGB_6[17:0] <= 0;
+            mixed_RGB_6_valid <= 0;
+            mixed_RGB_7[17:0] <= 0;
+            mixed_RGB_7_valid <= 0;
+            mixed_RGB_8[17:0] <= 0;
+            mixed_RGB_8_valid <= 0;
 
-                    RGB_1_reg[17:0] <= 0;
-                    RGB_1_reg_valid <= 0;
-                    RGB_2_reg[17:0] <= 0;
-                    RGB_2_reg_valid <= 0;
-                    RGB_3_reg[17:0] <= 0;
-                    RGB_3_reg_valid <= 0;
-                    RGB_4_reg[17:0] <= 0;
-                    RGB_4_reg_valid <= 0;
-                    RGB_5_reg[17:0] <= 0;
-                    RGB_5_reg_valid <= 0;
-                    RGB_6_reg[17:0] <= 0;
-                    RGB_6_reg_valid <= 0;
-                    RGB_7_reg[17:0] <= 0;
-                    RGB_7_reg_valid <= 0;
-                    RGB_8_reg[17:0] <= 0;
-                    RGB_8_reg_valid <= 0;
-                    mixed_RGB_1[17:0] <= 0;
-                    mixed_RGB_1_valid <= 0;
-                    mixed_RGB_2[17:0] <= 0;
-                    mixed_RGB_2_valid <= 0;
-                    mixed_RGB_3[17:0] <= 0;
-                    mixed_RGB_3_valid <= 0;
-                    mixed_RGB_4[17:0] <= 0;
-                    mixed_RGB_4_valid <= 0;
-                    mixed_RGB_5[17:0] <= 0;
-                    mixed_RGB_5_valid <= 0;
-                    mixed_RGB_6[17:0] <= 0;
-                    mixed_RGB_6_valid <= 0;
-                    mixed_RGB_7[17:0] <= 0;
-                    mixed_RGB_7_valid <= 0;
-                    mixed_RGB_8[17:0] <= 0;
-                    mixed_RGB_8_valid <= 0;
-                end
-                else begin
-                    pixel_state[3:0] <= IDLE;
-                end
-            end
-            START: begin
-                if(Frame_End) begin
-                    RGB_1_reg[17:0] <= 0;
-                    RGB_1_reg_valid <= 0;
-                    RGB_2_reg[17:0] <= 0;
-                    RGB_2_reg_valid <= 0;
-                    RGB_3_reg[17:0] <= 0;
-                    RGB_3_reg_valid <= 0;
-                    RGB_4_reg[17:0] <= 0;
-                    RGB_4_reg_valid <= 0;
-                    RGB_5_reg[17:0] <= 0;
-                    RGB_5_reg_valid <= 0;
-                    RGB_6_reg[17:0] <= 0;
-                    RGB_6_reg_valid <= 0;
-                    RGB_7_reg[17:0] <= 0;
-                    RGB_7_reg_valid <= 0;
-                    RGB_8_reg[17:0] <= 0;
-                    RGB_8_reg_valid <= 0;
-                    mixed_RGB_1[17:0] <= 0;
-                    mixed_RGB_1_valid <= 0;
-                    mixed_RGB_2[17:0] <= 0;
-                    mixed_RGB_2_valid <= 0;
-                    mixed_RGB_3[17:0] <= 0;
-                    mixed_RGB_3_valid <= 0;
-                    mixed_RGB_4[17:0] <= 0;
-                    mixed_RGB_4_valid <= 0;
-                    mixed_RGB_5[17:0] <= 0;
-                    mixed_RGB_5_valid <= 0;
-                    mixed_RGB_6[17:0] <= 0;
-                    mixed_RGB_6_valid <= 0;
-                    mixed_RGB_7[17:0] <= 0;
-                    mixed_RGB_7_valid <= 0;
-                    mixed_RGB_8[17:0] <= 0;
-                    mixed_RGB_8_valid <= 0;
-                end
-            end
-        endcase
+            //output_state
+            output_pixel_x[8:0] <= 0;
+            output_pixel_y[8:0] <= 0;
 
-        case(output_state[3:0])
-            IDLE: begin
-                if(PPU_start) begin
-                    output_state <= START;
-                    output_pixel_x[8:0] <= 0;
-                    output_pixel_y[8:0] <= 0;
-                end
-                else begin
-                    output_state <= IDLE;
-                end
-            end
-            START: begin
-                if(Frame_End) begin
-                    output_pixel_x[8:0] <= 0;
-                    output_pixel_y[8:0] <= 0;
-                end
-            end
-        endcase
+            //font_state
+            counter_font_x[5:0] <= 0;
+            counter_0_39[5:0] <= 0;
+            counter_0_14[5:0] <= 0;
+            counter_0_15[3:0] <= 0;
 
-        case(font_state[3:0])
-            IDLE: begin
-                if(PPU_start) begin
-                    font_state[3:0] <= START;
+            fontmap_skid_data[15:0] <= 0;
+            fontmap_skid_valid <= 0;
+            ascii_bitmap_skid_data[7:0] <= 0;
+            ascii_bitmap_skid_valid <= 0;
+            korea_bitmap_skid_data[15:0] <= 0;
+            korea_bitmap_skid_valid <= 0;
+            custom_tile_bitmap_skid_data[7:0] <= 0;
+            custom_tile_bitmap_skid_valid <= 0;
 
-                    counter_font_x[5:0] <= 0;
-                    counter_0_39[5:0] <= 0;
-                    counter_0_14[5:0] <= 0;
-                    counter_0_15[3:0] <= 0;
+            pipe1_valid <= 0;
+            pipe1_counter_16[3:0] <= 0;
+            pipe1_font_x[5:0] <= 0;
+            pipe1_font_y[5:0] <= 0;
+            pipe1_next_line <= 0;
+            pipe2_valid <= 0;
+            pipe2_mask[3:0] <= 0;
+            pipe2_font_x[5:0] <= 0;
+            pipe2_font_y[5:0] <= 0;
+            pipe2_counter_16[3:0] <= 0;
+            pipe2_next_line <= 0;
+            pipe3_valid <= 0;
+            pipe3_UTF16[15:0] <= 0;
+            pipe3_font_x[5:0] <= 0;
+            pipe3_font_y[5:0] <= 0;
+            pipe3_counter_16[3:0] <= 0;
+            pipe3_next_line <= 0;
+            pipe4_valid <= 0;
+            pipe4_UTF16[15:0] <= 0;
+            pipe4_is_korea <= 0;
+            pipe4_is_ascii <= 0;
+            pipe4_is_custom <= 0;
+            pipe4_jung_sung_index[4:0] <= 0;
+            pipe4_chong_sung_index[4:0] <= 0;
+            pipe4_cho_sung_index[4:0] <= 0;
+            pipe4_font_x[5:0] <= 0;
+            pipe4_font_y[5:0] <= 0;
+            pipe4_counter_16[3:0] <= 0;
+            pipe4_next_line <= 0;
+            pipe5_valid <= 0;
+            pipe5_mask[3:0] <= 0;
+            pipe5_cho_sung_what_bram <= 0;
+            pipe5_custom_what_bram <= 0;
+            pipe5_is_korea <= 0;
+            pipe5_is_ascii <= 0;
+            pipe5_is_custom <= 0;
+            pipe5_font_x[5:0] <= 0;
+            pipe5_font_y[5:0] <= 0;
+            pipe5_counter_16[3:0] <= 0;
+            pipe5_next_line <= 0;
+            pipe6_valid <= 0;
+            pipe6_is_korea <= 0;
+            pipe6_is_ascii <= 0;
+            pipe6_is_custom <= 0;
+            pipe6_korea_font_bitmap[15:0] <= 0;
+            pipe6_ascii_font_bitmap[7:0] <= 0;
+            pipe6_custom_tile_bitmap[7:0] <= 0;
+            pipe6_font_x[5:0] <= 0;
+            pipe6_font_y[5:0] <= 0;
+            pipe6_counter_16[3:0] <= 0;
+            pipe6_next_line <= 0;
+        end
+        else if (Frame_End) begin
+            pixel_state[3:0]  <= IDLE;
+            output_state[3:0] <= IDLE;
+            font_state[3:0]   <= IDLE;
 
-                    fontmap_skid_data[15:0] <= 0;
-                    fontmap_skid_valid <= 0;
-                    ascii_bitmap_skid_data[7:0] <= 0;
-                    ascii_bitmap_skid_valid <= 0;
-                    korea_bitmap_skid_data[15:0] <= 0;
-                    korea_bitmap_skid_valid <= 0;
-                    custom_tile_bitmap_skid_data[7:0] <= 0;
-                    custom_tile_bitmap_skid_valid <= 0;
+            //pixel_state
+            RGB_1_reg[17:0] <= 0;
+            RGB_1_reg_valid <= 0;
+            RGB_2_reg[17:0] <= 0;
+            RGB_2_reg_valid <= 0;
+            RGB_3_reg[17:0] <= 0;
+            RGB_3_reg_valid <= 0;
+            RGB_4_reg[17:0] <= 0;
+            RGB_4_reg_valid <= 0;
+            RGB_5_reg[17:0] <= 0;
+            RGB_5_reg_valid <= 0;
+            RGB_6_reg[17:0] <= 0;
+            RGB_6_reg_valid <= 0;
+            RGB_7_reg[17:0] <= 0;
+            RGB_7_reg_valid <= 0;
+            RGB_8_reg[17:0] <= 0;
+            RGB_8_reg_valid <= 0;
+            mixed_RGB_1[17:0] <= 0;
+            mixed_RGB_1_valid <= 0;
+            mixed_RGB_2[17:0] <= 0;
+            mixed_RGB_2_valid <= 0;
+            mixed_RGB_3[17:0] <= 0;
+            mixed_RGB_3_valid <= 0;
+            mixed_RGB_4[17:0] <= 0;
+            mixed_RGB_4_valid <= 0;
+            mixed_RGB_5[17:0] <= 0;
+            mixed_RGB_5_valid <= 0;
+            mixed_RGB_6[17:0] <= 0;
+            mixed_RGB_6_valid <= 0;
+            mixed_RGB_7[17:0] <= 0;
+            mixed_RGB_7_valid <= 0;
+            mixed_RGB_8[17:0] <= 0;
+            mixed_RGB_8_valid <= 0;
 
-                    pipe1_valid <= 0;
-                    pipe1_counter_16[3:0] <= 0;
-                    pipe1_font_x[5:0] <= 0;
-                    pipe1_font_y[5:0] <= 0;
-                    pipe1_next_line <= 0;
-                    pipe2_valid <= 0;
-                    pipe2_mask[3:0] <= 0;
-                    pipe2_font_x[5:0] <= 0;
-                    pipe2_font_y[5:0] <= 0;
-                    pipe2_counter_16[3:0] <= 0;
-                    pipe2_next_line <= 0;
-                    pipe3_valid <= 0;
-                    pipe3_UTF16[15:0] <= 0;
-                    pipe3_font_x[5:0] <= 0;
-                    pipe3_font_y[5:0] <= 0;
-                    pipe3_counter_16[3:0] <= 0;
-                    pipe3_next_line <= 0;
-                    pipe4_valid <= 0;
-                    pipe4_UTF16[15:0] <= 0;
-                    pipe4_is_korea <= 0;
-                    pipe4_is_ascii <= 0;
-                    pipe4_is_custom <= 0;
-                    pipe4_jung_sung_index[4:0] <= 0;
-                    pipe4_chong_sung_index[4:0] <= 0;
-                    pipe4_cho_sung_index[4:0] <= 0;
-                    pipe4_font_x[5:0] <= 0;
-                    pipe4_font_y[5:0] <= 0;
-                    pipe4_counter_16[3:0] <= 0;
-                    pipe4_next_line <= 0;
-                    pipe5_valid <= 0;
-                    pipe5_mask[3:0] <= 0;
-                    pipe5_cho_sung_what_bram <= 0;
-                    pipe5_custom_what_bram <= 0;
-                    pipe5_is_korea <= 0;
-                    pipe5_is_ascii <= 0;
-                    pipe5_is_custom <= 0;
-                    pipe5_font_x[5:0] <= 0;
-                    pipe5_font_y[5:0] <= 0;
-                    pipe5_counter_16[3:0] <= 0;
-                    pipe5_next_line <= 0;
-                    pipe6_valid <= 0;
-                    pipe6_is_korea <= 0;
-                    pipe6_is_ascii <= 0;
-                    pipe6_is_custom <= 0;
-                    pipe6_korea_font_bitmap[15:0] <= 0;
-                    pipe6_ascii_font_bitmap[7:0] <= 0;
-                    pipe6_custom_tile_bitmap[7:0] <= 0;
-                    pipe6_font_x[5:0] <= 0;
-                    pipe6_font_y[5:0] <= 0;
-                    pipe6_counter_16[3:0] <= 0;
-                    pipe6_next_line <= 0;
-                end
-                else begin
-                    font_state[3:0] <= IDLE;
-                end
-            end
-            START: begin
-                if(Frame_End) begin
+            //output_state
+            output_pixel_x[8:0] <= 0;
+            output_pixel_y[8:0] <= 0;
 
-                    counter_font_x[5:0] <= 0;
-                    counter_0_39[5:0] <= 0;
-                    counter_0_14[5:0] <= 0;
-                    counter_0_15[3:0] <= 0;
+            //font_state
+            counter_font_x[5:0] <= 0;
+            counter_0_39[5:0] <= 0;
+            counter_0_14[5:0] <= 0;
+            counter_0_15[3:0] <= 0;
 
-                    fontmap_skid_data[15:0] <= 0;
-                    fontmap_skid_valid <= 0;
-                    ascii_bitmap_skid_data[7:0] <= 0;
-                    ascii_bitmap_skid_valid <= 0;
-                    korea_bitmap_skid_data[15:0] <= 0;
-                    korea_bitmap_skid_valid <= 0;
-                    custom_tile_bitmap_skid_data[7:0] <= 0;
-                    custom_tile_bitmap_skid_valid <= 0;
+            fontmap_skid_data[15:0] <= 0;
+            fontmap_skid_valid <= 0;
+            ascii_bitmap_skid_data[7:0] <= 0;
+            ascii_bitmap_skid_valid <= 0;
+            korea_bitmap_skid_data[15:0] <= 0;
+            korea_bitmap_skid_valid <= 0;
+            custom_tile_bitmap_skid_data[7:0] <= 0;
+            custom_tile_bitmap_skid_valid <= 0;
 
-                    pipe1_valid <= 0;
-                    pipe1_counter_16[3:0] <= 0;
-                    pipe1_font_x[5:0] <= 0;
-                    pipe1_font_y[5:0] <= 0;
-                    pipe1_next_line <= 0;
-                    pipe2_valid <= 0;
-                    pipe2_mask[3:0] <= 0;
-                    pipe2_font_x[5:0] <= 0;
-                    pipe2_font_y[5:0] <= 0;
-                    pipe2_counter_16[3:0] <= 0;
-                    pipe2_next_line <= 0;
-                    pipe3_valid <= 0;
-                    pipe3_UTF16[15:0] <= 0;
-                    pipe3_font_x[5:0] <= 0;
-                    pipe3_font_y[5:0] <= 0;
-                    pipe3_counter_16[3:0] <= 0;
-                    pipe3_next_line <= 0;
-                    pipe4_valid <= 0;
-                    pipe4_UTF16[15:0] <= 0;
-                    pipe4_is_korea <= 0;
-                    pipe4_is_ascii <= 0;
-                    pipe4_is_custom <= 0;
-                    pipe4_jung_sung_index[4:0] <= 0;
-                    pipe4_chong_sung_index[4:0] <= 0;
-                    pipe4_cho_sung_index[4:0] <= 0;
-                    pipe4_font_x[5:0] <= 0;
-                    pipe4_font_y[5:0] <= 0;
-                    pipe4_counter_16[3:0] <= 0;
-                    pipe4_next_line <= 0;
-                    pipe5_valid <= 0;
-                    pipe5_mask[3:0] <= 0;
-                    pipe5_cho_sung_what_bram <= 0;
-                    pipe5_custom_what_bram <= 0;
-                    pipe5_is_korea <= 0;
-                    pipe5_is_ascii <= 0;
-                    pipe5_is_custom <= 0;
-                    pipe5_font_x[5:0] <= 0;
-                    pipe5_font_y[5:0] <= 0;
-                    pipe5_counter_16[3:0] <= 0;
-                    pipe5_next_line <= 0;
-                    pipe6_valid <= 0;
-                    pipe6_is_korea <= 0;
-                    pipe6_is_ascii <= 0;
-                    pipe6_is_custom <= 0;
-                    pipe6_korea_font_bitmap[15:0] <= 0;
-                    pipe6_ascii_font_bitmap[7:0] <= 0;
-                    pipe6_custom_tile_bitmap[7:0] <= 0;
-                    pipe6_font_x[5:0] <= 0;
-                    pipe6_font_y[5:0] <= 0;
-                    pipe6_counter_16[3:0] <= 0;
-                    pipe6_next_line <= 0;
-                end
-            end
-        endcase
+            pipe1_valid <= 0;
+            pipe1_counter_16[3:0] <= 0;
+            pipe1_font_x[5:0] <= 0;
+            pipe1_font_y[5:0] <= 0;
+            pipe1_next_line <= 0;
+            pipe2_valid <= 0;
+            pipe2_mask[3:0] <= 0;
+            pipe2_font_x[5:0] <= 0;
+            pipe2_font_y[5:0] <= 0;
+            pipe2_counter_16[3:0] <= 0;
+            pipe2_next_line <= 0;
+            pipe3_valid <= 0;
+            pipe3_UTF16[15:0] <= 0;
+            pipe3_font_x[5:0] <= 0;
+            pipe3_font_y[5:0] <= 0;
+            pipe3_counter_16[3:0] <= 0;
+            pipe3_next_line <= 0;
+            pipe4_valid <= 0;
+            pipe4_UTF16[15:0] <= 0;
+            pipe4_is_korea <= 0;
+            pipe4_is_ascii <= 0;
+            pipe4_is_custom <= 0;
+            pipe4_jung_sung_index[4:0] <= 0;
+            pipe4_chong_sung_index[4:0] <= 0;
+            pipe4_cho_sung_index[4:0] <= 0;
+            pipe4_font_x[5:0] <= 0;
+            pipe4_font_y[5:0] <= 0;
+            pipe4_counter_16[3:0] <= 0;
+            pipe4_next_line <= 0;
+            pipe5_valid <= 0;
+            pipe5_mask[3:0] <= 0;
+            pipe5_cho_sung_what_bram <= 0;
+            pipe5_custom_what_bram <= 0;
+            pipe5_is_korea <= 0;
+            pipe5_is_ascii <= 0;
+            pipe5_is_custom <= 0;
+            pipe5_font_x[5:0] <= 0;
+            pipe5_font_y[5:0] <= 0;
+            pipe5_counter_16[3:0] <= 0;
+            pipe5_next_line <= 0;
+            pipe6_valid <= 0;
+            pipe6_is_korea <= 0;
+            pipe6_is_ascii <= 0;
+            pipe6_is_custom <= 0;
+            pipe6_korea_font_bitmap[15:0] <= 0;
+            pipe6_ascii_font_bitmap[7:0] <= 0;
+            pipe6_custom_tile_bitmap[7:0] <= 0;
+            pipe6_font_x[5:0] <= 0;
+            pipe6_font_y[5:0] <= 0;
+            pipe6_counter_16[3:0] <= 0;
+            pipe6_next_line <= 0;
+        end
     end
 end
 

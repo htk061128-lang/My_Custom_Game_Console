@@ -69,8 +69,11 @@ module Addr_Decoder(
 
     //각종 PPU 제어 레지스터들
     input wire [7:0] joypad_state,
+    input Frame_End,
+
     output wire joypad_irq,
     output wire PPU_start,
+    output wire ppu_irq, //PPU가 프레임을 완성했을때 CPU에 인터럽트 신호를 보내기 위한 신호. (PPU가 프레임을 완성했음을 CPU에 알림)
     output wire [31:0] o_bg1_addr,    output wire [31:0] o_bg2_addr,
     output wire [31:0] o_chr1_addr,   output wire [31:0] o_chr2_addr,
     output wire [31:0] o_chr3_addr,   output wire [31:0] o_chr4_addr,
@@ -140,8 +143,14 @@ reg sampling_font_map_w;
 reg sampling_lut_w;
 reg sampling_ppu_reg_r;
 reg sampling_ppu_reg_w;
+
 reg joypad_irq_pending;
 reg [7:0] joypad_state_latched;
+
+reg ppu_irq_pending;
+reg ppu_is_busy;
+reg frame_end_latched;
+reg ppu_start_latched;
 
 
 // --- PPU 제어 레지스터들 구현 ---
@@ -178,7 +187,9 @@ assign o_line_alpha_0_7 = ppu_regs[39];
 assign o_line_alpha_8_14 = ppu_regs[40];
 assign o_ppu_start = ppu_regs[41];
 assign PPU_start = ppu_regs[41][0];
+
 assign joypad_irq = joypad_irq_pending;
+assign ppu_irq = ppu_irq_pending;
 
 always @(*) begin
     main_state_next = main_state;
@@ -259,8 +270,11 @@ always @(*) begin
         else if (sampling_bram13_r)   EMEM_rdata = BRAM13_dout_b;
         else if (sampling_font_map_r) EMEM_rdata = BRAM14_dout_b;
         else if (sampling_ppu_reg_r) begin
-            if (EMEM_addr[9:2] == 42) begin
-                EMEM_rdata = {23'd0, joypad_irq_pending, joypad_state};
+            if (EMEM_addr[9:2] == 43) begin
+                EMEM_rdata = {30'd0, ppu_irq_pending, ppu_is_busy};
+            end
+            else if (EMEM_addr[9:2] == 42) begin
+                EMEM_rdata = {23'd0, joypad_irq_pending, joypad_state_latched};
             end
             else if (EMEM_addr[9:2] <= 41) EMEM_rdata = ppu_regs[EMEM_addr[9:2]];
             else EMEM_rdata = 32'b0;
@@ -290,26 +304,54 @@ always @(posedge clk or negedge resetn) begin
         sampling_lut_w <= 0;
         sampling_ppu_reg_r <= 0;
         sampling_ppu_reg_w <= 0;
+
         joypad_irq_pending <= 1'b0;
         joypad_state_latched <= 8'd0;
+
+        ppu_irq_pending <= 1'b0; //ppu_irq로 바로 연결됨.
+        ppu_is_busy <= 1'b0;
+        frame_end_latched <= 1'b0;
+        ppu_start_latched <= 1'b0;
     end
     else begin
         main_state <= main_state_next;
-        // 0 -> 1로 변한 비트가 하나라도 있는지 감지 (Rising Edge만 감지)
+
+        // --- 1. Joypad Edge Detection & IRQ Logic ---
+        joypad_state_latched <= joypad_state;
         if ((joypad_state & ~joypad_state_latched) != 8'd0) begin
+            // 버튼이 새롭게 눌린 경우 (Rising Edge) -> 최우선 Set
             joypad_irq_pending <= 1'b1;
         end
-        joypad_state_latched <= joypad_state;
+        else if (EMEM_valid && sel_ppu_reg && (EMEM_wstrb == 4'b0000) && (main_state == IDLE) && (EMEM_addr[9:2] == 42)) begin
+            // CPU가 Joypad(42) 레지스터를 읽은 경우 -> Clear
+            joypad_irq_pending <= 1'b0;
+        end
+
+
+        // --- 2. PPU Frame End / Start Edge Detection & IRQ Logic ---
+        frame_end_latched <= Frame_End;
+        ppu_start_latched <= PPU_start;
+        
+        if (PPU_start && !ppu_start_latched) begin
+            // PPU_Start가 1로 올라간 순간 (Rising Edge) -> 렌더링 시작
+            ppu_is_busy <= 1'b1;
+            ppu_irq_pending <= 1'b0; // 안전을 위해 시작 시 기존 IRQ 지움
+        end
+        else if (Frame_End && !frame_end_latched) begin
+            // Frame_End 펄스 도달 (Rising Edge) -> 렌더링 종료
+            ppu_is_busy <= 1'b0;
+            ppu_irq_pending <= 1'b1; // 프레임 완료 인터럽트 발생
+        end
+        else if (EMEM_valid && sel_ppu_reg && (EMEM_wstrb == 4'b0000) && (main_state == IDLE) && (EMEM_addr[9:2] == 43)) begin
+            // CPU가 PPU_STAT(43) 레지스터를 읽은 경우 -> Clear
+            ppu_irq_pending <= 1'b0;
+        end
 
         // PPU Register Write Logic (쓰기 스트로브 확인)
         if (EMEM_valid && sel_ppu_reg && (EMEM_wstrb != 4'b0000) && (main_state == IDLE)) begin
             // 주소의 하위 비트 [7:2]를 사용하여 워드 오프셋 계산
             if(EMEM_addr[9:2] <= 41) ppu_regs[EMEM_addr[9:2]] <= EMEM_wdata; //범위 안에 들어갈때만 쓰기가 일어나야 함. 없는 레지스터에 쓸수는 없음.
             else ;
-        end
-
-        if (EMEM_valid && sel_ppu_reg && (EMEM_wstrb == 4'b0000) && (main_state == IDLE) && (EMEM_addr[9:2] == 42)) begin
-            joypad_irq_pending <= 1'b0;
         end
 
         if (EMEM_valid && (EMEM_wstrb == 4'b0000) && main_state == IDLE) begin //읽기 신호 샘플링

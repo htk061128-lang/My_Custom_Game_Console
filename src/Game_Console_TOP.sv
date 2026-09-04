@@ -10,6 +10,7 @@ module Game_Console_TOP #(
     input resetn,
     input [7:0] joypad_state_in,
     output joypad_irq,
+    output ppu_irq,
 
     output DDR3_CPU_valid,
     input DDR3_CPU_ready,
@@ -90,7 +91,7 @@ wire cpu_trap;
 wire cpu_pcpi_wr, cpu_pcpi_wait, cpu_pcpi_ready;
 wire [31:0] cpu_pcpi_rd;
 wire [31:0] cpu_irq;
-assign cpu_irq = {31'b0, joypad_irq};
+assign cpu_irq = {30'b0, ppu_irq, joypad_irq};
 assign cpu_pcpi_wr = 1'b0;
 assign cpu_pcpi_wait = 1'b0;
 assign cpu_pcpi_ready = 1'b0;
@@ -165,7 +166,7 @@ Addr_Decoder #(
     .FONT_DATA_BASE(FONT_DATA_BASE), .LOOKUP_TABLE_BASE(LOOKUP_TABLE_BASE)
 ) u_addr_decoder (
     .clk(clk), .resetn(resetn),
-    .joypad_state(joypad_state_in), .joypad_irq(joypad_irq),
+    .joypad_state(joypad_state_in), .joypad_irq(joypad_irq), .Frame_End(Font_Frame_End), .ppu_irq(ppu_irq),
     .EMEM_valid(cache_emem_valid), .EMEM_ready(dec_emem_ready), .EMEM_addr(cache_emem_addr),
     .EMEM_wdata(cache_emem_wdata), .EMEM_wstrb(cache_emem_wstrb), .EMEM_rdata(dec_emem_rdata),
     .EMEM_burst_len(cache_emem_burst_len), .EMEM_burst_en(cache_emem_burst_en),

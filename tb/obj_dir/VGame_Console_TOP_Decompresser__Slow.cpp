@@ -786,78 +786,6 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
             this->__PVT__compressed_FIFO_reg_counter_reset = 1U;
         }
     }
-    this->__PVT__r_state_next = this->__PVT__r_state;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
-                                      ? 1U : 0U);
-    } else {
-        if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((IData)(this->__PVT__w_end_req)
-                                          ? 2U : ((
-                                                   (0U 
-                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
-                                                   & (((1U 
-                                                        == (IData)(this->__PVT__r_state)) 
-                                                       & (0U 
-                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count))) 
-                                                      & (0U 
-                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
-                                                   ? 6U
-                                                   : 1U));
-        } else {
-            if ((6U == (IData)(this->__PVT__r_state))) {
-                this->__PVT__r_state_next = 7U;
-                if (this->__PVT__w_end_req) {
-                    this->__PVT__r_state_next = 2U;
-                }
-            } else {
-                if ((7U == (IData)(this->__PVT__r_state))) {
-                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
-                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
-                        this->__PVT__r_state_next = 
-                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                       ? 7U : ((2U 
-                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                ? 7U
-                                                : (
-                                                   (3U 
-                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                    ? 7U
-                                                    : 
-                                                   ((4U 
-                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                     ? 7U
-                                                     : 
-                                                    ((5U 
-                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                      ? 7U
-                                                      : 
-                                                     ((6U 
-                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                       ? 7U
-                                                       : 
-                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
-                                                        ? 1U
-                                                        : 7U))))))));
-                    }
-                    if (this->__PVT__w_end_req) {
-                        this->__PVT__r_state_next = 2U;
-                    }
-                } else {
-                    if ((2U == (IData)(this->__PVT__r_state))) {
-                        this->__PVT__r_state_next = 0U;
-                    }
-                }
-            }
-        }
-    }
     this->__PVT__decompressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__w_state))) {
         if (vlTOPp->Game_Console_TOP__DOT__PPU_start) {
@@ -1041,6 +969,78 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__r_state_next = this->__PVT__r_state;
+    if ((0U == (IData)(this->__PVT__r_state))) {
+        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
+                                      ? 1U : 0U);
+    } else {
+        if ((1U == (IData)(this->__PVT__r_state))) {
+            this->__PVT__r_state_next = ((IData)(this->__PVT__w_end_req)
+                                          ? 2U : ((
+                                                   (0U 
+                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
+                                                   & (((1U 
+                                                        == (IData)(this->__PVT__r_state)) 
+                                                       & (0U 
+                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni1_fifo_count))) 
+                                                      & (0U 
+                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
+                                                   ? 6U
+                                                   : 1U));
+        } else {
+            if ((6U == (IData)(this->__PVT__r_state))) {
+                this->__PVT__r_state_next = 7U;
+                if (this->__PVT__w_end_req) {
+                    this->__PVT__r_state_next = 2U;
+                }
+            } else {
+                if ((7U == (IData)(this->__PVT__r_state))) {
+                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
+                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
+                        this->__PVT__r_state_next = 
+                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                       ? 7U : ((2U 
+                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                ? 7U
+                                                : (
+                                                   (3U 
+                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                    ? 7U
+                                                    : 
+                                                   ((4U 
+                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                     ? 7U
+                                                     : 
+                                                    ((5U 
+                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                      ? 7U
+                                                      : 
+                                                     ((6U 
+                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                       ? 7U
+                                                       : 
+                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
+                                                        ? 1U
+                                                        : 7U))))))));
+                    }
+                    if (this->__PVT__w_end_req) {
+                        this->__PVT__r_state_next = 2U;
+                    }
+                } else {
+                    if ((2U == (IData)(this->__PVT__r_state))) {
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
@@ -1842,78 +1842,6 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
             this->__PVT__compressed_FIFO_reg_counter_reset = 1U;
         }
     }
-    this->__PVT__r_state_next = this->__PVT__r_state;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
-                                      ? 1U : 0U);
-    } else {
-        if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((IData)(this->__PVT__w_end_req)
-                                          ? 2U : ((
-                                                   (1U 
-                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
-                                                   & (((1U 
-                                                        == (IData)(this->__PVT__r_state)) 
-                                                       & (0U 
-                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count))) 
-                                                      & (1U 
-                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
-                                                   ? 6U
-                                                   : 1U));
-        } else {
-            if ((6U == (IData)(this->__PVT__r_state))) {
-                this->__PVT__r_state_next = 7U;
-                if (this->__PVT__w_end_req) {
-                    this->__PVT__r_state_next = 2U;
-                }
-            } else {
-                if ((7U == (IData)(this->__PVT__r_state))) {
-                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
-                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
-                        this->__PVT__r_state_next = 
-                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                       ? 7U : ((2U 
-                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                ? 7U
-                                                : (
-                                                   (3U 
-                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                    ? 7U
-                                                    : 
-                                                   ((4U 
-                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                     ? 7U
-                                                     : 
-                                                    ((5U 
-                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                      ? 7U
-                                                      : 
-                                                     ((6U 
-                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                       ? 7U
-                                                       : 
-                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
-                                                        ? 1U
-                                                        : 7U))))))));
-                    }
-                    if (this->__PVT__w_end_req) {
-                        this->__PVT__r_state_next = 2U;
-                    }
-                } else {
-                    if ((2U == (IData)(this->__PVT__r_state))) {
-                        this->__PVT__r_state_next = 0U;
-                    }
-                }
-            }
-        }
-    }
     this->__PVT__decompressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__w_state))) {
         if (vlTOPp->Game_Console_TOP__DOT__PPU_start) {
@@ -2097,6 +2025,78 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__r_state_next = this->__PVT__r_state;
+    if ((0U == (IData)(this->__PVT__r_state))) {
+        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
+                                      ? 1U : 0U);
+    } else {
+        if ((1U == (IData)(this->__PVT__r_state))) {
+            this->__PVT__r_state_next = ((IData)(this->__PVT__w_end_req)
+                                          ? 2U : ((
+                                                   (1U 
+                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
+                                                   & (((1U 
+                                                        == (IData)(this->__PVT__r_state)) 
+                                                       & (0U 
+                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__uni2_fifo_count))) 
+                                                      & (1U 
+                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
+                                                   ? 6U
+                                                   : 1U));
+        } else {
+            if ((6U == (IData)(this->__PVT__r_state))) {
+                this->__PVT__r_state_next = 7U;
+                if (this->__PVT__w_end_req) {
+                    this->__PVT__r_state_next = 2U;
+                }
+            } else {
+                if ((7U == (IData)(this->__PVT__r_state))) {
+                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
+                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
+                        this->__PVT__r_state_next = 
+                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                       ? 7U : ((2U 
+                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                ? 7U
+                                                : (
+                                                   (3U 
+                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                    ? 7U
+                                                    : 
+                                                   ((4U 
+                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                     ? 7U
+                                                     : 
+                                                    ((5U 
+                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                      ? 7U
+                                                      : 
+                                                     ((6U 
+                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                       ? 7U
+                                                       : 
+                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
+                                                        ? 1U
+                                                        : 7U))))))));
+                    }
+                    if (this->__PVT__w_end_req) {
+                        this->__PVT__r_state_next = 2U;
+                    }
+                } else {
+                    if ((2U == (IData)(this->__PVT__r_state))) {
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
@@ -2900,78 +2900,6 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
             this->__PVT__compressed_FIFO_reg_counter_reset = 1U;
         }
     }
-    this->__PVT__r_state_next = this->__PVT__r_state;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
-                                      ? 1U : 0U);
-    } else {
-        if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((IData)(this->__PVT__w_end_req)
-                                          ? 2U : ((
-                                                   (2U 
-                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
-                                                   & (((1U 
-                                                        == (IData)(this->__PVT__r_state)) 
-                                                       & (0U 
-                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count))) 
-                                                      & (2U 
-                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
-                                                   ? 6U
-                                                   : 1U));
-        } else {
-            if ((6U == (IData)(this->__PVT__r_state))) {
-                this->__PVT__r_state_next = 7U;
-                if (this->__PVT__w_end_req) {
-                    this->__PVT__r_state_next = 2U;
-                }
-            } else {
-                if ((7U == (IData)(this->__PVT__r_state))) {
-                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
-                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
-                        this->__PVT__r_state_next = 
-                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                       ? 7U : ((2U 
-                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                ? 7U
-                                                : (
-                                                   (3U 
-                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                    ? 7U
-                                                    : 
-                                                   ((4U 
-                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                     ? 7U
-                                                     : 
-                                                    ((5U 
-                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                      ? 7U
-                                                      : 
-                                                     ((6U 
-                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                       ? 7U
-                                                       : 
-                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
-                                                        ? 1U
-                                                        : 7U))))))));
-                    }
-                    if (this->__PVT__w_end_req) {
-                        this->__PVT__r_state_next = 2U;
-                    }
-                } else {
-                    if ((2U == (IData)(this->__PVT__r_state))) {
-                        this->__PVT__r_state_next = 0U;
-                    }
-                }
-            }
-        }
-    }
     this->__PVT__decompressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__w_state))) {
         if (vlTOPp->Game_Console_TOP__DOT__PPU_start) {
@@ -3155,6 +3083,78 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__r_state_next = this->__PVT__r_state;
+    if ((0U == (IData)(this->__PVT__r_state))) {
+        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
+                                      ? 1U : 0U);
+    } else {
+        if ((1U == (IData)(this->__PVT__r_state))) {
+            this->__PVT__r_state_next = ((IData)(this->__PVT__w_end_req)
+                                          ? 2U : ((
+                                                   (2U 
+                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
+                                                   & (((1U 
+                                                        == (IData)(this->__PVT__r_state)) 
+                                                       & (0U 
+                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_count))) 
+                                                      & (2U 
+                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
+                                                   ? 6U
+                                                   : 1U));
+        } else {
+            if ((6U == (IData)(this->__PVT__r_state))) {
+                this->__PVT__r_state_next = 7U;
+                if (this->__PVT__w_end_req) {
+                    this->__PVT__r_state_next = 2U;
+                }
+            } else {
+                if ((7U == (IData)(this->__PVT__r_state))) {
+                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
+                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
+                        this->__PVT__r_state_next = 
+                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                       ? 7U : ((2U 
+                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                ? 7U
+                                                : (
+                                                   (3U 
+                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                    ? 7U
+                                                    : 
+                                                   ((4U 
+                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                     ? 7U
+                                                     : 
+                                                    ((5U 
+                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                      ? 7U
+                                                      : 
+                                                     ((6U 
+                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                       ? 7U
+                                                       : 
+                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
+                                                        ? 1U
+                                                        : 7U))))))));
+                    }
+                    if (this->__PVT__w_end_req) {
+                        this->__PVT__r_state_next = 2U;
+                    }
+                } else {
+                    if ((2U == (IData)(this->__PVT__r_state))) {
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
@@ -3958,78 +3958,6 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
             this->__PVT__compressed_FIFO_reg_counter_reset = 1U;
         }
     }
-    this->__PVT__r_state_next = this->__PVT__r_state;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
-                                      ? 1U : 0U);
-    } else {
-        if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((IData)(this->__PVT__w_end_req)
-                                          ? 2U : ((
-                                                   (3U 
-                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
-                                                   & (((1U 
-                                                        == (IData)(this->__PVT__r_state)) 
-                                                       & (0U 
-                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count))) 
-                                                      & (3U 
-                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
-                                                   ? 6U
-                                                   : 1U));
-        } else {
-            if ((6U == (IData)(this->__PVT__r_state))) {
-                this->__PVT__r_state_next = 7U;
-                if (this->__PVT__w_end_req) {
-                    this->__PVT__r_state_next = 2U;
-                }
-            } else {
-                if ((7U == (IData)(this->__PVT__r_state))) {
-                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
-                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
-                        this->__PVT__r_state_next = 
-                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                       ? 7U : ((2U 
-                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                ? 7U
-                                                : (
-                                                   (3U 
-                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                    ? 7U
-                                                    : 
-                                                   ((4U 
-                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                     ? 7U
-                                                     : 
-                                                    ((5U 
-                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                      ? 7U
-                                                      : 
-                                                     ((6U 
-                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                       ? 7U
-                                                       : 
-                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
-                                                        ? 1U
-                                                        : 7U))))))));
-                    }
-                    if (this->__PVT__w_end_req) {
-                        this->__PVT__r_state_next = 2U;
-                    }
-                } else {
-                    if ((2U == (IData)(this->__PVT__r_state))) {
-                        this->__PVT__r_state_next = 0U;
-                    }
-                }
-            }
-        }
-    }
     this->__PVT__decompressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__w_state))) {
         if (vlTOPp->Game_Console_TOP__DOT__PPU_start) {
@@ -4213,6 +4141,78 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__r_state_next = this->__PVT__r_state;
+    if ((0U == (IData)(this->__PVT__r_state))) {
+        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
+                                      ? 1U : 0U);
+    } else {
+        if ((1U == (IData)(this->__PVT__r_state))) {
+            this->__PVT__r_state_next = ((IData)(this->__PVT__w_end_req)
+                                          ? 2U : ((
+                                                   (3U 
+                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
+                                                   & (((1U 
+                                                        == (IData)(this->__PVT__r_state)) 
+                                                       & (0U 
+                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_count))) 
+                                                      & (3U 
+                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
+                                                   ? 6U
+                                                   : 1U));
+        } else {
+            if ((6U == (IData)(this->__PVT__r_state))) {
+                this->__PVT__r_state_next = 7U;
+                if (this->__PVT__w_end_req) {
+                    this->__PVT__r_state_next = 2U;
+                }
+            } else {
+                if ((7U == (IData)(this->__PVT__r_state))) {
+                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
+                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
+                        this->__PVT__r_state_next = 
+                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                       ? 7U : ((2U 
+                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                ? 7U
+                                                : (
+                                                   (3U 
+                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                    ? 7U
+                                                    : 
+                                                   ((4U 
+                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                     ? 7U
+                                                     : 
+                                                    ((5U 
+                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                      ? 7U
+                                                      : 
+                                                     ((6U 
+                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                       ? 7U
+                                                       : 
+                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
+                                                        ? 1U
+                                                        : 7U))))))));
+                    }
+                    if (this->__PVT__w_end_req) {
+                        this->__PVT__r_state_next = 2U;
+                    }
+                } else {
+                    if ((2U == (IData)(this->__PVT__r_state))) {
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
@@ -5014,78 +5014,6 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
             this->__PVT__compressed_FIFO_reg_counter_reset = 1U;
         }
     }
-    this->__PVT__r_state_next = this->__PVT__r_state;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
-                                      ? 1U : 0U);
-    } else {
-        if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
-                                          ? 2U : ((
-                                                   (0U 
-                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
-                                                   & (((1U 
-                                                        == (IData)(this->__PVT__r_state)) 
-                                                       & (0U 
-                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count))) 
-                                                      & (0U 
-                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
-                                                   ? 6U
-                                                   : 1U));
-        } else {
-            if ((6U == (IData)(this->__PVT__r_state))) {
-                this->__PVT__r_state_next = 7U;
-                if (this->__PVT__r_end_req) {
-                    this->__PVT__r_state_next = 2U;
-                }
-            } else {
-                if ((7U == (IData)(this->__PVT__r_state))) {
-                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
-                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
-                        this->__PVT__r_state_next = 
-                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                       ? 7U : ((2U 
-                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                ? 7U
-                                                : (
-                                                   (3U 
-                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                    ? 7U
-                                                    : 
-                                                   ((4U 
-                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                     ? 7U
-                                                     : 
-                                                    ((5U 
-                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                      ? 7U
-                                                      : 
-                                                     ((6U 
-                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                       ? 7U
-                                                       : 
-                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
-                                                        ? 1U
-                                                        : 7U))))))));
-                    }
-                    if (this->__PVT__r_end_req) {
-                        this->__PVT__r_state_next = 2U;
-                    }
-                } else {
-                    if ((2U == (IData)(this->__PVT__r_state))) {
-                        this->__PVT__r_state_next = 0U;
-                    }
-                }
-            }
-        }
-    }
     this->__PVT__decompressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__w_state))) {
         if (vlTOPp->Game_Console_TOP__DOT__PPU_start) {
@@ -5269,6 +5197,78 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__r_state_next = this->__PVT__r_state;
+    if ((0U == (IData)(this->__PVT__r_state))) {
+        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
+                                      ? 1U : 0U);
+    } else {
+        if ((1U == (IData)(this->__PVT__r_state))) {
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
+                                          ? 2U : ((
+                                                   (0U 
+                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
+                                                   & (((1U 
+                                                        == (IData)(this->__PVT__r_state)) 
+                                                       & (0U 
+                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char1_fifo_count))) 
+                                                      & (0U 
+                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
+                                                   ? 6U
+                                                   : 1U));
+        } else {
+            if ((6U == (IData)(this->__PVT__r_state))) {
+                this->__PVT__r_state_next = 7U;
+                if (this->__PVT__r_end_req) {
+                    this->__PVT__r_state_next = 2U;
+                }
+            } else {
+                if ((7U == (IData)(this->__PVT__r_state))) {
+                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
+                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
+                        this->__PVT__r_state_next = 
+                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                       ? 7U : ((2U 
+                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                ? 7U
+                                                : (
+                                                   (3U 
+                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                    ? 7U
+                                                    : 
+                                                   ((4U 
+                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                     ? 7U
+                                                     : 
+                                                    ((5U 
+                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                      ? 7U
+                                                      : 
+                                                     ((6U 
+                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                       ? 7U
+                                                       : 
+                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
+                                                        ? 1U
+                                                        : 7U))))))));
+                    }
+                    if (this->__PVT__r_end_req) {
+                        this->__PVT__r_state_next = 2U;
+                    }
+                } else {
+                    if ((2U == (IData)(this->__PVT__r_state))) {
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
@@ -6072,78 +6072,6 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
             this->__PVT__compressed_FIFO_reg_counter_reset = 1U;
         }
     }
-    this->__PVT__r_state_next = this->__PVT__r_state;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
-                                      ? 1U : 0U);
-    } else {
-        if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
-                                          ? 2U : ((
-                                                   (1U 
-                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
-                                                   & (((1U 
-                                                        == (IData)(this->__PVT__r_state)) 
-                                                       & (0U 
-                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count))) 
-                                                      & (1U 
-                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
-                                                   ? 6U
-                                                   : 1U));
-        } else {
-            if ((6U == (IData)(this->__PVT__r_state))) {
-                this->__PVT__r_state_next = 7U;
-                if (this->__PVT__r_end_req) {
-                    this->__PVT__r_state_next = 2U;
-                }
-            } else {
-                if ((7U == (IData)(this->__PVT__r_state))) {
-                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
-                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
-                        this->__PVT__r_state_next = 
-                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                       ? 7U : ((2U 
-                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                ? 7U
-                                                : (
-                                                   (3U 
-                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                    ? 7U
-                                                    : 
-                                                   ((4U 
-                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                     ? 7U
-                                                     : 
-                                                    ((5U 
-                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                      ? 7U
-                                                      : 
-                                                     ((6U 
-                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                       ? 7U
-                                                       : 
-                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
-                                                        ? 1U
-                                                        : 7U))))))));
-                    }
-                    if (this->__PVT__r_end_req) {
-                        this->__PVT__r_state_next = 2U;
-                    }
-                } else {
-                    if ((2U == (IData)(this->__PVT__r_state))) {
-                        this->__PVT__r_state_next = 0U;
-                    }
-                }
-            }
-        }
-    }
     this->__PVT__decompressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__w_state))) {
         if (vlTOPp->Game_Console_TOP__DOT__PPU_start) {
@@ -6327,6 +6255,78 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__r_state_next = this->__PVT__r_state;
+    if ((0U == (IData)(this->__PVT__r_state))) {
+        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
+                                      ? 1U : 0U);
+    } else {
+        if ((1U == (IData)(this->__PVT__r_state))) {
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
+                                          ? 2U : ((
+                                                   (1U 
+                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
+                                                   & (((1U 
+                                                        == (IData)(this->__PVT__r_state)) 
+                                                       & (0U 
+                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_count))) 
+                                                      & (1U 
+                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
+                                                   ? 6U
+                                                   : 1U));
+        } else {
+            if ((6U == (IData)(this->__PVT__r_state))) {
+                this->__PVT__r_state_next = 7U;
+                if (this->__PVT__r_end_req) {
+                    this->__PVT__r_state_next = 2U;
+                }
+            } else {
+                if ((7U == (IData)(this->__PVT__r_state))) {
+                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
+                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
+                        this->__PVT__r_state_next = 
+                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                       ? 7U : ((2U 
+                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                ? 7U
+                                                : (
+                                                   (3U 
+                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                    ? 7U
+                                                    : 
+                                                   ((4U 
+                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                     ? 7U
+                                                     : 
+                                                    ((5U 
+                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                      ? 7U
+                                                      : 
+                                                     ((6U 
+                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                       ? 7U
+                                                       : 
+                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
+                                                        ? 1U
+                                                        : 7U))))))));
+                    }
+                    if (this->__PVT__r_end_req) {
+                        this->__PVT__r_state_next = 2U;
+                    }
+                } else {
+                    if ((2U == (IData)(this->__PVT__r_state))) {
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }
@@ -7132,78 +7132,6 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
             this->__PVT__compressed_FIFO_reg_counter_reset = 1U;
         }
     }
-    this->__PVT__r_state_next = this->__PVT__r_state;
-    if ((0U == (IData)(this->__PVT__r_state))) {
-        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
-                                      ? 1U : 0U);
-    } else {
-        if ((1U == (IData)(this->__PVT__r_state))) {
-            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
-                                          ? 2U : ((
-                                                   (2U 
-                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
-                                                   & (((1U 
-                                                        == (IData)(this->__PVT__r_state)) 
-                                                       & (0U 
-                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count))) 
-                                                      & (2U 
-                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
-                                                   ? 6U
-                                                   : 1U));
-        } else {
-            if ((6U == (IData)(this->__PVT__r_state))) {
-                this->__PVT__r_state_next = 7U;
-                if (this->__PVT__r_end_req) {
-                    this->__PVT__r_state_next = 2U;
-                }
-            } else {
-                if ((7U == (IData)(this->__PVT__r_state))) {
-                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
-                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
-                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
-                        this->__PVT__r_state_next = 
-                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                       ? 7U : ((2U 
-                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                ? 7U
-                                                : (
-                                                   (3U 
-                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                    ? 7U
-                                                    : 
-                                                   ((4U 
-                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                     ? 7U
-                                                     : 
-                                                    ((5U 
-                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                      ? 7U
-                                                      : 
-                                                     ((6U 
-                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
-                                                       ? 7U
-                                                       : 
-                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
-                                                        ? 1U
-                                                        : 7U))))))));
-                    }
-                    if (this->__PVT__r_end_req) {
-                        this->__PVT__r_state_next = 2U;
-                    }
-                } else {
-                    if ((2U == (IData)(this->__PVT__r_state))) {
-                        this->__PVT__r_state_next = 0U;
-                    }
-                }
-            }
-        }
-    }
     this->__PVT__decompressed_FIFO_reg_counter_reset = 0U;
     if ((0U == (IData)(this->__PVT__w_state))) {
         if (vlTOPp->Game_Console_TOP__DOT__PPU_start) {
@@ -7387,6 +7315,78 @@ void VGame_Console_TOP_Decompresser::_settle__TOP__Game_Console_TOP__DOT__u_ppu_
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+    this->__PVT__r_state_next = this->__PVT__r_state;
+    if ((0U == (IData)(this->__PVT__r_state))) {
+        this->__PVT__r_state_next = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
+                                      ? 1U : 0U);
+    } else {
+        if ((1U == (IData)(this->__PVT__r_state))) {
+            this->__PVT__r_state_next = ((IData)(this->__PVT__r_end_req)
+                                          ? 2U : ((
+                                                   (2U 
+                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
+                                                   & (((1U 
+                                                        == (IData)(this->__PVT__r_state)) 
+                                                       & (0U 
+                                                          < (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_count))) 
+                                                      & (2U 
+                                                         == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter))))
+                                                   ? 6U
+                                                   : 1U));
+        } else {
+            if ((6U == (IData)(this->__PVT__r_state))) {
+                this->__PVT__r_state_next = 7U;
+                if (this->__PVT__r_end_req) {
+                    this->__PVT__r_state_next = 2U;
+                }
+            } else {
+                if ((7U == (IData)(this->__PVT__r_state))) {
+                    if (((((((((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter)) 
+                               | (1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                              | (2U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                             | (3U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                            | (4U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                           | (5U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                          | (6U == (IData)(this->__PVT__compressed_FIFO_reg_counter))) 
+                         | (7U == (IData)(this->__PVT__compressed_FIFO_reg_counter)))) {
+                        this->__PVT__r_state_next = 
+                            ((0U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                              ? 7U : ((1U == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                       ? 7U : ((2U 
+                                                == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                ? 7U
+                                                : (
+                                                   (3U 
+                                                    == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                    ? 7U
+                                                    : 
+                                                   ((4U 
+                                                     == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                     ? 7U
+                                                     : 
+                                                    ((5U 
+                                                      == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                      ? 7U
+                                                      : 
+                                                     ((6U 
+                                                       == (IData)(this->__PVT__compressed_FIFO_reg_counter))
+                                                       ? 7U
+                                                       : 
+                                                      ((IData)(this->__PVT__compressed_FIFO_r_req)
+                                                        ? 1U
+                                                        : 7U))))))));
+                    }
+                    if (this->__PVT__r_end_req) {
+                        this->__PVT__r_state_next = 2U;
+                    }
+                } else {
+                    if ((2U == (IData)(this->__PVT__r_state))) {
+                        this->__PVT__r_state_next = 0U;
                     }
                 }
             }

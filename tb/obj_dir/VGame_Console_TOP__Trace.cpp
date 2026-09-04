@@ -1664,10 +1664,8 @@ void VGame_Console_TOP::traceChgSub0(void* userp, VerilatedVcd* tracep) {
                                                          >> 0x12U))) 
                                                     >> 0x10U))))),5);
             tracep->chgBit(oldp+1090,(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__is_korea_wire));
-            tracep->chgBit(oldp+1091,(((0x20U <= (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe3_UTF16)) 
-                                       & (0x7eU >= (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe3_UTF16)))));
-            tracep->chgBit(oldp+1092,(((0xe000U <= (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe3_UTF16)) 
-                                       & (0xe0abU >= (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe3_UTF16)))));
+            tracep->chgBit(oldp+1091,(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__is_ascii_wire));
+            tracep->chgBit(oldp+1092,(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__is_custom_wire));
             tracep->chgBit(oldp+1093,(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__do_not_need_mix));
             tracep->chgCData(oldp+1094,(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__organized_alpha_0_4),3);
             tracep->chgIData(oldp+1095,(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__organized_RGB),18);

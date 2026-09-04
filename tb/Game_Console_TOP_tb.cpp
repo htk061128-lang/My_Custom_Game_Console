@@ -100,14 +100,14 @@ int main(int argc, char **argv)
     dut->trace(trace.get(), 0);
     trace->open("Game_Console_TOP_waveform.vcd");
 
-    constexpr uint64_t MAX_TRACE_CLOCKS = 5000;
+    constexpr uint64_t TARGET_TIME = 50000; // TARGET_TIME부터 10000클럭이 vcd파일로 저장됨.
     uint64_t trace_clock_count = 0;
     vluint64_t main_time = 0;
 
     // ==========================================
-    // 1. 메모리 및 BRAM 할당 
+    // 1. 메모리 및 BRAM 할당
     // ==========================================
-    DDR3_Memory ddr3(16777216); //64MB 할당
+    DDR3_Memory ddr3(16777216); // 64MB 할당
     constexpr uint32_t BACKGROUND1_ADDR = 0x01000000;
     constexpr uint32_t BACKGROUND2_ADDR = 0x01200000;
     constexpr uint32_t CHARACTER1_ADDR = 0x01400000;
@@ -286,7 +286,6 @@ int main(int argc, char **argv)
         }
     }
 
-
     // ==========================================
     // 2. SDL2 초기화
     // ==========================================
@@ -437,7 +436,7 @@ int main(int argc, char **argv)
             dut->LUT_data_out2 = lut[dut->LUT_addr_r2];
 
             dut->eval();
-            if (trace_clock_count < MAX_TRACE_CLOCKS)
+            if ((TARGET_TIME < main_time) && (main_time < TARGET_TIME + 10000))
             {
                 trace->dump(main_time++);
             }
@@ -450,6 +449,11 @@ int main(int argc, char **argv)
                 {
                     frame_done = true;
                 }
+            }
+
+            if(dut->Font_Frame_End) 
+            {
+                printf("Frame_End Signal Captured!\n");
             }
 
             static bool cpu_prev_valid = false;
@@ -521,10 +525,15 @@ int main(int argc, char **argv)
             }
 
             dut->eval();
-            if (trace_clock_count < MAX_TRACE_CLOCKS)
+            if ((TARGET_TIME < main_time) && (main_time < TARGET_TIME + 10000))
             {
                 trace->dump(main_time++);
-                trace_clock_count++;
+                if (main_time >= TARGET_TIME + 10000)
+                {
+                    std::cout << "Waveform capture complete. Exiting..." << std::endl;
+                    running = false;
+                    break;
+                }
             }
 
             // 다음 클럭 상승 에지에 주입할 BRAM Read 데이터 버퍼링
@@ -604,7 +613,7 @@ int main(int argc, char **argv)
             SDL_RenderClear(ren);
             SDL_RenderCopy(ren, tex, NULL, NULL);
             SDL_RenderPresent(ren);
-
+            printf("320 * 240 frame Done!!!\n");
             final_pixels.clear();
         }
     }

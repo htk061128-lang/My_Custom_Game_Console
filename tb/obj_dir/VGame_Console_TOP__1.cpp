@@ -751,9 +751,6 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__6(VGame_Console_TOP__Syms* 
     vlTOPp->Game_Console_TOP__DOT__line_visible[0xeU] 
         = (0x3fU & (vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
                     [0x26U] >> 9U));
-    vlTOPp->Game_Console_TOP__DOT__PPU_start = (1U 
-                                                & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                                                [0x29U]);
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_z[1U] 
         = (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
            [0xcU]);
@@ -784,6 +781,9 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__6(VGame_Console_TOP__Syms* 
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_z[0xaU] 
         = (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
            [0x1eU]);
+    vlTOPp->Game_Console_TOP__DOT__PPU_start = (1U 
+                                                & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                                                [0x29U]);
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__do_not_need_mix = 0U;
     if (((((((((0U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe6_font_y)) 
                | (1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe6_font_y))) 
@@ -1522,110 +1522,6 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__6(VGame_Console_TOP__Syms* 
             }
         }
     }
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_next 
-        = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state;
-    if (((((((((0U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state)) 
-               | (1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
-              | (2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
-             | (3U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
-            | (4U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
-           | (5U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
-          | (6U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
-         | (7U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state)))) {
-        vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_next 
-            = ((0U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
-                ? ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
-                    ? 1U : 0U) : ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
-                                   ? (((((((((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_valid) 
-                                               & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_valid)) 
-                                              & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_valid)) 
-                                             & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_valid)) 
-                                            & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_valid)) 
-                                           & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_valid)) 
-                                          & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid)) 
-                                         & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
-                                        & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
-                                       & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
-                                       ? (((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid) 
-                                           & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Pipe8_valid))
-                                           ? (((0x137U 
-                                                == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_counter_x)) 
-                                               & (0xf0U 
-                                                  == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_counter_y)))
-                                               ? 2U
-                                               : 1U)
-                                           : 1U) : 1U)
-                                   : ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
-                                       ? (((((((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_valid) 
-                                                 & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_valid)) 
-                                                & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_valid)) 
-                                               & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_valid)) 
-                                              & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid)) 
-                                             & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
-                                            & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
-                                           & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
-                                           ? 3U : 2U)
-                                       : ((3U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
-                                           ? ((((((
-                                                   ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_valid) 
-                                                    & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_valid)) 
-                                                   & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_valid)) 
-                                                  & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid)) 
-                                                 & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
-                                                & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
-                                               & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
-                                               ? 4U
-                                               : 3U)
-                                           : ((4U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
-                                               ? ((
-                                                   (((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_valid) 
-                                                       & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_valid)) 
-                                                      & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid)) 
-                                                     & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
-                                                    & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
-                                                   & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
-                                                   ? 5U
-                                                   : 4U)
-                                               : ((5U 
-                                                   == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
-                                                   ? 
-                                                  ((((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_valid) 
-                                                       & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid)) 
-                                                      & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
-                                                     & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
-                                                    & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
-                                                    ? 6U
-                                                    : 5U)
-                                                   : 
-                                                  ((6U 
-                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
-                                                    ? 
-                                                   (((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid) 
-                                                       & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
-                                                      & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
-                                                     & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
-                                                     ? 7U
-                                                     : 6U)
-                                                    : 
-                                                   ((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid) 
-                                                      & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
-                                                     & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
-                                                     ? 8U
-                                                     : 7U))))))));
-    } else {
-        if ((8U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_next 
-                = (((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid) 
-                    & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
-                    ? 9U : 8U);
-        } else {
-            if ((9U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_next 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid)
-                        ? 0U : 9U);
-            }
-        }
-    }
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_index_map[0U] = 0U;
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_index_map[1U] = 0U;
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_index_map[2U] = 0U;
@@ -1764,6 +1660,110 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__6(VGame_Console_TOP__Syms* 
                                                                                 [0xaU] 
                                                                                 - (IData)(1U)))] 
                 = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT____Vlvbound2;
+        }
+    }
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_next 
+        = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state;
+    if (((((((((0U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state)) 
+               | (1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
+              | (2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
+             | (3U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
+            | (4U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
+           | (5U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
+          | (6U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) 
+         | (7U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state)))) {
+        vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_next 
+            = ((0U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
+                ? ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start)
+                    ? 1U : 0U) : ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
+                                   ? (((((((((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_valid) 
+                                               & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_valid)) 
+                                              & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_valid)) 
+                                             & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_valid)) 
+                                            & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_valid)) 
+                                           & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_valid)) 
+                                          & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid)) 
+                                         & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
+                                        & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
+                                       & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
+                                       ? (((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid) 
+                                           & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Pipe8_valid))
+                                           ? (((0x137U 
+                                                == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_counter_x)) 
+                                               & (0xf0U 
+                                                  == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_counter_y)))
+                                               ? 2U
+                                               : 1U)
+                                           : 1U) : 1U)
+                                   : ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
+                                       ? (((((((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_valid) 
+                                                 & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_valid)) 
+                                                & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_valid)) 
+                                               & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_valid)) 
+                                              & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid)) 
+                                             & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
+                                            & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
+                                           & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
+                                           ? 3U : 2U)
+                                       : ((3U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
+                                           ? ((((((
+                                                   ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_valid) 
+                                                    & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_valid)) 
+                                                   & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_valid)) 
+                                                  & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid)) 
+                                                 & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
+                                                & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
+                                               & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
+                                               ? 4U
+                                               : 3U)
+                                           : ((4U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
+                                               ? ((
+                                                   (((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_valid) 
+                                                       & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_valid)) 
+                                                      & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid)) 
+                                                     & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
+                                                    & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
+                                                   & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
+                                                   ? 5U
+                                                   : 4U)
+                                               : ((5U 
+                                                   == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
+                                                   ? 
+                                                  ((((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_valid) 
+                                                       & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid)) 
+                                                      & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
+                                                     & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
+                                                    & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
+                                                    ? 6U
+                                                    : 5U)
+                                                   : 
+                                                  ((6U 
+                                                    == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))
+                                                    ? 
+                                                   (((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_valid) 
+                                                       & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid)) 
+                                                      & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
+                                                     & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
+                                                     ? 7U
+                                                     : 6U)
+                                                    : 
+                                                   ((((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_valid) 
+                                                      & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid)) 
+                                                     & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
+                                                     ? 8U
+                                                     : 7U))))))));
+    } else {
+        if ((8U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_next 
+                = (((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_valid) 
+                    & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid))
+                    ? 9U : 8U);
+        } else {
+            if ((9U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__main_state_next 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_valid)
+                        ? 0U : 9U);
+            }
         }
     }
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT____Vlvbound6 
@@ -7231,6 +7231,156 @@ VL_INLINE_OPT void VGame_Console_TOP::_combo__TOP__10(VGame_Console_TOP__Syms* _
         = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT____Vcellout__u_rgb__Req8_trans;
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans[8U] 
         = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT____Vcellout__u_rgb__Req9_trans;
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[0U] = 0U;
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[1U] = 0U;
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[2U] = 0U;
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[3U] = 0U;
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[4U] = 0U;
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[5U] = 0U;
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[6U] = 0U;
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[7U] = 0U;
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[8U] = 0U;
+    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[9U] = 0U;
+    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_state))) {
+        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[0U] 
+                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                [0U];
+        } else {
+            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[0U] 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_ready) 
+                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                       [0U]);
+            }
+        }
+    }
+    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_state))) {
+        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[1U] 
+                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                [1U];
+        } else {
+            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[1U] 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_ready) 
+                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                       [1U]);
+            }
+        }
+    }
+    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_state))) {
+        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[2U] 
+                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                [2U];
+        } else {
+            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[2U] 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_ready) 
+                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                       [2U]);
+            }
+        }
+    }
+    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_state))) {
+        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[3U] 
+                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                [3U];
+        } else {
+            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[3U] 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_ready) 
+                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                       [3U]);
+            }
+        }
+    }
+    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_state))) {
+        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[4U] 
+                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                [4U];
+        } else {
+            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[4U] 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_ready) 
+                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                       [4U]);
+            }
+        }
+    }
+    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_state))) {
+        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[5U] 
+                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                [5U];
+        } else {
+            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[5U] 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_ready) 
+                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                       [5U]);
+            }
+        }
+    }
+    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_state))) {
+        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[6U] 
+                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                [6U];
+        } else {
+            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[6U] 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_ready) 
+                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                       [6U]);
+            }
+        }
+    }
+    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_state))) {
+        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[7U] 
+                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                [7U];
+        } else {
+            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[7U] 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_ready) 
+                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                       [7U]);
+            }
+        }
+    }
+    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_state))) {
+        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[8U] 
+                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                [8U];
+        } else {
+            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[8U] 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_ready) 
+                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                       [8U]);
+            }
+        }
+    }
+    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_state))) {
+        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_state))) {
+            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[9U] 
+                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                [9U];
+        } else {
+            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_state))) {
+                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[9U] 
+                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_ready) 
+                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
+                       [9U]);
+            }
+        }
+    }
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_state_next 
         = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_state;
     if ((0U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_state))) {
@@ -7458,156 +7608,6 @@ VL_INLINE_OPT void VGame_Console_TOP::_combo__TOP__10(VGame_Console_TOP__Syms* _
                                        & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
                                           [7U])) ? 1U
                                        : 2U));
-            }
-        }
-    }
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[0U] = 0U;
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[1U] = 0U;
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[2U] = 0U;
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[3U] = 0U;
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[4U] = 0U;
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[5U] = 0U;
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[6U] = 0U;
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[7U] = 0U;
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[8U] = 0U;
-    vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[9U] = 0U;
-    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_state))) {
-        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[0U] 
-                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                [0U];
-        } else {
-            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[0U] 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_ready) 
-                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                       [0U]);
-            }
-        }
-    }
-    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_state))) {
-        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[1U] 
-                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                [1U];
-        } else {
-            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[1U] 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_ready) 
-                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                       [1U]);
-            }
-        }
-    }
-    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_state))) {
-        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[2U] 
-                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                [2U];
-        } else {
-            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[2U] 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_ready) 
-                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                       [2U]);
-            }
-        }
-    }
-    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_state))) {
-        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[3U] 
-                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                [3U];
-        } else {
-            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[3U] 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_ready) 
-                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                       [3U]);
-            }
-        }
-    }
-    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_state))) {
-        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[4U] 
-                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                [4U];
-        } else {
-            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[4U] 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z5_ready) 
-                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                       [4U]);
-            }
-        }
-    }
-    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_state))) {
-        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[5U] 
-                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                [5U];
-        } else {
-            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[5U] 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z6_ready) 
-                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                       [5U]);
-            }
-        }
-    }
-    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_state))) {
-        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[6U] 
-                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                [6U];
-        } else {
-            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[6U] 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z7_ready) 
-                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                       [6U]);
-            }
-        }
-    }
-    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_state))) {
-        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[7U] 
-                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                [7U];
-        } else {
-            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[7U] 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z8_ready) 
-                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                       [7U]);
-            }
-        }
-    }
-    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_state))) {
-        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[8U] 
-                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                [8U];
-        } else {
-            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[8U] 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z9_ready) 
-                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                       [8U]);
-            }
-        }
-    }
-    if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_state))) {
-        if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_state))) {
-            vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[9U] 
-                = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                [9U];
-        } else {
-            if ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_state))) {
-                vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_ready[9U] 
-                    = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z10_ready) 
-                       & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__z_input_valid
-                       [9U]);
             }
         }
     }
