@@ -1,8 +1,49 @@
 # Overview
+![Overview](./imagefile/Overview1.png)
+비주얼 노벨 게임을 위한 전용 하드웨어 프로젝트입니다.
+
+<summary> 목차 (Table of Contents)</summary>
+
+- [Overview](#overview)
+- [System Core & Interconnect](#system-core--interconnect)
+  - [PicoRV32 Core Configuration](#picorv32-core-configuration)
+  - [I_Cache_Controller.sv](#i_cache_controllersv)
+  - [Addr_Decoder.sv](#addr_decodersv)
+- [PPU(Pixel Processing Unit)](#ppupixel-processing-unit)
+  - [System Features](#system-features)
+  - [256 MiB Memory Map](#256-mib-memory-map)
+  - [PPU Control Register Map Specification](#ppu-control-register-map-specification)
+    - [Register Memory Map Summary](#register-memory-map-summary)
+    - [Register Bit Fields](#register-bit-fields)
+  - [BRAM overview](#bram-overview)
+  - [Sub-Module Specification](#sub-module-specification)
+    - [Compressed_Data_FIFO.sv](#compressed_data_fifosv)
+    - [Decompresser.sv](#decompressersv)
+    - [RGB_Converter.sv](#rgb_convertersv)
+    - [Pixel_Reader.sv](#pixel_readersv)
+    - [Pixel_Processer.sv](#pixel_processersv)
+    - [Font_Processer.sv](#font_processersv)
+- [Test](#test)
+- [Third-Party Notices & Licenses](#third-party-notices--licenses)
+
+# System Core & Interconnect
+CPU 코어 환경 구성 및 메모리 버스 트래픽 중재를 담당하는 시스템 레벨 인프라 모듈입니다.
+
+### PicoRV32 Core Configuration
+- **구현 내용**: 컴파일 옵션 파라미터(예: RV32IMC 활성화 여부, 하드웨어 곱셈기/나눗셈기 옵션 등) 및 시스템 클럭/리셋 인터페이스 설정 요약.
+
+### I_Cache_Controller.sv
+- **역할**: BRAM 0~3을 활용한 2-Way Set-Associative I-Cache 제어.
+- **동작**: CPU의 Fetch 요청 시 Tag 비교 및 Hit/Miss 판별, Miss 발생 시 Address Decoder를 통해 외부 DDR3에 Burst Read 요청.
+
+### Addr_Decoder.sv
+- **역할**: PicoRV32의 메모리 요청을 해당 목적지까지 라우팅하는 주소 디코더.
+---
+
+# PPU(Pixel Processing Unit)
 ![PPU 블록도](./imagefile/ppu_flowchart.png)
 
 비주얼 노벨 장르 게임 구동을 목적으로 하는 게임 시스템의 PPU(Pixel Processing Unit)입니다. 320 * 240 픽셀 화면에 255개의 팔래트를 지원하며 외부 메모리에 RLC(Run Length Coding) 압축 저장된 10개의 레이어 이미지를 실시간 합성, 알파블랜딩, 폰트 합성하여 화면을 출력합니다. 
-
 
 ## System Features
 * 클럭 속도: 
@@ -453,16 +494,16 @@ PPU의 현재 동작 상태를 나타내는 읽기 전용(Read Only) 레지스�
 ---
 ### Pixel_Processer.sv
 ---
-## Font_Processer.sv
+### Font_Processer.sv
 ---
-## Test
+# Test
 ---
 
-## Third-Party Notices & Licenses
+# Third-Party Notices & Licenses
 
 본 프로젝트는 다음의 오픈소스 IP 및 폰트 에셋을 포함하고 있습니다.
 
-### 1. PicoRV32 (RISC-V CPU Core)
+## 1. PicoRV32 (RISC-V CPU Core)
 * **저작권자**: Claire Wolf (YosysHQ)
 * **소스코드 저장소**: [https://github.com/YosysHQ/picorv32](https://github.com/YosysHQ/picorv32)
 * **라이선스**: ISC License
@@ -485,7 +526,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
-### 2. Hangul Johab Font Sprite
+## 2. Hangul Johab Font Sprite
 * **저작권자**: TandyRum1024
 * **레포지토리**: [https://github.com/TandyRum1024/hangul-johab-render-gms](https://github.com/TandyRum1024/hangul-johab-render-gms)
 * **사용 에셋**: 도깨비 8×4×4 한글 16 * 16 픽셀 조합형 폰트 비트맵 이미지 (`template/DKB844_TEMPLATE_16.png`)

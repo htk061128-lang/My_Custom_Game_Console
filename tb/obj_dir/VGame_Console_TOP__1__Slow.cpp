@@ -80,6 +80,7 @@ void VGame_Console_TOP::_ctor_var_reset() {
     resetn = VL_RAND_RESET_I(1);
     joypad_state_in = VL_RAND_RESET_I(8);
     joypad_irq = VL_RAND_RESET_I(1);
+    ppu_irq = VL_RAND_RESET_I(1);
     DDR3_CPU_valid = VL_RAND_RESET_I(1);
     DDR3_CPU_ready = VL_RAND_RESET_I(1);
     DDR3_CPU_addr = VL_RAND_RESET_I(32);
@@ -532,6 +533,10 @@ void VGame_Console_TOP::_ctor_var_reset() {
     Game_Console_TOP__DOT__u_addr_decoder__DOT__sampling_ppu_reg_w = VL_RAND_RESET_I(1);
     Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending = VL_RAND_RESET_I(1);
     Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_state_latched = VL_RAND_RESET_I(8);
+    Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_irq_pending = VL_RAND_RESET_I(1);
+    Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_is_busy = VL_RAND_RESET_I(1);
+    Game_Console_TOP__DOT__u_addr_decoder__DOT__frame_end_latched = VL_RAND_RESET_I(1);
+    Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_start_latched = VL_RAND_RESET_I(1);
     { int __Vi0=0; for (; __Vi0<43; ++__Vi0) {
             Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs[__Vi0] = VL_RAND_RESET_I(32);
     }}

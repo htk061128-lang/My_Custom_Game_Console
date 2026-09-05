@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     dut->trace(trace.get(), 0);
     trace->open("Game_Console_TOP_waveform.vcd");
 
-    constexpr uint64_t TARGET_TIME = 50000; // TARGET_TIME부터 10000클럭이 vcd파일로 저장됨.
+    constexpr uint64_t TARGET_TIME = 150000; // TARGET_TIME부터 10000클럭이 vcd파일로 저장됨.
     uint64_t trace_clock_count = 0;
     vluint64_t main_time = 0;
 
@@ -332,6 +332,8 @@ int main(int argc, char **argv)
     uint8_t current_joypad = 0;
     uint64_t cycle_count = 0;
 
+    int num = 0;
+
     std::cout << "Game Console PPU Simulation Started" << std::endl;
 
     // ==========================================
@@ -438,8 +440,9 @@ int main(int argc, char **argv)
             dut->eval();
             if ((TARGET_TIME < main_time) && (main_time < TARGET_TIME + 10000))
             {
-                trace->dump(main_time++);
+                trace->dump(main_time);
             }
+            main_time++;
 
             // 픽셀 출력 수집
             if (dut->Final_pixel_valid)
@@ -451,10 +454,11 @@ int main(int argc, char **argv)
                 }
             }
 
-            if(dut->Font_Frame_End) 
+            /*if(dut->Font_Line_End) 
             {
-                printf("Frame_End Signal Captured!\n");
-            }
+                printf("Line_End Signal Captured! number: %d, main_time: %d\n", num, main_time);
+                num++;
+            }*/
 
             static bool cpu_prev_valid = false;
             static uint32_t cpu_beat_cnt = 0;
@@ -527,7 +531,7 @@ int main(int argc, char **argv)
             dut->eval();
             if ((TARGET_TIME < main_time) && (main_time < TARGET_TIME + 10000))
             {
-                trace->dump(main_time++);
+                trace->dump(main_time);
                 if (main_time >= TARGET_TIME + 10000)
                 {
                     std::cout << "Waveform capture complete. Exiting..." << std::endl;
@@ -535,6 +539,7 @@ int main(int argc, char **argv)
                     break;
                 }
             }
+            main_time++;
 
             // 다음 클럭 상승 에지에 주입할 BRAM Read 데이터 버퍼링
             if (dut->BRAM0_ren)

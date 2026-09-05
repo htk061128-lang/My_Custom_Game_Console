@@ -53,6 +53,7 @@ VL_MODULE(VGame_Console_TOP) {
     VL_IN8(resetn,0,0);
     VL_IN8(joypad_state_in,7,0);
     VL_OUT8(joypad_irq,0,0);
+    VL_OUT8(ppu_irq,0,0);
     VL_OUT8(DDR3_CPU_valid,0,0);
     VL_IN8(DDR3_CPU_ready,0,0);
     VL_OUT8(DDR3_CPU_wstrb,3,0);
@@ -424,6 +425,10 @@ VL_MODULE(VGame_Console_TOP) {
         CData/*0:0*/ Game_Console_TOP__DOT__u_addr_decoder__DOT__sampling_ppu_reg_w;
         CData/*0:0*/ Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending;
         CData/*7:0*/ Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_state_latched;
+        CData/*0:0*/ Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_irq_pending;
+        CData/*0:0*/ Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_is_busy;
+        CData/*0:0*/ Game_Console_TOP__DOT__u_addr_decoder__DOT__frame_end_latched;
+        CData/*0:0*/ Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_start_latched;
         CData/*1:0*/ Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__proc_final_pixel_valid;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__font_mixed_pixel_valid;
@@ -463,12 +468,12 @@ VL_MODULE(VGame_Console_TOP) {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_inc_want;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char2_fifo_dec_want;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_inc_want;
+    };
+    struct {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char3_fifo_dec_want;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_inc_want;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__char4_fifo_dec_want;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_inc_want;
-    };
-    struct {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__script_fifo_dec_want;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_inc_want;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__status_fifo_dec_want;
@@ -529,12 +534,12 @@ VL_MODULE(VGame_Console_TOP) {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req7_exclusive_hit;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req8_exclusive_hit;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req9_exclusive_hit;
+    };
+    struct {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req10_exclusive_hit;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req1_hit1;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req1_hit2;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req1_hit3;
-    };
-    struct {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req1_hit4;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req2_hit1;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req2_hit2;
@@ -595,12 +600,12 @@ VL_MODULE(VGame_Console_TOP) {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req8_w_ena;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req9_w_ena;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req10_w_ena;
+    };
+    struct {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req11_w_ena;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req12_w_ena;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__is_new_pixel;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_is_trans;
-    };
-    struct {
         CData/*7:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_a;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_valid;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_ready;
@@ -661,12 +666,12 @@ VL_MODULE(VGame_Console_TOP) {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Pipe9_valid;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__all_fsm_reset;
         CData/*1:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_state;
+    };
+    struct {
         CData/*1:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z1_state_next;
         CData/*1:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_state;
         CData/*1:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z2_state_next;
         CData/*1:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_state;
-    };
-    struct {
         CData/*1:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z3_state_next;
         CData/*1:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_state;
         CData/*1:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__Z4_state_next;
@@ -727,12 +732,12 @@ VL_MODULE(VGame_Console_TOP) {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__font_mix_end;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__mixed_RGB_w_ena;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipeline_move;
+    };
+    struct {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe1_valid_next;
         CData/*3:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe1_counter_16_next;
         CData/*5:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe1_font_x_next;
         CData/*5:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe1_font_y_next;
-    };
-    struct {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pipe1_next_line_next;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__bram_font_read_ena;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__bram_font_read_ena_reg;
@@ -793,12 +798,12 @@ VL_MODULE(VGame_Console_TOP) {
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__is_ascii_wire;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__is_custom_wire;
         CData/*0:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__do_not_need_mix;
+    };
+    struct {
         CData/*2:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__organized_alpha_0_4;
         SData/*15:0*/ Game_Console_TOP__DOT__u_cpu__DOT__mem_16bit_buffer;
         SData/*14:0*/ Game_Console_TOP__DOT__u_icache__DOT__cpu_I_tag;
         SData/*8:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_count;
-    };
-    struct {
         SData/*8:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_front;
         SData/*8:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back1_fifo_rear;
         SData/*8:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_count;
@@ -859,12 +864,12 @@ VL_MODULE(VGame_Console_TOP) {
         IData/*31:0*/ Game_Console_TOP__DOT__cpu_mem_addr;
         IData/*31:0*/ Game_Console_TOP__DOT__cpu_mem_wdata;
         IData/*31:0*/ Game_Console_TOP__DOT__cpu_la_wdata;
+    };
+    struct {
         IData/*31:0*/ Game_Console_TOP__DOT__cache_cpu_rdata;
         IData/*31:0*/ Game_Console_TOP__DOT__cache_emem_addr;
         IData/*31:0*/ Game_Console_TOP__DOT__cache_emem_wdata;
         IData/*31:0*/ Game_Console_TOP__DOT__dec_emem_rdata;
-    };
-    struct {
         IData/*31:0*/ Game_Console_TOP__DOT__dec_ddr3_rdata;
         IData/*31:0*/ Game_Console_TOP__DOT__ppu_emem_addr;
         IData/*31:0*/ Game_Console_TOP__DOT__ppu_emem_wdata;
@@ -925,12 +930,12 @@ VL_MODULE(VGame_Console_TOP) {
         IData/*31:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__tem_32_reg;
         IData/*17:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__cache1_RGB;
         IData/*17:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__cache2_RGB;
+    };
+    struct {
         IData/*17:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__cache3_RGB;
         IData/*17:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__cache4_RGB;
         IData/*17:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req1_exclusive_RGB;
         IData/*17:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req2_exclusive_RGB;
-    };
-    struct {
         IData/*17:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req3_exclusive_RGB;
         IData/*17:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req4_exclusive_RGB;
         IData/*17:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_rgb__DOT__req5_exclusive_RGB;
@@ -991,12 +996,12 @@ VL_MODULE(VGame_Console_TOP) {
         QData/*63:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__ch1_comp_data;
         QData/*63:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__ch2_comp_data;
         QData/*63:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__ch3_comp_data;
+    };
+    struct {
         QData/*63:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__ch4_comp_data;
         QData/*63:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__uni1_comp_data;
         QData/*63:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__uni2_comp_data;
         QData/*63:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__sc_comp_data;
-    };
-    struct {
         QData/*63:0*/ Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__st_comp_data;
         CData/*7:0*/ Game_Console_TOP__DOT__line_visible[15];
         SData/*8:0*/ Game_Console_TOP__DOT__line_rgb[15];

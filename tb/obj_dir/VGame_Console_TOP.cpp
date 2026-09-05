@@ -5202,6 +5202,35 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__5(VGame_Console_TOP__Syms* 
         if ((0U != ((IData)(vlTOPp->joypad_state_in) 
                     & (~ (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_state_latched))))) {
             vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending = 1U;
+        } else {
+            if ((((((IData)(vlTOPp->Game_Console_TOP__DOT__cache_emem_valid) 
+                    & (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sel_ppu_reg)) 
+                   & (0U == (IData)(vlTOPp->Game_Console_TOP__DOT__cache_emem_wstrb))) 
+                  & (0U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__main_state))) 
+                 & (0x2aU == (0xffU & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
+                                       >> 2U))))) {
+                vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending = 0U;
+            }
+        }
+        if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+             & (~ (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_start_latched)))) {
+            vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_is_busy = 1U;
+            vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_irq_pending = 0U;
+        } else {
+            if (((IData)(vlTOPp->Font_Frame_End) & 
+                 (~ (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__frame_end_latched)))) {
+                vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_is_busy = 0U;
+                vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_irq_pending = 1U;
+            } else {
+                if ((((((IData)(vlTOPp->Game_Console_TOP__DOT__cache_emem_valid) 
+                        & (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sel_ppu_reg)) 
+                       & (0U == (IData)(vlTOPp->Game_Console_TOP__DOT__cache_emem_wstrb))) 
+                      & (0U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__main_state))) 
+                     & (0x2bU == (0xffU & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
+                                           >> 2U))))) {
+                    vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_irq_pending = 0U;
+                }
+            }
         }
         if (((((IData)(vlTOPp->Game_Console_TOP__DOT__cache_emem_valid) 
                & (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sel_ppu_reg)) 
@@ -5270,14 +5299,6 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__5(VGame_Console_TOP__Syms* 
             vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sampling_font_map_w = 0U;
             vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sampling_ppu_reg_w = 0U;
         }
-        if ((((((IData)(vlTOPp->Game_Console_TOP__DOT__cache_emem_valid) 
-                & (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sel_ppu_reg)) 
-               & (0U == (IData)(vlTOPp->Game_Console_TOP__DOT__cache_emem_wstrb))) 
-              & (0U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__main_state))) 
-             & (0x2aU == (0xffU & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
-                                   >> 2U))))) {
-            vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending = 0U;
-        }
     } else {
         vlTOPp->__Vdlyvset__Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs__v1 = 1U;
         vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sampling_bram4_r = 0U;
@@ -5294,6 +5315,8 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__5(VGame_Console_TOP__Syms* 
         vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sampling_ppu_reg_r = 0U;
         vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sampling_ppu_reg_w = 0U;
         vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending = 0U;
+        vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_irq_pending = 0U;
+        vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_is_busy = 0U;
         vlTOPp->__Vdlyvset__Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs__v2 = 1U;
     }
     if (vlTOPp->__Vdlyvset__Game_Console_TOP__DOT__u_icache__DOT__word_buffer__v0) {
@@ -6908,14 +6931,20 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__5(VGame_Console_TOP__Syms* 
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_compressed_fifo__DOT__back2_fifo_r_master 
         = ((2U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)) 
            | (3U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Clk_Counter)));
+    vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__frame_end_latched 
+        = ((IData)(vlTOPp->resetn) & (IData)(vlTOPp->Font_Frame_End));
     if (vlTOPp->resetn) {
         vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_state_latched 
             = vlTOPp->joypad_state_in;
         vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__main_state 
             = vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__main_state_next;
+        vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_start_latched 
+            = ((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+               & 1U);
     } else {
         vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_state_latched = 0U;
         vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__main_state = 0U;
+        vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_start_latched = 0U;
     }
     vlTOPp->Final_pixel_valid = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__font_mixed_pixel_valid;
     vlTOPp->Final_pixel_RGB = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__font_mixed_pixel_RGB;

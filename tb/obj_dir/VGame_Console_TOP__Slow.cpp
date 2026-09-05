@@ -2966,6 +2966,7 @@ void VGame_Console_TOP::_settle__TOP__1(VGame_Console_TOP__Syms* __restrict vlSy
         }
     }
     vlTOPp->joypad_irq = vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending;
+    vlTOPp->ppu_irq = vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_irq_pending;
     vlTOPp->Game_Console_TOP__DOT__u_cpu__DOT__pcpi_int_ready 
         = ((IData)(vlTOPp->Game_Console_TOP__DOT__u_cpu__DOT__pcpi_mul_ready) 
            | (IData)(vlTOPp->Game_Console_TOP__DOT__u_cpu__DOT__pcpi_div_ready));
@@ -5492,27 +5493,38 @@ void VGame_Console_TOP::_settle__TOP__1(VGame_Console_TOP__Syms* __restrict vlSy
                         } else {
                             if (vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sampling_ppu_reg_r) {
                                 vlTOPp->Game_Console_TOP__DOT__dec_emem_rdata 
-                                    = ((0x2aU == (0xffU 
+                                    = ((0x2bU == (0xffU 
                                                   & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
                                                      >> 2U)))
-                                        ? (((IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending) 
-                                            << 8U) 
-                                           | (IData)(vlTOPp->joypad_state_in))
-                                        : ((0x29U >= 
+                                        ? (((IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_irq_pending) 
+                                            << 1U) 
+                                           | (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_is_busy))
+                                        : ((0x2aU == 
                                             (0xffU 
                                              & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
                                                 >> 2U)))
-                                            ? ((0x2aU 
+                                            ? (((IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending) 
+                                                << 8U) 
+                                               | (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_state_latched))
+                                            : ((0x29U 
                                                 >= 
-                                                (0x3fU 
+                                                (0xffU 
                                                  & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
                                                     >> 2U)))
-                                                ? vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                                               [(0x3fU 
-                                                 & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
-                                                    >> 2U))]
-                                                : 0U)
-                                            : 0U));
+                                                ? (
+                                                   (0x2aU 
+                                                    >= 
+                                                    (0x3fU 
+                                                     & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
+                                                        >> 2U)))
+                                                    ? 
+                                                   vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                                                   [
+                                                   (0x3fU 
+                                                    & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
+                                                       >> 2U))]
+                                                    : 0U)
+                                                : 0U)));
                             }
                         }
                     }

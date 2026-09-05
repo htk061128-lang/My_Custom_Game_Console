@@ -2682,7 +2682,7 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__8(VGame_Console_TOP__Syms* 
     }
     vlTOPp->Game_Console_TOP__DOT__u_cpu__DOT__next_irq_pending 
         = (vlTOPp->Game_Console_TOP__DOT__u_cpu__DOT__next_irq_pending 
-           | (IData)(vlTOPp->joypad_irq));
+           | (((IData)(vlTOPp->ppu_irq) << 1U) | (IData)(vlTOPp->joypad_irq)));
     if ((0U != vlTOPp->Game_Console_TOP__DOT__u_cpu__DOT__timer)) {
         if ((0U == (vlTOPp->Game_Console_TOP__DOT__u_cpu__DOT__timer 
                     - (IData)(1U)))) {
@@ -5474,27 +5474,38 @@ VL_INLINE_OPT void VGame_Console_TOP::_combo__TOP__9(VGame_Console_TOP__Syms* __
                         } else {
                             if (vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__sampling_ppu_reg_r) {
                                 vlTOPp->Game_Console_TOP__DOT__dec_emem_rdata 
-                                    = ((0x2aU == (0xffU 
+                                    = ((0x2bU == (0xffU 
                                                   & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
                                                      >> 2U)))
-                                        ? (((IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending) 
-                                            << 8U) 
-                                           | (IData)(vlTOPp->joypad_state_in))
-                                        : ((0x29U >= 
+                                        ? (((IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_irq_pending) 
+                                            << 1U) 
+                                           | (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_is_busy))
+                                        : ((0x2aU == 
                                             (0xffU 
                                              & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
                                                 >> 2U)))
-                                            ? ((0x2aU 
+                                            ? (((IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending) 
+                                                << 8U) 
+                                               | (IData)(vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_state_latched))
+                                            : ((0x29U 
                                                 >= 
-                                                (0x3fU 
+                                                (0xffU 
                                                  & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
                                                     >> 2U)))
-                                                ? vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                                               [(0x3fU 
-                                                 & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
-                                                    >> 2U))]
-                                                : 0U)
-                                            : 0U));
+                                                ? (
+                                                   (0x2aU 
+                                                    >= 
+                                                    (0x3fU 
+                                                     & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
+                                                        >> 2U)))
+                                                    ? 
+                                                   vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                                                   [
+                                                   (0x3fU 
+                                                    & (vlTOPp->Game_Console_TOP__DOT__cache_emem_addr 
+                                                       >> 2U))]
+                                                    : 0U)
+                                                : 0U)));
                             }
                         }
                     }
@@ -7866,6 +7877,7 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__11(VGame_Console_TOP__Syms*
                                              >> 4U));
         }
     }
+    vlTOPp->ppu_irq = vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_irq_pending;
     vlTOPp->joypad_irq = vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__joypad_irq_pending;
 }
 
