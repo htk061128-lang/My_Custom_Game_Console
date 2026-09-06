@@ -1060,6 +1060,7 @@ void VGame_Console_TOP_Pixel_Reader::_ctor_var_reset() {
     // Body
     clk = VL_RAND_RESET_I(1);
     resetn = VL_RAND_RESET_I(1);
+    Frame_End = VL_RAND_RESET_I(1);
     Clk_Counter = VL_RAND_RESET_I(2);
     PPU_start = VL_RAND_RESET_I(1);
     Pixel_Reader_ena = VL_RAND_RESET_I(1);
@@ -1110,13 +1111,13 @@ void VGame_Console_TOP_Pixel_Reader::_ctor_var_reset() {
     __PVT__rgb_r_state_counter_next = VL_RAND_RESET_I(4);
     __PVT__rgb_convert_req = VL_RAND_RESET_I(1);
     __PVT__rgb_convert_end = VL_RAND_RESET_I(1);
-    __Vdly__main_state_counter = VL_RAND_RESET_I(4);
     __Vdly__main_state = VL_RAND_RESET_I(4);
+    __Vdly__main_state_counter = VL_RAND_RESET_I(4);
     __Vdly__personal_counter_x = VL_RAND_RESET_I(9);
     __Vdly__personal_counter_y = VL_RAND_RESET_I(9);
     __Vdly__fifo_r_state = VL_RAND_RESET_I(4);
-    __Vdly__fifo_r_state_counter = VL_RAND_RESET_I(4);
     __Vdly__rgb_r_state = VL_RAND_RESET_I(4);
+    __Vdly__fifo_r_state_counter = VL_RAND_RESET_I(4);
     __Vdly__read_pixel_x = VL_RAND_RESET_I(6);
     __Vdly__read_pixel_y = VL_RAND_RESET_I(9);
 }

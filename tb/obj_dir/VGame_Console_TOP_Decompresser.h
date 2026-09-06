@@ -25,6 +25,7 @@ VL_MODULE(VGame_Console_TOP_Decompresser) {
     VL_IN8(BRAM_number,3,0);
     VL_IN8(BRAM_size,0,0);
     VL_IN8(BRAM_rw_counter_bits,3,0);
+    VL_IN8(Frame_End,0,0);
     VL_IN8(PPU_start,0,0);
     VL_OUT8(Decompresser_is_IDLE,0,0);
     VL_IN8(Compressed_FIFO_r_master,0,0);

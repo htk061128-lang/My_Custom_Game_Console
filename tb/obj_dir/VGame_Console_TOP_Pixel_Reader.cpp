@@ -290,121 +290,144 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     // Body
     this->__Vdly__personal_counter_y = this->__PVT__personal_counter_y;
     this->__Vdly__personal_counter_x = this->__PVT__personal_counter_x;
-    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__main_state_counter = this->__PVT__main_state_counter;
+    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state;
     this->__Vdly__read_pixel_y = this->__PVT__read_pixel_y;
     this->__Vdly__read_pixel_x = this->__PVT__read_pixel_x;
     this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter;
     this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state;
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [0U]))) {
+        if (vlTOPp->Font_Frame_End) {
             this->__PVT__RGB_reg_trans = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [0U])) {
-                this->__PVT__RGB_reg_trans = 1U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [0U]))) {
+                this->__PVT__RGB_reg_trans = 0U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [0U])) {
+                    this->__PVT__RGB_reg_trans = 1U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg_trans = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [0U]))) {
-            this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
-                [0U];
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [0U])) {
-                this->__PVT__RGB_reg = 0U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [0U]))) {
+                this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
+                    [0U];
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [0U])) {
+                    this->__PVT__RGB_reg = 0U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [0U]))) {
-            this->__PVT__RGB_reg_valid = 1U;
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg_valid = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [0U])) {
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [0U]))) {
                 this->__PVT__RGB_reg_valid = 1U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [0U])) {
+                    this->__PVT__RGB_reg_valid = 1U;
+                }
             }
-        }
-        if (this->__PVT__RGB_reg_ready) {
-            this->__PVT__RGB_reg_valid = 0U;
+            if (this->__PVT__RGB_reg_ready) {
+                this->__PVT__RGB_reg_valid = 0U;
+            }
         }
     } else {
         this->__PVT__RGB_reg_valid = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
-        this->__Vdly__main_state = this->__PVT__main_state_next;
-        if ((0U == (IData)(this->__PVT__main_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0xcU])))) {
-                this->__Vdly__main_state_counter = 0U;
-                this->__Vdly__personal_counter_x = 0U;
-                this->__Vdly__personal_counter_y = 0U;
-                this->__Vdly__main_state = 1U;
-            } else {
-                this->__Vdly__main_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__Vdly__main_state = 0U;
+            this->__Vdly__main_state_counter = 0U;
+            this->__Vdly__personal_counter_x = 0U;
+            this->__Vdly__personal_counter_y = 0U;
         } else {
-            if ((1U == (IData)(this->__PVT__main_state))) {
-                if ((0U == (IData)(this->__PVT__main_state_counter))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [1U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+            this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
+            this->__Vdly__main_state = this->__PVT__main_state_next;
+            if ((0U == (IData)(this->__PVT__main_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0xcU])))) {
+                    this->__Vdly__main_state_counter = 0U;
+                    this->__Vdly__personal_counter_x = 0U;
+                    this->__Vdly__personal_counter_y = 0U;
+                    this->__Vdly__main_state = 1U;
+                } else {
+                    this->__Vdly__main_state = 0U;
+                }
+            } else {
+                if ((1U == (IData)(this->__PVT__main_state))) {
+                    if ((0U == (IData)(this->__PVT__main_state_counter))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [1U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
-                }
-            } else {
-                if ((2U == (IData)(this->__PVT__main_state))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [1U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+                } else {
+                    if ((2U == (IData)(this->__PVT__main_state))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [1U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
@@ -418,76 +441,87 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
         this->__Vdly__personal_counter_y = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
-        this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
-        this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
-        this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
-        if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0xcU])))) {
-                this->__Vdly__fifo_r_state = 1U;
-                this->__Vdly__read_pixel_x = 0x3fU;
-                this->__Vdly__read_pixel_y = 0x1ffU;
-                this->__Vdly__fifo_r_state_counter = 0U;
-            } else {
-                this->__Vdly__fifo_r_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__decomp_pixel_reg = 0ULL;
+            this->__Vdly__fifo_r_state = 0U;
+            this->__Vdly__rgb_r_state = 0U;
+            this->__PVT__rgb_r_state_counter = 0U;
+            this->__Vdly__fifo_r_state_counter = 0U;
+            this->__Vdly__read_pixel_x = 0x3fU;
+            this->__Vdly__read_pixel_y = 0x1ffU;
         } else {
-            if ((1U == (IData)(this->__PVT__fifo_r_state))) {
-                if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
-                    if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
-                        if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
-                            this->__Vdly__read_pixel_y 
-                                = (0x1ffU & ((IData)(1U) 
-                                             + (IData)(this->__PVT__read_pixel_y)));
-                            this->__Vdly__read_pixel_x = 0U;
-                        } else {
-                            if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
-                                 & (0x1ffU == (IData)(this->__PVT__read_pixel_y)))) {
-                                this->__Vdly__read_pixel_x = 0U;
-                                this->__Vdly__read_pixel_y = 0U;
-                            } else {
-                                this->__Vdly__read_pixel_x 
-                                    = (0x3fU & ((IData)(1U) 
-                                                + (IData)(this->__PVT__read_pixel_x)));
-                            }
-                        }
-                        this->__PVT__decomp_pixel_reg 
-                            = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_bg1.Decompressed_FIFO_data;
-                    }
+            this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
+            this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
+            this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
+            this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
+            if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0xcU])))) {
+                    this->__Vdly__fifo_r_state = 1U;
+                    this->__Vdly__read_pixel_x = 0x3fU;
+                    this->__Vdly__read_pixel_y = 0x1ffU;
+                    this->__Vdly__fifo_r_state_counter = 0U;
+                } else {
+                    this->__Vdly__fifo_r_state = 0U;
                 }
             } else {
-                if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                if ((1U == (IData)(this->__PVT__fifo_r_state))) {
                     if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
+                            if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
+                                this->__Vdly__read_pixel_y 
+                                    = (0x1ffU & ((IData)(1U) 
+                                                 + (IData)(this->__PVT__read_pixel_y)));
+                                this->__Vdly__read_pixel_x = 0U;
+                            } else {
+                                if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
+                                     & (0x1ffU == (IData)(this->__PVT__read_pixel_y)))) {
+                                    this->__Vdly__read_pixel_x = 0U;
+                                    this->__Vdly__read_pixel_y = 0U;
+                                } else {
+                                    this->__Vdly__read_pixel_x 
+                                        = (0x3fU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__read_pixel_x)));
+                                }
+                            }
                             this->__PVT__decomp_pixel_reg 
                                 = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_bg1.Decompressed_FIFO_data;
                         }
                     }
+                } else {
+                    if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                        if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
+                            if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
+                                this->__PVT__decomp_pixel_reg 
+                                    = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_bg1.Decompressed_FIFO_data;
+                            }
+                        }
+                    }
                 }
             }
-        }
-        if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0xcU])))) {
-                this->__Vdly__rgb_r_state = 3U;
-                this->__PVT__rgb_r_state_counter = 0U;
-            } else {
-                this->__Vdly__rgb_r_state = 0U;
-            }
-        } else {
-            if ((3U == (IData)(this->__PVT__rgb_r_state))) {
-                if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-                    this->__Vdly__rgb_r_state = 0U;
+            if ((0U == (IData)(this->__PVT__rgb_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0xcU])))) {
+                    this->__Vdly__rgb_r_state = 3U;
                     this->__PVT__rgb_r_state_counter = 0U;
                 } else {
-                    if (this->__PVT__rgb_convert_req) {
-                        this->__Vdly__rgb_r_state = 4U;
+                    this->__Vdly__rgb_r_state = 0U;
+                }
+            } else {
+                if ((3U == (IData)(this->__PVT__rgb_r_state))) {
+                    if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                        this->__Vdly__rgb_r_state = 0U;
                         this->__PVT__rgb_r_state_counter = 0U;
                     } else {
-                        this->__Vdly__rgb_r_state = 3U;
+                        if (this->__PVT__rgb_convert_req) {
+                            this->__Vdly__rgb_r_state = 4U;
+                            this->__PVT__rgb_r_state_counter = 0U;
+                        } else {
+                            this->__Vdly__rgb_r_state = 3U;
+                        }
                     }
                 }
             }
@@ -503,8 +537,8 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     }
     this->__PVT__personal_counter_x = this->__Vdly__personal_counter_x;
     this->__PVT__personal_counter_y = this->__Vdly__personal_counter_y;
-    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__main_state = this->__Vdly__main_state;
+    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__rgb_r_state = this->__Vdly__rgb_r_state;
     this->__PVT__read_pixel_x = this->__Vdly__read_pixel_x;
     this->__PVT__read_pixel_y = this->__Vdly__read_pixel_y;
@@ -1585,121 +1619,144 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     // Body
     this->__Vdly__personal_counter_y = this->__PVT__personal_counter_y;
     this->__Vdly__personal_counter_x = this->__PVT__personal_counter_x;
-    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__main_state_counter = this->__PVT__main_state_counter;
+    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state;
     this->__Vdly__read_pixel_y = this->__PVT__read_pixel_y;
     this->__Vdly__read_pixel_x = this->__PVT__read_pixel_x;
     this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter;
     this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state;
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [1U]))) {
+        if (vlTOPp->Font_Frame_End) {
             this->__PVT__RGB_reg_trans = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [1U])) {
-                this->__PVT__RGB_reg_trans = 1U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [1U]))) {
+                this->__PVT__RGB_reg_trans = 0U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [1U])) {
+                    this->__PVT__RGB_reg_trans = 1U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg_trans = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [1U]))) {
-            this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
-                [1U];
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [1U])) {
-                this->__PVT__RGB_reg = 0U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [1U]))) {
+                this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
+                    [1U];
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [1U])) {
+                    this->__PVT__RGB_reg = 0U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [1U]))) {
-            this->__PVT__RGB_reg_valid = 1U;
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg_valid = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [1U])) {
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [1U]))) {
                 this->__PVT__RGB_reg_valid = 1U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [1U])) {
+                    this->__PVT__RGB_reg_valid = 1U;
+                }
             }
-        }
-        if (this->__PVT__RGB_reg_ready) {
-            this->__PVT__RGB_reg_valid = 0U;
+            if (this->__PVT__RGB_reg_ready) {
+                this->__PVT__RGB_reg_valid = 0U;
+            }
         }
     } else {
         this->__PVT__RGB_reg_valid = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
-        this->__Vdly__main_state = this->__PVT__main_state_next;
-        if ((0U == (IData)(this->__PVT__main_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0xeU])))) {
-                this->__Vdly__main_state_counter = 0U;
-                this->__Vdly__personal_counter_x = 0U;
-                this->__Vdly__personal_counter_y = 0U;
-                this->__Vdly__main_state = 1U;
-            } else {
-                this->__Vdly__main_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__Vdly__main_state = 0U;
+            this->__Vdly__main_state_counter = 0U;
+            this->__Vdly__personal_counter_x = 0U;
+            this->__Vdly__personal_counter_y = 0U;
         } else {
-            if ((1U == (IData)(this->__PVT__main_state))) {
-                if ((0U == (IData)(this->__PVT__main_state_counter))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [2U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+            this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
+            this->__Vdly__main_state = this->__PVT__main_state_next;
+            if ((0U == (IData)(this->__PVT__main_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0xeU])))) {
+                    this->__Vdly__main_state_counter = 0U;
+                    this->__Vdly__personal_counter_x = 0U;
+                    this->__Vdly__personal_counter_y = 0U;
+                    this->__Vdly__main_state = 1U;
+                } else {
+                    this->__Vdly__main_state = 0U;
+                }
+            } else {
+                if ((1U == (IData)(this->__PVT__main_state))) {
+                    if ((0U == (IData)(this->__PVT__main_state_counter))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [2U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
-                }
-            } else {
-                if ((2U == (IData)(this->__PVT__main_state))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [2U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+                } else {
+                    if ((2U == (IData)(this->__PVT__main_state))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [2U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
@@ -1713,76 +1770,87 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
         this->__Vdly__personal_counter_y = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
-        this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
-        this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
-        this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
-        if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0xeU])))) {
-                this->__Vdly__fifo_r_state = 1U;
-                this->__Vdly__read_pixel_x = 0x3fU;
-                this->__Vdly__read_pixel_y = 0x1ffU;
-                this->__Vdly__fifo_r_state_counter = 0U;
-            } else {
-                this->__Vdly__fifo_r_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__decomp_pixel_reg = 0ULL;
+            this->__Vdly__fifo_r_state = 0U;
+            this->__Vdly__rgb_r_state = 0U;
+            this->__PVT__rgb_r_state_counter = 0U;
+            this->__Vdly__fifo_r_state_counter = 0U;
+            this->__Vdly__read_pixel_x = 0x3fU;
+            this->__Vdly__read_pixel_y = 0x1ffU;
         } else {
-            if ((1U == (IData)(this->__PVT__fifo_r_state))) {
-                if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
-                    if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
-                        if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
-                            this->__Vdly__read_pixel_y 
-                                = (0x1ffU & ((IData)(1U) 
-                                             + (IData)(this->__PVT__read_pixel_y)));
-                            this->__Vdly__read_pixel_x = 0U;
-                        } else {
-                            if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
-                                 & (0x1ffU == (IData)(this->__PVT__read_pixel_y)))) {
-                                this->__Vdly__read_pixel_x = 0U;
-                                this->__Vdly__read_pixel_y = 0U;
-                            } else {
-                                this->__Vdly__read_pixel_x 
-                                    = (0x3fU & ((IData)(1U) 
-                                                + (IData)(this->__PVT__read_pixel_x)));
-                            }
-                        }
-                        this->__PVT__decomp_pixel_reg 
-                            = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_bg2.Decompressed_FIFO_data;
-                    }
+            this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
+            this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
+            this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
+            this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
+            if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0xeU])))) {
+                    this->__Vdly__fifo_r_state = 1U;
+                    this->__Vdly__read_pixel_x = 0x3fU;
+                    this->__Vdly__read_pixel_y = 0x1ffU;
+                    this->__Vdly__fifo_r_state_counter = 0U;
+                } else {
+                    this->__Vdly__fifo_r_state = 0U;
                 }
             } else {
-                if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                if ((1U == (IData)(this->__PVT__fifo_r_state))) {
                     if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
+                            if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
+                                this->__Vdly__read_pixel_y 
+                                    = (0x1ffU & ((IData)(1U) 
+                                                 + (IData)(this->__PVT__read_pixel_y)));
+                                this->__Vdly__read_pixel_x = 0U;
+                            } else {
+                                if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
+                                     & (0x1ffU == (IData)(this->__PVT__read_pixel_y)))) {
+                                    this->__Vdly__read_pixel_x = 0U;
+                                    this->__Vdly__read_pixel_y = 0U;
+                                } else {
+                                    this->__Vdly__read_pixel_x 
+                                        = (0x3fU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__read_pixel_x)));
+                                }
+                            }
                             this->__PVT__decomp_pixel_reg 
                                 = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_bg2.Decompressed_FIFO_data;
                         }
                     }
+                } else {
+                    if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                        if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
+                            if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
+                                this->__PVT__decomp_pixel_reg 
+                                    = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_bg2.Decompressed_FIFO_data;
+                            }
+                        }
+                    }
                 }
             }
-        }
-        if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0xeU])))) {
-                this->__Vdly__rgb_r_state = 3U;
-                this->__PVT__rgb_r_state_counter = 0U;
-            } else {
-                this->__Vdly__rgb_r_state = 0U;
-            }
-        } else {
-            if ((3U == (IData)(this->__PVT__rgb_r_state))) {
-                if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-                    this->__Vdly__rgb_r_state = 0U;
+            if ((0U == (IData)(this->__PVT__rgb_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0xeU])))) {
+                    this->__Vdly__rgb_r_state = 3U;
                     this->__PVT__rgb_r_state_counter = 0U;
                 } else {
-                    if (this->__PVT__rgb_convert_req) {
-                        this->__Vdly__rgb_r_state = 4U;
+                    this->__Vdly__rgb_r_state = 0U;
+                }
+            } else {
+                if ((3U == (IData)(this->__PVT__rgb_r_state))) {
+                    if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                        this->__Vdly__rgb_r_state = 0U;
                         this->__PVT__rgb_r_state_counter = 0U;
                     } else {
-                        this->__Vdly__rgb_r_state = 3U;
+                        if (this->__PVT__rgb_convert_req) {
+                            this->__Vdly__rgb_r_state = 4U;
+                            this->__PVT__rgb_r_state_counter = 0U;
+                        } else {
+                            this->__Vdly__rgb_r_state = 3U;
+                        }
                     }
                 }
             }
@@ -1798,8 +1866,8 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     }
     this->__PVT__personal_counter_x = this->__Vdly__personal_counter_x;
     this->__PVT__personal_counter_y = this->__Vdly__personal_counter_y;
-    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__main_state = this->__Vdly__main_state;
+    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__rgb_r_state = this->__Vdly__rgb_r_state;
     this->__PVT__read_pixel_x = this->__Vdly__read_pixel_x;
     this->__PVT__read_pixel_y = this->__Vdly__read_pixel_y;
@@ -2880,121 +2948,144 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     // Body
     this->__Vdly__personal_counter_y = this->__PVT__personal_counter_y;
     this->__Vdly__personal_counter_x = this->__PVT__personal_counter_x;
-    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__main_state_counter = this->__PVT__main_state_counter;
+    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state;
     this->__Vdly__read_pixel_y = this->__PVT__read_pixel_y;
     this->__Vdly__read_pixel_x = this->__PVT__read_pixel_x;
     this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter;
     this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state;
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [2U]))) {
+        if (vlTOPp->Font_Frame_End) {
             this->__PVT__RGB_reg_trans = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [2U])) {
-                this->__PVT__RGB_reg_trans = 1U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [2U]))) {
+                this->__PVT__RGB_reg_trans = 0U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [2U])) {
+                    this->__PVT__RGB_reg_trans = 1U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg_trans = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [2U]))) {
-            this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
-                [2U];
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [2U])) {
-                this->__PVT__RGB_reg = 0U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [2U]))) {
+                this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
+                    [2U];
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [2U])) {
+                    this->__PVT__RGB_reg = 0U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [2U]))) {
-            this->__PVT__RGB_reg_valid = 1U;
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg_valid = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [2U])) {
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [2U]))) {
                 this->__PVT__RGB_reg_valid = 1U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [2U])) {
+                    this->__PVT__RGB_reg_valid = 1U;
+                }
             }
-        }
-        if (this->__PVT__RGB_reg_ready) {
-            this->__PVT__RGB_reg_valid = 0U;
+            if (this->__PVT__RGB_reg_ready) {
+                this->__PVT__RGB_reg_valid = 0U;
+            }
         }
     } else {
         this->__PVT__RGB_reg_valid = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
-        this->__Vdly__main_state = this->__PVT__main_state_next;
-        if ((0U == (IData)(this->__PVT__main_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x10U])))) {
-                this->__Vdly__main_state_counter = 0U;
-                this->__Vdly__personal_counter_x = 0U;
-                this->__Vdly__personal_counter_y = 0U;
-                this->__Vdly__main_state = 2U;
-            } else {
-                this->__Vdly__main_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__Vdly__main_state = 0U;
+            this->__Vdly__main_state_counter = 0U;
+            this->__Vdly__personal_counter_x = 0U;
+            this->__Vdly__personal_counter_y = 0U;
         } else {
-            if ((1U == (IData)(this->__PVT__main_state))) {
-                if ((0U == (IData)(this->__PVT__main_state_counter))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [3U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+            this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
+            this->__Vdly__main_state = this->__PVT__main_state_next;
+            if ((0U == (IData)(this->__PVT__main_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x10U])))) {
+                    this->__Vdly__main_state_counter = 0U;
+                    this->__Vdly__personal_counter_x = 0U;
+                    this->__Vdly__personal_counter_y = 0U;
+                    this->__Vdly__main_state = 2U;
+                } else {
+                    this->__Vdly__main_state = 0U;
+                }
+            } else {
+                if ((1U == (IData)(this->__PVT__main_state))) {
+                    if ((0U == (IData)(this->__PVT__main_state_counter))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [3U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
-                }
-            } else {
-                if ((2U == (IData)(this->__PVT__main_state))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [3U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+                } else {
+                    if ((2U == (IData)(this->__PVT__main_state))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [3U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
@@ -3008,50 +3099,35 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
         this->__Vdly__personal_counter_y = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
-        this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
-        this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
-        this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
-        if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x10U])))) {
-                this->__Vdly__fifo_r_state = 2U;
-                this->__Vdly__read_pixel_x = 0x3fU;
-                this->__Vdly__read_pixel_y = 0x1ffU;
-                this->__Vdly__fifo_r_state_counter = 0U;
-            } else {
-                this->__Vdly__fifo_r_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__decomp_pixel_reg = 0ULL;
+            this->__Vdly__fifo_r_state = 0U;
+            this->__Vdly__rgb_r_state = 0U;
+            this->__PVT__rgb_r_state_counter = 0U;
+            this->__Vdly__fifo_r_state_counter = 0U;
+            this->__Vdly__read_pixel_x = 0x3fU;
+            this->__Vdly__read_pixel_y = 0x1ffU;
         } else {
-            if ((1U == (IData)(this->__PVT__fifo_r_state))) {
-                if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
-                    if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
-                        if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
-                            this->__Vdly__read_pixel_y 
-                                = (0x1ffU & ((IData)(1U) 
-                                             + (IData)(this->__PVT__read_pixel_y)));
-                            this->__Vdly__read_pixel_x = 0U;
-                        } else {
-                            if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
-                                 & (0x1ffU == (IData)(this->__PVT__read_pixel_y)))) {
-                                this->__Vdly__read_pixel_x = 0U;
-                                this->__Vdly__read_pixel_y = 0U;
-                            } else {
-                                this->__Vdly__read_pixel_x 
-                                    = (0x3fU & ((IData)(1U) 
-                                                + (IData)(this->__PVT__read_pixel_x)));
-                            }
-                        }
-                        this->__PVT__decomp_pixel_reg 
-                            = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch1.Decompressed_FIFO_data;
-                    }
+            this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
+            this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
+            this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
+            this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
+            if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x10U])))) {
+                    this->__Vdly__fifo_r_state = 2U;
+                    this->__Vdly__read_pixel_x = 0x3fU;
+                    this->__Vdly__read_pixel_y = 0x1ffU;
+                    this->__Vdly__fifo_r_state_counter = 0U;
+                } else {
+                    this->__Vdly__fifo_r_state = 0U;
                 }
             } else {
-                if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                if ((1U == (IData)(this->__PVT__fifo_r_state))) {
                     if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
-                            if ((0x13U == (IData)(this->__PVT__read_pixel_x))) {
+                            if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
                                 this->__Vdly__read_pixel_y 
                                     = (0x1ffU & ((IData)(1U) 
                                                  + (IData)(this->__PVT__read_pixel_y)));
@@ -3072,29 +3148,57 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
                                 = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch1.Decompressed_FIFO_data;
                         }
                     }
+                } else {
+                    if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                        if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
+                            if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
+                                if ((0x13U == (IData)(this->__PVT__read_pixel_x))) {
+                                    this->__Vdly__read_pixel_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__read_pixel_y)));
+                                    this->__Vdly__read_pixel_x = 0U;
+                                } else {
+                                    if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
+                                         & (0x1ffU 
+                                            == (IData)(this->__PVT__read_pixel_y)))) {
+                                        this->__Vdly__read_pixel_x = 0U;
+                                        this->__Vdly__read_pixel_y = 0U;
+                                    } else {
+                                        this->__Vdly__read_pixel_x 
+                                            = (0x3fU 
+                                               & ((IData)(1U) 
+                                                  + (IData)(this->__PVT__read_pixel_x)));
+                                    }
+                                }
+                                this->__PVT__decomp_pixel_reg 
+                                    = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch1.Decompressed_FIFO_data;
+                            }
+                        }
+                    }
                 }
             }
-        }
-        if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x10U])))) {
-                this->__Vdly__rgb_r_state = 3U;
-                this->__PVT__rgb_r_state_counter = 0U;
-            } else {
-                this->__Vdly__rgb_r_state = 0U;
-            }
-        } else {
-            if ((3U == (IData)(this->__PVT__rgb_r_state))) {
-                if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-                    this->__Vdly__rgb_r_state = 0U;
+            if ((0U == (IData)(this->__PVT__rgb_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x10U])))) {
+                    this->__Vdly__rgb_r_state = 3U;
                     this->__PVT__rgb_r_state_counter = 0U;
                 } else {
-                    if (this->__PVT__rgb_convert_req) {
-                        this->__Vdly__rgb_r_state = 4U;
+                    this->__Vdly__rgb_r_state = 0U;
+                }
+            } else {
+                if ((3U == (IData)(this->__PVT__rgb_r_state))) {
+                    if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                        this->__Vdly__rgb_r_state = 0U;
                         this->__PVT__rgb_r_state_counter = 0U;
                     } else {
-                        this->__Vdly__rgb_r_state = 3U;
+                        if (this->__PVT__rgb_convert_req) {
+                            this->__Vdly__rgb_r_state = 4U;
+                            this->__PVT__rgb_r_state_counter = 0U;
+                        } else {
+                            this->__Vdly__rgb_r_state = 3U;
+                        }
                     }
                 }
             }
@@ -3110,8 +3214,8 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     }
     this->__PVT__personal_counter_x = this->__Vdly__personal_counter_x;
     this->__PVT__personal_counter_y = this->__Vdly__personal_counter_y;
-    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__main_state = this->__Vdly__main_state;
+    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__rgb_r_state = this->__Vdly__rgb_r_state;
     this->__PVT__read_pixel_x = this->__Vdly__read_pixel_x;
     this->__PVT__read_pixel_y = this->__Vdly__read_pixel_y;
@@ -4458,121 +4562,144 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     // Body
     this->__Vdly__personal_counter_y = this->__PVT__personal_counter_y;
     this->__Vdly__personal_counter_x = this->__PVT__personal_counter_x;
-    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__main_state_counter = this->__PVT__main_state_counter;
+    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state;
     this->__Vdly__read_pixel_y = this->__PVT__read_pixel_y;
     this->__Vdly__read_pixel_x = this->__PVT__read_pixel_x;
     this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter;
     this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state;
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [3U]))) {
+        if (vlTOPp->Font_Frame_End) {
             this->__PVT__RGB_reg_trans = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [3U])) {
-                this->__PVT__RGB_reg_trans = 1U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [3U]))) {
+                this->__PVT__RGB_reg_trans = 0U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [3U])) {
+                    this->__PVT__RGB_reg_trans = 1U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg_trans = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [3U]))) {
-            this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
-                [3U];
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [3U])) {
-                this->__PVT__RGB_reg = 0U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [3U]))) {
+                this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
+                    [3U];
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [3U])) {
+                    this->__PVT__RGB_reg = 0U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [3U]))) {
-            this->__PVT__RGB_reg_valid = 1U;
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg_valid = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [3U])) {
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [3U]))) {
                 this->__PVT__RGB_reg_valid = 1U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [3U])) {
+                    this->__PVT__RGB_reg_valid = 1U;
+                }
             }
-        }
-        if (this->__PVT__RGB_reg_ready) {
-            this->__PVT__RGB_reg_valid = 0U;
+            if (this->__PVT__RGB_reg_ready) {
+                this->__PVT__RGB_reg_valid = 0U;
+            }
         }
     } else {
         this->__PVT__RGB_reg_valid = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
-        this->__Vdly__main_state = this->__PVT__main_state_next;
-        if ((0U == (IData)(this->__PVT__main_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x12U])))) {
-                this->__Vdly__main_state_counter = 0U;
-                this->__Vdly__personal_counter_x = 0U;
-                this->__Vdly__personal_counter_y = 0U;
-                this->__Vdly__main_state = 2U;
-            } else {
-                this->__Vdly__main_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__Vdly__main_state = 0U;
+            this->__Vdly__main_state_counter = 0U;
+            this->__Vdly__personal_counter_x = 0U;
+            this->__Vdly__personal_counter_y = 0U;
         } else {
-            if ((1U == (IData)(this->__PVT__main_state))) {
-                if ((0U == (IData)(this->__PVT__main_state_counter))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [4U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+            this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
+            this->__Vdly__main_state = this->__PVT__main_state_next;
+            if ((0U == (IData)(this->__PVT__main_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x12U])))) {
+                    this->__Vdly__main_state_counter = 0U;
+                    this->__Vdly__personal_counter_x = 0U;
+                    this->__Vdly__personal_counter_y = 0U;
+                    this->__Vdly__main_state = 2U;
+                } else {
+                    this->__Vdly__main_state = 0U;
+                }
+            } else {
+                if ((1U == (IData)(this->__PVT__main_state))) {
+                    if ((0U == (IData)(this->__PVT__main_state_counter))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [4U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
-                }
-            } else {
-                if ((2U == (IData)(this->__PVT__main_state))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [4U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+                } else {
+                    if ((2U == (IData)(this->__PVT__main_state))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [4U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
@@ -4586,50 +4713,35 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
         this->__Vdly__personal_counter_y = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
-        this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
-        this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
-        this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
-        if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x12U])))) {
-                this->__Vdly__fifo_r_state = 2U;
-                this->__Vdly__read_pixel_x = 0x3fU;
-                this->__Vdly__read_pixel_y = 0x1ffU;
-                this->__Vdly__fifo_r_state_counter = 0U;
-            } else {
-                this->__Vdly__fifo_r_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__decomp_pixel_reg = 0ULL;
+            this->__Vdly__fifo_r_state = 0U;
+            this->__Vdly__rgb_r_state = 0U;
+            this->__PVT__rgb_r_state_counter = 0U;
+            this->__Vdly__fifo_r_state_counter = 0U;
+            this->__Vdly__read_pixel_x = 0x3fU;
+            this->__Vdly__read_pixel_y = 0x1ffU;
         } else {
-            if ((1U == (IData)(this->__PVT__fifo_r_state))) {
-                if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
-                    if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
-                        if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
-                            this->__Vdly__read_pixel_y 
-                                = (0x1ffU & ((IData)(1U) 
-                                             + (IData)(this->__PVT__read_pixel_y)));
-                            this->__Vdly__read_pixel_x = 0U;
-                        } else {
-                            if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
-                                 & (0x1ffU == (IData)(this->__PVT__read_pixel_y)))) {
-                                this->__Vdly__read_pixel_x = 0U;
-                                this->__Vdly__read_pixel_y = 0U;
-                            } else {
-                                this->__Vdly__read_pixel_x 
-                                    = (0x3fU & ((IData)(1U) 
-                                                + (IData)(this->__PVT__read_pixel_x)));
-                            }
-                        }
-                        this->__PVT__decomp_pixel_reg 
-                            = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch2.Decompressed_FIFO_data;
-                    }
+            this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
+            this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
+            this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
+            this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
+            if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x12U])))) {
+                    this->__Vdly__fifo_r_state = 2U;
+                    this->__Vdly__read_pixel_x = 0x3fU;
+                    this->__Vdly__read_pixel_y = 0x1ffU;
+                    this->__Vdly__fifo_r_state_counter = 0U;
+                } else {
+                    this->__Vdly__fifo_r_state = 0U;
                 }
             } else {
-                if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                if ((1U == (IData)(this->__PVT__fifo_r_state))) {
                     if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
-                            if ((0x13U == (IData)(this->__PVT__read_pixel_x))) {
+                            if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
                                 this->__Vdly__read_pixel_y 
                                     = (0x1ffU & ((IData)(1U) 
                                                  + (IData)(this->__PVT__read_pixel_y)));
@@ -4650,29 +4762,57 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
                                 = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch2.Decompressed_FIFO_data;
                         }
                     }
+                } else {
+                    if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                        if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
+                            if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
+                                if ((0x13U == (IData)(this->__PVT__read_pixel_x))) {
+                                    this->__Vdly__read_pixel_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__read_pixel_y)));
+                                    this->__Vdly__read_pixel_x = 0U;
+                                } else {
+                                    if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
+                                         & (0x1ffU 
+                                            == (IData)(this->__PVT__read_pixel_y)))) {
+                                        this->__Vdly__read_pixel_x = 0U;
+                                        this->__Vdly__read_pixel_y = 0U;
+                                    } else {
+                                        this->__Vdly__read_pixel_x 
+                                            = (0x3fU 
+                                               & ((IData)(1U) 
+                                                  + (IData)(this->__PVT__read_pixel_x)));
+                                    }
+                                }
+                                this->__PVT__decomp_pixel_reg 
+                                    = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch2.Decompressed_FIFO_data;
+                            }
+                        }
+                    }
                 }
             }
-        }
-        if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x12U])))) {
-                this->__Vdly__rgb_r_state = 3U;
-                this->__PVT__rgb_r_state_counter = 0U;
-            } else {
-                this->__Vdly__rgb_r_state = 0U;
-            }
-        } else {
-            if ((3U == (IData)(this->__PVT__rgb_r_state))) {
-                if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-                    this->__Vdly__rgb_r_state = 0U;
+            if ((0U == (IData)(this->__PVT__rgb_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x12U])))) {
+                    this->__Vdly__rgb_r_state = 3U;
                     this->__PVT__rgb_r_state_counter = 0U;
                 } else {
-                    if (this->__PVT__rgb_convert_req) {
-                        this->__Vdly__rgb_r_state = 4U;
+                    this->__Vdly__rgb_r_state = 0U;
+                }
+            } else {
+                if ((3U == (IData)(this->__PVT__rgb_r_state))) {
+                    if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                        this->__Vdly__rgb_r_state = 0U;
                         this->__PVT__rgb_r_state_counter = 0U;
                     } else {
-                        this->__Vdly__rgb_r_state = 3U;
+                        if (this->__PVT__rgb_convert_req) {
+                            this->__Vdly__rgb_r_state = 4U;
+                            this->__PVT__rgb_r_state_counter = 0U;
+                        } else {
+                            this->__Vdly__rgb_r_state = 3U;
+                        }
                     }
                 }
             }
@@ -4688,8 +4828,8 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     }
     this->__PVT__personal_counter_x = this->__Vdly__personal_counter_x;
     this->__PVT__personal_counter_y = this->__Vdly__personal_counter_y;
-    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__main_state = this->__Vdly__main_state;
+    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__rgb_r_state = this->__Vdly__rgb_r_state;
     this->__PVT__read_pixel_x = this->__Vdly__read_pixel_x;
     this->__PVT__read_pixel_y = this->__Vdly__read_pixel_y;
@@ -6036,121 +6176,144 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     // Body
     this->__Vdly__personal_counter_y = this->__PVT__personal_counter_y;
     this->__Vdly__personal_counter_x = this->__PVT__personal_counter_x;
-    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__main_state_counter = this->__PVT__main_state_counter;
+    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state;
     this->__Vdly__read_pixel_y = this->__PVT__read_pixel_y;
     this->__Vdly__read_pixel_x = this->__PVT__read_pixel_x;
     this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter;
     this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state;
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [4U]))) {
+        if (vlTOPp->Font_Frame_End) {
             this->__PVT__RGB_reg_trans = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [4U])) {
-                this->__PVT__RGB_reg_trans = 1U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [4U]))) {
+                this->__PVT__RGB_reg_trans = 0U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [4U])) {
+                    this->__PVT__RGB_reg_trans = 1U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg_trans = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [4U]))) {
-            this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
-                [4U];
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [4U])) {
-                this->__PVT__RGB_reg = 0U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [4U]))) {
+                this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
+                    [4U];
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [4U])) {
+                    this->__PVT__RGB_reg = 0U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [4U]))) {
-            this->__PVT__RGB_reg_valid = 1U;
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg_valid = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [4U])) {
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [4U]))) {
                 this->__PVT__RGB_reg_valid = 1U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [4U])) {
+                    this->__PVT__RGB_reg_valid = 1U;
+                }
             }
-        }
-        if (this->__PVT__RGB_reg_ready) {
-            this->__PVT__RGB_reg_valid = 0U;
+            if (this->__PVT__RGB_reg_ready) {
+                this->__PVT__RGB_reg_valid = 0U;
+            }
         }
     } else {
         this->__PVT__RGB_reg_valid = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
-        this->__Vdly__main_state = this->__PVT__main_state_next;
-        if ((0U == (IData)(this->__PVT__main_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x14U])))) {
-                this->__Vdly__main_state_counter = 0U;
-                this->__Vdly__personal_counter_x = 0U;
-                this->__Vdly__personal_counter_y = 0U;
-                this->__Vdly__main_state = 2U;
-            } else {
-                this->__Vdly__main_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__Vdly__main_state = 0U;
+            this->__Vdly__main_state_counter = 0U;
+            this->__Vdly__personal_counter_x = 0U;
+            this->__Vdly__personal_counter_y = 0U;
         } else {
-            if ((1U == (IData)(this->__PVT__main_state))) {
-                if ((0U == (IData)(this->__PVT__main_state_counter))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [5U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+            this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
+            this->__Vdly__main_state = this->__PVT__main_state_next;
+            if ((0U == (IData)(this->__PVT__main_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x14U])))) {
+                    this->__Vdly__main_state_counter = 0U;
+                    this->__Vdly__personal_counter_x = 0U;
+                    this->__Vdly__personal_counter_y = 0U;
+                    this->__Vdly__main_state = 2U;
+                } else {
+                    this->__Vdly__main_state = 0U;
+                }
+            } else {
+                if ((1U == (IData)(this->__PVT__main_state))) {
+                    if ((0U == (IData)(this->__PVT__main_state_counter))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [5U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
-                }
-            } else {
-                if ((2U == (IData)(this->__PVT__main_state))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [5U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+                } else {
+                    if ((2U == (IData)(this->__PVT__main_state))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [5U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
@@ -6164,50 +6327,35 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
         this->__Vdly__personal_counter_y = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
-        this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
-        this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
-        this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
-        if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x14U])))) {
-                this->__Vdly__fifo_r_state = 2U;
-                this->__Vdly__read_pixel_x = 0x3fU;
-                this->__Vdly__read_pixel_y = 0x1ffU;
-                this->__Vdly__fifo_r_state_counter = 0U;
-            } else {
-                this->__Vdly__fifo_r_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__decomp_pixel_reg = 0ULL;
+            this->__Vdly__fifo_r_state = 0U;
+            this->__Vdly__rgb_r_state = 0U;
+            this->__PVT__rgb_r_state_counter = 0U;
+            this->__Vdly__fifo_r_state_counter = 0U;
+            this->__Vdly__read_pixel_x = 0x3fU;
+            this->__Vdly__read_pixel_y = 0x1ffU;
         } else {
-            if ((1U == (IData)(this->__PVT__fifo_r_state))) {
-                if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
-                    if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
-                        if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
-                            this->__Vdly__read_pixel_y 
-                                = (0x1ffU & ((IData)(1U) 
-                                             + (IData)(this->__PVT__read_pixel_y)));
-                            this->__Vdly__read_pixel_x = 0U;
-                        } else {
-                            if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
-                                 & (0x1ffU == (IData)(this->__PVT__read_pixel_y)))) {
-                                this->__Vdly__read_pixel_x = 0U;
-                                this->__Vdly__read_pixel_y = 0U;
-                            } else {
-                                this->__Vdly__read_pixel_x 
-                                    = (0x3fU & ((IData)(1U) 
-                                                + (IData)(this->__PVT__read_pixel_x)));
-                            }
-                        }
-                        this->__PVT__decomp_pixel_reg 
-                            = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch3.Decompressed_FIFO_data;
-                    }
+            this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
+            this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
+            this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
+            this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
+            if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x14U])))) {
+                    this->__Vdly__fifo_r_state = 2U;
+                    this->__Vdly__read_pixel_x = 0x3fU;
+                    this->__Vdly__read_pixel_y = 0x1ffU;
+                    this->__Vdly__fifo_r_state_counter = 0U;
+                } else {
+                    this->__Vdly__fifo_r_state = 0U;
                 }
             } else {
-                if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                if ((1U == (IData)(this->__PVT__fifo_r_state))) {
                     if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
-                            if ((0x13U == (IData)(this->__PVT__read_pixel_x))) {
+                            if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
                                 this->__Vdly__read_pixel_y 
                                     = (0x1ffU & ((IData)(1U) 
                                                  + (IData)(this->__PVT__read_pixel_y)));
@@ -6228,29 +6376,57 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
                                 = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch3.Decompressed_FIFO_data;
                         }
                     }
+                } else {
+                    if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                        if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
+                            if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
+                                if ((0x13U == (IData)(this->__PVT__read_pixel_x))) {
+                                    this->__Vdly__read_pixel_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__read_pixel_y)));
+                                    this->__Vdly__read_pixel_x = 0U;
+                                } else {
+                                    if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
+                                         & (0x1ffU 
+                                            == (IData)(this->__PVT__read_pixel_y)))) {
+                                        this->__Vdly__read_pixel_x = 0U;
+                                        this->__Vdly__read_pixel_y = 0U;
+                                    } else {
+                                        this->__Vdly__read_pixel_x 
+                                            = (0x3fU 
+                                               & ((IData)(1U) 
+                                                  + (IData)(this->__PVT__read_pixel_x)));
+                                    }
+                                }
+                                this->__PVT__decomp_pixel_reg 
+                                    = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch3.Decompressed_FIFO_data;
+                            }
+                        }
+                    }
                 }
             }
-        }
-        if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x14U])))) {
-                this->__Vdly__rgb_r_state = 3U;
-                this->__PVT__rgb_r_state_counter = 0U;
-            } else {
-                this->__Vdly__rgb_r_state = 0U;
-            }
-        } else {
-            if ((3U == (IData)(this->__PVT__rgb_r_state))) {
-                if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-                    this->__Vdly__rgb_r_state = 0U;
+            if ((0U == (IData)(this->__PVT__rgb_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x14U])))) {
+                    this->__Vdly__rgb_r_state = 3U;
                     this->__PVT__rgb_r_state_counter = 0U;
                 } else {
-                    if (this->__PVT__rgb_convert_req) {
-                        this->__Vdly__rgb_r_state = 4U;
+                    this->__Vdly__rgb_r_state = 0U;
+                }
+            } else {
+                if ((3U == (IData)(this->__PVT__rgb_r_state))) {
+                    if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                        this->__Vdly__rgb_r_state = 0U;
                         this->__PVT__rgb_r_state_counter = 0U;
                     } else {
-                        this->__Vdly__rgb_r_state = 3U;
+                        if (this->__PVT__rgb_convert_req) {
+                            this->__Vdly__rgb_r_state = 4U;
+                            this->__PVT__rgb_r_state_counter = 0U;
+                        } else {
+                            this->__Vdly__rgb_r_state = 3U;
+                        }
                     }
                 }
             }
@@ -6266,8 +6442,8 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     }
     this->__PVT__personal_counter_x = this->__Vdly__personal_counter_x;
     this->__PVT__personal_counter_y = this->__Vdly__personal_counter_y;
-    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__main_state = this->__Vdly__main_state;
+    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__rgb_r_state = this->__Vdly__rgb_r_state;
     this->__PVT__read_pixel_x = this->__Vdly__read_pixel_x;
     this->__PVT__read_pixel_y = this->__Vdly__read_pixel_y;
@@ -7614,121 +7790,144 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     // Body
     this->__Vdly__personal_counter_y = this->__PVT__personal_counter_y;
     this->__Vdly__personal_counter_x = this->__PVT__personal_counter_x;
-    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__main_state_counter = this->__PVT__main_state_counter;
+    this->__Vdly__main_state = this->__PVT__main_state;
     this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state;
     this->__Vdly__read_pixel_y = this->__PVT__read_pixel_y;
     this->__Vdly__read_pixel_x = this->__PVT__read_pixel_x;
     this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter;
     this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state;
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [5U]))) {
+        if (vlTOPp->Font_Frame_End) {
             this->__PVT__RGB_reg_trans = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [5U])) {
-                this->__PVT__RGB_reg_trans = 1U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [5U]))) {
+                this->__PVT__RGB_reg_trans = 0U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [5U])) {
+                    this->__PVT__RGB_reg_trans = 1U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg_trans = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [5U]))) {
-            this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
-                [5U];
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [5U])) {
-                this->__PVT__RGB_reg = 0U;
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [5U]))) {
+                this->__PVT__RGB_reg = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_RGB
+                    [5U];
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [5U])) {
+                    this->__PVT__RGB_reg = 0U;
+                }
             }
         }
     } else {
         this->__PVT__RGB_reg = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((IData)(this->__PVT__RGB_reg_w_ena) & 
-             (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-              [5U]))) {
-            this->__PVT__RGB_reg_valid = 1U;
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__RGB_reg_valid = 0U;
         } else {
             if (((IData)(this->__PVT__RGB_reg_w_ena) 
-                 & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
-                 [5U])) {
+                 & (~ vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                    [5U]))) {
                 this->__PVT__RGB_reg_valid = 1U;
+            } else {
+                if (((IData)(this->__PVT__RGB_reg_w_ena) 
+                     & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__Req_trans
+                     [5U])) {
+                    this->__PVT__RGB_reg_valid = 1U;
+                }
             }
-        }
-        if (this->__PVT__RGB_reg_ready) {
-            this->__PVT__RGB_reg_valid = 0U;
+            if (this->__PVT__RGB_reg_ready) {
+                this->__PVT__RGB_reg_valid = 0U;
+            }
         }
     } else {
         this->__PVT__RGB_reg_valid = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
-        this->__Vdly__main_state = this->__PVT__main_state_next;
-        if ((0U == (IData)(this->__PVT__main_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x16U])))) {
-                this->__Vdly__main_state_counter = 0U;
-                this->__Vdly__personal_counter_x = 0U;
-                this->__Vdly__personal_counter_y = 0U;
-                this->__Vdly__main_state = 2U;
-            } else {
-                this->__Vdly__main_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__Vdly__main_state = 0U;
+            this->__Vdly__main_state_counter = 0U;
+            this->__Vdly__personal_counter_x = 0U;
+            this->__Vdly__personal_counter_y = 0U;
         } else {
-            if ((1U == (IData)(this->__PVT__main_state))) {
-                if ((0U == (IData)(this->__PVT__main_state_counter))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [6U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+            this->__Vdly__main_state_counter = this->__PVT__main_state_counter_next;
+            this->__Vdly__main_state = this->__PVT__main_state_next;
+            if ((0U == (IData)(this->__PVT__main_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x16U])))) {
+                    this->__Vdly__main_state_counter = 0U;
+                    this->__Vdly__personal_counter_x = 0U;
+                    this->__Vdly__personal_counter_y = 0U;
+                    this->__Vdly__main_state = 2U;
+                } else {
+                    this->__Vdly__main_state = 0U;
+                }
+            } else {
+                if ((1U == (IData)(this->__PVT__main_state))) {
+                    if ((0U == (IData)(this->__PVT__main_state_counter))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [6U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
-                }
-            } else {
-                if ((2U == (IData)(this->__PVT__main_state))) {
-                    if (((IData)(this->Pixel_valid) 
-                         & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
-                         [6U])) {
-                        if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
-                             & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
-                            this->__Vdly__main_state = 0U;
-                            this->__Vdly__personal_counter_x = 0U;
-                            this->__Vdly__personal_counter_y = 0U;
-                        } else {
-                            if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
-                                this->__Vdly__personal_counter_y 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_y)));
+                } else {
+                    if ((2U == (IData)(this->__PVT__main_state))) {
+                        if (((IData)(this->Pixel_valid) 
+                             & vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_proc__DOT__layer_ready
+                             [6U])) {
+                            if (((0x13fU == (IData)(this->__PVT__personal_counter_x)) 
+                                 & (0xefU == (IData)(this->__PVT__personal_counter_y)))) {
+                                this->__Vdly__main_state = 0U;
                                 this->__Vdly__personal_counter_x = 0U;
+                                this->__Vdly__personal_counter_y = 0U;
                             } else {
-                                this->__Vdly__personal_counter_x 
-                                    = (0x1ffU & ((IData)(1U) 
-                                                 + (IData)(this->__PVT__personal_counter_x)));
+                                if ((0x13fU == (IData)(this->__PVT__personal_counter_x))) {
+                                    this->__Vdly__personal_counter_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_y)));
+                                    this->__Vdly__personal_counter_x = 0U;
+                                } else {
+                                    this->__Vdly__personal_counter_x 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__personal_counter_x)));
+                                }
                             }
                         }
                     }
@@ -7742,50 +7941,35 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
         this->__Vdly__personal_counter_y = 0U;
     }
     if (vlTOPp->resetn) {
-        this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
-        this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
-        this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
-        this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
-        if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x16U])))) {
-                this->__Vdly__fifo_r_state = 2U;
-                this->__Vdly__read_pixel_x = 0x3fU;
-                this->__Vdly__read_pixel_y = 0x1ffU;
-                this->__Vdly__fifo_r_state_counter = 0U;
-            } else {
-                this->__Vdly__fifo_r_state = 0U;
-            }
+        if (vlTOPp->Font_Frame_End) {
+            this->__PVT__decomp_pixel_reg = 0ULL;
+            this->__Vdly__fifo_r_state = 0U;
+            this->__Vdly__rgb_r_state = 0U;
+            this->__PVT__rgb_r_state_counter = 0U;
+            this->__Vdly__fifo_r_state_counter = 0U;
+            this->__Vdly__read_pixel_x = 0x3fU;
+            this->__Vdly__read_pixel_y = 0x1ffU;
         } else {
-            if ((1U == (IData)(this->__PVT__fifo_r_state))) {
-                if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
-                    if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
-                        if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
-                            this->__Vdly__read_pixel_y 
-                                = (0x1ffU & ((IData)(1U) 
-                                             + (IData)(this->__PVT__read_pixel_y)));
-                            this->__Vdly__read_pixel_x = 0U;
-                        } else {
-                            if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
-                                 & (0x1ffU == (IData)(this->__PVT__read_pixel_y)))) {
-                                this->__Vdly__read_pixel_x = 0U;
-                                this->__Vdly__read_pixel_y = 0U;
-                            } else {
-                                this->__Vdly__read_pixel_x 
-                                    = (0x3fU & ((IData)(1U) 
-                                                + (IData)(this->__PVT__read_pixel_x)));
-                            }
-                        }
-                        this->__PVT__decomp_pixel_reg 
-                            = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch4.Decompressed_FIFO_data;
-                    }
+            this->__Vdly__fifo_r_state = this->__PVT__fifo_r_state_next;
+            this->__Vdly__fifo_r_state_counter = this->__PVT__fifo_r_state_counter_next;
+            this->__PVT__rgb_r_state_counter = this->__PVT__rgb_r_state_counter_next;
+            this->__Vdly__rgb_r_state = this->__PVT__rgb_r_state_next;
+            if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x16U])))) {
+                    this->__Vdly__fifo_r_state = 2U;
+                    this->__Vdly__read_pixel_x = 0x3fU;
+                    this->__Vdly__read_pixel_y = 0x1ffU;
+                    this->__Vdly__fifo_r_state_counter = 0U;
+                } else {
+                    this->__Vdly__fifo_r_state = 0U;
                 }
             } else {
-                if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                if ((1U == (IData)(this->__PVT__fifo_r_state))) {
                     if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
                         if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
-                            if ((0x13U == (IData)(this->__PVT__read_pixel_x))) {
+                            if ((0x31U == (IData)(this->__PVT__read_pixel_x))) {
                                 this->__Vdly__read_pixel_y 
                                     = (0x1ffU & ((IData)(1U) 
                                                  + (IData)(this->__PVT__read_pixel_y)));
@@ -7806,29 +7990,57 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
                                 = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch4.Decompressed_FIFO_data;
                         }
                     }
+                } else {
+                    if ((2U == (IData)(this->__PVT__fifo_r_state))) {
+                        if ((0U != (IData)(this->__PVT__fifo_r_state_counter))) {
+                            if ((1U == (IData)(this->__PVT__fifo_r_state_counter))) {
+                                if ((0x13U == (IData)(this->__PVT__read_pixel_x))) {
+                                    this->__Vdly__read_pixel_y 
+                                        = (0x1ffU & 
+                                           ((IData)(1U) 
+                                            + (IData)(this->__PVT__read_pixel_y)));
+                                    this->__Vdly__read_pixel_x = 0U;
+                                } else {
+                                    if (((0x3fU == (IData)(this->__PVT__read_pixel_x)) 
+                                         & (0x1ffU 
+                                            == (IData)(this->__PVT__read_pixel_y)))) {
+                                        this->__Vdly__read_pixel_x = 0U;
+                                        this->__Vdly__read_pixel_y = 0U;
+                                    } else {
+                                        this->__Vdly__read_pixel_x 
+                                            = (0x3fU 
+                                               & ((IData)(1U) 
+                                                  + (IData)(this->__PVT__read_pixel_x)));
+                                    }
+                                }
+                                this->__PVT__decomp_pixel_reg 
+                                    = vlSymsp->TOP__Game_Console_TOP__DOT__u_ppu__DOT__u_pixel_fifo__DOT__u_decomp_ch4.Decompressed_FIFO_data;
+                            }
+                        }
+                    }
                 }
             }
-        }
-        if ((0U == (IData)(this->__PVT__rgb_r_state))) {
-            if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
-                 & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
-                           [0x16U])))) {
-                this->__Vdly__rgb_r_state = 3U;
-                this->__PVT__rgb_r_state_counter = 0U;
-            } else {
-                this->__Vdly__rgb_r_state = 0U;
-            }
-        } else {
-            if ((3U == (IData)(this->__PVT__rgb_r_state))) {
-                if ((0U == (IData)(this->__PVT__fifo_r_state))) {
-                    this->__Vdly__rgb_r_state = 0U;
+            if ((0U == (IData)(this->__PVT__rgb_r_state))) {
+                if (((IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start) 
+                     & (0U != (0xffU & vlTOPp->Game_Console_TOP__DOT__u_addr_decoder__DOT__ppu_regs
+                               [0x16U])))) {
+                    this->__Vdly__rgb_r_state = 3U;
                     this->__PVT__rgb_r_state_counter = 0U;
                 } else {
-                    if (this->__PVT__rgb_convert_req) {
-                        this->__Vdly__rgb_r_state = 4U;
+                    this->__Vdly__rgb_r_state = 0U;
+                }
+            } else {
+                if ((3U == (IData)(this->__PVT__rgb_r_state))) {
+                    if ((0U == (IData)(this->__PVT__fifo_r_state))) {
+                        this->__Vdly__rgb_r_state = 0U;
                         this->__PVT__rgb_r_state_counter = 0U;
                     } else {
-                        this->__Vdly__rgb_r_state = 3U;
+                        if (this->__PVT__rgb_convert_req) {
+                            this->__Vdly__rgb_r_state = 4U;
+                            this->__PVT__rgb_r_state_counter = 0U;
+                        } else {
+                            this->__Vdly__rgb_r_state = 3U;
+                        }
                     }
                 }
             }
@@ -7844,8 +8056,8 @@ VL_INLINE_OPT void VGame_Console_TOP_Pixel_Reader::_sequent__TOP__Game_Console_T
     }
     this->__PVT__personal_counter_x = this->__Vdly__personal_counter_x;
     this->__PVT__personal_counter_y = this->__Vdly__personal_counter_y;
-    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__main_state = this->__Vdly__main_state;
+    this->__PVT__main_state_counter = this->__Vdly__main_state_counter;
     this->__PVT__rgb_r_state = this->__Vdly__rgb_r_state;
     this->__PVT__read_pixel_x = this->__Vdly__read_pixel_x;
     this->__PVT__read_pixel_y = this->__Vdly__read_pixel_y;

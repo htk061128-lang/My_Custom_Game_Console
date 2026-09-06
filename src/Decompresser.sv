@@ -16,6 +16,7 @@ module Decompresser( //Compressed_Data_FIFO 에서 값을 읽어와서 압축을
     //Background_Layer1 : 0011(0, 1) Background_Layer2: 1100(2, 3)
     //이렇게 설정해야 함!!!!!! 괄호는 대응하는 직접적인 Clk_Counter 값임.
 
+    input Frame_End,
     input PPU_start, //프레임 생성을 시작할때 1로 설정되고 완성되면 0으로 떨어지고 다음 프레임 생성을 시작할때 1로 설정됨.
     output Decompresser_is_IDLE, //이 신호는 세 FSM가 IDLE일때 1로 설정됨. 이 신호를 top 모듈에서 10개 Decompresser의 상태를 && 연산해서 Compressed_Data_FIFO에 전달함.
 
@@ -762,6 +763,26 @@ end
 
 always @(posedge clk or negedge resetn) begin
     if(!resetn) begin
+        r_state <= IDLE;
+        w_state <= IDLE; 
+        decompress_state <= IDLE;
+        compressed_fifo_r_state <= 0;
+        decompressed_fifo_r_state <= 0;
+        fifo_front_128[7:0] <= 0;
+        fifo_front_256[8:0] <= 0;
+        fifo_rear_128[7:0] <= 0;
+        fifo_rear_256[8:0] <= 0;
+        repeat_counter[6:0] <= 0;
+        unrepeat_counter[6:0] <= 0;
+        pixel_reg[7:0] <= 0;
+        compressed_FIFO_reg_64[63:0] <= 0;
+        compressed_FIFO_reg_counter[2:0] <= 0;
+
+        decompressed_FIFO_reg_64[63:0] <= 0;
+        decompressed_FIFO_reg_counter[2:0] <= 0;
+        r_8_reg[7:0] <= 0;
+    end
+    else if(Frame_End) begin //Frame이 완성되면 해당 레이어의 압축해제가 완료되지 않았어도 그냥 처음으로 초기화하고 다음 PPU_start를 기다림.
         r_state <= IDLE;
         w_state <= IDLE; 
         decompress_state <= IDLE;

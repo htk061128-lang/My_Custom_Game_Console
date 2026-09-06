@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     dut->trace(trace.get(), 0);
     trace->open("Game_Console_TOP_waveform.vcd");
 
-    constexpr uint64_t TARGET_TIME = 150000; // TARGET_TIME부터 10000클럭이 vcd파일로 저장됨.
+    constexpr uint64_t TARGET_TIME = 400000; // TARGET_TIME부터 10000클럭이 vcd파일로 저장됨.
     uint64_t trace_clock_count = 0;
     vluint64_t main_time = 0;
 
@@ -618,7 +618,7 @@ int main(int argc, char **argv)
             SDL_RenderClear(ren);
             SDL_RenderCopy(ren, tex, NULL, NULL);
             SDL_RenderPresent(ren);
-            printf("320 * 240 frame Done!!!\n");
+            printf("320 * 240 frame Done!!!, main_time: %d\n", main_time);
             final_pixels.clear();
         }
     }

@@ -355,15 +355,15 @@ VL_INLINE_OPT void VGame_Console_TOP_Decompresser::_sequent__TOP__Game_Console_T
     this->__Vdly__fifo_rear_128 = this->__PVT__fifo_rear_128;
     this->__Vdly__fifo_front_128 = this->__PVT__fifo_front_128;
     this->__PVT__compressed_fifo_r_state = ((IData)(vlTOPp->resetn) 
-                                            & (IData)(this->__PVT__compressed_fifo_r_state_next));
+                                            & ((~ (IData)(vlTOPp->Font_Frame_End)) 
+                                               & (IData)(this->__PVT__compressed_fifo_r_state_next)));
     this->__PVT__decompressed_fifo_r_state = ((IData)(vlTOPp->resetn)
-                                               ? (IData)(this->__PVT__decompressed_fifo_r_state_next)
+                                               ? ((IData)(vlTOPp->Font_Frame_End)
+                                                   ? 0U
+                                                   : (IData)(this->__PVT__decompressed_fifo_r_state_next))
                                                : 0U);
     if (vlTOPp->resetn) {
-        if (((((0U == (IData)(this->__PVT__r_state)) 
-               & (0U == (IData)(this->__PVT__w_state))) 
-              & (0U == (IData)(this->__PVT__decompress_state))) 
-             & (IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start))) {
+        if (vlTOPp->Font_Frame_End) {
             this->__Vdly__fifo_front_128 = 0U;
             this->__Vdly__fifo_front_256 = 0U;
             this->__Vdly__fifo_rear_128 = 0U;
@@ -376,139 +376,165 @@ VL_INLINE_OPT void VGame_Console_TOP_Decompresser::_sequent__TOP__Game_Console_T
             this->__Vdly__decompressed_FIFO_reg_64 = 0ULL;
             this->__Vdly__decompressed_FIFO_reg_counter = 0U;
             this->__PVT__r_8_reg = 0U;
-        }
-        if (this->__PVT__repeat_counter_w_ena) {
-            this->__Vdly__repeat_counter = (0x7fU & (IData)(this->__PVT__r_8));
-        }
-        if (this->__PVT__repeat_counter_dec_ena) {
-            this->__Vdly__repeat_counter = (0x7fU & 
-                                            ((IData)(this->__PVT__repeat_counter) 
-                                             - (IData)(1U)));
-        }
-        if (this->__PVT__unrepeat_counter_w_ena) {
-            this->__Vdly__unrepeat_counter = (0x7fU 
-                                              & (IData)(this->__PVT__r_8));
-        }
-        if (this->__PVT__unrepeat_counter_dec_ena) {
-            this->__Vdly__unrepeat_counter = (0x7fU 
-                                              & ((IData)(this->__PVT__unrepeat_counter) 
-                                                 - (IData)(1U)));
-        }
-        if (this->__PVT__pixel_reg_w_ena) {
-            this->__PVT__pixel_reg = this->__PVT__r_8;
-        }
-        if (this->__PVT__fifo_front_128_inc_ena) {
-            this->__Vdly__fifo_front_128 = (0xffU & 
-                                            ((IData)(1U) 
-                                             + (IData)(this->__PVT__fifo_front_128)));
-        }
-        if (this->__PVT__fifo_rear_128_inc_ena) {
-            this->__Vdly__fifo_rear_128 = (0xffU & 
-                                           ((IData)(1U) 
-                                            + (IData)(this->__PVT__fifo_rear_128)));
-        }
-        if (this->__PVT__fifo_front_256_inc_ena) {
-            this->__Vdly__fifo_front_256 = (0x1ffU 
-                                            & ((IData)(1U) 
-                                               + (IData)(this->__PVT__fifo_front_256)));
-        }
-        if (this->__PVT__fifo_rear_256_inc_ena) {
-            this->__Vdly__fifo_rear_256 = (0x1ffU & 
-                                           ((IData)(1U) 
-                                            + (IData)(this->__PVT__fifo_rear_256)));
-        }
-        if (this->__PVT__compressed_FIFO_reg_64_w_ena) {
-            this->__PVT__compressed_FIFO_reg_64 = this->__PVT__compressed_fifo_r_data;
-        }
-        if (this->__PVT__compressed_FIFO_reg_counter_inc_ena) {
-            this->__Vdly__compressed_FIFO_reg_counter 
-                = (7U & ((IData)(1U) + (IData)(this->__PVT__compressed_FIFO_reg_counter)));
-        }
-        if (this->__PVT__compressed_FIFO_reg_counter_reset) {
-            this->__Vdly__compressed_FIFO_reg_counter = 0U;
-        }
-        if ((1U & ((((((((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                         | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                            >> 1U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                       >> 2U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                                  >> 3U)) 
-                      | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                         >> 4U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                    >> 5U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                               >> 6U)) 
-                   | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                      >> 7U)))) {
-            this->__Vdly__decompressed_FIFO_reg_64 
-                = ((1U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                    ? ((0xffffffffffffff00ULL & this->__PVT__decompressed_FIFO_reg_64) 
-                       | (QData)((IData)(this->__PVT__w_8)))
-                    : ((2U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                        ? ((0xffffffffffff0000ULL & this->__PVT__decompressed_FIFO_reg_64) 
-                           | (QData)((IData)((((IData)(this->__PVT__w_8) 
-                                               << 8U) 
-                                              | (0xffU 
-                                                 & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
-                        : ((4U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                            ? ((0xffffffffff000000ULL 
+        } else {
+            if (((((0U == (IData)(this->__PVT__r_state)) 
+                   & (0U == (IData)(this->__PVT__w_state))) 
+                  & (0U == (IData)(this->__PVT__decompress_state))) 
+                 & (IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start))) {
+                this->__Vdly__fifo_front_128 = 0U;
+                this->__Vdly__fifo_front_256 = 0U;
+                this->__Vdly__fifo_rear_128 = 0U;
+                this->__Vdly__fifo_rear_256 = 0U;
+                this->__Vdly__repeat_counter = 0U;
+                this->__Vdly__unrepeat_counter = 0U;
+                this->__PVT__pixel_reg = 0U;
+                this->__PVT__compressed_FIFO_reg_64 = 0ULL;
+                this->__Vdly__compressed_FIFO_reg_counter = 0U;
+                this->__Vdly__decompressed_FIFO_reg_64 = 0ULL;
+                this->__Vdly__decompressed_FIFO_reg_counter = 0U;
+                this->__PVT__r_8_reg = 0U;
+            }
+            if (this->__PVT__repeat_counter_w_ena) {
+                this->__Vdly__repeat_counter = (0x7fU 
+                                                & (IData)(this->__PVT__r_8));
+            }
+            if (this->__PVT__repeat_counter_dec_ena) {
+                this->__Vdly__repeat_counter = (0x7fU 
+                                                & ((IData)(this->__PVT__repeat_counter) 
+                                                   - (IData)(1U)));
+            }
+            if (this->__PVT__unrepeat_counter_w_ena) {
+                this->__Vdly__unrepeat_counter = (0x7fU 
+                                                  & (IData)(this->__PVT__r_8));
+            }
+            if (this->__PVT__unrepeat_counter_dec_ena) {
+                this->__Vdly__unrepeat_counter = (0x7fU 
+                                                  & ((IData)(this->__PVT__unrepeat_counter) 
+                                                     - (IData)(1U)));
+            }
+            if (this->__PVT__pixel_reg_w_ena) {
+                this->__PVT__pixel_reg = this->__PVT__r_8;
+            }
+            if (this->__PVT__fifo_front_128_inc_ena) {
+                this->__Vdly__fifo_front_128 = (0xffU 
+                                                & ((IData)(1U) 
+                                                   + (IData)(this->__PVT__fifo_front_128)));
+            }
+            if (this->__PVT__fifo_rear_128_inc_ena) {
+                this->__Vdly__fifo_rear_128 = (0xffU 
+                                               & ((IData)(1U) 
+                                                  + (IData)(this->__PVT__fifo_rear_128)));
+            }
+            if (this->__PVT__fifo_front_256_inc_ena) {
+                this->__Vdly__fifo_front_256 = (0x1ffU 
+                                                & ((IData)(1U) 
+                                                   + (IData)(this->__PVT__fifo_front_256)));
+            }
+            if (this->__PVT__fifo_rear_256_inc_ena) {
+                this->__Vdly__fifo_rear_256 = (0x1ffU 
+                                               & ((IData)(1U) 
+                                                  + (IData)(this->__PVT__fifo_rear_256)));
+            }
+            if (this->__PVT__compressed_FIFO_reg_64_w_ena) {
+                this->__PVT__compressed_FIFO_reg_64 
+                    = this->__PVT__compressed_fifo_r_data;
+            }
+            if (this->__PVT__compressed_FIFO_reg_counter_inc_ena) {
+                this->__Vdly__compressed_FIFO_reg_counter 
+                    = (7U & ((IData)(1U) + (IData)(this->__PVT__compressed_FIFO_reg_counter)));
+            }
+            if (this->__PVT__compressed_FIFO_reg_counter_reset) {
+                this->__Vdly__compressed_FIFO_reg_counter = 0U;
+            }
+            if ((1U & ((((((((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                             | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                >> 1U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                           >> 2U)) 
+                           | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                              >> 3U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                         >> 4U)) | 
+                         ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                          >> 5U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                     >> 6U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                                >> 7U)))) {
+                this->__Vdly__decompressed_FIFO_reg_64 
+                    = ((1U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                        ? ((0xffffffffffffff00ULL & this->__PVT__decompressed_FIFO_reg_64) 
+                           | (QData)((IData)(this->__PVT__w_8)))
+                        : ((2U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                            ? ((0xffffffffffff0000ULL 
                                 & this->__PVT__decompressed_FIFO_reg_64) 
                                | (QData)((IData)((((IData)(this->__PVT__w_8) 
-                                                   << 0x10U) 
-                                                  | (0xffffU 
+                                                   << 8U) 
+                                                  | (0xffU 
                                                      & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
-                            : ((8U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                                ? (((QData)((IData)(
-                                                    (this->__PVT__decompressed_FIFO_reg_64 
-                                                     >> 0x20U))) 
-                                    << 0x20U) | (QData)((IData)(
-                                                                (((IData)(this->__PVT__w_8) 
-                                                                  << 0x18U) 
-                                                                 | (0xffffffU 
-                                                                    & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
-                                : ((0x10U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                            : ((4U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                ? ((0xffffffffff000000ULL 
+                                    & this->__PVT__decompressed_FIFO_reg_64) 
+                                   | (QData)((IData)(
+                                                     (((IData)(this->__PVT__w_8) 
+                                                       << 0x10U) 
+                                                      | (0xffffU 
+                                                         & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
+                                : ((8U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
                                     ? (((QData)((IData)(
-                                                        ((0xffffff00U 
-                                                          & ((IData)(
-                                                                     (this->__PVT__decompressed_FIFO_reg_64 
-                                                                      >> 0x28U)) 
-                                                             << 8U)) 
-                                                         | (IData)(this->__PVT__w_8)))) 
-                                        << 0x20U) | (QData)((IData)(this->__PVT__decompressed_FIFO_reg_64)))
-                                    : ((0x20U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                                        (this->__PVT__decompressed_FIFO_reg_64 
+                                                         >> 0x20U))) 
+                                        << 0x20U) | (QData)((IData)(
+                                                                    (((IData)(this->__PVT__w_8) 
+                                                                      << 0x18U) 
+                                                                     | (0xffffffU 
+                                                                        & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
+                                    : ((0x10U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
                                         ? (((QData)((IData)(
-                                                            (0xffffU 
-                                                             & (IData)(
-                                                                       (this->__PVT__decompressed_FIFO_reg_64 
-                                                                        >> 0x30U))))) 
-                                            << 0x30U) 
-                                           | (((QData)((IData)(this->__PVT__w_8)) 
-                                               << 0x28U) 
-                                              | (0xffffffffffULL 
-                                                 & this->__PVT__decompressed_FIFO_reg_64)))
-                                        : ((0x40U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                                            ((0xffffff00U 
+                                                              & ((IData)(
+                                                                         (this->__PVT__decompressed_FIFO_reg_64 
+                                                                          >> 0x28U)) 
+                                                                 << 8U)) 
+                                                             | (IData)(this->__PVT__w_8)))) 
+                                            << 0x20U) 
+                                           | (QData)((IData)(this->__PVT__decompressed_FIFO_reg_64)))
+                                        : ((0x20U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
                                             ? (((QData)((IData)(
-                                                                (0xffU 
+                                                                (0xffffU 
                                                                  & (IData)(
                                                                            (this->__PVT__decompressed_FIFO_reg_64 
-                                                                            >> 0x38U))))) 
-                                                << 0x38U) 
+                                                                            >> 0x30U))))) 
+                                                << 0x30U) 
                                                | (((QData)((IData)(this->__PVT__w_8)) 
-                                                   << 0x30U) 
-                                                  | (0xffffffffffffULL 
+                                                   << 0x28U) 
+                                                  | (0xffffffffffULL 
                                                      & this->__PVT__decompressed_FIFO_reg_64)))
-                                            : (((QData)((IData)(this->__PVT__w_8)) 
-                                                << 0x38U) 
-                                               | (0xffffffffffffffULL 
-                                                  & this->__PVT__decompressed_FIFO_reg_64)))))))));
-        }
-        if (this->__PVT__decompressed_FIFO_reg_counter_inc_ena) {
-            this->__Vdly__decompressed_FIFO_reg_counter 
-                = (7U & ((IData)(1U) + (IData)(this->__PVT__decompressed_FIFO_reg_counter)));
-        }
-        if (this->__PVT__decompressed_FIFO_reg_counter_reset) {
-            this->__Vdly__decompressed_FIFO_reg_counter = 0U;
-        }
-        if (this->__PVT__r_8_reg_w_ena) {
-            this->__PVT__r_8_reg = this->__PVT__r_8;
+                                            : ((0x40U 
+                                                & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                                ? (
+                                                   ((QData)((IData)(
+                                                                    (0xffU 
+                                                                     & (IData)(
+                                                                               (this->__PVT__decompressed_FIFO_reg_64 
+                                                                                >> 0x38U))))) 
+                                                    << 0x38U) 
+                                                   | (((QData)((IData)(this->__PVT__w_8)) 
+                                                       << 0x30U) 
+                                                      | (0xffffffffffffULL 
+                                                         & this->__PVT__decompressed_FIFO_reg_64)))
+                                                : (
+                                                   ((QData)((IData)(this->__PVT__w_8)) 
+                                                    << 0x38U) 
+                                                   | (0xffffffffffffffULL 
+                                                      & this->__PVT__decompressed_FIFO_reg_64)))))))));
+            }
+            if (this->__PVT__decompressed_FIFO_reg_counter_inc_ena) {
+                this->__Vdly__decompressed_FIFO_reg_counter 
+                    = (7U & ((IData)(1U) + (IData)(this->__PVT__decompressed_FIFO_reg_counter)));
+            }
+            if (this->__PVT__decompressed_FIFO_reg_counter_reset) {
+                this->__Vdly__decompressed_FIFO_reg_counter = 0U;
+            }
+            if (this->__PVT__r_8_reg_w_ena) {
+                this->__PVT__r_8_reg = this->__PVT__r_8;
+            }
         }
     } else {
         this->__Vdly__fifo_front_128 = 0U;
@@ -534,9 +560,12 @@ VL_INLINE_OPT void VGame_Console_TOP_Decompresser::_sequent__TOP__Game_Console_T
     this->__PVT__fifo_front_128 = this->__Vdly__fifo_front_128;
     this->__PVT__fifo_rear_128 = this->__Vdly__fifo_rear_128;
     if (vlTOPp->resetn) {
-        this->__PVT__w_state = this->__PVT__w_state_next;
-        this->__PVT__r_state = this->__PVT__r_state_next;
-        this->__PVT__decompress_state = this->__PVT__decompress_state_next;
+        this->__PVT__w_state = ((IData)(vlTOPp->Font_Frame_End)
+                                 ? 0U : (IData)(this->__PVT__w_state_next));
+        this->__PVT__r_state = ((IData)(vlTOPp->Font_Frame_End)
+                                 ? 0U : (IData)(this->__PVT__r_state_next));
+        this->__PVT__decompress_state = ((IData)(vlTOPp->Font_Frame_End)
+                                          ? 0U : (IData)(this->__PVT__decompress_state_next));
     } else {
         this->__PVT__w_state = 0U;
         this->__PVT__r_state = 0U;
@@ -1607,18 +1636,18 @@ VL_INLINE_OPT void VGame_Console_TOP_Decompresser::_sequent__TOP__Game_Console_T
     this->__Vdly__fifo_rear_256 = this->__PVT__fifo_rear_256;
     this->__Vdly__fifo_front_256 = this->__PVT__fifo_front_256;
     if (vlTOPp->resetn) {
-        this->__PVT__decompressed_fifo_r_state = this->__PVT__decompressed_fifo_r_state_next;
-        this->__PVT__compressed_fifo_r_state = ((IData)(this->__PVT__compressed_fifo_r_state_next) 
+        this->__PVT__decompressed_fifo_r_state = ((IData)(vlTOPp->Font_Frame_End)
+                                                   ? 0U
+                                                   : (IData)(this->__PVT__decompressed_fifo_r_state_next));
+        this->__PVT__compressed_fifo_r_state = (((~ (IData)(vlTOPp->Font_Frame_End)) 
+                                                 & (IData)(this->__PVT__compressed_fifo_r_state_next)) 
                                                 & 1U);
     } else {
         this->__PVT__decompressed_fifo_r_state = 0U;
         this->__PVT__compressed_fifo_r_state = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((((0U == (IData)(this->__PVT__r_state)) 
-               & (0U == (IData)(this->__PVT__w_state))) 
-              & (0U == (IData)(this->__PVT__decompress_state))) 
-             & (IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start))) {
+        if (vlTOPp->Font_Frame_End) {
             this->__Vdly__fifo_front_128 = 0U;
             this->__Vdly__fifo_front_256 = 0U;
             this->__Vdly__fifo_rear_128 = 0U;
@@ -1631,139 +1660,165 @@ VL_INLINE_OPT void VGame_Console_TOP_Decompresser::_sequent__TOP__Game_Console_T
             this->__Vdly__decompressed_FIFO_reg_64 = 0ULL;
             this->__Vdly__decompressed_FIFO_reg_counter = 0U;
             this->__PVT__r_8_reg = 0U;
-        }
-        if (this->__PVT__repeat_counter_w_ena) {
-            this->__Vdly__repeat_counter = (0x7fU & (IData)(this->__PVT__r_8));
-        }
-        if (this->__PVT__repeat_counter_dec_ena) {
-            this->__Vdly__repeat_counter = (0x7fU & 
-                                            ((IData)(this->__PVT__repeat_counter) 
-                                             - (IData)(1U)));
-        }
-        if (this->__PVT__unrepeat_counter_w_ena) {
-            this->__Vdly__unrepeat_counter = (0x7fU 
-                                              & (IData)(this->__PVT__r_8));
-        }
-        if (this->__PVT__unrepeat_counter_dec_ena) {
-            this->__Vdly__unrepeat_counter = (0x7fU 
-                                              & ((IData)(this->__PVT__unrepeat_counter) 
-                                                 - (IData)(1U)));
-        }
-        if (this->__PVT__pixel_reg_w_ena) {
-            this->__PVT__pixel_reg = this->__PVT__r_8;
-        }
-        if (this->__PVT__fifo_front_128_inc_ena) {
-            this->__Vdly__fifo_front_128 = (0xffU & 
-                                            ((IData)(1U) 
-                                             + (IData)(this->__PVT__fifo_front_128)));
-        }
-        if (this->__PVT__fifo_rear_128_inc_ena) {
-            this->__Vdly__fifo_rear_128 = (0xffU & 
-                                           ((IData)(1U) 
-                                            + (IData)(this->__PVT__fifo_rear_128)));
-        }
-        if (this->__PVT__fifo_front_256_inc_ena) {
-            this->__Vdly__fifo_front_256 = (0x1ffU 
-                                            & ((IData)(1U) 
-                                               + (IData)(this->__PVT__fifo_front_256)));
-        }
-        if (this->__PVT__fifo_rear_256_inc_ena) {
-            this->__Vdly__fifo_rear_256 = (0x1ffU & 
-                                           ((IData)(1U) 
-                                            + (IData)(this->__PVT__fifo_rear_256)));
-        }
-        if (this->__PVT__compressed_FIFO_reg_64_w_ena) {
-            this->__PVT__compressed_FIFO_reg_64 = this->__PVT__compressed_fifo_r_data;
-        }
-        if (this->__PVT__compressed_FIFO_reg_counter_inc_ena) {
-            this->__Vdly__compressed_FIFO_reg_counter 
-                = (7U & ((IData)(1U) + (IData)(this->__PVT__compressed_FIFO_reg_counter)));
-        }
-        if (this->__PVT__compressed_FIFO_reg_counter_reset) {
-            this->__Vdly__compressed_FIFO_reg_counter = 0U;
-        }
-        if ((1U & ((((((((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                         | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                            >> 1U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                       >> 2U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                                  >> 3U)) 
-                      | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                         >> 4U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                    >> 5U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                               >> 6U)) 
-                   | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                      >> 7U)))) {
-            this->__Vdly__decompressed_FIFO_reg_64 
-                = ((1U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                    ? ((0xffffffffffffff00ULL & this->__PVT__decompressed_FIFO_reg_64) 
-                       | (QData)((IData)(this->__PVT__w_8)))
-                    : ((2U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                        ? ((0xffffffffffff0000ULL & this->__PVT__decompressed_FIFO_reg_64) 
-                           | (QData)((IData)((((IData)(this->__PVT__w_8) 
-                                               << 8U) 
-                                              | (0xffU 
-                                                 & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
-                        : ((4U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                            ? ((0xffffffffff000000ULL 
+        } else {
+            if (((((0U == (IData)(this->__PVT__r_state)) 
+                   & (0U == (IData)(this->__PVT__w_state))) 
+                  & (0U == (IData)(this->__PVT__decompress_state))) 
+                 & (IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start))) {
+                this->__Vdly__fifo_front_128 = 0U;
+                this->__Vdly__fifo_front_256 = 0U;
+                this->__Vdly__fifo_rear_128 = 0U;
+                this->__Vdly__fifo_rear_256 = 0U;
+                this->__Vdly__repeat_counter = 0U;
+                this->__Vdly__unrepeat_counter = 0U;
+                this->__PVT__pixel_reg = 0U;
+                this->__PVT__compressed_FIFO_reg_64 = 0ULL;
+                this->__Vdly__compressed_FIFO_reg_counter = 0U;
+                this->__Vdly__decompressed_FIFO_reg_64 = 0ULL;
+                this->__Vdly__decompressed_FIFO_reg_counter = 0U;
+                this->__PVT__r_8_reg = 0U;
+            }
+            if (this->__PVT__repeat_counter_w_ena) {
+                this->__Vdly__repeat_counter = (0x7fU 
+                                                & (IData)(this->__PVT__r_8));
+            }
+            if (this->__PVT__repeat_counter_dec_ena) {
+                this->__Vdly__repeat_counter = (0x7fU 
+                                                & ((IData)(this->__PVT__repeat_counter) 
+                                                   - (IData)(1U)));
+            }
+            if (this->__PVT__unrepeat_counter_w_ena) {
+                this->__Vdly__unrepeat_counter = (0x7fU 
+                                                  & (IData)(this->__PVT__r_8));
+            }
+            if (this->__PVT__unrepeat_counter_dec_ena) {
+                this->__Vdly__unrepeat_counter = (0x7fU 
+                                                  & ((IData)(this->__PVT__unrepeat_counter) 
+                                                     - (IData)(1U)));
+            }
+            if (this->__PVT__pixel_reg_w_ena) {
+                this->__PVT__pixel_reg = this->__PVT__r_8;
+            }
+            if (this->__PVT__fifo_front_128_inc_ena) {
+                this->__Vdly__fifo_front_128 = (0xffU 
+                                                & ((IData)(1U) 
+                                                   + (IData)(this->__PVT__fifo_front_128)));
+            }
+            if (this->__PVT__fifo_rear_128_inc_ena) {
+                this->__Vdly__fifo_rear_128 = (0xffU 
+                                               & ((IData)(1U) 
+                                                  + (IData)(this->__PVT__fifo_rear_128)));
+            }
+            if (this->__PVT__fifo_front_256_inc_ena) {
+                this->__Vdly__fifo_front_256 = (0x1ffU 
+                                                & ((IData)(1U) 
+                                                   + (IData)(this->__PVT__fifo_front_256)));
+            }
+            if (this->__PVT__fifo_rear_256_inc_ena) {
+                this->__Vdly__fifo_rear_256 = (0x1ffU 
+                                               & ((IData)(1U) 
+                                                  + (IData)(this->__PVT__fifo_rear_256)));
+            }
+            if (this->__PVT__compressed_FIFO_reg_64_w_ena) {
+                this->__PVT__compressed_FIFO_reg_64 
+                    = this->__PVT__compressed_fifo_r_data;
+            }
+            if (this->__PVT__compressed_FIFO_reg_counter_inc_ena) {
+                this->__Vdly__compressed_FIFO_reg_counter 
+                    = (7U & ((IData)(1U) + (IData)(this->__PVT__compressed_FIFO_reg_counter)));
+            }
+            if (this->__PVT__compressed_FIFO_reg_counter_reset) {
+                this->__Vdly__compressed_FIFO_reg_counter = 0U;
+            }
+            if ((1U & ((((((((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                             | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                >> 1U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                           >> 2U)) 
+                           | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                              >> 3U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                         >> 4U)) | 
+                         ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                          >> 5U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                     >> 6U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                                >> 7U)))) {
+                this->__Vdly__decompressed_FIFO_reg_64 
+                    = ((1U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                        ? ((0xffffffffffffff00ULL & this->__PVT__decompressed_FIFO_reg_64) 
+                           | (QData)((IData)(this->__PVT__w_8)))
+                        : ((2U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                            ? ((0xffffffffffff0000ULL 
                                 & this->__PVT__decompressed_FIFO_reg_64) 
                                | (QData)((IData)((((IData)(this->__PVT__w_8) 
-                                                   << 0x10U) 
-                                                  | (0xffffU 
+                                                   << 8U) 
+                                                  | (0xffU 
                                                      & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
-                            : ((8U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                                ? (((QData)((IData)(
-                                                    (this->__PVT__decompressed_FIFO_reg_64 
-                                                     >> 0x20U))) 
-                                    << 0x20U) | (QData)((IData)(
-                                                                (((IData)(this->__PVT__w_8) 
-                                                                  << 0x18U) 
-                                                                 | (0xffffffU 
-                                                                    & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
-                                : ((0x10U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                            : ((4U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                ? ((0xffffffffff000000ULL 
+                                    & this->__PVT__decompressed_FIFO_reg_64) 
+                                   | (QData)((IData)(
+                                                     (((IData)(this->__PVT__w_8) 
+                                                       << 0x10U) 
+                                                      | (0xffffU 
+                                                         & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
+                                : ((8U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
                                     ? (((QData)((IData)(
-                                                        ((0xffffff00U 
-                                                          & ((IData)(
-                                                                     (this->__PVT__decompressed_FIFO_reg_64 
-                                                                      >> 0x28U)) 
-                                                             << 8U)) 
-                                                         | (IData)(this->__PVT__w_8)))) 
-                                        << 0x20U) | (QData)((IData)(this->__PVT__decompressed_FIFO_reg_64)))
-                                    : ((0x20U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                                        (this->__PVT__decompressed_FIFO_reg_64 
+                                                         >> 0x20U))) 
+                                        << 0x20U) | (QData)((IData)(
+                                                                    (((IData)(this->__PVT__w_8) 
+                                                                      << 0x18U) 
+                                                                     | (0xffffffU 
+                                                                        & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
+                                    : ((0x10U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
                                         ? (((QData)((IData)(
-                                                            (0xffffU 
-                                                             & (IData)(
-                                                                       (this->__PVT__decompressed_FIFO_reg_64 
-                                                                        >> 0x30U))))) 
-                                            << 0x30U) 
-                                           | (((QData)((IData)(this->__PVT__w_8)) 
-                                               << 0x28U) 
-                                              | (0xffffffffffULL 
-                                                 & this->__PVT__decompressed_FIFO_reg_64)))
-                                        : ((0x40U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                                            ((0xffffff00U 
+                                                              & ((IData)(
+                                                                         (this->__PVT__decompressed_FIFO_reg_64 
+                                                                          >> 0x28U)) 
+                                                                 << 8U)) 
+                                                             | (IData)(this->__PVT__w_8)))) 
+                                            << 0x20U) 
+                                           | (QData)((IData)(this->__PVT__decompressed_FIFO_reg_64)))
+                                        : ((0x20U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
                                             ? (((QData)((IData)(
-                                                                (0xffU 
+                                                                (0xffffU 
                                                                  & (IData)(
                                                                            (this->__PVT__decompressed_FIFO_reg_64 
-                                                                            >> 0x38U))))) 
-                                                << 0x38U) 
+                                                                            >> 0x30U))))) 
+                                                << 0x30U) 
                                                | (((QData)((IData)(this->__PVT__w_8)) 
-                                                   << 0x30U) 
-                                                  | (0xffffffffffffULL 
+                                                   << 0x28U) 
+                                                  | (0xffffffffffULL 
                                                      & this->__PVT__decompressed_FIFO_reg_64)))
-                                            : (((QData)((IData)(this->__PVT__w_8)) 
-                                                << 0x38U) 
-                                               | (0xffffffffffffffULL 
-                                                  & this->__PVT__decompressed_FIFO_reg_64)))))))));
-        }
-        if (this->__PVT__decompressed_FIFO_reg_counter_inc_ena) {
-            this->__Vdly__decompressed_FIFO_reg_counter 
-                = (7U & ((IData)(1U) + (IData)(this->__PVT__decompressed_FIFO_reg_counter)));
-        }
-        if (this->__PVT__decompressed_FIFO_reg_counter_reset) {
-            this->__Vdly__decompressed_FIFO_reg_counter = 0U;
-        }
-        if (this->__PVT__r_8_reg_w_ena) {
-            this->__PVT__r_8_reg = this->__PVT__r_8;
+                                            : ((0x40U 
+                                                & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                                ? (
+                                                   ((QData)((IData)(
+                                                                    (0xffU 
+                                                                     & (IData)(
+                                                                               (this->__PVT__decompressed_FIFO_reg_64 
+                                                                                >> 0x38U))))) 
+                                                    << 0x38U) 
+                                                   | (((QData)((IData)(this->__PVT__w_8)) 
+                                                       << 0x30U) 
+                                                      | (0xffffffffffffULL 
+                                                         & this->__PVT__decompressed_FIFO_reg_64)))
+                                                : (
+                                                   ((QData)((IData)(this->__PVT__w_8)) 
+                                                    << 0x38U) 
+                                                   | (0xffffffffffffffULL 
+                                                      & this->__PVT__decompressed_FIFO_reg_64)))))))));
+            }
+            if (this->__PVT__decompressed_FIFO_reg_counter_inc_ena) {
+                this->__Vdly__decompressed_FIFO_reg_counter 
+                    = (7U & ((IData)(1U) + (IData)(this->__PVT__decompressed_FIFO_reg_counter)));
+            }
+            if (this->__PVT__decompressed_FIFO_reg_counter_reset) {
+                this->__Vdly__decompressed_FIFO_reg_counter = 0U;
+            }
+            if (this->__PVT__r_8_reg_w_ena) {
+                this->__PVT__r_8_reg = this->__PVT__r_8;
+            }
         }
     } else {
         this->__Vdly__fifo_front_128 = 0U;
@@ -1789,9 +1844,12 @@ VL_INLINE_OPT void VGame_Console_TOP_Decompresser::_sequent__TOP__Game_Console_T
     this->__PVT__fifo_front_256 = this->__Vdly__fifo_front_256;
     this->__PVT__fifo_rear_256 = this->__Vdly__fifo_rear_256;
     if (vlTOPp->resetn) {
-        this->__PVT__w_state = this->__PVT__w_state_next;
-        this->__PVT__r_state = this->__PVT__r_state_next;
-        this->__PVT__decompress_state = this->__PVT__decompress_state_next;
+        this->__PVT__w_state = ((IData)(vlTOPp->Font_Frame_End)
+                                 ? 0U : (IData)(this->__PVT__w_state_next));
+        this->__PVT__r_state = ((IData)(vlTOPp->Font_Frame_End)
+                                 ? 0U : (IData)(this->__PVT__r_state_next));
+        this->__PVT__decompress_state = ((IData)(vlTOPp->Font_Frame_End)
+                                          ? 0U : (IData)(this->__PVT__decompress_state_next));
     } else {
         this->__PVT__w_state = 0U;
         this->__PVT__r_state = 0U;
@@ -2855,18 +2913,18 @@ VL_INLINE_OPT void VGame_Console_TOP_Decompresser::_sequent__TOP__Game_Console_T
     this->__Vdly__fifo_rear_256 = this->__PVT__fifo_rear_256;
     this->__Vdly__fifo_front_256 = this->__PVT__fifo_front_256;
     if (vlTOPp->resetn) {
-        this->__PVT__decompressed_fifo_r_state = this->__PVT__decompressed_fifo_r_state_next;
-        this->__PVT__compressed_fifo_r_state = ((IData)(this->__PVT__compressed_fifo_r_state_next) 
+        this->__PVT__decompressed_fifo_r_state = ((IData)(vlTOPp->Font_Frame_End)
+                                                   ? 0U
+                                                   : (IData)(this->__PVT__decompressed_fifo_r_state_next));
+        this->__PVT__compressed_fifo_r_state = (((~ (IData)(vlTOPp->Font_Frame_End)) 
+                                                 & (IData)(this->__PVT__compressed_fifo_r_state_next)) 
                                                 & 1U);
     } else {
         this->__PVT__decompressed_fifo_r_state = 0U;
         this->__PVT__compressed_fifo_r_state = 0U;
     }
     if (vlTOPp->resetn) {
-        if (((((0U == (IData)(this->__PVT__r_state)) 
-               & (0U == (IData)(this->__PVT__w_state))) 
-              & (0U == (IData)(this->__PVT__decompress_state))) 
-             & (IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start))) {
+        if (vlTOPp->Font_Frame_End) {
             this->__Vdly__fifo_front_128 = 0U;
             this->__Vdly__fifo_front_256 = 0U;
             this->__Vdly__fifo_rear_128 = 0U;
@@ -2879,139 +2937,165 @@ VL_INLINE_OPT void VGame_Console_TOP_Decompresser::_sequent__TOP__Game_Console_T
             this->__Vdly__decompressed_FIFO_reg_64 = 0ULL;
             this->__Vdly__decompressed_FIFO_reg_counter = 0U;
             this->__PVT__r_8_reg = 0U;
-        }
-        if (this->__PVT__repeat_counter_w_ena) {
-            this->__Vdly__repeat_counter = (0x7fU & (IData)(this->__PVT__r_8));
-        }
-        if (this->__PVT__repeat_counter_dec_ena) {
-            this->__Vdly__repeat_counter = (0x7fU & 
-                                            ((IData)(this->__PVT__repeat_counter) 
-                                             - (IData)(1U)));
-        }
-        if (this->__PVT__unrepeat_counter_w_ena) {
-            this->__Vdly__unrepeat_counter = (0x7fU 
-                                              & (IData)(this->__PVT__r_8));
-        }
-        if (this->__PVT__unrepeat_counter_dec_ena) {
-            this->__Vdly__unrepeat_counter = (0x7fU 
-                                              & ((IData)(this->__PVT__unrepeat_counter) 
-                                                 - (IData)(1U)));
-        }
-        if (this->__PVT__pixel_reg_w_ena) {
-            this->__PVT__pixel_reg = this->__PVT__r_8;
-        }
-        if (this->__PVT__fifo_front_128_inc_ena) {
-            this->__Vdly__fifo_front_128 = (0xffU & 
-                                            ((IData)(1U) 
-                                             + (IData)(this->__PVT__fifo_front_128)));
-        }
-        if (this->__PVT__fifo_rear_128_inc_ena) {
-            this->__Vdly__fifo_rear_128 = (0xffU & 
-                                           ((IData)(1U) 
-                                            + (IData)(this->__PVT__fifo_rear_128)));
-        }
-        if (this->__PVT__fifo_front_256_inc_ena) {
-            this->__Vdly__fifo_front_256 = (0x1ffU 
-                                            & ((IData)(1U) 
-                                               + (IData)(this->__PVT__fifo_front_256)));
-        }
-        if (this->__PVT__fifo_rear_256_inc_ena) {
-            this->__Vdly__fifo_rear_256 = (0x1ffU & 
-                                           ((IData)(1U) 
-                                            + (IData)(this->__PVT__fifo_rear_256)));
-        }
-        if (this->__PVT__compressed_FIFO_reg_64_w_ena) {
-            this->__PVT__compressed_FIFO_reg_64 = this->__PVT__compressed_fifo_r_data;
-        }
-        if (this->__PVT__compressed_FIFO_reg_counter_inc_ena) {
-            this->__Vdly__compressed_FIFO_reg_counter 
-                = (7U & ((IData)(1U) + (IData)(this->__PVT__compressed_FIFO_reg_counter)));
-        }
-        if (this->__PVT__compressed_FIFO_reg_counter_reset) {
-            this->__Vdly__compressed_FIFO_reg_counter = 0U;
-        }
-        if ((1U & ((((((((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                         | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                            >> 1U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                       >> 2U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                                  >> 3U)) 
-                      | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                         >> 4U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                    >> 5U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                                               >> 6U)) 
-                   | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
-                      >> 7U)))) {
-            this->__Vdly__decompressed_FIFO_reg_64 
-                = ((1U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                    ? ((0xffffffffffffff00ULL & this->__PVT__decompressed_FIFO_reg_64) 
-                       | (QData)((IData)(this->__PVT__w_8)))
-                    : ((2U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                        ? ((0xffffffffffff0000ULL & this->__PVT__decompressed_FIFO_reg_64) 
-                           | (QData)((IData)((((IData)(this->__PVT__w_8) 
-                                               << 8U) 
-                                              | (0xffU 
-                                                 & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
-                        : ((4U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                            ? ((0xffffffffff000000ULL 
+        } else {
+            if (((((0U == (IData)(this->__PVT__r_state)) 
+                   & (0U == (IData)(this->__PVT__w_state))) 
+                  & (0U == (IData)(this->__PVT__decompress_state))) 
+                 & (IData)(vlTOPp->Game_Console_TOP__DOT__PPU_start))) {
+                this->__Vdly__fifo_front_128 = 0U;
+                this->__Vdly__fifo_front_256 = 0U;
+                this->__Vdly__fifo_rear_128 = 0U;
+                this->__Vdly__fifo_rear_256 = 0U;
+                this->__Vdly__repeat_counter = 0U;
+                this->__Vdly__unrepeat_counter = 0U;
+                this->__PVT__pixel_reg = 0U;
+                this->__PVT__compressed_FIFO_reg_64 = 0ULL;
+                this->__Vdly__compressed_FIFO_reg_counter = 0U;
+                this->__Vdly__decompressed_FIFO_reg_64 = 0ULL;
+                this->__Vdly__decompressed_FIFO_reg_counter = 0U;
+                this->__PVT__r_8_reg = 0U;
+            }
+            if (this->__PVT__repeat_counter_w_ena) {
+                this->__Vdly__repeat_counter = (0x7fU 
+                                                & (IData)(this->__PVT__r_8));
+            }
+            if (this->__PVT__repeat_counter_dec_ena) {
+                this->__Vdly__repeat_counter = (0x7fU 
+                                                & ((IData)(this->__PVT__repeat_counter) 
+                                                   - (IData)(1U)));
+            }
+            if (this->__PVT__unrepeat_counter_w_ena) {
+                this->__Vdly__unrepeat_counter = (0x7fU 
+                                                  & (IData)(this->__PVT__r_8));
+            }
+            if (this->__PVT__unrepeat_counter_dec_ena) {
+                this->__Vdly__unrepeat_counter = (0x7fU 
+                                                  & ((IData)(this->__PVT__unrepeat_counter) 
+                                                     - (IData)(1U)));
+            }
+            if (this->__PVT__pixel_reg_w_ena) {
+                this->__PVT__pixel_reg = this->__PVT__r_8;
+            }
+            if (this->__PVT__fifo_front_128_inc_ena) {
+                this->__Vdly__fifo_front_128 = (0xffU 
+                                                & ((IData)(1U) 
+                                                   + (IData)(this->__PVT__fifo_front_128)));
+            }
+            if (this->__PVT__fifo_rear_128_inc_ena) {
+                this->__Vdly__fifo_rear_128 = (0xffU 
+                                               & ((IData)(1U) 
+                                                  + (IData)(this->__PVT__fifo_rear_128)));
+            }
+            if (this->__PVT__fifo_front_256_inc_ena) {
+                this->__Vdly__fifo_front_256 = (0x1ffU 
+                                                & ((IData)(1U) 
+                                                   + (IData)(this->__PVT__fifo_front_256)));
+            }
+            if (this->__PVT__fifo_rear_256_inc_ena) {
+                this->__Vdly__fifo_rear_256 = (0x1ffU 
+                                               & ((IData)(1U) 
+                                                  + (IData)(this->__PVT__fifo_rear_256)));
+            }
+            if (this->__PVT__compressed_FIFO_reg_64_w_ena) {
+                this->__PVT__compressed_FIFO_reg_64 
+                    = this->__PVT__compressed_fifo_r_data;
+            }
+            if (this->__PVT__compressed_FIFO_reg_counter_inc_ena) {
+                this->__Vdly__compressed_FIFO_reg_counter 
+                    = (7U & ((IData)(1U) + (IData)(this->__PVT__compressed_FIFO_reg_counter)));
+            }
+            if (this->__PVT__compressed_FIFO_reg_counter_reset) {
+                this->__Vdly__compressed_FIFO_reg_counter = 0U;
+            }
+            if ((1U & ((((((((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                             | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                >> 1U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                           >> 2U)) 
+                           | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                              >> 3U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                         >> 4U)) | 
+                         ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                          >> 5U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                     >> 6U)) | ((IData)(this->__PVT__decompressed_FIFO_reg_wstrb) 
+                                                >> 7U)))) {
+                this->__Vdly__decompressed_FIFO_reg_64 
+                    = ((1U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                        ? ((0xffffffffffffff00ULL & this->__PVT__decompressed_FIFO_reg_64) 
+                           | (QData)((IData)(this->__PVT__w_8)))
+                        : ((2U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                            ? ((0xffffffffffff0000ULL 
                                 & this->__PVT__decompressed_FIFO_reg_64) 
                                | (QData)((IData)((((IData)(this->__PVT__w_8) 
-                                                   << 0x10U) 
-                                                  | (0xffffU 
+                                                   << 8U) 
+                                                  | (0xffU 
                                                      & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
-                            : ((8U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
-                                ? (((QData)((IData)(
-                                                    (this->__PVT__decompressed_FIFO_reg_64 
-                                                     >> 0x20U))) 
-                                    << 0x20U) | (QData)((IData)(
-                                                                (((IData)(this->__PVT__w_8) 
-                                                                  << 0x18U) 
-                                                                 | (0xffffffU 
-                                                                    & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
-                                : ((0x10U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                            : ((4U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                ? ((0xffffffffff000000ULL 
+                                    & this->__PVT__decompressed_FIFO_reg_64) 
+                                   | (QData)((IData)(
+                                                     (((IData)(this->__PVT__w_8) 
+                                                       << 0x10U) 
+                                                      | (0xffffU 
+                                                         & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
+                                : ((8U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
                                     ? (((QData)((IData)(
-                                                        ((0xffffff00U 
-                                                          & ((IData)(
-                                                                     (this->__PVT__decompressed_FIFO_reg_64 
-                                                                      >> 0x28U)) 
-                                                             << 8U)) 
-                                                         | (IData)(this->__PVT__w_8)))) 
-                                        << 0x20U) | (QData)((IData)(this->__PVT__decompressed_FIFO_reg_64)))
-                                    : ((0x20U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                                        (this->__PVT__decompressed_FIFO_reg_64 
+                                                         >> 0x20U))) 
+                                        << 0x20U) | (QData)((IData)(
+                                                                    (((IData)(this->__PVT__w_8) 
+                                                                      << 0x18U) 
+                                                                     | (0xffffffU 
+                                                                        & (IData)(this->__PVT__decompressed_FIFO_reg_64))))))
+                                    : ((0x10U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
                                         ? (((QData)((IData)(
-                                                            (0xffffU 
-                                                             & (IData)(
-                                                                       (this->__PVT__decompressed_FIFO_reg_64 
-                                                                        >> 0x30U))))) 
-                                            << 0x30U) 
-                                           | (((QData)((IData)(this->__PVT__w_8)) 
-                                               << 0x28U) 
-                                              | (0xffffffffffULL 
-                                                 & this->__PVT__decompressed_FIFO_reg_64)))
-                                        : ((0x40U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                                            ((0xffffff00U 
+                                                              & ((IData)(
+                                                                         (this->__PVT__decompressed_FIFO_reg_64 
+                                                                          >> 0x28U)) 
+                                                                 << 8U)) 
+                                                             | (IData)(this->__PVT__w_8)))) 
+                                            << 0x20U) 
+                                           | (QData)((IData)(this->__PVT__decompressed_FIFO_reg_64)))
+                                        : ((0x20U & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
                                             ? (((QData)((IData)(
-                                                                (0xffU 
+                                                                (0xffffU 
                                                                  & (IData)(
                                                                            (this->__PVT__decompressed_FIFO_reg_64 
-                                                                            >> 0x38U))))) 
-                                                << 0x38U) 
+                                                                            >> 0x30U))))) 
+                                                << 0x30U) 
                                                | (((QData)((IData)(this->__PVT__w_8)) 
-                                                   << 0x30U) 
-                                                  | (0xffffffffffffULL 
+                                                   << 0x28U) 
+                                                  | (0xffffffffffULL 
                                                      & this->__PVT__decompressed_FIFO_reg_64)))
-                                            : (((QData)((IData)(this->__PVT__w_8)) 
-                                                << 0x38U) 
-                                               | (0xffffffffffffffULL 
-                                                  & this->__PVT__decompressed_FIFO_reg_64)))))))));
-        }
-        if (this->__PVT__decompressed_FIFO_reg_counter_inc_ena) {
-            this->__Vdly__decompressed_FIFO_reg_counter 
-                = (7U & ((IData)(1U) + (IData)(this->__PVT__decompressed_FIFO_reg_counter)));
-        }
-        if (this->__PVT__decompressed_FIFO_reg_counter_reset) {
-            this->__Vdly__decompressed_FIFO_reg_counter = 0U;
-        }
-        if (this->__PVT__r_8_reg_w_ena) {
-            this->__PVT__r_8_reg = this->__PVT__r_8;
+                                            : ((0x40U 
+                                                & (IData)(this->__PVT__decompressed_FIFO_reg_wstrb))
+                                                ? (
+                                                   ((QData)((IData)(
+                                                                    (0xffU 
+                                                                     & (IData)(
+                                                                               (this->__PVT__decompressed_FIFO_reg_64 
+                                                                                >> 0x38U))))) 
+                                                    << 0x38U) 
+                                                   | (((QData)((IData)(this->__PVT__w_8)) 
+                                                       << 0x30U) 
+                                                      | (0xffffffffffffULL 
+                                                         & this->__PVT__decompressed_FIFO_reg_64)))
+                                                : (
+                                                   ((QData)((IData)(this->__PVT__w_8)) 
+                                                    << 0x38U) 
+                                                   | (0xffffffffffffffULL 
+                                                      & this->__PVT__decompressed_FIFO_reg_64)))))))));
+            }
+            if (this->__PVT__decompressed_FIFO_reg_counter_inc_ena) {
+                this->__Vdly__decompressed_FIFO_reg_counter 
+                    = (7U & ((IData)(1U) + (IData)(this->__PVT__decompressed_FIFO_reg_counter)));
+            }
+            if (this->__PVT__decompressed_FIFO_reg_counter_reset) {
+                this->__Vdly__decompressed_FIFO_reg_counter = 0U;
+            }
+            if (this->__PVT__r_8_reg_w_ena) {
+                this->__PVT__r_8_reg = this->__PVT__r_8;
+            }
         }
     } else {
         this->__Vdly__fifo_front_128 = 0U;
@@ -3037,9 +3121,12 @@ VL_INLINE_OPT void VGame_Console_TOP_Decompresser::_sequent__TOP__Game_Console_T
     this->__PVT__fifo_front_256 = this->__Vdly__fifo_front_256;
     this->__PVT__fifo_rear_256 = this->__Vdly__fifo_rear_256;
     if (vlTOPp->resetn) {
-        this->__PVT__w_state = this->__PVT__w_state_next;
-        this->__PVT__r_state = this->__PVT__r_state_next;
-        this->__PVT__decompress_state = this->__PVT__decompress_state_next;
+        this->__PVT__w_state = ((IData)(vlTOPp->Font_Frame_End)
+                                 ? 0U : (IData)(this->__PVT__w_state_next));
+        this->__PVT__r_state = ((IData)(vlTOPp->Font_Frame_End)
+                                 ? 0U : (IData)(this->__PVT__r_state_next));
+        this->__PVT__decompress_state = ((IData)(vlTOPp->Font_Frame_End)
+                                          ? 0U : (IData)(this->__PVT__decompress_state_next));
     } else {
         this->__PVT__w_state = 0U;
         this->__PVT__r_state = 0U;

@@ -2443,6 +2443,7 @@ void VGame_Console_TOP_Decompresser::_ctor_var_reset() {
     BRAM_base = VL_RAND_RESET_I(9);
     BRAM_size = VL_RAND_RESET_I(1);
     BRAM_rw_counter_bits = VL_RAND_RESET_I(4);
+    Frame_End = VL_RAND_RESET_I(1);
     PPU_start = VL_RAND_RESET_I(1);
     Decompresser_is_IDLE = VL_RAND_RESET_I(1);
     Compressed_FIFO_r_master = VL_RAND_RESET_I(1);

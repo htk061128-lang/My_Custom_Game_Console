@@ -1394,6 +1394,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_pixel_fifo clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_pixel_fifo resetn", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo PPU_start", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_pixel_fifo Clk_Counter", false,-1, 1,0);
         tracep->declBus(c+254,"Game_Console_TOP u_ppu u_pixel_fifo Universal_Layer1_Address", false,-1, 31,0);
         tracep->declBus(c+255,"Game_Console_TOP u_ppu u_pixel_fifo Universal_Layer2_Address", false,-1, 31,0);
@@ -2501,6 +2502,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+1100,"Game_Console_TOP u_ppu u_font organized_RGB", false,-1, 17,0);
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_bg1 clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_bg1 resetn", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_bg1 Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_bg1 Clk_Counter", false,-1, 1,0);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_bg1 PPU_start", false,-1);
         tracep->declBit(c+1101,"Game_Console_TOP u_ppu u_bg1 Pixel_Reader_ena", false,-1);
@@ -2558,6 +2560,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+2326,"Game_Console_TOP u_ppu u_bg1 rgb_convert_end", false,-1);
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_bg2 clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_bg2 resetn", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_bg2 Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_bg2 Clk_Counter", false,-1, 1,0);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_bg2 PPU_start", false,-1);
         tracep->declBit(c+1118,"Game_Console_TOP u_ppu u_bg2 Pixel_Reader_ena", false,-1);
@@ -2615,6 +2618,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+2339,"Game_Console_TOP u_ppu u_bg2 rgb_convert_end", false,-1);
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_ch1 clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_ch1 resetn", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_ch1 Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_ch1 Clk_Counter", false,-1, 1,0);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_ch1 PPU_start", false,-1);
         tracep->declBit(c+1135,"Game_Console_TOP u_ppu u_ch1 Pixel_Reader_ena", false,-1);
@@ -2672,6 +2676,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+2352,"Game_Console_TOP u_ppu u_ch1 rgb_convert_end", false,-1);
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_ch2 clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_ch2 resetn", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_ch2 Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_ch2 Clk_Counter", false,-1, 1,0);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_ch2 PPU_start", false,-1);
         tracep->declBit(c+1152,"Game_Console_TOP u_ppu u_ch2 Pixel_Reader_ena", false,-1);
@@ -2729,6 +2734,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+2365,"Game_Console_TOP u_ppu u_ch2 rgb_convert_end", false,-1);
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_ch3 clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_ch3 resetn", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_ch3 Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_ch3 Clk_Counter", false,-1, 1,0);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_ch3 PPU_start", false,-1);
         tracep->declBit(c+1169,"Game_Console_TOP u_ppu u_ch3 Pixel_Reader_ena", false,-1);
@@ -2786,6 +2792,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+2378,"Game_Console_TOP u_ppu u_ch3 rgb_convert_end", false,-1);
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_ch4 clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_ch4 resetn", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_ch4 Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_ch4 Clk_Counter", false,-1, 1,0);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_ch4 PPU_start", false,-1);
         tracep->declBit(c+1186,"Game_Console_TOP u_ppu u_ch4 Pixel_Reader_ena", false,-1);
@@ -2843,6 +2850,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+2391,"Game_Console_TOP u_ppu u_ch4 rgb_convert_end", false,-1);
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_sc clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_sc resetn", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_sc Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_sc Clk_Counter", false,-1, 1,0);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_sc PPU_start", false,-1);
         tracep->declBit(c+1203,"Game_Console_TOP u_ppu u_sc Pixel_Reader_ena", false,-1);
@@ -2900,6 +2908,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+2404,"Game_Console_TOP u_ppu u_sc rgb_convert_end", false,-1);
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_st clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_st resetn", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_st Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_st Clk_Counter", false,-1, 1,0);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_st PPU_start", false,-1);
         tracep->declBit(c+1220,"Game_Console_TOP u_ppu u_st Pixel_Reader_ena", false,-1);
@@ -2957,6 +2966,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+2417,"Game_Console_TOP u_ppu u_st rgb_convert_end", false,-1);
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_un1 clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_un1 resetn", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_un1 Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_un1 Clk_Counter", false,-1, 1,0);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_un1 PPU_start", false,-1);
         tracep->declBit(c+1237,"Game_Console_TOP u_ppu u_un1 Pixel_Reader_ena", false,-1);
@@ -3014,6 +3024,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBit(c+2430,"Game_Console_TOP u_ppu u_un1 rgb_convert_end", false,-1);
         tracep->declBit(c+2464,"Game_Console_TOP u_ppu u_un2 clk", false,-1);
         tracep->declBit(c+2465,"Game_Console_TOP u_ppu u_un2 resetn", false,-1);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_un2 Frame_End", false,-1);
         tracep->declBus(c+452,"Game_Console_TOP u_ppu u_un2 Clk_Counter", false,-1, 1,0);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_un2 PPU_start", false,-1);
         tracep->declBit(c+1254,"Game_Console_TOP u_ppu u_un2 Pixel_Reader_ena", false,-1);
@@ -3076,6 +3087,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+2697,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni1 BRAM_base", false,-1, 8,0);
         tracep->declBit(c+2651,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni1 BRAM_size", false,-1);
         tracep->declBus(c+2698,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni1 BRAM_rw_counter_bits", false,-1, 3,0);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni1 Frame_End", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni1 PPU_start", false,-1);
         tracep->declBit(c+509,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni1 Decompresser_is_IDLE", false,-1);
         tracep->declBit(c+530,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni1 Compressed_FIFO_r_master", false,-1);
@@ -3185,6 +3197,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+2702,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni2 BRAM_base", false,-1, 8,0);
         tracep->declBit(c+2651,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni2 BRAM_size", false,-1);
         tracep->declBus(c+2703,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni2 BRAM_rw_counter_bits", false,-1, 3,0);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni2 Frame_End", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni2 PPU_start", false,-1);
         tracep->declBit(c+510,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni2 Decompresser_is_IDLE", false,-1);
         tracep->declBit(c+534,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_uni2 Compressed_FIFO_r_master", false,-1);
@@ -3294,6 +3307,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+2704,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_script BRAM_base", false,-1, 8,0);
         tracep->declBit(c+2651,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_script BRAM_size", false,-1);
         tracep->declBus(c+2705,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_script BRAM_rw_counter_bits", false,-1, 3,0);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_script Frame_End", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_script PPU_start", false,-1);
         tracep->declBit(c+511,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_script Decompresser_is_IDLE", false,-1);
         tracep->declBit(c+538,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_script Compressed_FIFO_r_master", false,-1);
@@ -3403,6 +3417,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+2706,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_status BRAM_base", false,-1, 8,0);
         tracep->declBit(c+2651,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_status BRAM_size", false,-1);
         tracep->declBus(c+2707,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_status BRAM_rw_counter_bits", false,-1, 3,0);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_status Frame_End", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_status PPU_start", false,-1);
         tracep->declBit(c+512,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_status Decompresser_is_IDLE", false,-1);
         tracep->declBit(c+542,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_status Compressed_FIFO_r_master", false,-1);
@@ -3512,6 +3527,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+2697,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch1 BRAM_base", false,-1, 8,0);
         tracep->declBit(c+2651,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch1 BRAM_size", false,-1);
         tracep->declBus(c+2698,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch1 BRAM_rw_counter_bits", false,-1, 3,0);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch1 Frame_End", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch1 PPU_start", false,-1);
         tracep->declBit(c+513,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch1 Decompresser_is_IDLE", false,-1);
         tracep->declBit(c+530,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch1 Compressed_FIFO_r_master", false,-1);
@@ -3621,6 +3637,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+2702,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch2 BRAM_base", false,-1, 8,0);
         tracep->declBit(c+2651,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch2 BRAM_size", false,-1);
         tracep->declBus(c+2703,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch2 BRAM_rw_counter_bits", false,-1, 3,0);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch2 Frame_End", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch2 PPU_start", false,-1);
         tracep->declBit(c+514,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch2 Decompresser_is_IDLE", false,-1);
         tracep->declBit(c+534,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch2 Compressed_FIFO_r_master", false,-1);
@@ -3730,6 +3747,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+2704,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch3 BRAM_base", false,-1, 8,0);
         tracep->declBit(c+2651,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch3 BRAM_size", false,-1);
         tracep->declBus(c+2705,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch3 BRAM_rw_counter_bits", false,-1, 3,0);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch3 Frame_End", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch3 PPU_start", false,-1);
         tracep->declBit(c+515,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch3 Decompresser_is_IDLE", false,-1);
         tracep->declBit(c+538,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch3 Compressed_FIFO_r_master", false,-1);
@@ -3839,6 +3857,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+2706,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch4 BRAM_base", false,-1, 8,0);
         tracep->declBit(c+2651,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch4 BRAM_size", false,-1);
         tracep->declBus(c+2707,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch4 BRAM_rw_counter_bits", false,-1, 3,0);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch4 Frame_End", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch4 PPU_start", false,-1);
         tracep->declBit(c+516,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch4 Decompresser_is_IDLE", false,-1);
         tracep->declBit(c+542,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_ch4 Compressed_FIFO_r_master", false,-1);
@@ -3948,6 +3967,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+2697,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg1 BRAM_base", false,-1, 8,0);
         tracep->declBit(c+2689,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg1 BRAM_size", false,-1);
         tracep->declBus(c+2710,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg1 BRAM_rw_counter_bits", false,-1, 3,0);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg1 Frame_End", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg1 PPU_start", false,-1);
         tracep->declBit(c+517,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg1 Decompresser_is_IDLE", false,-1);
         tracep->declBit(c+522,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg1 Compressed_FIFO_r_master", false,-1);
@@ -4057,6 +4077,7 @@ void VGame_Console_TOP::traceInitSub0(void* userp, VerilatedVcd* tracep) {
         tracep->declBus(c+2704,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg2 BRAM_base", false,-1, 8,0);
         tracep->declBit(c+2689,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg2 BRAM_size", false,-1);
         tracep->declBus(c+2709,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg2 BRAM_rw_counter_bits", false,-1, 3,0);
+        tracep->declBit(c+2643,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg2 Frame_End", false,-1);
         tracep->declBit(c+239,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg2 PPU_start", false,-1);
         tracep->declBit(c+518,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg2 Decompresser_is_IDLE", false,-1);
         tracep->declBit(c+526,"Game_Console_TOP u_ppu u_pixel_fifo u_decomp_bg2 Compressed_FIFO_r_master", false,-1);

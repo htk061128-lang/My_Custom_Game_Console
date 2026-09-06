@@ -2,6 +2,8 @@ module Pixel_Reader( //Decompressed FIFO에서 값을 읽어서 RGB_Converter로
     input clk,
     input resetn,
 
+    input Frame_End, //이 신호가 오면 모든 FSM을 IDLE로 바꾸고 모든 레지스터를 싹 초기화 해야 함. 
+
     input [1:0] Clk_Counter, //0 - 1 - 2 - 3 - 0 - 1을 반복 함. Decompresser.sv 모듈과 동기화 되어있음.
     input PPU_start,
     input Pixel_Reader_ena, //이 값이 0이면 그냥 IDLE에서 PPU_start가 왔을때 IDLE을 유지함. 
@@ -682,6 +684,27 @@ always @(posedge clk or negedge resetn) begin
         personal_counter_x[8:0] <= 0;
         personal_counter_y[8:0] <= 0;
     end
+    else if(Frame_End) begin //프레임이 완성되면 싹 초기화!!! 아직 Decompressed FIFO를 다 못 읽었어도 그냥 다 초기화해야 함.
+        decomp_pixel_reg[63:0] <= 0;
+        RGB_reg[17:0] <= 0;
+        RGB_reg_trans <= 0;
+        RGB_reg_valid <= 0;
+
+        main_state[3:0] <= IDLE;
+        fifo_r_state[3:0] <= IDLE;
+        rgb_r_state[3:0] <= IDLE;
+
+        main_state_counter[3:0] <= 0;
+
+        rgb_r_state_counter[3:0] <= 0;
+
+        fifo_r_state_counter[3:0] <= 0;
+        read_pixel_x[5:0] <= 6'b111111; //63으로 초기화 해야 함!!!!
+        read_pixel_y[8:0] <= 9'b111111111; //511으로 초기화 해야 함!!!
+
+        personal_counter_x[8:0] <= 0;
+        personal_counter_y[8:0] <= 0;
+    end
     else begin
         fifo_r_state <= fifo_r_state_next;
         fifo_r_state_counter[3:0] <= fifo_r_state_counter_next[3:0];
@@ -691,6 +714,7 @@ always @(posedge clk or negedge resetn) begin
 
         main_state_counter[3:0] <= main_state_counter_next[3:0];
         main_state <= main_state_next;
+
 
         if(RGB_reg_w_ena && ~Lookup_trans) begin
             RGB_reg[17:0] <= Lookup_RGB[17:0];

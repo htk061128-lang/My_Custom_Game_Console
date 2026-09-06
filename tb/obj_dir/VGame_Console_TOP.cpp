@@ -8214,7 +8214,6 @@ VL_INLINE_OPT void VGame_Console_TOP::_sequent__TOP__5(VGame_Console_TOP__Syms* 
              & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__RGB_6_reg_valid)) 
             & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__RGB_7_reg_valid)) 
            & (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__RGB_8_reg_valid));
-    vlTOPp->Font_Frame_End = vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__font_frame_end;
     vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__mixed_RGB_w_ena = 0U;
     if ((0U != (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pixel_state))) {
         if ((1U == (IData)(vlTOPp->Game_Console_TOP__DOT__u_ppu__DOT__u_font__DOT__pixel_state))) {

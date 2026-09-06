@@ -2,6 +2,7 @@ module pixel_fifo_top(
     input clk,
     input resetn,
     input PPU_start,
+    input Frame_End,
     input [1:0] Clk_Counter,
 
     // 10개 레이어 외부 메모리 주소
@@ -139,7 +140,7 @@ module pixel_fifo_top(
     // --- BRAM 10 Group (Universal 1, 2, Script, Status) ---
     /* verilator lint_off PINMISSING */
     Decompresser u_decomp_uni1 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Frame_End(Frame_End),
         .BRAM_number(4'd10), .BRAM_base(9'd0), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0001),
         .Compressed_FIFO_r_master(uni1_comp_r_master), .Compressed_FIFO_data(uni1_comp_data), .Compressed_FIFO_count({1'b0, uni1_comp_count}), .Compressed_FIFO_ena(uni1_comp_ena), .Compressed_FIFO_dequeue(uni1_comp_dequeue),
         .BRAM10_en_a(un1_b10_en_a), .BRAM10_we_a(un1_b10_we_a), .BRAM10_addr_a(un1_b10_addr_a), .BRAM10_din_a(un1_b10_din_a), .BRAM10_en_b(un1_b10_en_b), .BRAM10_addr_b(un1_b10_addr_b), .BRAM10_dout_b(BRAM10_dout_b),
@@ -150,7 +151,7 @@ module pixel_fifo_top(
     );
 
     Decompresser u_decomp_uni2 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Frame_End(Frame_End),
         .BRAM_number(4'd10), .BRAM_base(9'd128), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0010),
         .Compressed_FIFO_r_master(uni2_comp_r_master), .Compressed_FIFO_data(uni2_comp_data), .Compressed_FIFO_count({1'b0, uni2_comp_count}), .Compressed_FIFO_ena(uni2_comp_ena), .Compressed_FIFO_dequeue(uni2_comp_dequeue),
         .BRAM10_en_a(un2_b10_en_a), .BRAM10_we_a(un2_b10_we_a), .BRAM10_addr_a(un2_b10_addr_a), .BRAM10_din_a(un2_b10_din_a), .BRAM10_en_b(un2_b10_en_b), .BRAM10_addr_b(un2_b10_addr_b), .BRAM10_dout_b(BRAM10_dout_b),
@@ -161,7 +162,7 @@ module pixel_fifo_top(
     );
 
     Decompresser u_decomp_script (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Frame_End(Frame_End),
         .BRAM_number(4'd10), .BRAM_base(9'd256), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0100),
         .Compressed_FIFO_r_master(sc_comp_r_master), .Compressed_FIFO_data(sc_comp_data), .Compressed_FIFO_count({1'b0, sc_comp_count}), .Compressed_FIFO_ena(sc_comp_ena), .Compressed_FIFO_dequeue(sc_comp_dequeue),
         .BRAM10_en_a(sc_b10_en_a), .BRAM10_we_a(sc_b10_we_a), .BRAM10_addr_a(sc_b10_addr_a), .BRAM10_din_a(sc_b10_din_a), .BRAM10_en_b(sc_b10_en_b), .BRAM10_addr_b(sc_b10_addr_b), .BRAM10_dout_b(BRAM10_dout_b),
@@ -172,7 +173,7 @@ module pixel_fifo_top(
     );
 
     Decompresser u_decomp_status (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Frame_End(Frame_End),
         .BRAM_number(4'd10), .BRAM_base(9'd384), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b1000),
         .Compressed_FIFO_r_master(st_comp_r_master), .Compressed_FIFO_data(st_comp_data), .Compressed_FIFO_count({1'b0, st_comp_count}), .Compressed_FIFO_ena(st_comp_ena), .Compressed_FIFO_dequeue(st_comp_dequeue),
         .BRAM10_en_a(st_b10_en_a), .BRAM10_we_a(st_b10_we_a), .BRAM10_addr_a(st_b10_addr_a), .BRAM10_din_a(st_b10_din_a), .BRAM10_en_b(st_b10_en_b), .BRAM10_addr_b(st_b10_addr_b), .BRAM10_dout_b(BRAM10_dout_b),
@@ -184,7 +185,7 @@ module pixel_fifo_top(
 
     // --- BRAM 11 Group (Character 1, 2, 3, 4) ---
     Decompresser u_decomp_ch1 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Frame_End(Frame_End),
         .BRAM_number(4'd11), .BRAM_base(9'd0), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0001),
         .Compressed_FIFO_r_master(ch1_comp_r_master), .Compressed_FIFO_data(ch1_comp_data), .Compressed_FIFO_count({1'b0, ch1_comp_count}), .Compressed_FIFO_ena(ch1_comp_ena), .Compressed_FIFO_dequeue(ch1_comp_dequeue),
         .BRAM10_dout_b(64'd0), // 미사용
@@ -195,7 +196,7 @@ module pixel_fifo_top(
     );
 
     Decompresser u_decomp_ch2 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Frame_End(Frame_End),
         .BRAM_number(4'd11), .BRAM_base(9'd128), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0010),
         .Compressed_FIFO_r_master(ch2_comp_r_master), .Compressed_FIFO_data(ch2_comp_data), .Compressed_FIFO_count({1'b0, ch2_comp_count}), .Compressed_FIFO_ena(ch2_comp_ena), .Compressed_FIFO_dequeue(ch2_comp_dequeue),
         .BRAM10_dout_b(64'd0),
@@ -206,7 +207,7 @@ module pixel_fifo_top(
     );
 
     Decompresser u_decomp_ch3 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Frame_End(Frame_End),
         .BRAM_number(4'd11), .BRAM_base(9'd256), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b0100),
         .Compressed_FIFO_r_master(ch3_comp_r_master), .Compressed_FIFO_data(ch3_comp_data), .Compressed_FIFO_count({1'b0, ch3_comp_count}), .Compressed_FIFO_ena(ch3_comp_ena), .Compressed_FIFO_dequeue(ch3_comp_dequeue),
         .BRAM10_dout_b(64'd0),
@@ -217,7 +218,7 @@ module pixel_fifo_top(
     );
 
     Decompresser u_decomp_ch4 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Frame_End(Frame_End),
         .BRAM_number(4'd11), .BRAM_base(9'd384), .BRAM_size(1'b0), .BRAM_rw_counter_bits(4'b1000),
         .Compressed_FIFO_r_master(ch4_comp_r_master), .Compressed_FIFO_data(ch4_comp_data), .Compressed_FIFO_count({1'b0, ch4_comp_count}), .Compressed_FIFO_ena(ch4_comp_ena), .Compressed_FIFO_dequeue(ch4_comp_dequeue),
         .BRAM10_dout_b(64'd0),
@@ -229,7 +230,7 @@ module pixel_fifo_top(
 
     // --- BRAM 12 Group (Background 1, 2) ---
     Decompresser u_decomp_bg1 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Frame_End(Frame_End),
         .BRAM_number(4'd12), .BRAM_base(9'd0), .BRAM_size(1'b1), .BRAM_rw_counter_bits(4'b0011),
         .Compressed_FIFO_r_master(bg1_comp_r_master), .Compressed_FIFO_data(bg1_comp_data), .Compressed_FIFO_count(bg1_comp_count), .Compressed_FIFO_ena(bg1_comp_ena), .Compressed_FIFO_dequeue(bg1_comp_dequeue),
         .BRAM10_dout_b(64'd0), // 미사용
@@ -240,7 +241,7 @@ module pixel_fifo_top(
     );
 
     Decompresser u_decomp_bg2 (
-        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+        .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Frame_End(Frame_End),
         .BRAM_number(4'd12), .BRAM_base(9'd256), .BRAM_size(1'b1), .BRAM_rw_counter_bits(4'b1100),
         .Compressed_FIFO_r_master(bg2_comp_r_master), .Compressed_FIFO_data(bg2_comp_data), .Compressed_FIFO_count(bg2_comp_count), .Compressed_FIFO_ena(bg2_comp_ena), .Compressed_FIFO_dequeue(bg2_comp_dequeue),
         .BRAM10_dout_b(64'd0), .BRAM11_dout_b(64'd0),

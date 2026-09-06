@@ -21,6 +21,7 @@ VL_MODULE(VGame_Console_TOP_Pixel_Reader) {
     // PORTS
     VL_IN8(clk,0,0);
     VL_IN8(resetn,0,0);
+    VL_IN8(Frame_End,0,0);
     VL_IN8(Clk_Counter,1,0);
     VL_IN8(PPU_start,0,0);
     VL_IN8(Pixel_Reader_ena,0,0);
@@ -75,11 +76,11 @@ VL_MODULE(VGame_Console_TOP_Pixel_Reader) {
     QData/*63:0*/ __PVT__decomp_pixel_reg;
     
     // LOCAL VARIABLES
-    CData/*3:0*/ __Vdly__main_state_counter;
     CData/*3:0*/ __Vdly__main_state;
+    CData/*3:0*/ __Vdly__main_state_counter;
     CData/*3:0*/ __Vdly__fifo_r_state;
-    CData/*3:0*/ __Vdly__fifo_r_state_counter;
     CData/*3:0*/ __Vdly__rgb_r_state;
+    CData/*3:0*/ __Vdly__fifo_r_state_counter;
     CData/*5:0*/ __Vdly__read_pixel_x;
     SData/*8:0*/ __Vdly__personal_counter_x;
     SData/*8:0*/ __Vdly__personal_counter_y;
