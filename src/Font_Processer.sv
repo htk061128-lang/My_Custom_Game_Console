@@ -1,6 +1,6 @@
 module Font_Processer( //PPU가 1차 완성한 Pixel line을 받아와서 폰트를 합성해서 최종 Pixel line을 산출해내는 모듈
     input clk,
-    input resetn, //negedge reset
+    input reset, //synchronous active-high reset
 
     input PPU_start,
 
@@ -1223,8 +1223,8 @@ always @(*) begin
     endcase
 end
 
-always @(posedge clk or negedge resetn) begin
-    if(!resetn) begin
+always @(posedge clk) begin
+    if(reset) begin
         pixel_state[3:0] <= IDLE;
         font_state[3:0] <= IDLE;
         output_state[3:0] <= IDLE;

@@ -417,7 +417,7 @@ int main(int argc, char **argv)
     uint32_t emem_burst_counter = 0;
     uint32_t emem_current_addr = 0;
 
-    dut->resetn = 0;
+    dut->reset = 1;
     dut->PPU_start = 0;
 
     dut->CPU_LUT_Cache1_pixel = 0;
@@ -562,7 +562,7 @@ int main(int argc, char **argv)
     trace->dump(main_time++);
 
     dut->clk = 1;
-    dut->resetn = 1;
+    dut->reset = 0;
     dut->eval();
     trace->dump(main_time++);
 

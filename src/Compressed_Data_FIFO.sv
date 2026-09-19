@@ -1,6 +1,6 @@
 module Compressed_Data_FIFO( //외부 메모리에서 라운드 로빈 방식으로 burst로 데이터를 읽어와서 BRAM에 저장함. 
     input clk, //50MHz
-    input resetn, //negedge resetn
+    input reset, //synchronous active-high reset
 
     input [1:0] clk_counter, //Decompresser 모듈에 전달해줄 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3을 반복하는 카운터.
 
@@ -622,8 +622,8 @@ always @(*) begin
     endcase
 end
 
-always @(posedge clk or negedge resetn) begin
-    if(!resetn) begin
+always @(posedge clk) begin
+    if(reset) begin
         //clk_counter[1:0] <= 0;
         main_state <= IDLE;
         uni1_next_ad <= Universal_Layer1_Address;

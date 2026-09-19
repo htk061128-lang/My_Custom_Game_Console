@@ -1,6 +1,6 @@
 module Pixel_Reader( //Decompressed FIFO에서 값을 읽어서 RGB_Converter로부터 RGB값으로 변환한 후 Pixel_Processer에게 전달함. 이 모듈을 10개 복사해서 사용할 예정임.
     input clk,
-    input resetn,
+    input reset,
 
     input Frame_End, //이 신호가 오면 모든 FSM을 IDLE로 바꾸고 모든 레지스터를 싹 초기화 해야 함. 
 
@@ -662,8 +662,8 @@ always @(*) begin
     endcase
 end
 
-always @(posedge clk or negedge resetn) begin
-    if(!resetn) begin
+always @(posedge clk) begin
+    if(reset) begin
         decomp_pixel_reg[63:0] <= 0;
         RGB_reg[17:0] <= 0;
         RGB_reg_trans <= 0;

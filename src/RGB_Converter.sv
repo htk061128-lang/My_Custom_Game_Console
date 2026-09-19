@@ -1,6 +1,6 @@
 module RGB_Converter(
     input clk, 
-    input resetn, //negedge resetn
+    input reset, //synchronous active-high reset
 
     input [1:0] Clk_Counter, //Decompresser, Compressed_Data_FIFO 모듈과 연동되는 동일한 2비트짜리 클럭 카운터.
 
@@ -276,8 +276,8 @@ reg req12_w_ena;
 //우선순위가 높은것 먼저 total_req값으로 cache miss인 요청이 있는지 확인하고 있으면 Distribute RAM에서 값을 읽어옴. 없으면 2순위 체크, 그것도 없으면 3순위 체크임/
 //만약 3개 다 total_req가 0이면 그때는 Distribute RAM 읽기가 일어나지 않음. 다음 클럭에 다시 우선순위가 설정되고 Distribute RAM 사용할 Request를 탐색함.
 
-always @(posedge clk or negedge resetn) begin
-    if(!resetn) begin
+always @(posedge clk) begin
+    if(reset) begin
         cache1_pixel[7:0] <= 0;
         cache1_RGB[17:0] <= 0;
         cache1_valid <= 0;

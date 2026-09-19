@@ -1,6 +1,6 @@
 module Decompresser( //Compressed_Data_FIFO 에서 값을 읽어와서 압축을 해제한 후 Decompressed_Data_FIFO에 저장함. 이 모듈을 10개 복사해서 top 모듈에서 통합시킬 예정임.
     input clk,
-    input resetn, //negedge resetn
+    input reset, //synchronous active-high reset
     input [1:0] Clk_Counter, //Compressed_Data_FIFO 모듈에서 들어오는 input으로 클럭에지마다 0 - 1 - 2 - 3 - 0 - 1 - 2 - 3을 반복함. Compressed data FIFO의 r_master에 사용되는 그 신호임.
     
     //하나의 BRAM을 4개의 레이어가 각각 128줄씩 나눠 씀. (BRAM12는 256줄씩 사용)
@@ -761,8 +761,8 @@ always @(*) begin
     endcase
 end
 
-always @(posedge clk or negedge resetn) begin
-    if(!resetn) begin
+always @(posedge clk) begin
+    if(reset) begin
         r_state <= IDLE;
         w_state <= IDLE; 
         decompress_state <= IDLE;

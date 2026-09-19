@@ -1,6 +1,6 @@
 module I_Cache_Controller (
     input clk, //CPU와 동기화할 예정.
-    input resetn, //그냥 negedge reset으로 통일. 1->0으로 가면 리셋됨.
+    input reset, //synchronous active-high reset
     //cpu와 상호작용하는 신호들.
     input CPU_valid,
     input CPU_instr,
@@ -402,8 +402,8 @@ always @(*) begin
     endcase
 end
 
-always @(posedge clk or negedge resetn) begin
-    if(!resetn) begin
+always @(posedge clk) begin
+    if(reset) begin
         main_state <= IDLE;
         burst_counter[3:0] <= 0;
         cpu_I_tag[14:0] <= 0;

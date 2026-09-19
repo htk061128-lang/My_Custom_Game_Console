@@ -306,7 +306,7 @@ int main(int argc, char **argv)
     // 3. 리셋 시퀀스
     // ==========================================
     dut->clk = 0;
-    dut->resetn = 0;
+    dut->reset = 1;
     dut->eval();
     for (int i = 0; i < 10; i++)
     {
@@ -315,7 +315,7 @@ int main(int argc, char **argv)
         dut->clk = 0;
         dut->eval();
     }
-    dut->resetn = 1;
+    dut->reset = 0;
     dut->eval();
 
     // BRAM 지연 읽기 버퍼

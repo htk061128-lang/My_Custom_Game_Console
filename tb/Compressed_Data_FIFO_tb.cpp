@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     std::cout << "Simulation start!" << std::endl;
 
     dut->clk = 0;
-    dut->resetn = 0; 
+    dut->reset = 1;
 
     // 외부 메모리 주소 초기 세팅 (테스트용)
     dut->Background_Layer1_Address = 0x00000004; //이것만 테스트할 예정.
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
     {
         // 리셋 해제
         if (main_time > 10) {
-            dut->resetn = 1;
+            dut->reset = 0;
         }
 
         // 테스트를 위해 특정 시간에 PPU_start 신호 인가

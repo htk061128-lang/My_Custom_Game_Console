@@ -144,7 +144,7 @@ int main(int argc, char **argv)
 
     // 1. 초기 신호 셋업
     top->clk = 0;
-    top->resetn = 0; // Active Low 리셋이므로 0으로 시작
+    top->reset = 1; // Active Low 리셋이므로 0으로 시작
 
     // 2. 시뮬레이션 메인 루프 (원하는 타임스텝만큼 실행)
     while (!Verilated::gotFinish() && main_time < 300)
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
         // 리셋 해제: 타임스텝 20 이후에 resetn을 1로 올려 정상 동작 시작
         if (main_time > 5)
         {
-            top->resetn = 1;
+            top->reset = 0;
         }
 
         // 여기서 출력이 나옴.

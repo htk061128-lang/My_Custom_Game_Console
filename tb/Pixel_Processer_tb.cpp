@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 
     // 기본 입력 초기화
     dut->clk = 0;
-    dut->resetn = 0;
+    dut->reset = 1;
     dut->PPU_start = 0;
 
     dut->Background1_a = 8'd16;
@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
         trace->dump(main_time++);
     }
 
-    dut->resetn = 1;
+    dut->reset = 0;
     dut->PPU_start = 1;
     dut->Background1_pixel_valid = 1;
     dut->Background2_pixel_valid = 1;

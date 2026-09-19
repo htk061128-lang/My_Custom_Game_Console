@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     std::cout << "Simulation start!" << std::endl;
 
     dut->clk = 0;
-    dut->resetn = 0; 
+    dut->reset = 1;
     dut->Clk_Counter = 0; 
     dut->BRAM_base = 0; //background 1 layer라고 가정.
     dut->BRAM_size = 1;
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     {
         // 리셋 해제
         if (main_time > 10) {
-            dut->resetn = 1;
+            dut->reset = 0;
         }
 
         // 테스트를 위해 특정 시간에 PPU_start 신호 인가

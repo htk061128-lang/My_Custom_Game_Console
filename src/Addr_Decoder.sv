@@ -1,6 +1,6 @@
 module Addr_Decoder( 
     input clk,
-    input resetn,
+    input reset,
 
     //I_Cache_Controller를 거쳐서 온 외부 메모리 인터페이스. axi4로 변환한 뒤 DDR3 IP와 연결해야 함.
     input reg EMEM_valid,
@@ -109,10 +109,7 @@ module Addr_Decoder(
 //각종 PPU 제어신호들
 //폰트 데이터(BRAM 4, 5, 6, 13)
 
-parameter [31:0] CONTROL_REG_BASE;
-parameter [31:0] FONT_MAP_BASE;
-parameter [31:0] FONT_DATA_BASE;
-parameter [31:0] LOOKUP_TABLE_BASE;
+
 
 wire sel_ddr3     = (EMEM_addr[31:28] == 4'h0) && (EMEM_addr[27:20] != 8'hFF); // 상위 4비트 0x0 확인 및 0x0FF0_xxxx 대역이 아닌 경우만 활성화. (0x0000_0000 ~ 0x0FEF_FFFF, 255 MiB)
 wire sel_ppu_reg  = (EMEM_addr[31:16] == 16'h0FF0) && (EMEM_addr[15:10] == 6'b0000_00); // 0x0FF0_0000 ~ 0x0FF0_03FF (1 KiB): [15:10] == 6'b0000_00                     
@@ -283,8 +280,8 @@ always @(*) begin
 
 end
 
-always @(posedge clk or negedge resetn) begin
-    if(!resetn) begin
+always @(posedge clk) begin
+    if(reset) begin
         for (i = 0; i <= 42; i = i + 1) begin
             ppu_regs[i] <= 32'd0;
         end

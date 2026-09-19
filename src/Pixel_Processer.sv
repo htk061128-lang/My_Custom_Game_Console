@@ -1,6 +1,6 @@
 module Pixel_Processer( //10개 레이어를 알파블랜딩, 합성해서 최종 픽셀을 산출함. 이후 Font_Processer 와 추가적으로 합성하고 페이드연산을 해서 마무리 함.
     input clk,
-    input resetn,
+    input reset,
 
     //input [1:0] Clk_Counter, //0 - 1 - 2 - 3 - 0 - 1을 반복 함. Decompresser.sv 모듈과 동기화 되어있음.
 
@@ -1011,8 +1011,8 @@ always @(*) begin
     end
 end
 
-always @(posedge clk or negedge resetn) begin
-    if (!resetn) begin
+always @(posedge clk) begin
+    if (reset) begin
         Z1_state[1:0] <= 0;
         Z2_state[1:0] <= 0;
         Z3_state[1:0] <= 0;

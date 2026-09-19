@@ -1,6 +1,6 @@
 module PPU_TOP(
     input clk,
-    input resetn,
+    input reset,
     input PPU_start,
 
     input [7:0] CPU_LUT_Cache1_pixel, input [7:0] CPU_LUT_Cache2_pixel, input [7:0] CPU_LUT_Cache3_pixel, input [7:0] CPU_LUT_Cache4_pixel,
@@ -95,8 +95,8 @@ module PPU_TOP(
 // Internal Clk_Counter generation (2-bit) — shared by Decompressers/Readers/Converter
 // -----------------------------------------------------------------------------
 reg [1:0] Clk_Counter;
-always @(posedge clk or negedge resetn) begin
-    if(!resetn) Clk_Counter <= 2'b00;
+always @(posedge clk) begin
+    if(reset) Clk_Counter <= 2'b00;
     else Clk_Counter <= Clk_Counter + 1'b1;
 end
 
@@ -130,7 +130,7 @@ wire bg1_decomp_ena  = 1'b1;
 wire bg2_decomp_ena  = 1'b1;
 
 pixel_fifo_top u_pixel_fifo (
-    .clk(clk), .resetn(resetn), .PPU_start(PPU_start), .Clk_Counter(Clk_Counter), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .PPU_start(PPU_start), .Clk_Counter(Clk_Counter), .Frame_End(Font_Frame_End),
 
     .Universal_Layer1_Address(Universal_Layer1_Address[31:0]),
     .Universal_Layer2_Address(Universal_Layer2_Address[31:0]),
@@ -183,7 +183,7 @@ wire Req_trans [12:1];
 wire Req_end [12:1];
 
 RGB_Converter u_rgb (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start),
 
     .Cache1_pixel(CPU_LUT_Cache1_pixel), .Cache2_pixel(CPU_LUT_Cache2_pixel), .Cache3_pixel(CPU_LUT_Cache3_pixel), .Cache4_pixel(CPU_LUT_Cache4_pixel),
 
@@ -245,7 +245,7 @@ wire UN2_Pixel_valid; wire [17:0] UN2_Pixel_RGB; wire UN2_Pixel_is_trans; wire U
 // Pixel_Reader instances
 
 Pixel_Reader u_bg1 (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Background1_z != 0), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Background1_z != 0), .Frame_End(Font_Frame_End),
     .is_background(1'b1), .is_character(1'b0), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
     .WX(Background1_WX), .WY(Background1_WY), .SCX(Background1_SCX), .SCY(Background1_SCY),
     .Pixel_valid(BG1_Pixel_valid), .Pixel_RGB(BG1_Pixel_RGB), .Pixel_is_trans(BG1_Pixel_is_trans), .Pixel_ready(BG1_Pixel_ready),
@@ -254,7 +254,7 @@ Pixel_Reader u_bg1 (
 );
 
 Pixel_Reader u_bg2 (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Background2_z != 0), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Background2_z != 0), .Frame_End(Font_Frame_End),
     .is_background(1'b1), .is_character(1'b0), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
     .WX(Background2_WX), .WY(Background2_WY), .SCX(Background2_SCX), .SCY(Background2_SCY),
     .Pixel_valid(BG2_Pixel_valid), .Pixel_RGB(BG2_Pixel_RGB), .Pixel_is_trans(BG2_Pixel_is_trans), .Pixel_ready(BG2_Pixel_ready),
@@ -263,7 +263,7 @@ Pixel_Reader u_bg2 (
 );
 
 Pixel_Reader u_ch1 (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Character1_z != 0), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Character1_z != 0), .Frame_End(Font_Frame_End),
     .is_background(1'b0), .is_character(1'b1), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
     .WX(Character1_WX), .WY(Character1_WY), .SCX(Character1_SCX), .SCY(Character1_SCY),
     .Pixel_valid(CH1_Pixel_valid), .Pixel_RGB(CH1_Pixel_RGB), .Pixel_is_trans(CH1_Pixel_is_trans), .Pixel_ready(CH1_Pixel_ready),
@@ -272,7 +272,7 @@ Pixel_Reader u_ch1 (
 );
 
 Pixel_Reader u_ch2 (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Character2_z != 0), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Character2_z != 0), .Frame_End(Font_Frame_End),
     .is_background(1'b0), .is_character(1'b1), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
     .WX(Character2_WX), .WY(Character2_WY), .SCX(Character2_SCX), .SCY(Character2_SCY),
     .Pixel_valid(CH2_Pixel_valid), .Pixel_RGB(CH2_Pixel_RGB), .Pixel_is_trans(CH2_Pixel_is_trans), .Pixel_ready(CH2_Pixel_ready),
@@ -281,7 +281,7 @@ Pixel_Reader u_ch2 (
 );
 
 Pixel_Reader u_ch3 (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Character3_z != 0), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Character3_z != 0), .Frame_End(Font_Frame_End),
     .is_background(1'b0), .is_character(1'b1), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
     .WX(Character3_WX), .WY(Character3_WY), .SCX(Character3_SCX), .SCY(Character3_SCY),
     .Pixel_valid(CH3_Pixel_valid), .Pixel_RGB(CH3_Pixel_RGB), .Pixel_is_trans(CH3_Pixel_is_trans), .Pixel_ready(CH3_Pixel_ready),
@@ -290,7 +290,7 @@ Pixel_Reader u_ch3 (
 );
 
 Pixel_Reader u_ch4 (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Character4_z != 0), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Character4_z != 0), .Frame_End(Font_Frame_End),
     .is_background(1'b0), .is_character(1'b1), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b0),
     .WX(Character4_WX), .WY(Character4_WY), .SCX(Character4_SCX), .SCY(Character4_SCY),
     .Pixel_valid(CH4_Pixel_valid), .Pixel_RGB(CH4_Pixel_RGB), .Pixel_is_trans(CH4_Pixel_is_trans), .Pixel_ready(CH4_Pixel_ready),
@@ -299,7 +299,7 @@ Pixel_Reader u_ch4 (
 );
 
 Pixel_Reader u_sc (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Script_z != 0), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Script_z != 0), .Frame_End(Font_Frame_End),
     .is_background(1'b0), .is_character(1'b0), .is_status(1'b0), .is_script(1'b1), .is_universal(1'b0),
     .WX(Script_WX), .WY(Script_WY), .SCX(Script_SCX), .SCY(Script_SCY),
     .Pixel_valid(SC_Pixel_valid), .Pixel_RGB(SC_Pixel_RGB), .Pixel_is_trans(SC_Pixel_is_trans), .Pixel_ready(SC_Pixel_ready),
@@ -308,7 +308,7 @@ Pixel_Reader u_sc (
 );
 
 Pixel_Reader u_st (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Status_z != 0), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Status_z != 0), .Frame_End(Font_Frame_End),
     .is_background(1'b0), .is_character(1'b0), .is_status(1'b1), .is_script(1'b0), .is_universal(1'b0),
     .WX(Status_WX), .WY(Status_WY), .SCX(Status_SCX), .SCY(Status_SCY),
     .Pixel_valid(ST_Pixel_valid), .Pixel_RGB(ST_Pixel_RGB), .Pixel_is_trans(ST_Pixel_is_trans), .Pixel_ready(ST_Pixel_ready),
@@ -317,7 +317,7 @@ Pixel_Reader u_st (
 );
 
 Pixel_Reader u_un1 (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Universal1_z != 0), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Universal1_z != 0), .Frame_End(Font_Frame_End),
     .is_background(1'b0), .is_character(1'b0), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b1),
     .WX(Universal1_WX), .WY(Universal1_WY), .SCX(Universal1_SCX), .SCY(Universal1_SCY),
     .Pixel_valid(UN1_Pixel_valid), .Pixel_RGB(UN1_Pixel_RGB), .Pixel_is_trans(UN1_Pixel_is_trans), .Pixel_ready(UN1_Pixel_ready),
@@ -326,7 +326,7 @@ Pixel_Reader u_un1 (
 );
 
 Pixel_Reader u_un2 (
-    .clk(clk), .resetn(resetn), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Universal2_z != 0), .Frame_End(Font_Frame_End),
+    .clk(clk), .reset(reset), .Clk_Counter(Clk_Counter), .PPU_start(PPU_start), .Pixel_Reader_ena(Universal2_z != 0), .Frame_End(Font_Frame_End),
     .is_background(1'b0), .is_character(1'b0), .is_status(1'b0), .is_script(1'b0), .is_universal(1'b1),
     .WX(Universal2_WX), .WY(Universal2_WY), .SCX(Universal2_SCX), .SCY(Universal2_SCY),
     .Pixel_valid(UN2_Pixel_valid), .Pixel_RGB(UN2_Pixel_RGB), .Pixel_is_trans(UN2_Pixel_is_trans), .Pixel_ready(UN2_Pixel_ready),
@@ -347,7 +347,7 @@ wire font_line_end;
 wire font_frame_end;
 
 Pixel_Processer u_proc (
-    .clk(clk), .resetn(resetn), .PPU_start(PPU_start),
+    .clk(clk), .reset(reset), .PPU_start(PPU_start),
 
     .Background1_a(Background1_a), .Background1_z(Background1_z),
     .Background1_pixel_valid(BG1_Pixel_valid), .Background1_pixel_RGB(BG1_Pixel_RGB), .Background1_pixel_is_trans(BG1_Pixel_is_trans), .Background1_pixel_ready(BG1_Pixel_ready),
@@ -383,7 +383,7 @@ Pixel_Processer u_proc (
 );
 
 Font_Processer u_font (
-    .clk(clk), .resetn(resetn), .PPU_start(PPU_start),
+    .clk(clk), .reset(reset), .PPU_start(PPU_start),
     .Font_Mixed_Pixel_RGB(font_mixed_pixel_RGB),
     .Font_Mixed_Pixel_valid(font_mixed_pixel_valid),
     .Line_End(font_line_end),

@@ -7,7 +7,7 @@ module Game_Console_TOP #(
     parameter [31:0] STACKADDR = 32'h0FEF_FFFC
 ) (
     input clk,
-    input resetn,
+    input reset,
     input [7:0] joypad_state_in,
     output joypad_irq,
     output ppu_irq,
@@ -111,7 +111,7 @@ wire PPU_start;
 picorv32 #(
     .STACKADDR(STACKADDR)
 ) u_cpu (
-    .clk(clk), .resetn(resetn), .trap(cpu_trap),
+    .clk(clk), .reset(reset), .trap(cpu_trap),
     .mem_valid(cpu_mem_valid), .mem_instr(cpu_mem_instr), .mem_ready(cpu_mem_ready),
     .mem_addr(cpu_mem_addr), .mem_wdata(cpu_mem_wdata), .mem_wstrb(cpu_mem_wstrb), .mem_rdata(cpu_mem_rdata),
     .mem_la_read(cpu_la_read), .mem_la_write(cpu_la_write), .mem_la_addr(cpu_la_addr),
@@ -122,7 +122,7 @@ picorv32 #(
 );
 
 I_Cache_Controller u_icache (
-    .clk(clk), .resetn(resetn),
+    .clk(clk), .reset(reset),
     .CPU_valid(cpu_mem_valid), .CPU_instr(cpu_mem_instr), .CPU_ready(cache_cpu_ready),
     .CPU_addr(cpu_mem_addr), .CPU_wdata(cpu_mem_wdata), .CPU_wstrb(cpu_mem_wstrb), .CPU_rdata(cache_cpu_rdata),
     .EMEM_valid(cache_emem_valid), .EMEM_ready(cache_emem_ready), .EMEM_addr(cache_emem_addr),
@@ -161,11 +161,8 @@ wire [3:0] ppu_emem_wstrb;
 wire [7:0] ppu_emem_burst_len;
 wire ppu_emem_burst_en;
 
-Addr_Decoder #(
-    .CONTROL_REG_BASE(CONTROL_REG_BASE), .FONT_MAP_BASE(FONT_MAP_BASE),
-    .FONT_DATA_BASE(FONT_DATA_BASE), .LOOKUP_TABLE_BASE(LOOKUP_TABLE_BASE)
-) u_addr_decoder (
-    .clk(clk), .resetn(resetn),
+Addr_Decoder u_addr_decoder (
+    .clk(clk), .reset(reset),
     .joypad_state(joypad_state_in), .joypad_irq(joypad_irq), .Frame_End(Font_Frame_End), .ppu_irq(ppu_irq),
     .EMEM_valid(cache_emem_valid), .EMEM_ready(dec_emem_ready), .EMEM_addr(cache_emem_addr),
     .EMEM_wdata(cache_emem_wdata), .EMEM_wstrb(cache_emem_wstrb), .EMEM_rdata(dec_emem_rdata),
@@ -190,7 +187,7 @@ Addr_Decoder #(
     .o_line_cfg_0_1(line_cfg_0_1), .o_line_cfg_2_3(line_cfg_2_3), .o_line_cfg_4_5(line_cfg_4_5),
     .o_line_cfg_6_7(line_cfg_6_7), .o_line_cfg_8_9(line_cfg_8_9), .o_line_cfg_10_11(line_cfg_10_11),
     .o_line_cfg_12_13(line_cfg_12_13), .o_line_cfg_14(line_cfg_14), .o_line_alpha_0_7(line_alpha_0_7),
-    .o_line_alpha_8_14(line_alpha_8_14), .o_ppu_start(PPU_start)
+    .o_line_alpha_8_14(line_alpha_8_14), .o_ppu_start()
 );
 
 assign cache_emem_ready = dec_emem_ready;
@@ -276,7 +273,7 @@ end for (line_index = 8; line_index < 15; line_index = line_index + 1) begin : g
 end endgenerate
 
 PPU_TOP u_ppu (
-    .clk(clk), .resetn(resetn), .PPU_start(PPU_start),
+    .clk(clk), .reset(reset), .PPU_start(PPU_start),
     .CPU_LUT_Cache1_pixel(cache1_pixel), .CPU_LUT_Cache2_pixel(cache2_pixel), .CPU_LUT_Cache3_pixel(cache3_pixel), .CPU_LUT_Cache4_pixel(cache4_pixel),
     .Background_Layer1_Address(bg1_addr), .Background_Layer2_Address(bg2_addr), .Character_Layer1_Address(chr1_addr), .Character_Layer2_Address(chr2_addr),
     .Character_Layer3_Address(chr3_addr), .Character_Layer4_Address(chr4_addr), .Script_Layer_Address(scr_addr), .Status_Layer_Address(stat_addr),
